@@ -6,14 +6,14 @@ Analyze the modified code files for potential improvements. Focus on:
 
 1. **Code Smells**: Identify any code smells like long methods, large classes, duplicate code, or complex conditionals
 2. **Design Patterns**: Suggest appropriate design patterns that could improve the code structure
-3. **Best Practices**: Check adherence to Python best practices, PEP standards, and Ouroboros coding conventions
+3. **Best Practices**: Check adherence to Python best practices, PEP standards, and CipherSwarm coding conventions
 4. **Readability**: Suggest improvements for variable names, function structure, and code organization
 5. **Maintainability**: Identify areas that could be refactored for better maintainability
 6. **Performance**: Suggest performance optimizations, especially for async operations and database queries
 7. **Type Safety**: Ensure proper type hints and Pydantic model usage (don’t just use strings for parameters, use proper types)
 8. **Error Handling**: Review exception handling and validation patterns
 
-Provide specific, actionable suggestions while maintaining the existing functionality. Consider the Ouroboros context (red team operations, airgapped environments, FastAPI + Postgres stack). Favor maintainability over trying to be clever.
+Provide specific, actionable suggestions while maintaining the existing functionality. Consider the CipherSwarm context (red team operations, airgapped environments, FastAPI + Postgres stack). Favor maintainability over trying to be clever.
 
 **AUTOMATIC EDIT CONSTRAINTS (STRICT ENFORCEMENT):**
 
