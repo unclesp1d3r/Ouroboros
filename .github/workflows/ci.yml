@@ -1,6 +1,4 @@
 name: CI
-permissions:
-    contents: read
 
 on:
     push:
@@ -16,9 +14,9 @@ jobs:
             postgres:
                 image: postgres:16
                 env:
-                    POSTGRES_USER: ouroboros
-                    POSTGRES_PASSWORD: ouroboros
-                    POSTGRES_DB: ouroboros
+                    POSTGRES_USER: cipherswarm
+                    POSTGRES_PASSWORD: cipherswarm
+                    POSTGRES_DB: cipherswarm
                 ports:
                     - 5432:5432
                 options: >-
@@ -36,24 +34,32 @@ jobs:
               with:
                   python-version: "3.13"
 
-            - name: Install uv (Python package manager)
-              uses: astral-sh/setup-uv@v3
-              with:
-                  version: "latest"
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v4
 
             - name: Install just
-              uses: extractions/setup-just@v1
+              run: |
+                  curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/local/bin
+                  just --version
+
+            - name: Install uv
+              run: |
+                  curl -LsSf https://astral.sh/uv/install.sh | sh
+                  echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+            - name: Verify uv installation
+              run: uv --version
 
             - name: Wait for PostgreSQL
               run: |
                   echo "Waiting for PostgreSQL to be ready..."
                   sleep 10
 
-            - name: Install Python dependencies
-              run: uv sync --all-packages --group ci --frozen
+            - name: Install dependencies
+              run: uv sync --dev
 
             - name: Install frontend dependencies
               run: cd frontend && pnpm install
@@ -61,32 +67,22 @@ jobs:
             - name: Install Playwright browsers
               run: cd frontend && pnpm exec playwright install --with-deps
 
-            - name: Cache uv dependencies
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      ~/.cache/uv
-                      .venv
-                  key: ${{ runner.os }}-uv-${{ hashFiles('**/uv.lock', '**/.python-version') }}
-                  restore-keys: |
-                      ${{ runner.os }}-uv-
-
             - name: Run CI checks
               env:
-                  DATABASE_URL: postgresql://ouroboros:ouroboros@localhost:5432/ouroboros
+                  DATABASE_URL: postgresql://cipherswarm:cipherswarm@localhost:5432/cipherswarm
                   POSTGRES_HOST: localhost
                   POSTGRES_PORT: 5432
-                  POSTGRES_USER: ouroboros
-                  POSTGRES_PASSWORD: ouroboros
-                  POSTGRES_DB: ouroboros
+                  POSTGRES_USER: cipherswarm
+                  POSTGRES_PASSWORD: cipherswarm
+                  POSTGRES_DB: cipherswarm
                   # Legacy environment variables that might be used
                   POSTGRES_SERVER: localhost
-                  DB_USER: ouroboros
-                  DB_PASSWORD: ouroboros
-                  DB_NAME: ouroboros
+                  DB_USER: cipherswarm
+                  DB_PASSWORD: cipherswarm
+                  DB_NAME: cipherswarm
                   DB_HOST: localhost
                   DB_PORT: 5432
-              run: uv run just ci-check
+              run: just ci-check
 
             - name: Upload coverage to Codecov
               if: success()
