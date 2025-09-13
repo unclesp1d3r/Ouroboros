@@ -36,38 +36,47 @@ jobs:
               with:
                   python-version: "3.13"
 
+            - name: Install uv (Python package manager)
+              uses: astral-sh/setup-uv@v3
+              with:
+                  version: "latest"
+
             - name: Set up Node.js
               uses: actions/setup-node@v4
+              with:
+                  cache: "npm"
+                  cache-dependency-path: "package-lock.json"
+                  node-version: "20.19.0"
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v4
 
             - name: Install just
-              run: |
-                  curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/local/bin
-                  just --version
-
-            - name: Install uv
-              run: |
-                  curl -LsSf https://astral.sh/uv/install.sh | sh
-                  echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-
-            - name: Verify uv installation
-              run: uv --version
+              uses: extractions/setup-just@v1
 
             - name: Wait for PostgreSQL
               run: |
                   echo "Waiting for PostgreSQL to be ready..."
                   sleep 10
 
-            - name: Install dependencies
-              run: uv sync --dev
+            - name: Install Python dependencies
+              run: uv sync --all-packages --group ci --frozen
 
             - name: Install frontend dependencies
               run: cd frontend && pnpm install
 
             - name: Install Playwright browsers
               run: cd frontend && pnpm exec playwright install --with-deps
+
+            - name: Cache uv dependencies
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      ~/.cache/uv
+                      .venv
+                  key: ${{ runner.os }}-uv-${{ hashFiles('**/uv.lock', '**/.python-version') }}
+                  restore-keys: |
+                      ${{ runner.os }}-uv-
 
             - name: Run CI checks
               env:
@@ -84,7 +93,7 @@ jobs:
                   DB_NAME: cipherswarm
                   DB_HOST: localhost
                   DB_PORT: 5432
-              run: just ci-check
+              run: uv run just ci-check
 
             - name: Upload coverage to Codecov
               if: success()
