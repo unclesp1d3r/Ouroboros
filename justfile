@@ -8,6 +8,7 @@ default:
     @just --choose
 
 alias h := help
+alias test := test-backend
 
 help:
     just --summary
@@ -45,7 +46,7 @@ check:
     just based-pyright
 
 based-pyright:
-    uv run --group dev basedpyright -p pyproject.toml
+    uv run --group dev pyright -p pyproject.toml
 
 # Format code using ruff, mdformat, and svelte check
 format:
