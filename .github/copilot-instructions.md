@@ -65,24 +65,27 @@ name: Annotated[str, Field(min_length=1, description="User's full name")]
 
 ### API Development
 
-```python
+```text
 # Router organization by interface
 app/api/v1/endpoints/
 ├── agent/         # /api/v1/client/* (Agent API v1)
 ├── web/           # /api/v1/web/* (SvelteKit frontend)
 └── control/       # /api/v1/control/* (External APIs)
+```
 
+```python
+# Use RFC9457 Problem Details for Control API errors
 # Control API error format (RFC9457)
 return JSONResponse(
     status_code=400,
     content={
         "type": "https://example.com/problems/invalid-request",
-        "title": "Invalid Request", 
+        "title": "Invalid Request",
         "status": 400,
         "detail": "The request parameters are invalid",
-        "instance": "/api/v1/control/campaigns/123"
+        "instance": "/api/v1/control/campaigns/123",
     },
-    headers={"Content-Type": "application/problem+json"}
+    headers={"Content-Type": "application/problem+json"},
 )
 ```
 
