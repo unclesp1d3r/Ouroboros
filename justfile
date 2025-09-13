@@ -8,7 +8,6 @@ default:
     @just --choose
 
 alias h := help
-alias test := test-backend
 
 help:
     just --summary
