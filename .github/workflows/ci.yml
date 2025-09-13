@@ -44,8 +44,8 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
-                  cache: "npm"
-                  cache-dependency-path: "package-lock.json"
+                  cache: "pnpm"
+                  cache-dependency-path: "frontend/pnpm-lock.yaml"
                   node-version: "20.19.0"
 
             - name: Setup pnpm
