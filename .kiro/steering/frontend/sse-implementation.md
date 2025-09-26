@@ -1,6 +1,6 @@
 ---
-
-## inclusion: manual
+inclusion: manual
+---
 
 # SSE (Server-Sent Events) Implementation Patterns
 

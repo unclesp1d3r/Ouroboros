@@ -1,7 +1,7 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: [app/\*\*/\*.py]
-
+inclusion: fileMatch
+fileMatchPattern: "app/**/*.py"
+---
 ## State Machine Philosophy
 
 Ouroboros uses finite state machines (FSMs) to manage the lifecycle of distributed cracking operations.

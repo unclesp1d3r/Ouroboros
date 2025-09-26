@@ -1,7 +1,9 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: \[app/models/\*\*/*, alembic/*\]
-
+inclusion: fileMatch
+fileMatchPattern: 
+  - "app/models/**/*"
+  - "alembic/*"
+---
 ## Guidelines
 
 - All SQLAlchemy models live in `app/models/`

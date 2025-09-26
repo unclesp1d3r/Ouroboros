@@ -1,11 +1,10 @@
 ---
 inclusion: fileMatch
 fileMatchPattern:
-
-  - tests/unit/\*\*/\*.py
-  - tests/integration/\*\*/\*.py
-  - app/core/services/\*\*/\*.py
-  - tests/conftest.py
+  - "tests/unit/**/*.py"
+  - "tests/integration/**/*.py"
+  - "app/core/services/**/*.py"
+  - "tests/conftest.py"
 ---
 
 # Ouroboros Backend Testing Patterns

@@ -1,6 +1,7 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: [.github/workflows/\*.yml]
+inclusion: fileMatch
+fileMatchPattern: ".github/workflows/*.yml"
+---
 
 # GitHub Actions Best Practices and Coding Standards
 
