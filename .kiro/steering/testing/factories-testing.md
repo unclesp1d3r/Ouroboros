@@ -1,8 +1,8 @@
 ---
 inclusion: fileMatch
 fileMatchPattern:
-  - tests/factories/**/*.py
-  - scripts/seed_*.py
+  - "tests/factories/**/*.py"
+  - "scripts/seed_*.py"
 ---
 
 # Ouroboros Factory Testing Patterns

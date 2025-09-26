@@ -8,8 +8,6 @@ fileMatchPattern:
 
 # Ouroboros Docker & Containerization Requirements
 
-# Ouroboros Docker & Containerization Requirements
-
 ## Project-Specific Standards
 
 - **Required Services (Compose):**

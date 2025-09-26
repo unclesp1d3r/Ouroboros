@@ -1,7 +1,6 @@
 ---
 inclusion: fileMatch
-fileMatchPattern:
-  - '*.py'
+fileMatchPattern: "*.py"
 ---
 
 # SQLAlchemy Best Practices and Coding Standards

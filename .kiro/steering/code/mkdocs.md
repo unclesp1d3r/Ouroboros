@@ -1,6 +1,6 @@
 ---
 inclusion: fileMatch
-fileMatchPattern: '*.md'
+fileMatchPattern: "*.md"
 ---
 
 # mkdocs Best Practices
