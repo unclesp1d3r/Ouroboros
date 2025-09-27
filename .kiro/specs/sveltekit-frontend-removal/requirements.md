@@ -16,7 +16,7 @@ The removal will ensure that CipherSwarm operates as a single FastAPI applicatio
 
 1. WHEN the SvelteKit frontend is removed THEN the `frontend/` directory SHALL be completely deleted
 2. WHEN the removal is complete THEN no SvelteKit source files SHALL remain in the project
-3. WHEN accessing the root path `/` THEN the system SHALL redirect to the NiceGUI interface at `/ui/`
+3. WHEN accessing the root path `/` THEN the system SHALL redirect to the NiceGUI interface at `/ui/dashboard`
 4. IF users access legacy frontend routes THEN the system SHALL redirect appropriately to NiceGUI equivalents
 5. WHEN the frontend is removed THEN all SvelteKit-specific configuration files SHALL be deleted
 

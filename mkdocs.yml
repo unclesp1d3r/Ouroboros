@@ -88,6 +88,7 @@ nav:
               - Testing Status: development/testing-status.md
               - Analysis Notes: development/analysis_notes.md
               - API Reference: development/api-reference.md
+              - Agent API v2 Development: development/agent-api-v2-development.md
               - Authentication: development/authentication.md
               - Security: development/security.md
               - Style Guide: development/style-guide.md
@@ -99,7 +100,8 @@ nav:
               - Backup: deployment/backup.md
       - API:
               - Overview: api/overview.md
-              - Agent API: api/agent.md
+              - Agent API v1: api/agent.md
+              - Agent API v2: api/agent-api-v2.md
               - Web UI API: api/web.md
               - Control API: api/control.md
               - Integration Guides: api/integration-guides.md
