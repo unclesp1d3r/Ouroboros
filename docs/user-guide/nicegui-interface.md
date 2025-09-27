@@ -2,7 +2,7 @@
 
 ## Overview
 
-Ouroboros provides an alternative Python-native web interface built with [NiceGUI](https://nicegui.io/) that is integrated directly into the FastAPI backend application. This interface offers the same core functionality as the SvelteKit frontend but with a more integrated deployment option that eliminates the need for a separate frontend server.
+CipherSwarm provides an alternative Python-native web interface built with [NiceGUI](https://nicegui.io/) that is integrated directly into the FastAPI backend application. This interface offers the same core functionality as the SvelteKit frontend but with a more integrated deployment option that eliminates the need for a separate frontend server.
 
 The NiceGUI interface is particularly useful for:
 
@@ -56,7 +56,7 @@ http://localhost:8000/ui/
 
 ### Dashboard
 
-The dashboard provides a comprehensive overview of your Ouroboros deployment:
+The dashboard provides a comprehensive overview of your CipherSwarm deployment:
 
 #### Metrics Cards
 
@@ -163,7 +163,7 @@ Administrative control over system access:
 
 ### Session Management
 
-The NiceGUI interface uses the same robust authentication system as the main Ouroboros APIs:
+The NiceGUI interface uses the same robust authentication system as the main CipherSwarm APIs:
 
 - **Session Cookies**: Secure HTTP-only cookies for session management
 - **CSRF Protection**: Built-in protection against cross-site request forgery
@@ -252,7 +252,7 @@ if __name__ == "__main__":
 
 ### Environment Variables
 
-Configure the interface through standard Ouroboros environment variables:
+Configure the interface through standard CipherSwarm environment variables:
 
 ```bash
 # Enable NiceGUI interface
@@ -261,13 +261,13 @@ NICEGUI_ENABLED=true
 # Storage secret for session management
 SECRET_KEY=your-secret-key-here
 
-# Database and other standard Ouroboros settings
-DATABASE_URL=postgresql://user:pass@localhost/ouroboros
+# Database and other standard CipherSwarm settings
+DATABASE_URL=postgresql://user:pass@localhost/cipherswarm
 ```
 
 ### Docker Deployment
 
-The NiceGUI interface is included in the standard Ouroboros Docker deployment:
+The NiceGUI interface is included in the standard CipherSwarm Docker deployment:
 
 ```yaml
 # docker-compose.yml
@@ -313,7 +313,7 @@ Both interfaces provide identical functionality:
 
 ### When to Choose Each Interface
 
-#### Choose SvelteKit Frontend When
+#### Choose SvelteKit Frontend When:
 
 - You have dedicated frontend developers
 - You need maximum performance and optimization
@@ -321,7 +321,7 @@ Both interfaces provide identical functionality:
 - You want to customize the UI extensively
 - You're building a large-scale deployment
 
-#### Choose NiceGUI Interface When
+#### Choose NiceGUI Interface When:
 
 - You want simplified deployment and maintenance
 - Your team is primarily Python-focused
@@ -389,4 +389,4 @@ The NiceGUI interface is actively developed with planned enhancements:
 - **Plugin System**: Extensible plugin architecture for custom functionality
 - **Advanced Theming**: Additional theme options and customization
 
-For the latest updates and feature requests, see the [Ouroboros GitHub repository](https://github.com/unclesp1d3r/Ouroboros).
+For the latest updates and feature requests, see the [CipherSwarm GitHub repository](https://github.com/unclesp1d3r/CipherSwarm).
