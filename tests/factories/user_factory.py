@@ -31,7 +31,7 @@ class UserFactory(SQLAlchemyFactory[User]):
         return f"user{cls._email_counter}-{cls.__faker__.uuid4()}@example.com"
 
     # Always use a valid bcrypt hash for 'password'
-    hashed_password = bcrypt.hash("password")
+    hashed_password = bcrypt.hash("password"[:72])
     is_active = True
     role = UserRole.ANALYST
     is_superuser = False
