@@ -6,7 +6,9 @@ Ouroboros is a distributed password cracking management system built with FastAP
 
 - **Distributed Task Management**: Efficiently distribute password cracking tasks across multiple agents
 - **Real-time Monitoring**: Track progress and performance of cracking tasks in real-time
-- **Modern Web Interface**: Built with SvelteKit, JSON API, and Flowbite Svelte/DaisyUI components for a responsive, dynamic experience
+- **Dual Web Interfaces**:
+  - **SvelteKit Frontend**: Modern, high-performance web interface with JSON API and Flowbite Svelte/DaisyUI components
+  - **NiceGUI Interface**: Python-native web interface integrated directly into the FastAPI backend for simplified deployment
 - **RESTful API**: Well-documented API for agent communication and automation
 - **Resource Management**: Centralized management of wordlists, rules, and masks
 - **Secure Authentication**: JWT-based authentication for both web and agent interfaces
@@ -17,6 +19,8 @@ Ouroboros is a distributed password cracking management system built with FastAP
 - [Installation Guide](getting-started/installation.md)
 - [Quick Start Tutorial](getting-started/quick-start.md)
 - [Architecture Overview](architecture/overview.md)
+- [Web Interface Guide](user-guide/web-interface.md)
+- [NiceGUI Interface Guide](user-guide/nicegui-interface.md)
 - [API Documentation](api/agent.md)
 - [Testing Guide](development/testing.md)
 - [Contributing Guide](development/contributing.md)

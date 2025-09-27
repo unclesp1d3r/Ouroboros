@@ -67,40 +67,41 @@ markdown_extensions:
     - tables
 
 nav:
-    - Home: index.md
-    - Getting Started:
-          - Installation: getting-started/installation.md
-          - Configuration: getting-started/configuration.md
-          - Quick Start: getting-started/quick-start.md
-    - Architecture:
-          - Overview: architecture/overview.md
-          - Components: architecture/components.md
-          - API: architecture/api.md
-    - User Guide:
-          - Web Interface: user-guide/web-interface.md
-          - Agent Setup: user-guide/agent-setup.md
-          - Attack Configuration: user-guide/attack-configuration.md
-    - Development:
-          - Developer Guide: development/developer_guide.md
-          - Setup: development/setup.md
-          - Testing Guide: development/testing.md
-          - Testing Status: development/testing-status.md
-          - Analysis Notes: development/analysis_notes.md
-          - API Reference: development/api-reference.md
-          - Authentication: development/authentication.md
-          - Security: development/security.md
-          - Style Guide: development/style-guide.md
-          - Implementation Plan: v2_rewrite_implementation_plan/implementation_plan.md
-    - Deployment:
-          - Production Setup: deployment/production.md
-          - Docker: deployment/docker.md
-          - Monitoring: deployment/monitoring.md
-          - Backup: deployment/backup.md
-    - API:
-          - Overview: api/overview.md
-          - Agent API: api/agent.md
-          - Web UI API: api/web.md
-          - Control API: api/control.md
-          - Integration Guides: api/integration-guides.md
-          - Workflow Examples: api/workflow-examples.md
-          - Error Responses: api/error-responses.md
+      - Home: index.md
+      - Getting Started:
+              - Installation: getting-started/installation.md
+              - Configuration: getting-started/configuration.md
+              - Quick Start: getting-started/quick-start.md
+      - Architecture:
+              - Overview: architecture/overview.md
+              - Components: architecture/components.md
+              - API: architecture/api.md
+      - User Guide:
+              - Web Interface: user-guide/web-interface.md
+              - NiceGUI Interface: user-guide/nicegui-interface.md
+              - Agent Setup: user-guide/agent-setup.md
+              - Attack Configuration: user-guide/attack-configuration.md
+      - Development:
+              - Developer Guide: development/developer_guide.md
+              - Setup: development/setup.md
+              - Testing Guide: development/testing.md
+              - Testing Status: development/testing-status.md
+              - Analysis Notes: development/analysis_notes.md
+              - API Reference: development/api-reference.md
+              - Authentication: development/authentication.md
+              - Security: development/security.md
+              - Style Guide: development/style-guide.md
+              - Implementation Plan: v2_rewrite_implementation_plan/implementation_plan.md
+      - Deployment:
+              - Production Setup: deployment/production.md
+              - Docker: deployment/docker.md
+              - Monitoring: deployment/monitoring.md
+              - Backup: deployment/backup.md
+      - API:
+              - Overview: api/overview.md
+              - Agent API: api/agent.md
+              - Web UI API: api/web.md
+              - Control API: api/control.md
+              - Integration Guides: api/integration-guides.md
+              - Workflow Examples: api/workflow-examples.md
+              - Error Responses: api/error-responses.md
