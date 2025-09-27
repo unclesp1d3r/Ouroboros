@@ -98,6 +98,7 @@ app/ui/
 ### 1. Application Initialization
 
 **NiceGUI Integration (`app/ui/__init__.py`)**
+
 ```python
 from nicegui import ui
 from fastapi import FastAPI
@@ -127,6 +128,7 @@ def setup_nicegui_interface(fastapi_app: FastAPI) -> None:
 ### 2. Authentication System
 
 **Authentication Middleware (`app/ui/auth/middleware.py`)**
+
 ```python
 from nicegui import app, ui
 from fastapi import Request, HTTPException
@@ -142,22 +144,25 @@ class UIAuthMiddleware:
         path = request.url.path
 
         if any(path.startswith(p) for p in self.protected_paths):
-            session_token = request.cookies.get('sessionid')
+            # Check authentication using NiceGUI's app.storage
+            if not app.storage.user.get('authenticated', False):
+                # Use NiceGUI's proper navigation for middleware
+                return {'redirect': '/ui/login'}
 
-            if not session_token:
-                return ui.navigate.to('/ui/login')
-
-            try:
-                user = await verify_session_token(session_token)
-                request.state.user = user
-            except HTTPException:
-                return ui.navigate.to('/ui/login')
+            # Store user info in request state for use in handlers
+            request.state.user = {
+                'id': app.storage.user.get('user_id'),
+                'username': app.storage.user.get('username'),
+                'login_time': app.storage.user.get('login_time')
+            }
 ```
 
 **Login Page (`app/ui/auth/login.py`)**
+
 ```python
-from nicegui import ui
+from nicegui import ui, app
 from app.core.auth import authenticate_user, create_session_token
+from datetime import datetime
 
 @ui.page('/ui/login')
 async def login_page():
@@ -170,13 +175,15 @@ async def login_page():
         async def handle_login():
             try:
                 user = await authenticate_user(username_input.value, password_input.value)
-                session_token = create_session_token(user.id)
 
-                # Set session cookie
-                ui.run_javascript(f'''
-                    document.cookie = "sessionid={session_token}; path=/; secure; httponly";
-                    window.location.href = "/ui/dashboard";
-                ''')
+                # Store user session in NiceGUI's app.storage
+                app.storage.user['authenticated'] = True
+                app.storage.user['user_id'] = user.id
+                app.storage.user['username'] = user.username
+                app.storage.user['login_time'] = datetime.utcnow().isoformat()
+
+                # Navigate to dashboard using NiceGUI's navigation
+                ui.navigate.to('/ui/dashboard')
             except Exception as e:
                 ui.notify(f'Login failed: {str(e)}', type='negative')
 
@@ -186,8 +193,9 @@ async def login_page():
 ### 3. Layout System
 
 **Base Layout (`app/ui/components/layout.py`)**
+
 ```python
-from nicegui import ui
+from nicegui import ui, app
 from typing import Callable, Optional
 
 class AppLayout:
@@ -238,22 +246,25 @@ class AppLayout:
         return self.user and self.user.get('role') in ['admin', 'project_admin']
 
     def _handle_logout(self):
-        ui.run_javascript('''
-            document.cookie = "sessionid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = "/ui/login";
-        ''')
+        # Clear user session from NiceGUI storage
+        app.storage.user.clear()
+
+        # Navigate to login page
+        ui.navigate.to('/ui/login')
 
     def _refresh_data(self):
         ui.notify('Refreshing data...', type='info')
-        # Trigger page refresh or data reload
-        ui.run_javascript('window.location.reload()')
+        # Use NiceGUI's reactive refresh pattern instead of JavaScript
+        # This will trigger a re-render of the current page
+        ui.refresh()
 ```
 
 ### 4. Dashboard Components
 
 **Dashboard Page (`app/ui/pages/dashboard.py`)**
+
 ```python
-from nicegui import ui
+from nicegui import ui, app
 from app.ui.components.layout import AppLayout
 from app.ui.components.cards import MetricCard, CampaignCard
 from app.core.services.dashboard_service import DashboardService
@@ -327,6 +338,7 @@ async def dashboard_page(request):
 ```
 
 **Metric Card Component (`app/ui/components/cards.py`)**
+
 ```python
 from nicegui import ui
 from typing import Optional
@@ -377,6 +389,7 @@ class CampaignCard:
 ### 5. Data Management Components
 
 **Data Table Component (`app/ui/components/tables.py`)**
+
 ```python
 from nicegui import ui
 from typing import List, Dict, Callable, Optional
@@ -398,25 +411,33 @@ class DataTable:
         self.page = 1
         self.page_size = 10
 
+        # Create reactive containers
+        self.table_container = ui.column().classes('w-full')
+        self.search_input = None
+        self.table = None
+        self.pagination_container = None
+
         self._create_table(searchable, sortable, pagination)
 
     def _create_table(self, searchable: bool, sortable: bool, pagination: bool):
-        with ui.column().classes('w-full'):
+        with self.table_container:
             # Search bar
             if searchable:
-                search_input = ui.input('Search...').classes('w-full mb-4')
-                search_input.on('input', self._handle_search)
+                self.search_input = ui.input('Search...').classes('w-full mb-4')
+                self.search_input.on('input', self._handle_search)
 
-            # Table
-            with ui.table(columns=self.columns, rows=self.filtered_data).classes('w-full') as table:
-                if sortable:
-                    table.on('sort', self._handle_sort)
+            # Table with proper NiceGUI reactive patterns
+            self.table = ui.table(columns=self.columns, rows=self.filtered_data).classes('w-full')
 
-                if self.on_row_click:
-                    table.on('rowClick', self._handle_row_click)
+            if sortable:
+                self.table.on('sort', self._handle_sort)
+
+            if self.on_row_click:
+                self.table.on('rowClick', self._handle_row_click)
 
             # Pagination
             if pagination:
+                self.pagination_container = ui.row().classes('justify-center mt-4')
                 self._create_pagination()
 
     def _handle_search(self, e):
@@ -453,14 +474,18 @@ class DataTable:
         self._update_table()
 
     def _update_table(self):
-        # Update table with filtered/sorted data
-        # Implementation depends on NiceGUI table update mechanism
-        pass
+        # Update table using NiceGUI's reactive update pattern
+        if self.table:
+            self.table.rows = self.filtered_data
+            self.table.update()
 
     def _create_pagination(self):
+        if not self.pagination_container:
+            return
+
         total_pages = (len(self.filtered_data) + self.page_size - 1) // self.page_size
 
-        with ui.row().classes('justify-center mt-4'):
+        with self.pagination_container:
             ui.button('Previous',
                      on_click=lambda: self._change_page(self.page - 1),
                      enabled=self.page > 1)
@@ -532,7 +557,7 @@ class UIResourceInfo(BaseModel):
 4. **Status Indicators**: For connection and loading states
 
 ```python
-from nicegui import ui
+from nicegui import ui, app
 from enum import Enum
 
 class NotificationType(Enum):
@@ -738,13 +763,15 @@ async def test_campaign_table_filtering():
 
 Based on NiceGUI documentation research, the design has been updated to use `ui.run_with()` instead of mounting NiceGUI as a separate application. This approach provides better integration:
 
-### Key Benefits of `ui.run_with()`:
+### Key Benefits of `ui.run_with()`
+
 1. **Unified Application**: NiceGUI routes become part of the main FastAPI app rather than a mounted sub-application
 2. **Shared Middleware**: Authentication and other middleware work seamlessly across both API and UI routes
 3. **Simplified Deployment**: No need for separate application mounting or complex routing
 4. **Better Performance**: Direct integration reduces overhead compared to mounting
 
-### Implementation Pattern:
+### Implementation Pattern
+
 ```python
 # In app/main.py
 from app.ui import setup_nicegui_interface
