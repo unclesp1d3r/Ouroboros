@@ -1,21 +1,38 @@
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
+import bcrypt
 from jose import jwt
 from jose.exceptions import ExpiredSignatureError, JWTError
 from loguru import logger
-from passlib.hash import bcrypt
 
 from app.core.config import settings
 from app.core.security import create_access_token as security_create_access_token
 
+# Bcrypt has a maximum password length of 72 bytes
+BCRYPT_MAX_PASSWORD_LENGTH = 72
+
 
 def hash_password(password: str) -> str:
-    return bcrypt.hash(password)
+    # Bcrypt has a 72-byte limit, truncate if necessary
+    password_bytes = password.encode("utf-8")
+    if len(password_bytes) > BCRYPT_MAX_PASSWORD_LENGTH:
+        password_bytes = password_bytes[:BCRYPT_MAX_PASSWORD_LENGTH]
+
+    # Use bcrypt directly
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password_bytes, salt)
+    return hashed.decode("utf-8")
 
 
 def verify_password(password: str, hashed: str) -> bool:
-    return bcrypt.verify(password, hashed)
+    # Bcrypt has a 72-byte limit, truncate if necessary
+    password_bytes = password.encode("utf-8")
+    if len(password_bytes) > BCRYPT_MAX_PASSWORD_LENGTH:
+        password_bytes = password_bytes[:BCRYPT_MAX_PASSWORD_LENGTH]
+
+    # Use bcrypt directly
+    return bcrypt.checkpw(password_bytes, hashed.encode("utf-8"))
 
 
 def create_access_token(user_id: UUID) -> str:

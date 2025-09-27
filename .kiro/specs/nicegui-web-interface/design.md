@@ -153,6 +153,7 @@ class UIAuthMiddleware:
             request.state.user = {
                 'id': app.storage.user.get('user_id'),
                 'username': app.storage.user.get('username'),
+                'role': app.storage.user.get('role'),
                 'login_time': app.storage.user.get('login_time')
             }
 ```
@@ -180,6 +181,7 @@ async def login_page():
                 app.storage.user['authenticated'] = True
                 app.storage.user['user_id'] = user.id
                 app.storage.user['username'] = user.username
+                app.storage.user['role'] = user.role.value
                 app.storage.user['login_time'] = datetime.utcnow().isoformat()
 
                 # Navigate to dashboard using NiceGUI's navigation
@@ -217,7 +219,7 @@ class AppLayout:
                 ui.label('CipherSwarm').classes('text-xl font-bold')
                 ui.space()
                 if self.user:
-                    with ui.dropdown_button(self.user['name']):
+                    with ui.dropdown_button(self.user.get('username', 'Account')):
                         ui.item('Profile', on_click=lambda: ui.navigate.to('/ui/profile'))
                         ui.item('Logout', on_click=self._handle_logout)
 
