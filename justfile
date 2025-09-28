@@ -141,11 +141,11 @@ install-git-cliff:
 [windows]
 install-git-cliff:
     if (-not (Get-Command git-cliff -ErrorAction SilentlyContinue)) {
-        cargo install git-cliff --locked
-        if ($LASTEXITCODE -ne 0) {
-            Write-Host "Make sure git-cliff is installed manually"
-            $global:LASTEXITCODE = 0
-        }
+    cargo install git-cliff --locked
+    if ($LASTEXITCODE -ne 0) {
+    Write-Host "Make sure git-cliff is installed manually"
+    $global:LASTEXITCODE = 0
+    }
     }
 
 # -----------------------------
@@ -284,17 +284,17 @@ backend-check:
 
 # Drop the test database schema and recreate it
 db-drop-test:
-	@echo "Dropping test database..."
-	@psql "$TEST_DATABASE_URL" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" || true
+    @echo "Dropping test database..."
+    @psql "$TEST_DATABASE_URL" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" || true
 
 # Run Alembic migrations against the test database
 db-migrate-test:
-	@echo "Running Alembic migrations on test database..."
-	@TEST_DATABASE_URL="$TEST_DATABASE_URL" alembic upgrade head
+    @echo "Running Alembic migrations on test database..."
+    @TEST_DATABASE_URL="$TEST_DATABASE_URL" alembic upgrade head
 
 # Full reset: drop, recreate, migrate for the test database
 db-reset: db-drop-test db-migrate-test
-	@echo "Test database reset and migrated successfully!"
+    @echo "Test database reset and migrated successfully!"
 
 # Seed E2E test data for full-stack testing
 seed-e2e-data:
