@@ -2,25 +2,25 @@
 
 ## inclusion: always
 
-# CipherSwarm Core Concepts
+# Ouroboros Core Concepts
 
 ## Project Overview
 
-CipherSwarm is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
 ## Critical Requirements
 
-All code **must** follow the Python formatting standards defined in [python-style.mdc](mdc:CipherSwarm/.cursor/rules/code/python-style.mdc)
+All code **must** follow the Python formatting standards defined in [python-style.mdc](mdc:Ouroboros/.cursor/rules/code/python-style.mdc)
 
 ### API Compatibility
 
 1. **Agent API Versions**
 
-CipherSwarm supports two active versions of the Agent API:
+Ouroboros supports two active versions of the Agent API:
 
 - **v1: Legacy Compatibility (`/api/v1/client/*`)**
 
-  - Mirrors the legacy Ruby-on-Rails version of CipherSwarm (`https://github.com/unclesp1d3r/CipherSwarm`).
+  - Mirrors the legacy Ruby-on-Rails version of Ouroboros (`https://github.com/unclesp1d3r/Ouroboros`).
   - Locked to `contracts/v1_api_swagger.json` (OpenAPI 3.0.1).
   - When working with integration tests of the Agent API v1, `contracts/v1_api_swagger.json` is **always** the authoritative source for correct behavior.
   - Must match every field, enum, and response exactly.
@@ -89,7 +89,7 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
    a. **Agent API** (`/api/v1/client/*`)
 
    - MUST follow OpenAPI 3.0.1 specification in `contracts/v1_api_swagger.json`
-   - Used by distributed CipherSwarm agents
+   - Used by distributed Ouroboros agents
    - Handles agent registration and heartbeat
    - Task distribution and result collection
    - Benchmark submission
@@ -161,10 +161,10 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
    - The frontend code has a different `package.json` than the backend code, so any pnpm/npm commands must be run from within `frontend` if it relates to the frontend code.
    - Built with SvelteKit (SPA pre-build)
    - Communicates with backend via JSON API (RESTful endpoints)
-   - [Shadcn-Svelte](mdc:CipherSwarm/https:/www.shadcn-svelte.com/docs) for component library and styling
+   - [Shadcn-Svelte](mdc:Ouroboros/https:/www.shadcn-svelte.com/docs) for component library and styling
    - Client-side routing and state management
-   - Client-side validation using [Zod](mdc:CipherSwarm/https:/zod.dev)
-   - Modal-based forms using [Superforms](mdc:CipherSwarm/https:/superforms.rocks)
+   - Client-side validation using [Zod](mdc:Ouroboros/https:/zod.dev)
+   - Modal-based forms using [Superforms](mdc:Ouroboros/https:/superforms.rocks)
    - Responsive, accessible, and modern UX
    - When writing Svelte components, aspire to use idiomatic Svelte (<https://svelte.dev/llms-small.txt>)
 
@@ -342,7 +342,7 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
 
 2. **Development Setup**
 
-- See [docker-guidelines.mdc](mdc:CipherSwarm/.cursor/rules/architecture/docker-guidelines.mdc) for docker deployment guidance.
+- See [docker-guidelines.mdc](mdc:Ouroboros/.cursor/rules/architecture/docker-guidelines.mdc) for docker deployment guidance.
 
 04. **Container Security**
 
@@ -510,7 +510,7 @@ All application logging MUST use the @`loguru` logging library. Standard Python 
 
 ### 🔁 Caching
 
-CipherSwarm uses Cashews as the primary caching library f-compatible TTL caching across internal services and web UI endpoints.
+Ouroboros uses Cashews as the primary caching library f-compatible TTL caching across internal services and web UI endpoints.
 
 - All caching must use Cashews decorators or `cache.get()` / `cache.set()` API.
 - In-memory caching (`mem://`) is used by default in development.

@@ -1,5 +1,5 @@
 /**
- * CipherSwarm Frontend Schema Library
+ * Ouroboros Frontend Schema Library
  *
  * This module re-exports and organizes Zod schemas generated from the OpenAPI specification,
  * filtered for schemas relevant to `/api/v1/auth` and `/api/v1/web` endpoints.

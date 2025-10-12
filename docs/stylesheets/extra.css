@@ -1,9 +1,9 @@
-/*CipherSwarm Theme Overrides for mkdocs-material*/
+/*Ouroboros Theme Overrides for mkdocs-material*/
 
 :root {
-    --md-primary-fg-color: #9400D3;
+    --md-primary-fg-color: #9400d3;
     /*DarkViolet*/
-    --md-accent-fg-color: #9400D3;
+    --md-accent-fg-color: #9400d3;
 
     --md-default-bg-color: #24273a;
     /* Catppuccin Macchiato base */

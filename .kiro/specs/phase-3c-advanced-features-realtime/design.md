@@ -2,7 +2,7 @@
 
 ## Overview
 
-This design document outlines the technical architecture for implementing advanced features and real-time capabilities in CipherSwarm's web interface. The system builds upon existing infrastructure including Phase 2b Resource Management, crackable uploads pipeline, and name-that-hash integration to provide a comprehensive, real-time user experience.
+This design document outlines the technical architecture for implementing advanced features and real-time capabilities in Ouroboros's web interface. The system builds upon existing infrastructure including Phase 2b Resource Management, crackable uploads pipeline, and name-that-hash integration to provide a comprehensive, real-time user experience.
 
 The design emphasizes modular architecture with clear separation of concerns, leveraging Server-Sent Events for real-time communication, plugin-based extensibility for hash processing, and comprehensive testing strategies to ensure reliability and maintainability.
 
@@ -18,27 +18,27 @@ graph TB
         Toast[Toast Notification System]
         Forms[Advanced Forms & Editors]
     end
-    
+
     subgraph "Backend (FastAPI)"
         API[REST API Endpoints]
         SSEServer[SSE Server Endpoints]
         Services[Business Logic Services]
         Tasks[Background Tasks]
     end
-    
+
     subgraph "Real-Time Infrastructure"
         Redis[(Redis)]
         EventBus[Event Bus]
         Notifications[Notification Queue]
     end
-    
+
     subgraph "Storage & Processing"
         MinIO[(MinIO Object Storage)]
         PostgreSQL[(PostgreSQL)]
         Plugins[Hash Processing Plugins]
         NameThatHash[name-that-hash Library]
     end
-    
+
     UI --> API
     UI --> SSE
     SSE --> SSEServer
@@ -64,7 +64,7 @@ sequenceDiagram
     participant Services
     participant Tasks
     participant Storage
-    
+
     User->>Frontend: Initiate Action
     Frontend->>API: HTTP Request
     API->>Services: Business Logic
@@ -139,15 +139,15 @@ class EventService:
 export class SSEService {
     private connections: Map<string, EventSource> = new Map();
     private reconnectAttempts: Map<string, number> = new Map();
-    
+
     async connect(endpoint: string, projectId: number): Promise<EventSource> {
         // Implement connection with exponential backoff
     }
-    
+
     async disconnect(endpoint: string): Promise<void> {
         // Clean up connections and event listeners
     }
-    
+
     private handleReconnection(endpoint: string): void {
         // Exponential backoff reconnection logic
     }
@@ -197,11 +197,11 @@ export interface ToastConfig {
 export class ToastManager {
     private toasts: Writable<Toast[]> = writable([]);
     private batchQueue: Map<string, Toast[]> = new Map();
-    
+
     show(config: ToastConfig): void {
         // Handle individual and batched toast display
     }
-    
+
     private processBatch(batchKey: string): void {
         // Combine multiple similar toasts into batch display
     }
@@ -658,13 +658,13 @@ async def test_sse_agent_updates(client, test_user, test_project):
 // frontend/tests/e2e/advanced-features.test.ts
 test('real-time campaign progress updates', async ({ page }) => {
     await page.goto('/campaigns/1');
-    
+
     // Start campaign
     await page.click('[data-testid="start-campaign"]');
-    
+
     // Verify real-time progress updates
     await expect(page.locator('[data-testid="progress-bar"]')).toBeVisible();
-    
+
     // Wait for progress update via SSE
     await page.waitForFunction(() => {
         const progress = document.querySelector('[data-testid="progress-percentage"]');
@@ -689,9 +689,9 @@ test('toast notifications with batching', async ({ page }) => {
             ])
         });
     });
-    
+
     await page.goto('/dashboard');
-    
+
     // Verify batched toast appears
     await expect(page.locator('[data-testid="toast-batch"]')).toContainText('8 new cracks');
 });
@@ -779,4 +779,4 @@ async def test_concurrent_sse_connections():
 - Version compatibility checks
 - User permission validation for template operations
 
-This design provides a comprehensive foundation for implementing the advanced features while maintaining security, performance, and maintainability standards established in the existing CipherSwarm architecture.
+This design provides a comprehensive foundation for implementing the advanced features while maintaining security, performance, and maintainability standards established in the existing Ouroboros architecture.

@@ -1,6 +1,6 @@
-# CipherSwarm Attack Editor UX & Behavior
+# Ouroboros Attack Editor UX & Behavior
 
-## 🧠 CipherSwarm — Attack Editor UX & Behavior Context
+## 🧠 Ouroboros — Attack Editor UX & Behavior Context
 
 ### 🔁 General Issues with Current Attack Editor
 

@@ -1,4 +1,4 @@
-# CipherSwarm Technology Stack
+# Ouroboros Technology Stack
 
 ## Backend Stack
 

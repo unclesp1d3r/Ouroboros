@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Agent API (`/api/v1/client/*`) is used by distributed CipherSwarm agents to communicate with the server. This API follows the legacy Ruby-on-Rails specification defined in `contracts/v1_api_swagger.json` and maintains strict backward compatibility.
+The Agent API (`/api/v1/client/*`) is used by distributed Ouroboros agents to communicate with the server. This API follows the legacy Ruby-on-Rails specification defined in `contracts/v1_api_swagger.json` and maintains strict backward compatibility.
 
 Agents use this API to:
 
@@ -623,7 +623,7 @@ class TaskProgressReporter:
 
 ## Compatibility
 
-This API maintains strict backward compatibility with the legacy Ruby-on-Rails CipherSwarm implementation. Breaking changes are prohibited. All new features requiring API changes will be implemented in Agent API v2 (planned for future release).
+This API maintains strict backward compatibility with the legacy Ruby-on-Rails Ouroboros implementation. Breaking changes are prohibited. All new features requiring API changes will be implemented in Agent API v2 (planned for future release).
 
 ### Version Compatibility Matrix
 

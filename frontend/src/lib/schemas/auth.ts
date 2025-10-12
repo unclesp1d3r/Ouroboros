@@ -1,5 +1,5 @@
 /**
- * Authentication schemas for CipherSwarm
+ * Authentication schemas for Ouroboros
  * Used by /api/v1/auth/* and /api/v1/web/auth/* endpoints
  */
 

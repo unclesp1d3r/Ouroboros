@@ -1,5 +1,5 @@
 /**
- * Health schemas for CipherSwarm
+ * Health schemas for Ouroboros
  * Used by /api/v1/web/health/* endpoints
  */
 

@@ -1,5 +1,5 @@
 /**
- * Base schemas and enums for CipherSwarm
+ * Base schemas and enums for Ouroboros
  * Core types used across the application
  */
 
@@ -8,7 +8,7 @@ import { z } from 'zod';
 // Agent related enums
 /**
  * Agent state enumeration
- * Represents the current operational state of a CipherSwarm agent
+ * Represents the current operational state of a Ouroboros agent
  */
 export const AgentState = z.enum(['pending', 'active', 'stopped', 'error']);
 export type AgentState = z.infer<typeof AgentState>;
@@ -22,7 +22,7 @@ export type AgentType = z.infer<typeof AgentType>;
 
 /**
  * Operating system enumeration
- * Supported operating systems for CipherSwarm agents
+ * Supported operating systems for Ouroboros agents
  */
 export const OperatingSystemEnum = z.enum(['windows', 'linux', 'macos', 'freebsd', 'other']);
 export type OperatingSystemEnum = z.infer<typeof OperatingSystemEnum>;

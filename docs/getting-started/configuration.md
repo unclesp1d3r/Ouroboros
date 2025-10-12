@@ -1,6 +1,6 @@
 # Configuration Guide
 
-This guide covers all configuration options for CipherSwarm. Configuration is managed through environment variables that can be set in a `.env` file or through your system's environment
+This guide covers all configuration options for Ouroboros. Configuration is managed through environment variables that can be set in a `.env` file or through your system's environment
 
 ---
 
@@ -32,7 +32,7 @@ This guide covers all configuration options for CipherSwarm. Configuration is ma
 
 ## Configuration File
 
-CipherSwarm uses a `.env` file for configuration. Create this file in the root directory of your CipherSwarm installation.
+Ouroboros uses a `.env` file for configuration. Create this file in the root directory of your Ouroboros installation.
 
 ```bash
 # Copy the example configuration
@@ -48,7 +48,7 @@ nano .env
 
 ```env
 # Project identification
-PROJECT_NAME=CipherSwarm
+PROJECT_NAME=Ouroboros
 VERSION=0.1.0
 
 # CORS origins (comma-separated list of allowed origins)
@@ -72,9 +72,9 @@ ACCESS_TOKEN_EXPIRE_MINUTES=60
 ```env
 # PostgreSQL connection settings
 POSTGRES_SERVER=localhost
-POSTGRES_USER=cipherswarm
+POSTGRES_USER=ouroboros
 POSTGRES_PASSWORD=your_secure_database_password
-POSTGRES_DB=cipherswarm
+POSTGRES_DB=ouroboros
 ```
 
 The application automatically constructs the database URI as:
@@ -115,7 +115,7 @@ MinIO stores attack resources (wordlists, rules, masks):
 MINIO_ENDPOINT=localhost:9000
 MINIO_ACCESS_KEY=your_minio_access_key
 MINIO_SECRET_KEY=your_minio_secret_key
-MINIO_BUCKET=cipherswarm-resources
+MINIO_BUCKET=ouroboros-resources
 MINIO_SECURE=false
 MINIO_REGION=
 ```
@@ -169,7 +169,7 @@ LOG_LEVEL=INFO
 
 # File logging
 LOG_TO_FILE=true
-LOG_FILE_PATH=/var/log/cipherswarm/app.log
+LOG_FILE_PATH=/var/log/ouroboros/app.log
 LOG_RETENTION=30 days
 LOG_ROTATION=100 MB
 ```
@@ -226,7 +226,7 @@ POSTGRES_SERVER=your-db-server.com
 POSTGRES_PASSWORD=very_secure_production_password
 LOG_LEVEL=INFO
 LOG_TO_FILE=true
-LOG_FILE_PATH=/var/log/cipherswarm/app.log
+LOG_FILE_PATH=/var/log/ouroboros/app.log
 MINIO_SECURE=true
 CACHE_CONNECT_STRING=redis://localhost:6379/1
 BACKEND_CORS_ORIGINS=https://yourdomain.com
@@ -260,13 +260,13 @@ RESOURCE_UPLOAD_VERIFICATION_ENABLED=true
 
 ## Configuration Validation
 
-CipherSwarm validates configuration on startup. Common validation errors:
+Ouroboros validates configuration on startup. Common validation errors:
 
 ### Database Connection
 
 ```bash
 # Test database connection
-psql -U cipherswarm -h localhost -d cipherswarm -c "SELECT version();"
+psql -U ouroboros -h localhost -d ouroboros -c "SELECT version();"
 ```
 
 ### MinIO Connection
@@ -317,7 +317,7 @@ MINIO_ENDPOINT=minio.yourdomain.com:443
 
 ```env
 # Ensure log files are properly secured
-LOG_FILE_PATH=/var/log/cipherswarm/app.log
+LOG_FILE_PATH=/var/log/ouroboros/app.log
 
 # Set appropriate log retention
 LOG_RETENTION=90 days
@@ -383,7 +383,7 @@ CACHE_CONNECT_STRING=redis://localhost:6379/1
    sudo systemctl status postgresql
 
    # Test connection manually
-   psql -U cipherswarm -h localhost -d cipherswarm
+   psql -U ouroboros -h localhost -d ouroboros
    ```
 
 2. **MinIO Connection Failed**
@@ -410,7 +410,7 @@ CACHE_CONNECT_STRING=redis://localhost:6379/1
 
 ```bash
 # Test configuration loading
-cd /path/to/cipherswarm
+cd /path/to/ouroboros
 uv run python -c "from app.core.config import settings; print('Configuration loaded successfully')"
 ```
 
@@ -429,9 +429,9 @@ uv run python -c "from app.core.config import settings; print(f'Database: {setti
 # Single server deployment
 SECRET_KEY=your_secure_secret_key
 POSTGRES_SERVER=localhost
-POSTGRES_USER=cipherswarm
+POSTGRES_USER=ouroboros
 POSTGRES_PASSWORD=secure_password
-POSTGRES_DB=cipherswarm
+POSTGRES_DB=ouroboros
 REDIS_HOST=localhost
 REDIS_PORT=6379
 MINIO_ENDPOINT=localhost:9000
@@ -448,9 +448,9 @@ LOG_TO_FILE=true
 # Distributed deployment
 SECRET_KEY=your_very_secure_secret_key
 POSTGRES_SERVER=db.internal.yourdomain.com
-POSTGRES_USER=cipherswarm
+POSTGRES_USER=ouroboros
 POSTGRES_PASSWORD=very_secure_password
-POSTGRES_DB=cipherswarm
+POSTGRES_DB=ouroboros
 REDIS_HOST=redis.internal.yourdomain.com
 REDIS_PORT=6379
 MINIO_ENDPOINT=minio.internal.yourdomain.com:9000
@@ -458,15 +458,15 @@ MINIO_ACCESS_KEY=production_access_key
 MINIO_SECRET_KEY=production_secret_key
 MINIO_SECURE=true
 CACHE_CONNECT_STRING=redis://redis.internal.yourdomain.com:6379/1
-BACKEND_CORS_ORIGINS=https://cipherswarm.yourdomain.com
+BACKEND_CORS_ORIGINS=https://ouroboros.yourdomain.com
 LOG_LEVEL=INFO
 LOG_TO_FILE=true
-LOG_FILE_PATH=/var/log/cipherswarm/app.log
+LOG_FILE_PATH=/var/log/ouroboros/app.log
 ```
 
 ## Next Steps
 
-After configuring CipherSwarm:
+After configuring Ouroboros:
 
 1. **Test the configuration** with the validation commands above
 2. **Start the application** and verify all services connect properly
@@ -477,5 +477,5 @@ After configuring CipherSwarm:
 For more information, see:
 
 - [Installation Guide](installation.md): Complete installation instructions
-- [Quick Start Guide](quick-start.md): Getting started with CipherSwarm
+- [Quick Start Guide](quick-start.md): Getting started with Ouroboros
 - [Troubleshooting Guide](../user-guide/troubleshooting.md): Common issues and solutions

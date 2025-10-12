@@ -1,6 +1,6 @@
 # Phase 2b: Resource Management
 
-This phase introduces full support for file-based resources within CipherSwarm. These include wordlists, rule files, masks, and other artifacts required for hashcat operations. All uploads are stored in MinIO using presigned URLs, with metadata tracked in the database.
+This phase introduces full support for file-based resources within Ouroboros. These include wordlists, rule files, masks, and other artifacts required for hashcat operations. All uploads are stored in MinIO using presigned URLs, with metadata tracked in the database.
 
 This phase was previously Phase 4 but has been moved up to Phase 2b to enable Web UI support in Phase 3.
 

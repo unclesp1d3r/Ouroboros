@@ -122,7 +122,7 @@
 </script>
 
 <svelte:head>
-    <title>Dashboard - CipherSwarm</title>
+    <title>Dashboard - Ouroboros</title>
 </svelte:head>
 
 <div class="flex flex-col gap-y-6">

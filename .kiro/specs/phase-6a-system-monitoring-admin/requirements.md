@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This specification defines the comprehensive system monitoring, audit logging, and administrative features for CipherSwarm. These features enable effective system management, audit compliance, operational oversight, and advanced campaign/attack administration. The system provides real-time monitoring dashboards, comprehensive audit trails, fleet management capabilities, and administrative controls for system operators and administrators.
+This specification defines the comprehensive system monitoring, audit logging, and administrative features for Ouroboros. These features enable effective system management, audit compliance, operational oversight, and advanced campaign/attack administration. The system provides real-time monitoring dashboards, comprehensive audit trails, fleet management capabilities, and administrative controls for system operators and administrators.
 
 ## Requirements
 

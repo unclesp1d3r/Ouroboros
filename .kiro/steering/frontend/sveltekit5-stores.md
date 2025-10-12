@@ -6,7 +6,7 @@
 
 ## Overview
 
-This rule defines idiomatic patterns for implementing stores in SvelteKit 5 using runes, based on successful implementations in the CipherSwarm project. These patterns ensure type safety, proper SSR integration, and maintainable reactive state management.
+This rule defines idiomatic patterns for implementing stores in SvelteKit 5 using runes, based on successful implementations in the Ouroboros project. These patterns ensure type safety, proper SSR integration, and maintainable reactive state management.
 
 ## File Structure and Naming
 
@@ -58,36 +58,36 @@ export const campaignsStore = {
     get loading() { return campaignState.loading; },
     get error() { return campaignState.error; },
     get totalCount() { return campaignState.totalCount; },
-    
+
     // Computed getters using derived values
     get filteredCampaigns() { return filteredCampaigns; },
-    
+
     // State management methods
     setCampaigns(campaigns: Campaign[]) {
         campaignState.campaigns = campaigns;
         campaignState.loading = false;
     },
-    
+
     setLoading(loading: boolean) {
         campaignState.loading = loading;
     },
-    
+
     setError(error: string | null) {
         campaignState.error = error;
     },
-    
+
     // SSR hydration method
     hydrate(data: CampaignListResponse) {
         this.setCampaigns(data.items);
         campaignState.totalCount = data.total_count;
         campaignState.page = data.page;
     },
-    
+
     // API methods with proper error handling
     async loadCampaigns(page = 1) {
         this.setLoading(true);
         this.setError(null);
-        
+
         try {
             const response = await api.get(`/api/v1/web/campaigns/?page=${page}`);
             const data = CampaignListResponseSchema.parse(response.data);
@@ -132,7 +132,7 @@ async createCampaign(campaignData: unknown) {
         const validatedData = CampaignCreateSchema.parse(campaignData);
         const response = await api.post('/api/v1/web/campaigns/', validatedData);
         const newCampaign = CampaignReadSchema.parse(response.data);
-        
+
         campaignState.campaigns = [...campaignState.campaigns, newCampaign];
         return newCampaign;
     } catch (error) {
@@ -153,13 +153,13 @@ async createCampaign(campaignData: unknown) {
 <script lang="ts">
     import type { PageData } from './$types';
     import { campaignsStore } from '$lib/stores/campaigns.svelte';
-    
+
     let { data }: { data: PageData } = $props();
-    
+
     // Use SSR data directly for initial render
     let campaigns = $derived(data.campaigns.items);
     let totalCount = $derived(data.campaigns.total_count);
-    
+
     // Only hydrate store if components need reactive updates
     $effect(() => {
         if (needsReactiveUpdates) {
@@ -178,7 +178,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
         const response = await serverApi.get('/api/v1/web/campaigns/', {
             headers: { Cookie: cookies.toString() }
         });
-        
+
         return {
             campaigns: response.data,
             meta: {
@@ -212,24 +212,24 @@ export const authStore = {
     get isAuthenticated() { return authState.isAuthenticated; },
     get isAdmin() { return authState.user?.role === 'admin'; },
     get loading() { return authState.loading; },
-    
+
     async login(credentials: LoginCredentials) {
         authState.loading = true;
         try {
             const response = await api.post('/api/v1/auth/login/', credentials);
             const data = LoginResponseSchema.parse(response.data);
-            
+
             authState.user = data.user;
             authState.token = data.access_token;
             authState.isAuthenticated = true;
-            
+
             // Store in secure cookie
             document.cookie = `access_token=${data.access_token}; secure; samesite=strict`;
         } finally {
             authState.loading = false;
         }
     },
-    
+
     logout() {
         authState.user = null;
         authState.token = null;
@@ -296,9 +296,9 @@ test('component uses store data correctly', () => {
         loading: false,
         error: null
     };
-    
+
     vi.mocked(campaignsStore).campaigns = mockStore.campaigns;
-    
+
     render(CampaignsList);
     expect(screen.getByText('Test Campaign')).toBeInTheDocument();
 });
@@ -323,7 +323,7 @@ export const campaignState = $state({ campaigns: [] });
 <script>
     export let data: PageData;
     import { getCampaigns } from '$lib/stores/campaigns.svelte';
-    
+
     // This creates confusion about data source
     let campaigns = $derived(getCampaigns());
 </script>
@@ -396,7 +396,7 @@ const expensiveComputation = $derived(() => {
 
 ## File References
 
-- Store implementations: [campaigns.svelte.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/stores/campaigns.svelte.ts)
-- Authentication store: [auth.svelte.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/stores/auth.svelte.ts)
-- Schema integration: [campaigns.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/schemas/campaigns.ts)
-- Component usage: [CampaignProgress.svelte](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/components/campaigns/CampaignProgress.svelte)
+- Store implementations: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
+- Authentication store: [auth.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/auth.svelte.ts)
+- Schema integration: [campaigns.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/schemas/campaigns.ts)
+- Component usage: [CampaignProgress.svelte](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.svelte)

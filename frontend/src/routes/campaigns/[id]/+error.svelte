@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-    <title>Error - CipherSwarm</title>
+    <title>Error - Ouroboros</title>
 </svelte:head>
 
 <div class="container mx-auto max-w-7xl p-6">

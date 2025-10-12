@@ -1,26 +1,30 @@
 ---
-description: 
+description:
 globs: tests/**/*.py,docker-compose.e2e.yml,scripts/seed_e2e_data.py,frontend/**/*.test.ts,frontend/**/*.e2e.ts,frontend/tests/**/*,frontend/playwright.config.ts,frontend/playwright.config.e2e.ts
 alwaysApply: false
 ---
 # E2E Testing Infrastructure and Patterns
 
 ## Overview
-This rule consolidates end-to-end testing infrastructure for CipherSwarm, covering Docker setup, Playwright configuration, timeout handling, and the three-tier testing architecture with real backend services.
+
+This rule consolidates end-to-end testing infrastructure for Ouroboros, covering Docker setup, Playwright configuration, timeout handling, and the three-tier testing architecture with real backend services.
 
 ## Three-Tier Testing Architecture
 
 ### Layer 1: Backend Tests (`just test-backend`)
+
 - **Technology**: Python + pytest + testcontainers
 - **Scope**: Backend API endpoints, services, database operations
 - **Command**: `just test-backend`
 
 ### Layer 2: Frontend Mocked Tests (`just test-frontend`)
+
 - **Technology**: Vitest (unit) + Playwright (E2E with mocks)
 - **Scope**: Frontend components and interactions with mocked APIs
 - **Command**: `just test-frontend`
 
 ### Layer 3: Full E2E Tests (`just test-e2e`)
+
 - **Technology**: Playwright against real Docker backend stack
 - **Scope**: Complete user workflows with real database and API
 - **Command**: `just test-e2e`
@@ -29,9 +33,10 @@ This rule consolidates end-to-end testing infrastructure for CipherSwarm, coveri
 
 ### E2E Docker Compose Configuration
 
-**File**: [docker-compose.e2e.yml](mdc:CipherSwarm/CipherSwarm/docker-compose.e2e.yml)
+**File**: [docker-compose.e2e.yml](mdc:Ouroboros/Ouroboros/docker-compose.e2e.yml)
 
 **Key Configuration Decisions**:
+
 ```yaml
 # Use development Dockerfile with build tools and dev dependencies
 backend:
@@ -43,7 +48,7 @@ backend:
   volumes:
     - ./logs:/app/logs
 
-# Use development frontend with hot reload capabilities  
+# Use development frontend with hot reload capabilities
 frontend:
   build:
     context: ./frontend
@@ -58,6 +63,7 @@ frontend:
 ### Health Check Strategy
 
 **Backend Health Check**:
+
 ```yaml
 healthcheck:
   test: ["CMD", "curl", "-f", "http://localhost:8000/api-info"]
@@ -68,11 +74,12 @@ healthcheck:
 ```
 
 **Frontend Health Check**:
+
 ```yaml
 healthcheck:
   test: ["CMD", "curl", "-f", "http://localhost:5173/"]
   interval: 30s
-  timeout: 10s  
+  timeout: 10s
   retries: 3
   start_period: 30s
 ```
@@ -83,15 +90,17 @@ healthcheck:
 
 ### Service Layer Data Seeding
 
-**File**: [scripts/seed_e2e_data.py](mdc:CipherSwarm/CipherSwarm/scripts/seed_e2e_data.py)
+**File**: [scripts/seed_e2e_data.py](mdc:Ouroboros/Ouroboros/scripts/seed_e2e_data.py)
 
 **Architecture Pattern**:
+
 - ✅ **Service layer delegation** for all data persistence
 - ✅ **Pydantic validation** for all created objects
 - ✅ **Async/await patterns** throughout
 - ✅ **Graceful error handling** with table truncation
 
 **Example Pattern**:
+
 ```python
 async def seed_test_data():
     """Seed E2E test data using service layer delegation."""
@@ -100,17 +109,17 @@ async def seed_test_data():
         admin_user = await user_service.create_user(
             UserCreate(
                 email="admin@e2e-test.example",
-                name="Admin User", 
+                name="Admin User",
                 password="admin-password-123"
             )
         )
-        
+
         # Create with proper relationships
         project = await project_service.create_project(
             ProjectCreate(name="E2E Test Project Alpha"),
             created_by=admin_user.id
         )
-        
+
     except Exception as e:
         logger.error(f"Seeding failed: {e}")
         # Graceful cleanup
@@ -119,8 +128,9 @@ async def seed_test_data():
 ```
 
 **Test Data Created**:
+
 - **Users**: Admin and regular user with known credentials
-- **Projects**: "E2E Test Project Alpha" and "E2E Test Project Beta" 
+- **Projects**: "E2E Test Project Alpha" and "E2E Test Project Beta"
 - **Campaigns**: Sample campaign with hash list
 - **Agents**: Test agent configurations
 
@@ -128,9 +138,10 @@ async def seed_test_data():
 
 ### Global Setup Implementation
 
-**File**: [frontend/tests/global-setup.e2e.ts](mdc:CipherSwarm/CipherSwarm/frontend/tests/global-setup.e2e.ts)
+**File**: [frontend/tests/global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
 
 **Key Functions**:
+
 1. **Docker Stack Management**: Start compose stack with proper error handling
 2. **Service Health Checks**: Wait for PostgreSQL and backend readiness
 3. **Data Seeding**: Execute seeding script in backend container
@@ -138,21 +149,22 @@ async def seed_test_data():
 5. **Cleanup on Failure**: Proper Docker cleanup if setup fails
 
 **Implementation Pattern**:
+
 ```typescript
 export default async function globalSetup() {
     try {
         // Start Docker stack (relative path fixed)
         execSync('docker compose -f ../docker-compose.e2e.yml up -d --build');
-        
+
         // Wait for services
         await waitForServices();
-        
+
         // Seed test data
         execSync('docker compose -f ../docker-compose.e2e.yml exec -T backend python scripts/seed_e2e_data.py');
-        
+
         // Validate frontend
         await validateFrontend();
-        
+
     } catch (error) {
         // Cleanup on failure
         execSync('docker compose -f ../docker-compose.e2e.yml down -v');
@@ -163,9 +175,10 @@ export default async function globalSetup() {
 
 ### Global Teardown Implementation
 
-**File**: [frontend/tests/global-teardown.e2e.ts](mdc:CipherSwarm/CipherSwarm/frontend/tests/global-teardown.e2e.ts)
+**File**: [frontend/tests/global-teardown.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-teardown.e2e.ts)
 
 **Key Functions**:
+
 1. **Complete Docker Cleanup**: Remove containers, networks, volumes
 2. **Image Cleanup**: Remove dangling Docker images
 3. **Graceful Error Handling**: Don't mask test failures with cleanup errors
@@ -174,16 +187,17 @@ export default async function globalSetup() {
 
 ### E2E-Specific Configuration
 
-**File**: [frontend/playwright.config.e2e.ts](mdc:CipherSwarm/CipherSwarm/frontend/playwright.config.e2e.ts)
+**File**: [frontend/playwright.config.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/playwright.config.e2e.ts)
 
 **Key Settings**:
+
 ```typescript
 export default defineConfig({
     testDir: './tests/e2e',
-    
+
     // Serial execution for database consistency
     workers: 1,
-    
+
     // Test timeout
     timeout: 30_000, // 30 seconds per test
 
@@ -191,11 +205,11 @@ export default defineConfig({
     expect: {
         timeout: 10_000 // 10 seconds for expect assertions
     },
-    
+
     // Point to Docker frontend service
     use: {
         baseURL: 'http://localhost:3005',
-        
+
         // Action timeouts - increased for animated components
         actionTimeout: 10_000, // 10 seconds for actions (click, fill, etc.)
         navigationTimeout: 15_000, // 15 seconds for navigation
@@ -205,11 +219,11 @@ export default defineConfig({
             size: { width: 640, height: 480 }
         }
     },
-    
+
     // Global lifecycle management
     globalSetup: './tests/global-setup.e2e.ts',
     globalTeardown: './tests/global-teardown.e2e.ts',
-    
+
     // Comprehensive browser coverage
     projects: [
         { name: 'chromium', use: devices['Desktop Chrome'] },
@@ -231,18 +245,18 @@ Create consistent timeout values in `e2e/test-utils.ts`:
 export const TIMEOUTS = {
     // Modal and dialog animations
     MODAL_ANIMATION: 2000, // Time for modal to fully open/close
-    
+
     // General UI animations
     UI_ANIMATION: 1000, // Standard UI transitions (buttons, form elements)
-    
+
     // Form and input delays
     FORM_SUBMISSION: 3000, // Form submission processing
     INPUT_DEBOUNCE: 500, // Debounced input fields (search, etc.)
-    
+
     // API and data loading
     API_RESPONSE: 5000, // API responses in test environment
     PAGE_NAVIGATION: 15000, // Page navigation and SSR loading
-    
+
     // Tab and content switching
     TAB_SWITCH: 1500, // Tab content switching animations
     CONTENT_LOAD: 2000 // Dynamic content loading
@@ -278,7 +292,7 @@ export async function waitForTabToBeReady(page: Page, tabName: string) {
     const tab = page.getByRole('tab', { name: new RegExp(tabName, 'i') });
     await expect(tab).toBeVisible({ timeout: TIMEOUTS.UI_ANIMATION });
     await expect(tab).toHaveAttribute('aria-selected', 'true', { timeout: TIMEOUTS.TAB_SWITCH });
-    
+
     // Wait for tab panel content to be visible
     const tabPanel = page.getByRole('tabpanel');
     await expect(tabPanel).toBeVisible({ timeout: TIMEOUTS.CONTENT_LOAD });
@@ -308,6 +322,7 @@ export function createTestHelpers(page: Page) {
 ## Fixing Flaky Tests with Timeout Patterns
 
 ### Navigation Timing Issues
+
 ```typescript
 // ❌ PROBLEM - Flaky tests due to navigation timing
 test('search functionality', async ({ page }) => {
@@ -318,7 +333,7 @@ test('search functionality', async ({ page }) => {
 // ✅ SOLUTION - Wait for navigation completion
 test('search functionality', async ({ page }) => {
     const helpers = createTestHelpers(page);
-    
+
     await searchInput.press('Enter');
     // Wait for navigation to complete before asserting URL
     await helpers.waitForNavigation(/.*search=test.*/);
@@ -326,6 +341,7 @@ test('search functionality', async ({ page }) => {
 ```
 
 ### Modal Interaction Timing
+
 ```typescript
 // ❌ PROBLEM - Modal not fully rendered when test proceeds
 test('modal tabs are accessible', async ({ page }) => {
@@ -337,11 +353,11 @@ test('modal tabs are accessible', async ({ page }) => {
 // ✅ SOLUTION - Use helper functions with proper waits
 test('modal tabs are accessible', async ({ page }) => {
     const helpers = createTestHelpers(page);
-    
+
     await detailsBtn.click();
     await helpers.waitForModal('Agent Details');
     await helpers.waitForTabToBeReady('General');
-    
+
     // Modal is now guaranteed to be fully rendered and interactive
     await page.click('[data-testid="general-tab"]');
     await helpers.waitForTabToBeReady('Performance');
@@ -349,6 +365,7 @@ test('modal tabs are accessible', async ({ page }) => {
 ```
 
 ### Form Submission States
+
 ```typescript
 // ❌ PROBLEM - Form state changes happen too fast to test reliably
 test('form shows loading state', async ({ page }) => {
@@ -359,10 +376,10 @@ test('form shows loading state', async ({ page }) => {
 // ✅ SOLUTION - Use form submission helper
 test('form shows loading state', async ({ page }) => {
     const helpers = createTestHelpers(page);
-    
+
     await submitButton.click();
     await helpers.waitForFormSubmission(submitButton);
-    
+
     // Form is now guaranteed to be in loading state
     await expect(page.getByText('Processing...')).toBeVisible();
 });
@@ -371,27 +388,29 @@ test('form shows loading state', async ({ page }) => {
 ## SSR vs SPA E2E Testing Patterns
 
 ### SSR Test Expectations
+
 ```typescript
 // ✅ CORRECT - Test actual SSR-rendered content
 test('displays campaigns list', async ({ page }) => {
     await page.goto('/campaigns');
-    
+
     // Test for actual rendered content, not loading states
     await expect(page.getByText('Test Campaign')).toBeVisible();
-    
+
     // Don't test for loading spinners in SSR - data is pre-loaded
 });
 
 // ❌ WRONG - Testing SPA loading patterns in SSR
 test('shows loading state', async ({ page }) => {
     await page.goto('/campaigns');
-    
+
     // This won't work in SSR - no loading state on initial render
     await expect(page.getByText('Loading...')).toBeVisible();
 });
 ```
 
 ### Test Data Management
+
 ```typescript
 // ✅ CORRECT - Use environment detection for test data
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -408,13 +427,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
             }
         };
     }
-    
+
     // Real API call for production
     return await fetchCampaigns(cookies);
 };
 ```
 
 ### Skipped Test Management
+
 ```typescript
 // ✅ CORRECT - Document why tests are skipped with clear reasoning
 test.skip('handles 403 error correctly', async ({ page }) => {
@@ -427,13 +447,13 @@ test.skip('handles 403 error correctly', async ({ page }) => {
 test('shows loading state during form submission', async ({ page }) => {
     // Previously skipped due to DOM update timing issues
     // Fixed by using proper waitFor patterns and async state handling
-    
+
     await page.goto('/agents');
     await page.click('[data-testid="register-agent-button"]');
-    
+
     const submitButton = page.getByText('Register Agent');
     await submitButton.click();
-    
+
     // Use waitFor for async state updates
     await expect(submitButton).toBeDisabled();
     await expect(page.getByText('Registering...')).toBeVisible();
@@ -443,6 +463,7 @@ test('shows loading state during form submission', async ({ page }) => {
 ## Test Environment Specific Considerations
 
 ### Animation Handling in CI/CD
+
 ```typescript
 // For CI environments, consider reducing animation durations
 // This can be configured in the test setup or via CSS overrides
@@ -457,6 +478,7 @@ export default defineConfig({
 ```
 
 ### Debug Mode with Extended Timeouts
+
 ```typescript
 // For debugging, extend timeouts when running with --debug flag
 const isDebugMode = process.argv.includes('--debug');
@@ -472,6 +494,7 @@ export const TIMEOUTS = {
 ## Test Command Patterns
 
 ### Development Testing
+
 ```bash
 # ✅ Fast iteration during development
 pnpm exec playwright test --reporter=line --max-failures=1  # Quick E2E feedback
@@ -481,6 +504,7 @@ pnpm exec playwright test e2e/campaigns-list.test.ts
 ```
 
 ### Verification Testing
+
 ```bash
 # ✅ E2E-specific verification
 just test-e2e              # Full E2E tests with Docker stack
@@ -492,6 +516,7 @@ just ci-check              # Complete CI pipeline
 ## Benefits and Best Practices
 
 ### Benefits of Universal Timeout Approach
+
 - **Consistency**: All tests use the same timeout values for similar operations
 - **Maintainability**: Single place to update timeout values if animation durations change
 - **Reliability**: Tests are more robust against timing issues with animated UIs
@@ -501,6 +526,7 @@ just ci-check              # Complete CI pipeline
 - **Developer Experience**: Clearer error messages when timeouts occur with meaningful context
 
 ### Best Practices
+
 1. **Use helper functions** instead of inline timeouts for common patterns
 2. **Document timeout reasons** when using custom timeout values
 3. **Test timeout values** in CI environment to ensure they work under load
@@ -509,9 +535,9 @@ just ci-check              # Complete CI pipeline
 6. **Use meaningful names** for timeout constants that explain their purpose
 
 ## File References
-- Configuration: [playwright.config.e2e.ts](mdc:CipherSwarm/CipherSwarm/frontend/playwright.config.e2e.ts)
-- Docker compose: [docker-compose.e2e.yml](mdc:CipherSwarm/CipherSwarm/docker-compose.e2e.yml)
-- Test utilities: [test-utils.ts](mdc:CipherSwarm/CipherSwarm/frontend/e2e/test-utils.ts)
-- Global setup: [global-setup.e2e.ts](mdc:CipherSwarm/CipherSwarm/frontend/tests/global-setup.e2e.ts)
-- Data seeding: [seed_e2e_data.py](mdc:CipherSwarm/CipherSwarm/scripts/seed_e2e_data.py)
 
+- Configuration: [playwright.config.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/playwright.config.e2e.ts)
+- Docker compose: [docker-compose.e2e.yml](mdc:Ouroboros/Ouroboros/docker-compose.e2e.yml)
+- Test utilities: [test-utils.ts](mdc:Ouroboros/Ouroboros/frontend/e2e/test-utils.ts)
+- Global setup: [global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
+- Data seeding: [seed_e2e_data.py](mdc:Ouroboros/Ouroboros/scripts/seed_e2e_data.py)

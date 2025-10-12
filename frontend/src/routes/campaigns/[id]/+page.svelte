@@ -244,7 +244,7 @@
 </script>
 
 <svelte:head>
-    <title>{campaign?.name || 'Campaign'} - CipherSwarm</title>
+    <title>{campaign?.name || 'Campaign'} - Ouroboros</title>
 </svelte:head>
 
 <div class="container mx-auto max-w-7xl p-6">

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Phase 2 API Implementation establishes CipherSwarm's complete backend API architecture through three distinct but interconnected API surfaces. This design leverages FastAPI's modern async capabilities, implements a robust service layer architecture, and provides comprehensive authentication and authorization systems. The implementation prioritizes backward compatibility with existing v1 agents while introducing modern patterns for web UI and programmatic access.
+The Phase 2 API Implementation establishes Ouroboros's complete backend API architecture through three distinct but interconnected API surfaces. This design leverages FastAPI's modern async capabilities, implements a robust service layer architecture, and provides comprehensive authentication and authorization systems. The implementation prioritizes backward compatibility with existing v1 agents while introducing modern patterns for web UI and programmatic access.
 
 The architecture follows a layered approach with clear separation of concerns: API endpoints handle HTTP concerns and delegate to service layer functions that contain all business logic. This design ensures consistency across all three API interfaces while maximizing code reuse and maintainability.
 
@@ -17,13 +17,13 @@ graph TB
         A2[Web UI - SvelteKit]
         A3[CLI Tools - csadmin]
     end
-    
+
     subgraph "API Layer"
         B1[Agent API v1<br/>/api/v1/client/*]
         B2[Web UI API<br/>/api/v1/web/*]
         B3[Control API<br/>/api/v1/control/*]
     end
-    
+
     subgraph "Service Layer"
         C1[Authentication Service]
         C2[Campaign Service]
@@ -33,28 +33,28 @@ graph TB
         C6[Resource Service]
         C7[Template Service]
     end
-    
+
     subgraph "Data Layer"
         D1[PostgreSQL<br/>Primary Database]
         D2[Redis<br/>Cache & Events]
         D3[MinIO<br/>S3 Storage]
     end
-    
+
     A1 --> B1
     A2 --> B2
     A3 --> B3
-    
+
     B1 --> C1
     B1 --> C4
     B1 --> C3
-    
+
     B2 --> C1
     B2 --> C2
     B2 --> C3
     B2 --> C4
     B2 --> C5
     B2 --> C6
-    
+
     B3 --> C1
     B3 --> C2
     B3 --> C3
@@ -62,7 +62,7 @@ graph TB
     B3 --> C5
     B3 --> C6
     B3 --> C7
-    
+
     C1 --> D1
     C2 --> D1
     C3 --> D1
@@ -71,7 +71,7 @@ graph TB
     C6 --> D1
     C6 --> D3
     C7 --> D1
-    
+
     C1 --> D2
     C2 --> D2
     C4 --> D2
@@ -208,7 +208,7 @@ class HashAnalysisService:
             # Use Name-That-Hash for detection
             nth_results = self.nth.identify(normalized)
 
-            # Convert to CipherSwarm format
+            # Convert to Ouroboros format
             for result in nth_results:
                 if result.hashcat_mode:
                     results.append(
@@ -388,7 +388,7 @@ class AttackTemplate(BaseModel):
 
 ```python
 class CipherSwarmError(Exception):
-    """Base exception for all CipherSwarm errors."""
+    """Base exception for all Ouroboros errors."""
 
     pass
 
@@ -625,4 +625,4 @@ async def test_campaign_list_performance(client, auth_headers, campaign_factory)
 - File uploads validated for type and size
 - Hash input sanitized and normalized
 
-This design provides a comprehensive, scalable, and secure foundation for CipherSwarm's API architecture while maintaining backward compatibility and supporting future extensibility.
+This design provides a comprehensive, scalable, and secure foundation for Ouroboros's API architecture while maintaining backward compatibility and supporting future extensibility.

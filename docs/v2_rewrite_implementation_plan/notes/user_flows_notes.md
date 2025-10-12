@@ -1,8 +1,8 @@
-# CipherSwarm Phase 3 - Core User Flows (Dashboard + UI)
+# Ouroboros Phase 3 - Core User Flows (Dashboard + UI)
 
 ## Purpose
 
-This document outlines the key user flows for CipherSwarm Phase 3, focusing on the real-time dashboard and core UI interactions. These flows ensure the SvelteKit-based frontend is tightly coupled to backend state transitions and agent orchestration logic.
+This document outlines the key user flows for Ouroboros Phase 3, focusing on the real-time dashboard and core UI interactions. These flows ensure the SvelteKit-based frontend is tightly coupled to backend state transitions and agent orchestration logic.
 
 ---
 
@@ -77,7 +77,7 @@ This document outlines the key user flows for CipherSwarm Phase 3, focusing on t
 
 ## User Action Reference
 
-The following list represents all discrete user-performable actions expected in CipherSwarm Phase 3. Each action either corresponds to a defined flow below or should be captured in upcoming UI/UX designs and backend endpoints.
+The following list represents all discrete user-performable actions expected in Ouroboros Phase 3. Each action either corresponds to a defined flow below or should be captured in upcoming UI/UX designs and backend endpoints.
 
 ### Authentication & Session
 

@@ -4,7 +4,7 @@
 
 ## State Machine Philosophy
 
-CipherSwarm uses finite state machines (FSMs) to manage the lifecycle of distributed cracking operations.
+Ouroboros uses finite state machines (FSMs) to manage the lifecycle of distributed cracking operations.
 
 Each entity has well-defined transitions:
 

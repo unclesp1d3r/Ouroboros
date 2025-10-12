@@ -1,6 +1,6 @@
 # API Workflow Examples
 
-This document provides detailed workflow examples for common CipherSwarm operations across all API interfaces.
+This document provides detailed workflow examples for common Ouroboros operations across all API interfaces.
 
 ## Table of Contents
 
@@ -255,7 +255,7 @@ This workflow shows the complete lifecycle of an agent from registration to task
 curl -X POST \
     -H "Content-Type: application/json" \
     -d '{
-        "client_signature": "CipherSwarm-Agent/2.1.0",
+        "client_signature": "Ouroboros-Agent/2.1.0",
         "hostname": "gpu-worker-01.corp.local",
         "operating_system": "linux",
         "devices": [
@@ -277,7 +277,7 @@ curl -X POST \
 {
     "id": 789,
     "token": "csa_789_xyz987abc654...",
-    "client_signature": "CipherSwarm-Agent/2.1.0",
+    "client_signature": "Ouroboros-Agent/2.1.0",
     "hostname": "gpu-worker-01.corp.local"
 }
 ```
@@ -1451,4 +1451,4 @@ curl -X POST \
 }
 ```
 
-These workflow examples demonstrate the comprehensive capabilities of the CipherSwarm API across all three interfaces, showing real-world usage patterns and error handling scenarios that developers and administrators will encounter when integrating with the system.
+These workflow examples demonstrate the comprehensive capabilities of the Ouroboros API across all three interfaces, showing real-world usage patterns and error handling scenarios that developers and administrators will encounter when integrating with the system.

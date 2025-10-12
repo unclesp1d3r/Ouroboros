@@ -1,6 +1,6 @@
-# CipherSwarm Agent Monitoring & Configuration
+# Ouroboros Agent Monitoring & Configuration
 
-## 🧠 CipherSwarm — Agent Monitoring & Configuration Context
+## 🧠 Ouroboros — Agent Monitoring & Configuration Context
 
 ### 🔍 General Goals
 

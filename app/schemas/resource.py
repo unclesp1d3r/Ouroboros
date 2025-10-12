@@ -84,7 +84,7 @@ class ResourceUploadFormSchema(BaseModel):
         ),
     ]
     minio_bucket: Annotated[
-        str, Field(description="MinIO bucket name", examples=["cipherswarm-resources"])
+        str, Field(description="MinIO bucket name", examples=["ouroboros-resources"])
     ]
     minio_endpoint: Annotated[
         str, Field(description="MinIO endpoint", examples=["minio:9000"])

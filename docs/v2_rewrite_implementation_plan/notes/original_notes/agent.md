@@ -37,7 +37,7 @@ I really want to expand the monitoring and configuration of agents signficantly.
     - Computational Units
       - I don't love the name "computational unit" or "backend device", so I welcome suggestions on a better name, but this is the GPUs/CPUs on the agent
       - This actually comes from the agent running hashcat with `--backend-info` on startup and reporting to the server, so it won't be populated until the agent checks in the first time. Until it checks in, we should put a placeholder text and gray out the fieldset.
-      - The backend devices are stored in Cipherswarm on the Agent model as `list[str]` of their descriptive names in `Agent.devices` and the actual setting of what should be enabled is a comma-seperated list of integers, 1-indexed, so it'll be a little weird to figure out. We'll probably need a better way to do this in the future, but this is a limitation of v1 of the Agent API.
+      - The backend devices are stored in Ouroboros on the Agent model as `list[str]` of their descriptive names in `Agent.devices` and the actual setting of what should be enabled is a comma-seperated list of integers, 1-indexed, so it'll be a little weird to figure out. We'll probably need a better way to do this in the future, but this is a limitation of v1 of the Agent API.
       - This is where the backend devices are listed that are identified by the agent and they can be turned on and off with a toggle (see flowbite small toggle).
       - If there's a running task, we should prompt the admin with three options: restart the running task immediately, let the change apply to the next task to start, or cancel toggling the device.
     - Hardware Acceleration

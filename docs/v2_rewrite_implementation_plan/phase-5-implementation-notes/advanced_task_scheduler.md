@@ -1,10 +1,10 @@
-# CipherSwarm Phase 5: Advanced Task Distribution System
+# Ouroboros Phase 5: Advanced Task Distribution System
 
 ## Overview
 
-This phase introduces an advanced scheduler for CipherSwarm that goes beyond Hashtopolis-style chunking. The goal is to intelligently divide cracking workloads across agents in a stable, high-speed, trusted environment. CipherSwarm agents are reliable, long-lived, and run on an internal network. This allows us to optimize cracking in ways that traditional distributed hash cracking systems cannot.
+This phase introduces an advanced scheduler for Ouroboros that goes beyond Hashtopolis-style chunking. The goal is to intelligently divide cracking workloads across agents in a stable, high-speed, trusted environment. Ouroboros agents are reliable, long-lived, and run on an internal network. This allows us to optimize cracking in ways that traditional distributed hash cracking systems cannot.
 
-By the end of this phase, CipherSwarm will:
+By the end of this phase, Ouroboros will:
 
 - Schedule tasks based on agent speed and health.
 - Dynamically adjust workload sizes.
@@ -17,7 +17,7 @@ By the end of this phase, CipherSwarm will:
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=2 --minlevel=1 -->
 
-- [CipherSwarm Phase 5: Advanced Task Distribution System](#cipherswarm-phase-5-advanced-task-distribution-system)
+- [Ouroboros Phase 5: Advanced Task Distribution System](#ouroboros-phase-5-advanced-task-distribution-system)
   - [Overview](#overview)
   - [Table of Contents](#table-of-contents)
   - [Key Concepts](#key-concepts)
@@ -75,7 +75,7 @@ When a WorkSlice is assigned to an agent, it gets a short-term lease. If the age
 ## Scheduling Flow (Plain English)
 
 1. A new attack is submitted with a big password space.
-2. CipherSwarm estimates the total number of guesses.
+2. Ouroboros estimates the total number of guesses.
 3. It breaks that space into smaller slices (each meant to last 3–5 minutes of cracking).
 4. Each agent is scored: Who is fastest and most reliable?
 5. The best-matched agent gets the next slice.
@@ -111,14 +111,14 @@ If a hash is cracked by Agent A during slice 3, Agents B and C skip that hash an
 
 ## Features Beyond Hashtopolis
 
-| Feature                       | Hashtopolis | CipherSwarm (Phase 5) |
-| ----------------------------- | ----------- | --------------------- |
-| Static chunk sizes            | Yes         | No (adaptive sizing)  |
-| Trusted agent behavior        | No          | Yes                   |
-| Pre-scheduled task plans      | No          | Yes                   |
-| Keyspace shape optimization   | No          | Planned               |
-| Throughput-based rebalancing  | No          | Yes                   |
-| Real-time progress adjustment | No          | Yes                   |
+| Feature                       | Hashtopolis | Ouroboros (Phase 5)  |
+| ----------------------------- | ----------- | -------------------- |
+| Static chunk sizes            | Yes         | No (adaptive sizing) |
+| Trusted agent behavior        | No          | Yes                  |
+| Pre-scheduled task plans      | No          | Yes                  |
+| Keyspace shape optimization   | No          | Planned              |
+| Throughput-based rebalancing  | No          | Yes                  |
+| Real-time progress adjustment | No          | Yes                  |
 
 ## Advanced Scheduling Features
 
@@ -144,7 +144,7 @@ If a hash is cracked by Agent A during slice 3, Agents B and C skip that hash an
 
 ## Skip/Limit-Based WorkSlice Distribution
 
-CipherSwarm's distributed model relies on Hashcat's `--skip` and `--limit` flags to split keyspaces precisely across agents. Each WorkSlice defines a window in the total keyspace.
+Ouroboros's distributed model relies on Hashcat's `--skip` and `--limit` flags to split keyspaces precisely across agents. Each WorkSlice defines a window in the total keyspace.
 
 ### Key Usage
 
@@ -168,7 +168,7 @@ This model avoids the unreliability of Hashcat's Brain feature, providing full t
 
 ## Handling Incremental Attacks
 
-Incremental (`--increment`) attacks span multiple masks of different lengths. CipherSwarm treats these as a multi-phase plan.
+Incremental (`--increment`) attacks span multiple masks of different lengths. Ouroboros treats these as a multi-phase plan.
 
 ### Key Changes
 
@@ -247,7 +247,7 @@ class TaskPlan(Base):
 - Treat as one logical space
 - Consider slice cancellation if hashes are exhausted early
 
-CipherSwarm may calculate hybrid keyspaces internally or invoke `hashcat --keyspace` to validate its math, but for extremely large combinations, relying on hashcat's dry-run logic is more accurate and robust.
+Ouroboros may calculate hybrid keyspaces internally or invoke `hashcat --keyspace` to validate its math, but for extremely large combinations, relying on hashcat's dry-run logic is more accurate and robust.
 
 ## Task List Summary
 
@@ -284,4 +284,4 @@ CipherSwarm may calculate hybrid keyspaces internally or invoke `hashcat --keysp
 
 ## Closing Thoughts
 
-CipherSwarm's new scheduler isn't just smarter. It's a command center for a fleet of cracking agents that know their own strengths and adapt mid-flight. If Phase 4 gave you a better CipherSwarm, Phase 5 turns it into the most intelligent distributed cracker ever built.
+Ouroboros's new scheduler isn't just smarter. It's a command center for a fleet of cracking agents that know their own strengths and adapt mid-flight. If Phase 4 gave you a better Ouroboros, Phase 5 turns it into the most intelligent distributed cracker ever built.

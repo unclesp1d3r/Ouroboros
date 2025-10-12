@@ -1,6 +1,6 @@
 # Common Issues and Quick Fixes
 
-This guide covers the most frequently encountered issues in CipherSwarm v2 and their quick solutions.
+This guide covers the most frequently encountered issues in Ouroboros v2 and their quick solutions.
 
 ## Authentication Issues
 
@@ -57,7 +57,7 @@ echo $CIPHERSWARM_TOKEN | grep -E '^csa_[0-9]+_[a-zA-Z0-9]+$'
 
 # Test token validity
 curl -H "Authorization: Bearer $CIPHERSWARM_TOKEN" \
-    https://cipherswarm.example.com/api/v1/client/configuration
+    https://ouroboros.example.com/api/v1/client/configuration
 
 # Regenerate token via web interface if needed
 ```
@@ -118,16 +118,16 @@ curl -H "Authorization: Bearer $CIPHERSWARM_TOKEN" \
 
 ```bash
 # Check agent status
-systemctl status cipherswarm-agent
+systemctl status ouroboros-agent
 
 # Verify network connectivity
-ping cipherswarm.example.com
+ping ouroboros.example.com
 
 # Check agent logs
-journalctl -u cipherswarm-agent -f
+journalctl -u ouroboros-agent -f
 
 # Test authentication
-cipherswarm-agent test auth
+ouroboros-agent test auth
 ```
 
 **Common Causes**:
@@ -170,7 +170,7 @@ watch -n 1 nvidia-smi
 
 ```bash
 # Check agent logs for errors
-journalctl -u cipherswarm-agent --since "1 hour ago"
+journalctl -u ouroboros-agent --since "1 hour ago"
 
 # Test hashcat directly
 hashcat --benchmark
@@ -267,7 +267,7 @@ ls -lh wordlist.txt
 file wordlist.txt
 
 # Test upload connectivity
-curl -I https://cipherswarm.example.com/api/v1/web/resources/
+curl -I https://ouroboros.example.com/api/v1/web/resources/
 
 # Try smaller files first
 ```
@@ -338,7 +338,7 @@ if (typeof EventSource !== "undefined") {
 Test SSE endpoint manually:
 
 ```bash
-curl -H "Accept: text/event-stream" -H "Authorization: Bearer $TOKEN" https://cipherswarm.example.com/api/v1/web/live/campaigns
+curl -H "Accept: text/event-stream" -H "Authorization: Bearer $TOKEN" https://ouroboros.example.com/api/v1/web/live/campaigns
 ```
 
 **Common Causes**:
@@ -356,10 +356,10 @@ curl -H "Accept: text/event-stream" -H "Authorization: Bearer $TOKEN" https://ci
 
 ```bash
 # Test network stability
-ping -c 100 cipherswarm.example.com
+ping -c 100 ouroboros.example.com
 
 # Check for packet loss
-mtr cipherswarm.example.com
+mtr ouroboros.example.com
 
 # Try different browser
 # Disable browser power saving features
@@ -502,10 +502,10 @@ nvidia-smi
 
 ```bash
 # Check all system components
-curl https://cipherswarm.example.com/api/v1/web/health/components
+curl https://ouroboros.example.com/api/v1/web/health/components
 
 # Test database connectivity
-curl https://cipherswarm.example.com/api/v1/web/health/database
+curl https://ouroboros.example.com/api/v1/web/health/database
 
 # Check MinIO storage
 curl https://minio.example.com/health/live
@@ -515,32 +515,32 @@ curl https://minio.example.com/health/live
 
 ```bash
 # Agent status and configuration
-cipherswarm-agent status
-cipherswarm-agent config show
+ouroboros-agent status
+ouroboros-agent config show
 
 # Test connectivity
-cipherswarm-agent test connection
+ouroboros-agent test connection
 
 # Benchmark performance
-cipherswarm-agent benchmark
+ouroboros-agent benchmark
 
 # Check logs
-journalctl -u cipherswarm-agent --since "1 hour ago"
+journalctl -u ouroboros-agent --since "1 hour ago"
 ```
 
 ### Network Diagnostics
 
 ```bash
 # Test server connectivity
-ping cipherswarm.example.com
-curl -I https://cipherswarm.example.com
+ping ouroboros.example.com
+curl -I https://ouroboros.example.com
 
 # Check DNS resolution
-nslookup cipherswarm.example.com
+nslookup ouroboros.example.com
 
 # Test API endpoints
 curl -H "Authorization: Bearer $TOKEN" \
-    https://cipherswarm.example.com/api/v1/client/configuration
+    https://ouroboros.example.com/api/v1/client/configuration
 ```
 
 ### Browser Diagnostics
@@ -556,7 +556,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 console.log("EventSource supported:", typeof EventSource !== "undefined");
 
 // Check local storage
-console.log("Local storage:", localStorage.getItem('cipherswarm-token'));
+console.log("Local storage:", localStorage.getItem('ouroboros-token'));
 ```
 
 ## When to Contact Support

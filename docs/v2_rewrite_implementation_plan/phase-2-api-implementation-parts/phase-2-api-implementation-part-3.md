@@ -1,6 +1,6 @@
 # Control API (API V1 Control)
 
-The Control API powers the CipherSwarm command-line (`csadmin`) and scripting interface. It exposes programmatic access to all major backend operations—campaigns, attacks, agents, hashlists, tasks, and stats—while enforcing scoped permissions based on the associated user and their API key. Unlike the Web UI API, this interface is designed purely for structured, machine-readable workflows.
+The Control API powers the Ouroboros command-line (`csadmin`) and scripting interface. It exposes programmatic access to all major backend operations—campaigns, attacks, agents, hashlists, tasks, and stats—while enforcing scoped permissions based on the associated user and their API key. Unlike the Web UI API, this interface is designed purely for structured, machine-readable workflows.
 
 If in doubt, refer to the migration plan for the Web API (found in `docs/v2_rewrite_implementation_plan/phase-2-api-implementation-parts/phase-2-api-implementation-part-2.md`) to identify areas that should have functional parity with the Web API, as well as the architecture documentation (found in `docs/architecture/*.md`). Finally, refer to the strategy document (found in `docs/strategy.md`) to understand the overall goals and intent of the project.
 
@@ -159,7 +159,7 @@ The Control API uses **persistent API keys** rather than JWT-based sessions.
   Authorization: Bearer <api_key>
   ```
 
-- **API Key Format**: `cst_<user_id>_<random_string>` (similar to agent tokens but with `cst` prefix for "CipherSwarm TUI")
+- **API Key Format**: `cst_<user_id>_<random_string>` (similar to agent tokens but with `cst` prefix for "Ouroboros TUI")
 
 ### Database Schema
 
@@ -638,7 +638,7 @@ async def control_export_attack(attack_id: int, db: AsyncSession) -> AttackTempl
 
 ## Agent Management (Phase 5)
 
-These endpoints provide structured read and write access to the full set of agents registered with CipherSwarm. Agents are read-only to non-admin users, but visible to all project members. Admins can assign or restrict project access, adjust configuration, and retrieve real-time performance data.
+These endpoints provide structured read and write access to the full set of agents registered with Ouroboros. Agents are read-only to non-admin users, but visible to all project members. Admins can assign or restrict project access, adjust configuration, and retrieve real-time performance data.
 
 ### Implementation Tasks
 

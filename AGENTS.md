@@ -1,12 +1,12 @@
-# CipherSwarm Agents Guide
+# Ouroboros Agents Guide
 
-This AGENTS.md file provides comprehensive guidance for AI agents working with the CipherSwarm distributed password cracking management system.
+This AGENTS.md file provides comprehensive guidance for AI agents working with Ouroboros, the FastAPI + SvelteKit rewrite of Ouroboros.
 
 ---
 
 ## Project Overview
 
-CipherSwarm is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It's a complete rewrite of Ouroboros, preserving backward compatibility with Ouroboros agents while modernizing the architecture. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
 ### Key Components
 
@@ -20,7 +20,7 @@ CipherSwarm is a distributed password cracking management system built with Fast
 ## Project Structure
 
 ```text
-CipherSwarm/
+Ouroboros/
 ├── app/                          # FastAPI backend application
 │   ├── api/v1/endpoints/         # API endpoints organized by interface
 │   │   ├── agent/               # Agent API (/api/v1/client/*)
@@ -56,7 +56,7 @@ CipherSwarmAgent/                 # Go-based agent (separate project)
 
 - **IMMUTABLE**: Must follow `contracts/v1_api_swagger.json` specification exactly
 - **NO BREAKING CHANGES**: Locked to OpenAPI 3.0.1 specification
-- **Legacy Compatibility**: Mirrors Ruby-on-Rails CipherSwarm version
+- **Legacy Compatibility**: Mirrors Ruby-on-Rails Ouroboros version
 - **Testing**: All responses must validate against OpenAPI specification
 
 ### Agent API v2 (`/api/v2/client/*`)
@@ -398,7 +398,7 @@ Define custom exceptions in `app/core/exceptions.py`:
 
 ```python
 class CipherSwarmException(Exception):
-    """Base exception for CipherSwarm"""
+    """Base exception for Ouroboros"""
 
     pass
 
@@ -500,4 +500,4 @@ When working with this codebase:
 - Hard-coding secrets or configuration values
 - Using deprecated Svelte patterns in frontend code
 
-This AGENTS.md file serves as the definitive guide for AI agents working with CipherSwarm. All code changes must comply with these standards and pass the programmatic checks before submission.
+This AGENTS.md file serves as the definitive guide for AI agents working with Ouroboros. All code changes must comply with these standards and pass the programmatic checks before submission.

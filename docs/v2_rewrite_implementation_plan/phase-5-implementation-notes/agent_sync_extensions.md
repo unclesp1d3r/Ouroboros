@@ -1,4 +1,4 @@
-# CipherSwarm Phase 5 - Agent Sync Extensions
+# Ouroboros Phase 5 - Agent Sync Extensions
 
 ---
 
@@ -6,7 +6,7 @@
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=2 --minlevel=1 -->
 
-- [CipherSwarm Phase 5 - Agent Sync Extensions](#cipherswarm-phase-5---agent-sync-extensions)
+- [Ouroboros Phase 5 - Agent Sync Extensions](#ouroboros-phase-5---agent-sync-extensions)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Feature: Backoff Signals](#feature-backoff-signals)
@@ -22,7 +22,7 @@
 
 ## Overview
 
-This document outlines planned enhancements to CipherSwarm's agent heartbeat and coordination system. These features aim to make the platform more resilient, adaptive, and aware of environmental conditions, particularly in trusted lab environments with mixed agent quality and workloads.
+This document outlines planned enhancements to Ouroboros's agent heartbeat and coordination system. These features aim to make the platform more resilient, adaptive, and aware of environmental conditions, particularly in trusted lab environments with mixed agent quality and workloads.
 
 Agent Sync Extensions are complementary to Phase 5's enhanced task scheduler but can be developed and deployed independently.
 

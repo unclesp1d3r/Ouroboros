@@ -8,7 +8,7 @@
 
 ### 🧭 Purpose
 
-Allows administrators to test whether a specific **presigned S3/MinIO URL** is accessible from the CipherSwarm backend (not from the agent itself). This helps confirm that uploaded attack resources are still valid and accessible for agent download.
+Allows administrators to test whether a specific **presigned S3/MinIO URL** is accessible from the Ouroboros backend (not from the agent itself). This helps confirm that uploaded attack resources are still valid and accessible for agent download.
 
 ### 📥 Input
 

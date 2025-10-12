@@ -2,9 +2,9 @@
 
 ## Overview
 
-This design document outlines the comprehensive technical approach for implementing missing End-to-End (E2E) test coverage for CipherSwarm Phase 3. The design addresses critical gaps identified in the current testing infrastructure while establishing the authentication foundation required for comprehensive E2E testing.
+This design document outlines the comprehensive technical approach for implementing missing End-to-End (E2E) test coverage for Ouroboros Phase 3. The design addresses critical gaps identified in the current testing infrastructure while establishing the authentication foundation required for comprehensive E2E testing.
 
-The implementation follows CipherSwarm's established three-tier testing architecture:
+The implementation follows Ouroboros's established three-tier testing architecture:
 
 - **Layer 1**: Backend tests (Python + testcontainers) - ✅ Complete
 - **Layer 2**: Frontend mocked tests (Playwright + mocked APIs) - 🔄 Partially complete
@@ -52,10 +52,10 @@ async def session_login(
     user = await authenticate_user_service(db, credentials.username, credentials.password)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    
+
     # Create session token
     session_token = create_session_token(user.id)
-    
+
     # Set secure HTTP-only cookie
     response.set_cookie(
         key="sessionid",
@@ -65,7 +65,7 @@ async def session_login(
         samesite="strict",
         max_age=60 * 60 * 24 * 7  # 7 days
     )
-    
+
     return LoginResponse(user=user, projects=user.projects)
 
 // Frontend: SvelteKit load function with session authentication
@@ -78,7 +78,7 @@ export const load: LayoutServerLoad = async ({ cookies, url }) => {
         }
         return { user: null, project: null };
     }
-    
+
     try {
         const session = await validateSession(sessionId);
         return {
@@ -99,24 +99,24 @@ export const load: LayoutServerLoad = async ({ cookies, url }) => {
 // tests/test-utils.ts
 export class AuthenticationHelper {
     constructor(private page: Page) {}
-    
+
     async loginAs(role: 'admin' | 'project_admin' | 'user', projectId?: string) {
         const credentials = this.getTestCredentials(role);
-        
+
         await this.page.goto('/login');
         await this.page.fill('[data-testid="username"]', credentials.username);
         await this.page.fill('[data-testid="password"]', credentials.password);
         await this.page.click('[data-testid="login-button"]');
-        
+
         // Handle project selection if multiple projects
         if (projectId) {
             await this.selectProject(projectId);
         }
-        
+
         await this.page.waitForURL('/dashboard');
         return credentials;
     }
-    
+
     async selectProject(projectId: string) {
         // Handle project selection modal or dropdown
         const projectSelector = this.page.locator('[data-testid="project-selector"]');
@@ -125,13 +125,13 @@ export class AuthenticationHelper {
             await this.page.click(`[data-testid="project-option-${projectId}"]`);
         }
     }
-    
+
     async logout() {
         await this.page.click('[data-testid="user-menu"]');
         await this.page.click('[data-testid="logout-button"]');
         await this.page.waitForURL('/login');
     }
-    
+
     private getTestCredentials(role: string) {
         const credentials = {
             admin: { username: 'admin', password: 'admin123' },
@@ -159,21 +159,21 @@ class TestDataService:
             role="admin",
             projects=["project1", "project2"]
         )
-        
+
         project_admin = await self.create_test_user(
-            username="project_admin", 
+            username="project_admin",
             password="project123",
             role="project_admin",
             projects=["project1"]
         )
-        
+
         regular_user = await self.create_test_user(
             username="user",
-            password="user123", 
+            password="user123",
             role="user",
             projects=["project1"]
         )
-        
+
         # Create test projects with predictable data
         project1 = await self.create_test_project(
             name="Test Project 1",
@@ -181,7 +181,7 @@ class TestDataService:
             resources=5,
             agents=2
         )
-        
+
         return TestEnvironment(
             users=[admin_user, project_admin, regular_user],
             projects=[project1],
@@ -209,7 +209,7 @@ export class TestEnvironmentManager {
         });
         return response.json();
     }
-    
+
     async cleanupEnvironment(): Promise<void> {
         await fetch('/api/v1/test/cleanup-environment', { method: 'DELETE' });
     }
@@ -226,36 +226,36 @@ export class TestEnvironmentManager {
 // tests/page-objects/DashboardPage.ts
 export class DashboardPage {
     constructor(private page: Page) {}
-    
+
     // Locators
     get statusCards() { return this.page.locator('[data-testid="status-card"]'); }
     get campaignRows() { return this.page.locator('[data-testid="campaign-row"]'); }
     get agentStatusSheet() { return this.page.locator('[data-testid="agent-status-sheet"]'); }
     get toastNotifications() { return this.page.locator('[data-testid="toast"]'); }
-    
+
     // Actions
     async waitForLoad() {
         await this.page.waitForLoadState('networkidle');
         await expect(this.statusCards.first()).toBeVisible();
     }
-    
+
     async openAgentStatusSheet() {
         await this.statusCards.filter({ hasText: 'Active Agents' }).click();
         await expect(this.agentStatusSheet).toBeVisible();
     }
-    
+
     async expandCampaignRow(campaignId: string) {
         const row = this.campaignRows.filter({ hasText: campaignId });
         await row.locator('[data-testid="expand-button"]').click();
         await expect(row.locator('[data-testid="attack-list"]')).toBeVisible();
     }
-    
+
     // Assertions
     async assertStatusCardValue(cardName: string, expectedValue: string) {
         const card = this.statusCards.filter({ hasText: cardName });
         await expect(card.locator('[data-testid="card-value"]')).toContainText(expectedValue);
     }
-    
+
     async assertToastNotification(message: string, type: 'success' | 'error' | 'info') {
         const toast = this.toastNotifications.filter({ hasText: message });
         await expect(toast).toHaveClass(new RegExp(`toast-${type}`));
@@ -265,26 +265,26 @@ export class DashboardPage {
 // tests/page-objects/CampaignWizardPage.ts
 export class CampaignWizardPage {
     constructor(private page: Page) {}
-    
+
     async createCampaign(config: CampaignConfig) {
         // Step 1: Select hashlist
         await this.selectHashlist(config.hashlistId);
         await this.clickNext();
-        
+
         // Step 2: Campaign metadata
         await this.fillCampaignDetails(config.name, config.description);
         await this.clickNext();
-        
+
         // Step 3: Configure attacks
         for (const attack of config.attacks) {
             await this.addAttack(attack);
         }
         await this.clickNext();
-        
+
         // Step 4: Review and launch
         await this.reviewAndLaunch();
     }
-    
+
     private async selectHashlist(hashlistId: string) {
         if (hashlistId === 'upload') {
             await this.uploadHashlist();
@@ -292,13 +292,13 @@ export class CampaignWizardPage {
             await this.page.selectOption('[data-testid="hashlist-select"]', hashlistId);
         }
     }
-    
+
     private async addAttack(attack: AttackConfig) {
         await this.page.click('[data-testid="add-attack-button"]');
-        
+
         const modal = this.page.locator('[data-testid="attack-editor-modal"]');
         await modal.selectOption('[data-testid="attack-type"]', attack.type);
-        
+
         // Configure attack parameters based on type
         switch (attack.type) {
             case 'dictionary':
@@ -311,7 +311,7 @@ export class CampaignWizardPage {
                 await this.configureBruteForceAttack(modal, attack);
                 break;
         }
-        
+
         await modal.locator('[data-testid="save-attack"]').click();
         await expect(modal).not.toBeVisible();
     }
@@ -333,19 +333,19 @@ export interface ValidationRule {
 
 export class FormTester {
     constructor(private page: Page) {}
-    
+
     async testFormValidation(
-        formSelector: string, 
+        formSelector: string,
         validationRules: ValidationRule[]
     ) {
         for (const rule of validationRules) {
             // Test invalid value
             await this.page.fill(`${formSelector} [name="${rule.field}"]`, rule.invalidValue);
             await this.page.blur(`${formSelector} [name="${rule.field}"]`);
-            
+
             const errorElement = this.page.locator(`[data-testid="${rule.field}-error"]`);
             await expect(errorElement).toContainText(rule.expectedError);
-            
+
             // Test valid value if provided
             if (rule.validValue) {
                 await this.page.fill(`${formSelector} [name="${rule.field}"]`, rule.validValue);
@@ -354,7 +354,7 @@ export class FormTester {
             }
         }
     }
-    
+
     async testFormSubmission(
         formSelector: string,
         formData: Record<string, string>,
@@ -365,10 +365,10 @@ export class FormTester {
         for (const [field, value] of Object.entries(formData)) {
             await this.page.fill(`${formSelector} [name="${field}"]`, value);
         }
-        
+
         // Submit form
         await this.page.click(`${formSelector} [type="submit"]`);
-        
+
         // Verify result
         if (expectedResult === 'success') {
             await expect(this.page.locator('[data-testid="success-message"]')).toBeVisible();
@@ -382,7 +382,7 @@ export class FormTester {
             }
         }
     }
-    
+
     async testProgressiveEnhancement(formSelector: string, formData: Record<string, string>) {
         // Disable JavaScript
         await this.page.context().addInitScript(() => {
@@ -390,7 +390,7 @@ export class FormTester {
                 value: { ...window.navigator, javaEnabled: () => false }
             });
         });
-        
+
         // Test form still works
         await this.testFormSubmission(formSelector, formData, 'success');
     }
@@ -406,16 +406,16 @@ export class FormTester {
 export class SSETester {
     private eventSource: EventSource | null = null;
     private receivedEvents: SSEEvent[] = [];
-    
+
     constructor(private page: Page) {}
-    
+
     async startListening(endpoint: string) {
         this.eventSource = await this.page.evaluateHandle((url) => {
             const es = new EventSource(url);
             (window as any).testEventSource = es;
             return es;
         }, endpoint);
-        
+
         // Capture events
         await this.page.addInitScript(() => {
             (window as any).testEvents = [];
@@ -430,7 +430,7 @@ export class SSETester {
             }
         });
     }
-    
+
     async waitForEvent(eventType: string, timeout: number = 5000): Promise<SSEEvent> {
         return this.page.waitForFunction(
             (type) => {
@@ -441,7 +441,7 @@ export class SSETester {
             { timeout }
         );
     }
-    
+
     async simulateEvent(eventType: string, eventData: any) {
         await this.page.evaluate(
             ({ type, data }) => {
@@ -455,7 +455,7 @@ export class SSETester {
             { type: eventType, data: eventData }
         );
     }
-    
+
     async stopListening() {
         if (this.eventSource) {
             await this.page.evaluate(() => {
@@ -602,7 +602,7 @@ export interface TestDataConfig {
 // tests/utilities/error-handling.ts
 export class TestErrorHandler {
     constructor(private page: Page) {}
-    
+
     async handleAuthenticationError() {
         // Check if redirected to login
         if (this.page.url().includes('/login')) {
@@ -613,7 +613,7 @@ export class TestErrorHandler {
         }
         return false;
     }
-    
+
     async handleNetworkError(error: Error) {
         if (error.message.includes('net::ERR_CONNECTION_REFUSED')) {
             console.log('Backend connection failed, waiting for recovery...');
@@ -622,14 +622,14 @@ export class TestErrorHandler {
         }
         return false;
     }
-    
+
     async handleTimeoutError(operation: string) {
         console.log(`Operation ${operation} timed out, retrying...`);
         await this.page.reload();
         await this.page.waitForLoadState('networkidle');
         return true;
     }
-    
+
     private async waitForBackendRecovery(maxWait: number = 30000) {
         const startTime = Date.now();
         while (Date.now() - startTime < maxWait) {
@@ -654,20 +654,20 @@ export async function withRetry<T>(
     delay: number = 1000
 ): Promise<T> {
     let lastError: Error;
-    
+
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
             return await operation();
         } catch (error) {
             lastError = error as Error;
             console.log(`Attempt ${attempt} failed: ${error.message}`);
-            
+
             if (attempt < maxRetries) {
                 await new Promise(resolve => setTimeout(resolve, delay * attempt));
             }
         }
     }
-    
+
     throw lastError!;
 }
 ```
@@ -679,31 +679,31 @@ export async function withRetry<T>(
 export class TestIsolation {
     private testId: string;
     private createdResources: string[] = [];
-    
+
     constructor() {
         this.testId = `test_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
-    
+
     async setup() {
         // Create isolated test environment
         await this.createTestNamespace();
         await this.seedTestData();
     }
-    
+
     async cleanup() {
         // Clean up all created resources
         for (const resourceId of this.createdResources) {
             await this.deleteResource(resourceId);
         }
-        
+
         // Clear browser state
         await this.clearBrowserState();
     }
-    
+
     trackResource(resourceId: string) {
         this.createdResources.push(resourceId);
     }
-    
+
     private async createTestNamespace() {
         // Create isolated project for this test
         const response = await fetch('/api/v1/test/create-namespace', {
@@ -711,12 +711,12 @@ export class TestIsolation {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ testId: this.testId })
         });
-        
+
         if (!response.ok) {
             throw new Error('Failed to create test namespace');
         }
     }
-    
+
     private async clearBrowserState() {
         // Clear cookies, localStorage, sessionStorage
         await this.page.context().clearCookies();
@@ -761,7 +761,7 @@ export default defineConfig({
             use: { ...devices['Desktop Chrome'] },
             dependencies: ['setup-mocked']
         },
-        
+
         // Full E2E tests (comprehensive validation)
         {
             name: 'e2e-chromium',
@@ -769,7 +769,7 @@ export default defineConfig({
             use: { ...devices['Desktop Chrome'] },
             dependencies: ['setup-backend']
         },
-        
+
         // Cross-browser testing
         {
             name: 'e2e-firefox',
@@ -777,7 +777,7 @@ export default defineConfig({
             use: { ...devices['Desktop Firefox'] },
             dependencies: ['setup-backend']
         },
-        
+
         // Mobile testing
         {
             name: 'mobile-chrome',
@@ -805,7 +805,7 @@ export const TestCategories = {
             'resource-management'
         ]
     },
-    
+
     ADVANCED: {
         priority: 2,
         timeout: 60000,
@@ -817,7 +817,7 @@ export const TestCategories = {
             'access-control'
         ]
     },
-    
+
     INTEGRATION: {
         priority: 3,
         timeout: 120000,
@@ -854,7 +854,7 @@ export const handlers = [
     // Authentication endpoints
     rest.post('/api/v1/web/auth/session/login', (req, res, ctx) => {
         const { username, password } = req.body as any;
-        
+
         if (username === 'admin' && password === 'admin123') {
             return res(
                 ctx.status(200),
@@ -867,10 +867,10 @@ export const handlers = [
                 })
             );
         }
-        
+
         return res(ctx.status(401), ctx.json({ detail: 'Invalid credentials' }));
     }),
-    
+
     // Dashboard endpoints
     rest.get('/api/v1/web/dashboard/stats', (req, res, ctx) => {
         return res(
@@ -883,7 +883,7 @@ export const handlers = [
             })
         );
     }),
-    
+
     // Campaign endpoints
     rest.get('/api/v1/web/campaigns/', (req, res, ctx) => {
         return res(
@@ -902,7 +902,7 @@ export const handlers = [
             })
         );
     }),
-    
+
     // SSE endpoints
     rest.get('/api/v1/web/live/campaigns', (req, res, ctx) => {
         return res(
@@ -935,32 +935,32 @@ if (typeof window !== 'undefined') {
 export class ParallelTestManager {
     private workerPool: TestWorker[] = [];
     private testQueue: TestCase[] = [];
-    
+
     constructor(private maxWorkers: number = 4) {}
-    
+
     async executeTests(testCases: TestCase[]): Promise<TestResult[]> {
         this.testQueue = [...testCases];
         const results: TestResult[] = [];
-        
+
         // Create worker pool
         for (let i = 0; i < this.maxWorkers; i++) {
             this.workerPool.push(new TestWorker(i));
         }
-        
+
         // Execute tests in parallel
-        const promises = this.workerPool.map(worker => 
+        const promises = this.workerPool.map(worker =>
             this.runWorker(worker, results)
         );
-        
+
         await Promise.all(promises);
         return results;
     }
-    
+
     private async runWorker(worker: TestWorker, results: TestResult[]) {
         while (this.testQueue.length > 0) {
             const testCase = this.testQueue.shift();
             if (!testCase) break;
-            
+
             try {
                 const result = await worker.executeTest(testCase);
                 results.push(result);
@@ -984,7 +984,7 @@ export class ParallelTestManager {
 export class TestResourceManager {
     private browserContexts: Map<string, BrowserContext> = new Map();
     private pagePool: Page[] = [];
-    
+
     async getBrowserContext(testId: string): Promise<BrowserContext> {
         if (!this.browserContexts.has(testId)) {
             const context = await browser.newContext({
@@ -992,29 +992,29 @@ export class TestResourceManager {
                 ignoreHTTPSErrors: true,
                 recordVideo: process.env.CI ? { dir: 'test-results/videos' } : undefined
             });
-            
+
             this.browserContexts.set(testId, context);
         }
-        
+
         return this.browserContexts.get(testId)!;
     }
-    
+
     async getPage(testId: string): Promise<Page> {
         const context = await this.getBrowserContext(testId);
         const page = await context.newPage();
-        
+
         // Set up error handling
         page.on('pageerror', error => {
             console.error(`Page error in test ${testId}:`, error);
         });
-        
+
         page.on('requestfailed', request => {
             console.warn(`Request failed in test ${testId}:`, request.url());
         });
-        
+
         return page;
     }
-    
+
     async cleanup(testId: string) {
         const context = this.browserContexts.get(testId);
         if (context) {
@@ -1022,7 +1022,7 @@ export class TestResourceManager {
             this.browserContexts.delete(testId);
         }
     }
-    
+
     async cleanupAll() {
         for (const [testId, context] of this.browserContexts) {
             await context.close();
@@ -1040,16 +1040,16 @@ export class TestResourceManager {
 // tests/utilities/performance-monitoring.ts
 export class PerformanceMonitor {
     private metrics: PerformanceMetric[] = [];
-    
+
     async measurePageLoad(page: Page, url: string): Promise<PageLoadMetrics> {
         const startTime = Date.now();
-        
+
         await page.goto(url);
         await page.waitForLoadState('networkidle');
-        
+
         const endTime = Date.now();
         const loadTime = endTime - startTime;
-        
+
         // Get performance metrics from browser
         const performanceMetrics = await page.evaluate(() => {
             const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
@@ -1060,18 +1060,18 @@ export class PerformanceMonitor {
                 firstContentfulPaint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime || 0
             };
         });
-        
+
         const metrics: PageLoadMetrics = {
             url,
             totalLoadTime: loadTime,
             ...performanceMetrics,
             timestamp: new Date()
         };
-        
+
         this.metrics.push(metrics);
         return metrics;
     }
-    
+
     async measureMemoryUsage(page: Page): Promise<MemoryMetrics> {
         const memoryInfo = await page.evaluate(() => {
             return (performance as any).memory ? {
@@ -1080,13 +1080,13 @@ export class PerformanceMonitor {
                 jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit
             } : null;
         });
-        
+
         return {
             ...memoryInfo,
             timestamp: new Date()
         };
     }
-    
+
     generateReport(): PerformanceReport {
         return {
             totalTests: this.metrics.length,
@@ -1096,12 +1096,12 @@ export class PerformanceMonitor {
             recommendations: this.generateRecommendations()
         };
     }
-    
+
     private calculateAverage(metric: keyof PageLoadMetrics): number {
         const values = this.metrics.map(m => m[metric] as number).filter(v => v > 0);
         return values.reduce((sum, val) => sum + val, 0) / values.length;
     }
-    
+
     private getSlowestPages(count: number): PageLoadMetrics[] {
         return this.metrics
             .sort((a, b) => b.totalLoadTime - a.totalLoadTime)
@@ -1126,36 +1126,36 @@ export class TestSecurityManager {
             this.validateDataSanitization(),
             this.validateAccessControls()
         ];
-        
+
         const results = await Promise.all(checks);
-        
+
         return {
             passed: results.every(r => r.passed),
             checks: results,
             recommendations: this.generateSecurityRecommendations(results)
         };
     }
-    
+
     private async validateTestCredentials(): Promise<SecurityCheck> {
         // Ensure test credentials are not production credentials
         const testUsers = ['admin', 'project_admin', 'user'];
         const productionIndicators = ['prod', 'production', 'live'];
-        
-        const hasProductionCredentials = testUsers.some(user => 
-            productionIndicators.some(indicator => 
+
+        const hasProductionCredentials = testUsers.some(user =>
+            productionIndicators.some(indicator =>
                 user.toLowerCase().includes(indicator)
             )
         );
-        
+
         return {
             name: 'Test Credentials Validation',
             passed: !hasProductionCredentials,
-            message: hasProductionCredentials 
+            message: hasProductionCredentials
                 ? 'Test environment uses production-like credentials'
                 : 'Test credentials are properly isolated'
         };
     }
-    
+
     private async validateNetworkIsolation(): Promise<SecurityCheck> {
         // Ensure test environment doesn't access production services
         try {
@@ -1173,7 +1173,7 @@ export class TestSecurityManager {
             };
         }
     }
-    
+
     private async validateAccessControls(): Promise<SecurityCheck> {
         // Test that access controls are properly enforced
         const testCases = [
@@ -1181,15 +1181,15 @@ export class TestSecurityManager {
             { role: 'project_admin', endpoint: '/api/v1/admin/system', shouldFail: true },
             { role: 'admin', endpoint: '/api/v1/admin/users', shouldFail: false }
         ];
-        
+
         const results = await Promise.all(
             testCases.map(async testCase => {
                 try {
                     const response = await this.makeAuthenticatedRequest(
-                        testCase.role, 
+                        testCase.role,
                         testCase.endpoint
                     );
-                    
+
                     const actuallyFailed = response.status === 403;
                     return actuallyFailed === testCase.shouldFail;
                 } catch {
@@ -1197,13 +1197,13 @@ export class TestSecurityManager {
                 }
             })
         );
-        
+
         const allPassed = results.every(r => r);
-        
+
         return {
             name: 'Access Control Validation',
             passed: allPassed,
-            message: allPassed 
+            message: allPassed
                 ? 'Access controls are properly enforced'
                 : 'Some access control violations detected'
         };
@@ -1222,19 +1222,19 @@ export class TestDataSecurity {
             'password', 'token', 'secret', 'key', 'hash',
             'ssn', 'credit_card', 'phone', 'email'
         ];
-        
+
         return this.recursiveSanitize(data, sensitiveFields);
     }
-    
+
     private recursiveSanitize(obj: any, sensitiveFields: string[]): any {
         if (typeof obj !== 'object' || obj === null) {
             return obj;
         }
-        
+
         if (Array.isArray(obj)) {
             return obj.map(item => this.recursiveSanitize(item, sensitiveFields));
         }
-        
+
         const sanitized: any = {};
         for (const [key, value] of Object.entries(obj)) {
             if (sensitiveFields.some(field => key.toLowerCase().includes(field))) {
@@ -1243,13 +1243,13 @@ export class TestDataSecurity {
                 sanitized[key] = this.recursiveSanitize(value, sensitiveFields);
             }
         }
-        
+
         return sanitized;
     }
-    
+
     async validateDataLeakage(testResults: TestResult[]): Promise<DataLeakageReport> {
         const leaks: DataLeak[] = [];
-        
+
         for (const result of testResults) {
             // Check for sensitive data in test output
             const sensitivePatterns = [
@@ -1258,7 +1258,7 @@ export class TestDataSecurity {
                 /secret["\s]*[:=]["\s]*[^"\s]+/gi,
                 /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/gi
             ];
-            
+
             for (const pattern of sensitivePatterns) {
                 const matches = result.output?.match(pattern);
                 if (matches) {
@@ -1271,7 +1271,7 @@ export class TestDataSecurity {
                 }
             }
         }
-        
+
         return {
             totalLeaks: leaks.length,
             leaks,
@@ -1296,21 +1296,21 @@ const Phase3A = {
         'Authentication helper utilities',
         'Session persistence and cleanup'
     ],
-    
+
     dashboard: [
         'Dashboard loading with SSR data',
         'Status card display and interaction',
         'Basic navigation testing',
         'Error state handling'
     ],
-    
+
     campaigns: [
         'Campaign list loading and display',
         'Basic campaign creation workflow',
         'Campaign detail page navigation',
         'Campaign status updates'
     ],
-    
+
     resources: [
         'Resource list display and filtering',
         'Basic resource upload workflow',
@@ -1330,21 +1330,21 @@ const Phase3B = {
         'Agent detail modal functionality',
         'Agent management operations'
     ],
-    
+
     attacks: [
         'Attack configuration wizard',
         'Attack parameter validation',
         'Keyspace estimation testing',
         'Attack management operations'
     ],
-    
+
     users: [
         'User management interface implementation',
         'User creation and editing workflows',
         'Role-based access control validation',
         'User deletion with impact assessment'
     ],
-    
+
     projects: [
         'Project selection and switching',
         'Project context persistence',
@@ -1364,21 +1364,21 @@ const Phase3C = {
         'Toast notification system',
         'Real-time status indicators'
     ],
-    
+
     integration: [
         'End-to-end workflow testing',
         'Cross-component integration',
         'Error recovery scenarios',
         'Performance validation'
     ],
-    
+
     polish: [
         'Responsive design testing',
         'Accessibility compliance',
         'Theme switching functionality',
         'Mobile navigation testing'
     ],
-    
+
     quality: [
         'Test coverage analysis',
         'Performance benchmarking',

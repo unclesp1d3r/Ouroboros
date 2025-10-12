@@ -8,7 +8,7 @@ fileMatchPattern:
   - tests/conftest.py
 ---
 
-# CipherSwarm Backend Testing Patterns
+# Ouroboros Backend Testing Patterns
 
 ## Backend Testing Architecture
 

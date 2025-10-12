@@ -54,7 +54,7 @@
 </script>
 
 <svelte:head>
-    <title>Create Campaign - CipherSwarm</title>
+    <title>Create Campaign - Ouroboros</title>
 </svelte:head>
 
 <!-- Back button -->

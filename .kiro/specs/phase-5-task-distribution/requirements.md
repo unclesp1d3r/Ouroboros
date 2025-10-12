@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Phase 5 Task Distribution System is a critical component of CipherSwarm that manages the distribution of password cracking workloads across available agents in the network. This system transforms high-level campaigns and attacks into discrete, executable tasks that can be efficiently distributed to agents based on their capabilities and availability. The system ensures optimal resource utilization while maintaining campaign priorities and handling agent failures gracefully.
+The Phase 5 Task Distribution System is a critical component of Ouroboros that manages the distribution of password cracking workloads across available agents in the network. This system transforms high-level campaigns and attacks into discrete, executable tasks that can be efficiently distributed to agents based on their capabilities and availability. The system ensures optimal resource utilization while maintaining campaign priorities and handling agent failures gracefully.
 
 ## Requirements
 

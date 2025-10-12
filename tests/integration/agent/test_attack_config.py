@@ -101,7 +101,7 @@ async def test_attack_v1_agent_api_success(
     await db_session.refresh(attack)
     headers = {
         "Authorization": f"Bearer {agent.token}",
-        "User-Agent": "CipherSwarm-Agent/1.0.0",
+        "User-Agent": "Ouroboros-Agent/1.0.0",
     }
     resp = await async_client.get(
         f"/api/v1/client/attacks/{attack.id}", headers=headers
@@ -250,7 +250,7 @@ async def test_attack_v1_hash_list_success(
     await db_session.refresh(attack)
     headers = {
         "Authorization": f"Bearer {agent.token}",
-        "User-Agent": "CipherSwarm-Agent/1.0.0",
+        "User-Agent": "Ouroboros-Agent/1.0.0",
     }
     resp = await async_client.get(
         f"/api/v1/client/attacks/{attack.id}/hash_list", headers=headers
@@ -289,7 +289,7 @@ async def test_attack_v1_hash_list_not_found(
     await db_session.refresh(agent)
     headers = {
         "Authorization": f"Bearer {agent.token}",
-        "User-Agent": "CipherSwarm-Agent/1.0.0",
+        "User-Agent": "Ouroboros-Agent/1.0.0",
     }
     resp = await async_client.get(
         "/api/v1/client/attacks/999999/hash_list", headers=headers

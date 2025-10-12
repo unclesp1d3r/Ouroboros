@@ -2,9 +2,9 @@
 
 ## Overview
 
-This design document outlines the architecture and implementation approach for completing agent management functionality and implementing comprehensive cross-component integration workflows in CipherSwarm. The system will provide complete agent administrative capabilities while ensuring seamless integration across all components through robust workflows, real-time monitoring, and comprehensive error handling.
+This design document outlines the architecture and implementation approach for completing agent management functionality and implementing comprehensive cross-component integration workflows in Ouroboros. The system will provide complete agent administrative capabilities while ensuring seamless integration across all components through robust workflows, real-time monitoring, and comprehensive error handling.
 
-The design follows CipherSwarm's service layer architecture with FastAPI endpoints delegating to business logic services, using SQLAlchemy for data persistence, and SvelteKit for the frontend with real-time updates via Server-Sent Events.
+The design follows Ouroboros's service layer architecture with FastAPI endpoints delegating to business logic services, using SQLAlchemy for data persistence, and SvelteKit for the frontend with real-time updates via Server-Sent Events.
 
 ## Architecture
 
@@ -18,34 +18,34 @@ graph TB
         Modal[Agent Details Modal]
         Forms[Registration Forms]
     end
-    
+
     subgraph "Backend Services"
         API[FastAPI Endpoints]
         Services[Business Logic Services]
         SSE[Server-Sent Events]
         Cache[Redis Cache]
     end
-    
+
     subgraph "Data Layer"
         DB[(PostgreSQL)]
         Models[SQLAlchemy Models]
     end
-    
+
     subgraph "External Systems"
-        Agents[CipherSwarm Agents]
+        Agents[Ouroboros Agents]
         MinIO[Object Storage]
     end
-    
+
     UI --> API
     Dashboard --> SSE
     Modal --> API
     Forms --> API
-    
+
     API --> Services
     Services --> Models
     Models --> DB
     Services --> Cache
-    
+
     Agents --> API
     Services --> MinIO
 ```
@@ -491,7 +491,7 @@ class ErrorPageService:
 
 ### Testing Architecture Overview
 
-The testing strategy follows CipherSwarm's comprehensive approach with both mocked E2E tests and full E2E tests:
+The testing strategy follows Ouroboros's comprehensive approach with both mocked E2E tests and full E2E tests:
 
 ```mermaid
 graph TB
@@ -500,23 +500,23 @@ graph TB
         MockAPI[API Mock Tests]
         MockWorkflow[Workflow Mock Tests]
     end
-    
+
     subgraph "Full E2E Tests (Complete)"
         RealBackend[Real Backend Tests]
         IntegrationTests[Integration Tests]
         WorkflowTests[End-to-End Workflow Tests]
     end
-    
+
     subgraph "Test Infrastructure"
         TestUtils[Test Utilities]
         Factories[Test Factories]
         MockData[Mock Data Generators]
     end
-    
+
     MockUI --> TestUtils
     MockAPI --> Factories
     MockWorkflow --> MockData
-    
+
     RealBackend --> TestUtils
     IntegrationTests --> Factories
     WorkflowTests --> MockData

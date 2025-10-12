@@ -1,4 +1,4 @@
-# Requirements Document: CipherSwarm
+# Requirements Document: Ouroboros
 
 **Version**: 2.0\
 **Status**: Draft\
@@ -19,7 +19,7 @@
 ### Project Overview
 
 - **Project Description and Purpose**\
-  CipherSwarm is a distributed password cracking management system designed for efficiency, scalability, and airgapped networks. It coordinates multiple hashcat instances across different machines to efficiently crack password hashes using various attack strategies, with a modern web interface and robust API.
+  Ouroboros is a distributed password cracking management system designed for efficiency, scalability, and airgapped networks. It coordinates multiple hashcat instances across different machines to efficiently crack password hashes using various attack strategies, with a modern web interface and robust API.
 
 - **Project Goals and Objectives**\
   • Enable distributed hashcat cracking across multiple machines with centralized coordination
@@ -213,30 +213,30 @@ graph TB
         UI[SvelteKit SSR UI]
         SSE[Server-Sent Events]
     end
-    
+
     subgraph "API Layer"
         WebAPI[Web UI API]
         AgentAPI[Agent API v1]
         ControlAPI[Control API]
     end
-    
+
     subgraph "Service Layer"
         Auth[Authentication]
         Campaign[Campaign Service]
         Resource[Resource Service]
         Task[Task Distribution]
     end
-    
+
     subgraph "Storage Layer"
         DB[(PostgreSQL)]
         Files[(MinIO)]
         Cache[(Redis)]
     end
-    
+
     subgraph "External"
         Agents[Hashcat Agents]
     end
-    
+
     UI --> WebAPI
     UI <-- SSE
     Agents --> AgentAPI

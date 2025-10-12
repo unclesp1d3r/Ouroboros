@@ -46,7 +46,7 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <svelte:head>
-    <title>Create User - CipherSwarm</title>
+    <title>Create User - Ouroboros</title>
 </svelte:head>
 
 <Dialog bind:open onOpenChange={handleClose}>

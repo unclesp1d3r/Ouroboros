@@ -8,11 +8,11 @@ fileMatchPattern:
   - frontend/vitest.config.ts
 ---
 
-# CipherSwarm Frontend Testing Patterns
+# Ouroboros Frontend Testing Patterns
 
 ## SvelteKit 5 Testing Overview
 
-Frontend testing in CipherSwarm uses Vitest for unit testing and component testing with SvelteKit 5's runes system. This guide covers patterns specific to testing Svelte components, stores, and frontend logic.
+Frontend testing in Ouroboros uses Vitest for unit testing and component testing with SvelteKit 5's runes system. This guide covers patterns specific to testing Svelte components, stores, and frontend logic.
 
 ## Vitest Configuration
 

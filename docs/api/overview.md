@@ -1,6 +1,6 @@
 # API Overview
 
-CipherSwarm provides three distinct API interfaces, each designed for specific use cases and integration needs. This document provides an overview of the API structure, authentication mechanisms, and general usage guidelines.
+Ouroboros provides three distinct API interfaces, each designed for specific use cases and integration needs. This document provides an overview of the API structure, authentication mechanisms, and general usage guidelines.
 
 ## Quick Start
 
@@ -49,7 +49,7 @@ CipherSwarm provides three distinct API interfaces, each designed for specific u
 
 ### 1. Agent API (`/api/v1/client/*`)
 
-The Agent API is a strictly specified interface used by CipherSwarm agents to communicate with the central server. It follows the OpenAPI 3.0.1 specification defined in `contracts/v1_api_swagger.json` and maintains strict backward compatibility.
+The Agent API is a strictly specified interface used by Ouroboros agents to communicate with the central server. It follows the OpenAPI 3.0.1 specification defined in `contracts/v1_api_swagger.json` and maintains strict backward compatibility.
 
 ```mermaid
 graph LR
@@ -198,7 +198,7 @@ Authorization: Bearer csa_<agent_id>_<random_string>
 
 ```http
 Authorization: Bearer csa_<agent_id>_<token>
-User-Agent: CipherSwarm-Agent/<version>
+User-Agent: Ouroboros-Agent/<version>
 ```
 
 **Features:**
@@ -262,7 +262,7 @@ Authorization: Bearer cst_<user_id>_<random_string>
 
 ```http
 Authorization: Bearer cst_<user_id>_<token>
-User-Agent: CipherSwarm-Control/<version>
+User-Agent: Ouroboros-Control/<version>
 ```
 
 **Features:**
@@ -414,7 +414,7 @@ All APIs implement rate limiting to prevent abuse:
 
 ## Multi-Tenancy
 
-CipherSwarm implements project-based multi-tenancy:
+Ouroboros implements project-based multi-tenancy:
 
 - **Projects** serve as the top-level organizational boundary
 - All resources (campaigns, hash lists, agents) are scoped to projects

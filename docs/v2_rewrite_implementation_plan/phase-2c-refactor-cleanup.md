@@ -1,4 +1,4 @@
-# 🎯 CipherSwarm Phase 2 Endpoint Hygiene Sweep
+# 🎯 Ouroboros Phase 2 Endpoint Hygiene Sweep
 
 Skirmish must complete this sweep after all `/api/v1/web/*` endpoints have been implemented and tested.
 

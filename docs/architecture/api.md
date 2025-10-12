@@ -1,6 +1,6 @@
 # API Documentation
 
-CipherSwarm provides four distinct API interfaces, each serving different client types with specific authentication and error handling requirements:
+Ouroboros provides four distinct API interfaces, each serving different client types with specific authentication and error handling requirements:
 
 1. **Agent API** (`/api/v1/client/*`) - For distributed agents
 2. **Web UI API** (`/api/v1/web/*`) - For the SvelteKit dashboard
@@ -376,7 +376,7 @@ GET /api/v1/web/live/agents
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Accept: text/event-stream
 
-# SSE Messages  
+# SSE Messages
 data: {"trigger": "refresh", "timestamp": "2024-01-01T12:00:00Z"}
 
 data: {"trigger": "refresh", "target": "agent", "id": "agent123"}
@@ -480,7 +480,7 @@ HTTP/1.1 400 Bad Request
 Content-Type: application/problem+json
 
 {
-    "type": "https://cipherswarm.org/problems/validation-error",
+    "type": "https://ouroboros.org/problems/validation-error",
     "title": "Validation Error",
     "status": 400,
     "detail": "The request contains invalid parameters",
@@ -586,7 +586,7 @@ HTTP/1.1 404 Not Found
 Content-Type: application/problem+json
 
 {
-    "type": "https://cipherswarm.org/problems/not-found",
+    "type": "https://ouroboros.org/problems/not-found",
     "title": "Resource Not Found",
     "status": 404,
     "detail": "The requested campaign was not found",

@@ -37,8 +37,8 @@
     }
   ],
   "info": {
-    "title": "CipherSwarm Agent API",
-    "description": "The CipherSwarm Agent API is used to allow agents to connect to the CipherSwarm server.",
+    "title": "Ouroboros Agent API",
+    "description": "The Ouroboros Agent API is used to allow agents to connect to the Ouroboros server.",
     "version": "1.3",
     "license": {
       "name": "Mozilla Public License Version 2.0",

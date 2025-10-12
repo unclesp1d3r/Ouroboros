@@ -161,7 +161,7 @@ async function validateFrontend(config: FullConfig): Promise<void> {
 
         // Verify we can reach the login page or dashboard
         const title = await page.title();
-        if (!title.includes('CipherSwarm')) {
+        if (!title.includes('Ouroboros')) {
             throw new Error(`Unexpected page title: ${title}`);
         }
 

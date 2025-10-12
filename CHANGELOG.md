@@ -38,7 +38,7 @@ Aligned the Ruby version to 3.3.6 across `.ruby-version`, `Gemfile`, and `Docker
 
 Removed Bootswatch SCSS stylesheets from the project. Added SPDX license headers to various Ruby and config files for MPL-2.0 compliance.
 
-- Implement filter to restrict task assignment based on agent benchmark performance ([#199](https://github.com/unclesp1d3r/cipherswarm/issues/199))
+- Implement filter to restrict task assignment based on agent benchmark performance ([#199](https://github.com/unclesp1d3r/ouroboros/issues/199))
 
 ### 🐛 Bug Fixes
 
@@ -46,11 +46,11 @@ Removed Bootswatch SCSS stylesheets from the project. Added SPDX license headers
 
 Changed the transition trigger from :running to :run in the attack model. This ensures the start_time and campaign touch operations are executed correctly.
 
-- Add ability to override machine name ([#197](https://github.com/unclesp1d3r/cipherswarm/issues/197))
+- Add ability to override machine name ([#197](https://github.com/unclesp1d3r/ouroboros/issues/197))
 
 ### 🚜 Refactor
 
-- Add functionality to reupload and reingest hash lists ([#195](https://github.com/unclesp1d3r/cipherswarm/issues/195))
+- Add functionality to reupload and reingest hash lists ([#195](https://github.com/unclesp1d3r/ouroboros/issues/195))
 
 - Delegate hash_mode method to hash_list
 
@@ -90,7 +90,7 @@ Added sorting by date and updated commit group titles with emojis for better rea
 
 Upgrade various dependencies in yarn.lock and Gemfile.lock to their latest versions. This includes updates to caniuse-lite, electron-to-chromium, sass, and several Ruby gems like aws-partitions and groupdate.
 
-- Merge develop changes into main ([#200](https://github.com/unclesp1d3r/cipherswarm/issues/200))
+- Merge develop changes into main ([#200](https://github.com/unclesp1d3r/ouroboros/issues/200))
 
 - Update changelog for version 0.6.5
 
@@ -306,7 +306,7 @@ Add detailed entries for new features, refactoring, and bug fixes in version 0.6
 
 ### ⚙️ Miscellaneous Tasks
 
-- Fixed deployment issues discovered in 0.6.0 ([#186](https://github.com/unclesp1d3r/cipherswarm/issues/186))
+- Fixed deployment issues discovered in 0.6.0 ([#186](https://github.com/unclesp1d3r/ouroboros/issues/186))
 
 ## [0.6.0] - 2024-09-19
 
@@ -438,7 +438,7 @@ Deleted the database_consistency gem from Gemfile and removed its configurations
 
 ### 🚀 Features
 
-- Upgraded ruby and rails versions ([#181](https://github.com/unclesp1d3r/cipherswarm/issues/181))
+- Upgraded ruby and rails versions ([#181](https://github.com/unclesp1d3r/ouroboros/issues/181))
 
 ### 📚 Documentation
 
@@ -454,7 +454,7 @@ I created bare stubs that test each controller action that is accessible via HTT
 
 ### ⚙️ Miscellaneous Tasks
 
-- Update .gitattributes ([#180](https://github.com/unclesp1d3r/cipherswarm/issues/180))
+- Update .gitattributes ([#180](https://github.com/unclesp1d3r/ouroboros/issues/180))
 
 Changed gitattributes to always use crlf, since we use dev containers on windows, so it should always be consistent with Unix formats.
 
@@ -562,7 +562,7 @@ MAJOR BREAKING CHANGE
 
 - Tasks are no longer stale when the zaps are downloaded
 
-- Refactor of API to 1.4 to make it more standardized. ([#168](https://github.com/unclesp1d3r/cipherswarm/issues/168))
+- Refactor of API to 1.4 to make it more standardized. ([#168](https://github.com/unclesp1d3r/ouroboros/issues/168))
 
 - Fixed issue with benchmarks not being submitted correctly
 
@@ -586,7 +586,7 @@ This was a minor issue caused by the Rubocop-ordered methods check. I missed one
 
 - Removed unused agent properties
 
-We added several properties to smooth the transition from Hashtopolis, but they didn’t make sense for CipherSwarm’s use case. We have removed them to clean up the functionality.
+We added several properties to smooth the transition from Hashtopolis, but they didn’t make sense for Ouroboros’s use case. We have removed them to clean up the functionality.
 
 - Changed the agent benchmarks to aggregate benchmarks
 
@@ -720,7 +720,7 @@ The theme we were using was trying to reach out to google fonts API and was caus
 
 - Included master.key to fix deployment
 
-We don't use any encrypted credentials, so there's no reason not to just include it. IF you publish your cipherswarm server publicly, you should change the master.key and the contents of the of the credentials
+We don't use any encrypted credentials, so there's no reason not to just include it. IF you publish your ouroboros server publicly, you should change the master.key and the contents of the of the credentials
 
 ## [0.3.0] - 2024-06-14
 
@@ -854,7 +854,7 @@ BREAKING CHANGE
 
 Renamed the various api endpoints to be more consistent with verbNoun in camelCase.
 
-- Standardize API names ([#103](https://github.com/unclesp1d3r/cipherswarm/issues/103))
+- Standardize API names ([#103](https://github.com/unclesp1d3r/ouroboros/issues/103))
 
 - Add ViewComponentContrib
 
@@ -886,7 +886,7 @@ Added contributing instructions explaining the use of our coding standards. Also
 
 ### 🚀 Features
 
-- Add ability to change password ([#97](https://github.com/unclesp1d3r/cipherswarm/issues/97))
+- Add ability to change password ([#97](https://github.com/unclesp1d3r/ouroboros/issues/97))
 
 Logged in users can now change their password by selecting from the user menu on the right of the menubar
 

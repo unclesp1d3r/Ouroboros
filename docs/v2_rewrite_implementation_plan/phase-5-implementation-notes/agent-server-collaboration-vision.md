@@ -1,4 +1,4 @@
-# CipherSwarm Phase 5 - Agent & Server Collaboration Vision
+# Ouroboros Phase 5 - Agent & Server Collaboration Vision
 
 ---
 
@@ -6,7 +6,7 @@
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=3 --minlevel=1 -->
 
-- [CipherSwarm Phase 5 - Agent & Server Collaboration Vision](#cipherswarm-phase-5---agent--server-collaboration-vision)
+- [Ouroboros Phase 5 - Agent & Server Collaboration Vision](#ouroboros-phase-5---agent--server-collaboration-vision)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Agent as Observant Executor](#agent-as-observant-executor)
@@ -33,7 +33,7 @@
 
 ## Overview
 
-This document outlines a future-forward vision for Phase 5 of CipherSwarm: transforming agents into adaptive, observant, and partially autonomous nodes that work *with* the server, not *for* it. These ideas extend the Sync Extensions model by elevating both agent responsibility and server strategy.
+This document outlines a future-forward vision for Phase 5 of Ouroboros: transforming agents into adaptive, observant, and partially autonomous nodes that work *with* the server, not *for* it. These ideas extend the Sync Extensions model by elevating both agent responsibility and server strategy.
 
 The goal is a smarter, more cooperative distributed cracking system — one that adapts to real-world conditions, anticipates failure, and evolves over time.
 
@@ -225,4 +225,4 @@ Server uses this to prefilter `/pickup` results.
 
 ## Summary
 
-By promoting the agent to an active peer — one that communicates, adapts, and recovers — CipherSwarm unlocks a new generation of distributed cracking. This vision puts control where it belongs: in the hands of the orchestrator, informed by smart, situationally aware agents.
+By promoting the agent to an active peer — one that communicates, adapts, and recovers — Ouroboros unlocks a new generation of distributed cracking. This vision puts control where it belongs: in the hands of the orchestrator, informed by smart, situationally aware agents.

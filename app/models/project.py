@@ -1,4 +1,4 @@
-"""Project model and association table for CipherSwarm workspaces/campaigns."""
+"""Project model and association table for Ouroboros workspaces/campaigns."""
 
 import enum
 from datetime import datetime

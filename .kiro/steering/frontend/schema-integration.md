@@ -66,7 +66,7 @@ export type CampaignRead = z.infer<typeof CampaignReadSchema>;
 export const PaginationMetaSchema = z.object({
     total_count: z.number().int(),
     page: z.number().int(),
-    page_size: z.number().int(), 
+    page_size: z.number().int(),
     total_pages: z.number().int(),
 });
 
@@ -90,11 +90,11 @@ export const campaignsStore = {
     async loadCampaigns(page = 1) {
         try {
             const response = await api.get(`/api/v1/web/campaigns/?page=${page}`);
-            
+
             // Always parse API responses
             const data = CampaignListResponseSchema.parse(response.data);
             this.hydrate(data);
-            
+
         } catch (error) {
             if (error instanceof z.ZodError) {
                 console.error('Schema validation failed:', error.errors);
@@ -117,14 +117,14 @@ async createCampaign(formData: unknown) {
     try {
         // Validate form data against schema
         const validatedData = CampaignCreateSchema.parse(formData);
-        
+
         const response = await api.post('/api/v1/web/campaigns/', validatedData);
         const newCampaign = CampaignReadSchema.parse(response.data);
-        
+
         // Update store state
         campaignState.campaigns = [...campaignState.campaigns, newCampaign];
         return newCampaign;
-        
+
     } catch (error) {
         if (error instanceof z.ZodError) {
             // Return validation errors for form display
@@ -148,7 +148,7 @@ export interface CampaignItem extends CampaignRead {
     // Override optional fields to be required for UI consistency
     priority: number;           // Make required (was optional)
     is_unavailable: boolean;    // Make required (was optional)
-    
+
     // Add UI-specific computed fields
     attacks: unknown[];
     progress: number;
@@ -177,13 +177,13 @@ import { toCampaignItem } from '$lib/types/campaign';
 
 export const load: PageServerLoad = async ({ cookies }) => {
     const response = await serverApi.get('/api/v1/web/campaigns/');
-    
+
     // Parse with schema first
     const campaignsData = CampaignListResponseSchema.parse(response.data);
-    
+
     // Transform to UI types
     const transformedCampaigns = campaignsData.items.map(toCampaignItem);
-    
+
     return {
         campaigns: {
             ...campaignsData,
@@ -201,7 +201,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 // src/lib/schemas/base.ts
 export const TaskStatusSchema = z.enum([
     'pending',
-    'running', 
+    'running',
     'paused',
     'completed',
     'failed',
@@ -219,9 +219,9 @@ export const TASK_STATUS_OPTIONS = TaskStatusSchema.options;
 ```svelte
 <script lang="ts">
     import { TASK_STATUS_OPTIONS, type TaskStatus } from '$lib/schemas/base';
-    
+
     let { status }: { status: TaskStatus } = $props();
-    
+
     function getStatusColor(status: TaskStatus) {
         switch (status) {
             case 'running': return 'bg-green-600';
@@ -248,12 +248,12 @@ export const TASK_STATUS_OPTIONS = TaskStatusSchema.options;
 // ✅ CORRECT - Process Zod validation errors for UI display
 export function processValidationErrors(error: z.ZodError): Record<string, string> {
     const fieldErrors: Record<string, string> = {};
-    
+
     error.errors.forEach((err) => {
         const fieldPath = err.path.join('.');
         fieldErrors[fieldPath] = err.message;
     });
-    
+
     return fieldErrors;
 }
 
@@ -314,7 +314,7 @@ export function createMockCampaign(overrides: Partial<CampaignRead> = {}): Campa
         hash_list_id: 1,
         ...overrides
     };
-    
+
     // Validate mock data against schema
     return CampaignReadSchema.parse(mockData);
 }
@@ -335,16 +335,16 @@ describe('CampaignCreateSchema', () => {
             project_id: 1,
             hash_list_id: 1
         };
-        
+
         expect(() => CampaignCreateSchema.parse(validData)).not.toThrow();
     });
-    
+
     it('rejects invalid campaign data', () => {
         const invalidData = {
             name: '', // Empty name should fail
             project_id: 'invalid' // Wrong type
         };
-        
+
         expect(() => CampaignCreateSchema.parse(invalidData)).toThrow();
     });
 });
@@ -362,7 +362,7 @@ export function cachedParse<T>(schema: z.ZodSchema<T>, data: unknown, key: strin
     if (schemaCache.has(key)) {
         return schemaCache.get(key) as T;
     }
-    
+
     const parsed = schema.parse(data);
     schemaCache.set(key, parsed);
     return parsed;
@@ -443,7 +443,7 @@ try {
 
 ## File References
 
-- Schema definitions: [campaigns.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/schemas/campaigns.ts)
-- Type adapters: [campaign.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/types/campaign.ts)
-- Store integration: [campaigns.svelte.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/stores/campaigns.svelte.ts)
-- OpenAPI contract: [current_api_openapi.json](mdc:CipherSwarm/CipherSwarm/contracts/current_api_openapi.json)
+- Schema definitions: [campaigns.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/schemas/campaigns.ts)
+- Type adapters: [campaign.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/types/campaign.ts)
+- Store integration: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
+- OpenAPI contract: [current_api_openapi.json](mdc:Ouroboros/Ouroboros/contracts/current_api_openapi.json)

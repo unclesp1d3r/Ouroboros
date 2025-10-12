@@ -122,7 +122,7 @@ test.describe('Attacks List Page', () => {
         await page.goto('/attacks');
 
         // Check page title
-        await expect(page).toHaveTitle('Attacks - CipherSwarm');
+        await expect(page).toHaveTitle('Attacks - Ouroboros');
 
         // Check main heading
         await expect(page.getByRole('heading', { name: 'Attacks' })).toBeVisible();

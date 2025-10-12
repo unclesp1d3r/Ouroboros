@@ -158,7 +158,7 @@ async def get_new_task_v1(
     authorization: Annotated[str, Header(alias="Authorization")],
 ) -> Response:
     try:
-        task = await assign_task_service(db, authorization, "CipherSwarm-Agent/1.0.0")
+        task = await assign_task_service(db, authorization, "Ouroboros-Agent/1.0.0")
         if task is None:
             return Response(status_code=status.HTTP_204_NO_CONTENT)
         return JSONResponse(

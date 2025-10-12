@@ -46,7 +46,7 @@ describe('Configuration System', () => {
             expect(config.publicApiBaseUrl).toBe('http://localhost:8000');
             expect(config.tokenExpireMinutes).toBe(60);
             expect(config.debug).toBe(false);
-            expect(config.appName).toBe('CipherSwarm');
+            expect(config.appName).toBe('Ouroboros');
             expect(config.appVersion).toBe('2.0.0');
             expect(config.enableExperimentalFeatures).toBe(false);
         });
@@ -66,7 +66,7 @@ describe('Configuration System', () => {
                     API_BASE_URL: 'http://api.example.com',
                     VITE_TOKEN_EXPIRE_MINUTES: '120',
                     VITE_DEBUG: 'true',
-                    VITE_APP_NAME: 'CipherSwarm Dev',
+                    VITE_APP_NAME: 'Ouroboros Dev',
                     VITE_APP_VERSION: '2.1.0',
                     VITE_ENABLE_EXPERIMENTAL_FEATURES: 'true',
                 },
@@ -87,7 +87,7 @@ describe('Configuration System', () => {
             expect(config.apiBaseUrl).toBe('http://api.example.com');
             expect(config.tokenExpireMinutes).toBe(120);
             expect(config.debug).toBe(true);
-            expect(config.appName).toBe('CipherSwarm Dev');
+            expect(config.appName).toBe('Ouroboros Dev');
             expect(config.appVersion).toBe('2.1.0');
             expect(config.enableExperimentalFeatures).toBe(true);
         });
@@ -336,7 +336,7 @@ describe('Configuration System', () => {
 
                 vi.doMock('$env/dynamic/private', () => ({
                     env: {
-                        VITE_APP_NAME: 'CipherSwarm Dev',
+                        VITE_APP_NAME: 'Ouroboros Dev',
                         VITE_DEBUG: 'false',
                     },
                 }));
@@ -371,7 +371,7 @@ describe('Configuration System', () => {
                 vi.doMock('$env/dynamic/private', () => ({
                     env: {
                         VITE_DEBUG: 'false',
-                        VITE_APP_NAME: 'CipherSwarm',
+                        VITE_APP_NAME: 'Ouroboros',
                     },
                 }));
 

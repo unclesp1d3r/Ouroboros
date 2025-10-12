@@ -1,4 +1,4 @@
-# CipherSwarm Template Salvage Plan (HTMX to SvelteKit)
+# Ouroboros Template Salvage Plan (HTMX to SvelteKit)
 
 This document lists all templates in `templates/**/*.html.j2` and provides a recommendation for each: **Refactor as Svelte component** (with context) or **Discard** (with rationale). Use this as a migration checklist for the SvelteKit UI rewrite. All Svelte components must comply with the SvelteKit v5 (@svelte-runes) and Tailwind v4 idioms and best practices, and must be tested with `just frontend-check`.
 
@@ -8,7 +8,7 @@ This document lists all templates in `templates/**/*.html.j2` and provides a rec
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=3 --minlevel=1 -->
 
-- [CipherSwarm Template Salvage Plan (HTMX to SvelteKit)](#cipherswarm-template-salvage-plan-htmx-to-sveltekit)
+- [Ouroboros Template Salvage Plan (HTMX to SvelteKit)](#ouroboros-template-salvage-plan-htmx-to-sveltekit)
   - [Table of Contents](#table-of-contents)
   - [Migration Conventions & Clarifications](#migration-conventions--clarifications)
   - [Additional Migration Guidance (Clarifications)](#additional-migration-guidance-clarifications)
@@ -258,7 +258,7 @@ Due to the frontend being mounted as a static site by FastAPI, the frontend is p
 
 ## Fragments (General UI)
 
-- [x] **fragments/alert.html.j2** → **Refactor as Svelte component** - `task_id:salvage_templates.fragments_alert_html_j2` (✅ **COMPLETED**: Implemented comprehensive toast utility functions using svelte-sonner. Removed redundant custom Alert component in favor of existing Shadcn-Svelte Alert and Sonner toast components. Added specialized toast functions for CipherSwarm events (hash cracking, agent status, campaign status). All tests passing.)
+- [x] **fragments/alert.html.j2** → **Refactor as Svelte component** - `task_id:salvage_templates.fragments_alert_html_j2` (✅ **COMPLETED**: Implemented comprehensive toast utility functions using svelte-sonner. Removed redundant custom Alert component in favor of existing Shadcn-Svelte Alert and Sonner toast components. Added specialized toast functions for Ouroboros events (hash cracking, agent status, campaign status). All tests passing.)
 
   - _Context_: Alert/toast/notification. Use Shadcn-Svelte Toast or Alert component.
   - **References:**

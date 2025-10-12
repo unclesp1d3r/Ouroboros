@@ -1,6 +1,6 @@
-# CipherSwarm: Skirmish Implementation Guide - Progress, Compatibility, and Task Assignment
+# Ouroboros: Skirmish Implementation Guide - Progress, Compatibility, and Task Assignment
 
-This guide documents key algorithms from the legacy CipherSwarm system that must be reimplemented or updated for the new FastAPI + PostgreSQL backend. It provides functional requirements and implementation notes for Skirmish.
+This guide documents key algorithms from the legacy Ouroboros system that must be reimplemented or updated for the new FastAPI + PostgreSQL backend. It provides functional requirements and implementation notes for Skirmish.
 
 ---
 
@@ -56,7 +56,7 @@ Hashcat benchmarks are performance tests that measure how many hashes per second
 - Are used to **determine eligibility for specific attacks**
 - Provide **relative performance estimates** that can be used for **load balancing**
 
-This allows CipherSwarm to distribute work intelligently, avoiding weaker agents for resource-heavy tasks and splitting work proportionally across stronger ones.
+This allows Ouroboros to distribute work intelligently, avoiding weaker agents for resource-heavy tasks and splitting work proportionally across stronger ones.
 
 ### 💡 Implementation
 
@@ -206,7 +206,7 @@ Use indexes on `HashItem.cracked` for performance.
 
 ### ✅ Functionality
 
-Estimate the total keyspace for a given attack configuration. This enables CipherSwarm to:
+Estimate the total keyspace for a given attack configuration. This enables Ouroboros to:
 
 - Predict total cracking time
 - Support progress tracking and weighted aggregation
@@ -341,5 +341,5 @@ class AttackResources:
 
 ---
 
-This guide is intended to serve as a reference and contract for implementing CipherSwarm's orchestration logic in a stateless API model using FastAPI and SQLAlchemy.
+This guide is intended to serve as a reference and contract for implementing Ouroboros's orchestration logic in a stateless API model using FastAPI and SQLAlchemy.
 rSwarm's orchestration logic in a stateless API model using FastAPI and SQLAlchemy.

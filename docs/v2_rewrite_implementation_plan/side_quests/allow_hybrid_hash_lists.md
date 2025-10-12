@@ -23,7 +23,7 @@
 
 ## Intent
 
-CipherSwarm v1 (and v2 so far) assumes a single `hash_type_id` per `HashList`, which fails in real-world scenarios like shadow files containing a mixture of bcrypt, yescrypt, and sha512crypt hashes. This change introduces minimal support for mixed-type hashlists by associating the `hash_type_id` with each individual `HashItem`, while preserving the v1 Agent API contract completely.
+Ouroboros v1 (and v2 so far) assumes a single `hash_type_id` per `HashList`, which fails in real-world scenarios like shadow files containing a mixture of bcrypt, yescrypt, and sha512crypt hashes. This change introduces minimal support for mixed-type hashlists by associating the `hash_type_id` with each individual `HashItem`, while preserving the v1 Agent API contract completely.
 
 Agents must still receive a single `Task` with:
 

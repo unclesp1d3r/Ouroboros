@@ -2,7 +2,7 @@
 
 ## inclusion: fileMatch fileMatchPattern: [app/schemas/\*\*/\*.py]
 
-# Pydantic Schema Patterns for CipherSwarm
+# Pydantic Schema Patterns for Ouroboros
 
 ## Schema Organization and Structure
 

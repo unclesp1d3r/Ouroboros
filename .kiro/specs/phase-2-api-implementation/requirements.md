@@ -2,15 +2,15 @@
 
 ## Introduction
 
-The Phase 2 API Implementation represents the complete backend API architecture for CipherSwarm, providing comprehensive REST interfaces for all system interactions. This phase encompasses three distinct API surfaces: the Agent API for distributed hashcat instances, the Web UI API for the SvelteKit frontend, and the Control API for CLI/automation tools. Together, these APIs enable secure, scalable, and efficient coordination of distributed password cracking operations across multiple machines and user interfaces.
+The Phase 2 API Implementation represents the complete backend API architecture for Ouroboros, providing comprehensive REST interfaces for all system interactions. This phase encompasses three distinct API surfaces: the Agent API for distributed hashcat instances, the Web UI API for the SvelteKit frontend, and the Control API for CLI/automation tools. Together, these APIs enable secure, scalable, and efficient coordination of distributed password cracking operations across multiple machines and user interfaces.
 
-Phase 2 builds upon the core infrastructure established in Phase 1, implementing the service layer architecture, authentication systems, and business logic required to support the full CipherSwarm feature set. The implementation prioritizes backward compatibility with existing v1 agent integrations while introducing modern FastAPI patterns, comprehensive validation, and real-time capabilities.
+Phase 2 builds upon the core infrastructure established in Phase 1, implementing the service layer architecture, authentication systems, and business logic required to support the full Ouroboros feature set. The implementation prioritizes backward compatibility with existing v1 agent integrations while introducing modern FastAPI patterns, comprehensive validation, and real-time capabilities.
 
 ## Requirements
 
 ### Requirement 1: Agent API Legacy Compatibility and Task Distribution
 
-**User Story:** As a CipherSwarm agent running legacy v1 software, I want seamless compatibility with the new FastAPI backend, so that I can continue operating without requiring immediate upgrades.
+**User Story:** As a Ouroboros agent running legacy v1 software, I want seamless compatibility with the new FastAPI backend, so that I can continue operating without requiring immediate upgrades.
 
 #### Acceptance Criteria
 
@@ -24,7 +24,7 @@ Phase 2 builds upon the core infrastructure established in Phase 1, implementing
 
 ### Requirement 2: Web UI API Comprehensive Frontend Support
 
-**User Story:** As a security analyst using the CipherSwarm web interface, I want a rich, responsive API that supports all frontend functionality, so that I can efficiently manage campaigns, attacks, and resources through an intuitive interface.
+**User Story:** As a security analyst using the Ouroboros web interface, I want a rich, responsive API that supports all frontend functionality, so that I can efficiently manage campaigns, attacks, and resources through an intuitive interface.
 
 #### Acceptance Criteria
 
@@ -38,7 +38,7 @@ Phase 2 builds upon the core infrastructure established in Phase 1, implementing
 
 ### Requirement 3: Control API Programmatic Access and Automation
 
-**User Story:** As a system administrator building automation tools, I want a comprehensive programmatic API with consistent responses and error handling, so that I can integrate CipherSwarm into automated workflows and monitoring systems.
+**User Story:** As a system administrator building automation tools, I want a comprehensive programmatic API with consistent responses and error handling, so that I can integrate Ouroboros into automated workflows and monitoring systems.
 
 #### Acceptance Criteria
 
@@ -80,7 +80,7 @@ Phase 2 builds upon the core infrastructure established in Phase 1, implementing
 
 ### Requirement 6: Service Layer Architecture and Code Reuse
 
-**User Story:** As a developer maintaining CipherSwarm, I want consistent business logic across all API interfaces, so that behavior remains predictable and maintenance is simplified.
+**User Story:** As a developer maintaining Ouroboros, I want consistent business logic across all API interfaces, so that behavior remains predictable and maintenance is simplified.
 
 #### Acceptance Criteria
 
@@ -150,7 +150,7 @@ Phase 2 builds upon the core infrastructure established in Phase 1, implementing
 
 ### Requirement 11: Comprehensive Testing and Validation
 
-**User Story:** As a developer contributing to CipherSwarm, I want comprehensive test coverage and validation, so that I can confidently make changes without breaking existing functionality.
+**User Story:** As a developer contributing to Ouroboros, I want comprehensive test coverage and validation, so that I can confidently make changes without breaking existing functionality.
 
 #### Acceptance Criteria
 
@@ -164,7 +164,7 @@ Phase 2 builds upon the core infrastructure established in Phase 1, implementing
 
 ### Requirement 12: Documentation and API Reference
 
-**User Story:** As a developer integrating with CipherSwarm APIs, I want comprehensive documentation and examples, so that I can understand and use the APIs effectively.
+**User Story:** As a developer integrating with Ouroboros APIs, I want comprehensive documentation and examples, so that I can understand and use the APIs effectively.
 
 #### Acceptance Criteria
 
@@ -206,7 +206,7 @@ Phase 2 builds upon the core infrastructure established in Phase 1, implementing
 
 ### Requirement 15: Extensibility and Plugin Architecture
 
-**User Story:** As a developer extending CipherSwarm functionality, I want a clean plugin architecture and extension points, so that I can add custom features without modifying core code.
+**User Story:** As a developer extending Ouroboros functionality, I want a clean plugin architecture and extension points, so that I can add custom features without modifying core code.
 
 #### Acceptance Criteria
 

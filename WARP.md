@@ -1,8 +1,8 @@
 This file provides guidance to WARP (warp.dev) when working with code in this repository.
 
-# CipherSwarm Developer Guide for WARP
+# Ouroboros Developer Guide for WARP
 
-Authoritative "rules of engagement" for AI assistants and contributors working in the CipherSwarm distributed password cracking management system. This file complements `AGENTS.md`, `GEMINI.md`, and `.cursor/rules`.
+Authoritative "rules of engagement" for AI assistants and contributors working in the Ouroboros distributed password cracking management system. This file complements `AGENTS.md`, `GEMINI.md`, and `.cursor/rules`.
 
 **🚨 Golden Rules:**
 
@@ -90,7 +90,7 @@ Prefer targeted test suites locally (see [Testing Strategy](#testing-strategy)) 
 
 ## Architecture Snapshot
 
-CipherSwarm is a distributed password cracking platform built on modern web technologies:
+Ouroboros is a distributed password cracking platform built on modern web technologies:
 
 **Backend:** FastAPI (Python 3.13+), SQLAlchemy 2.0 (async), Alembic, Pydantic v2, Celery, Redis, Cashews caching, MinIO object storage, loguru logging
 
@@ -121,7 +121,7 @@ For detailed architecture, see `AGENTS.md` sections 2-3 and `.kiro/steering/` do
 ### Agent API v1 (`/api/v1/client/*`) - **IMMUTABLE**
 
 - **Contract:** Must exactly match `contracts/v1_api_swagger.json` (PROTECTED file)
-- **Compatibility:** No breaking changes allowed - mirrors Ruby-on-Rails CipherSwarm
+- **Compatibility:** No breaking changes allowed - mirrors Ruby-on-Rails Ouroboros
 - **Testing:** All responses must validate against OpenAPI specification
 - **Error Format:** Legacy envelope structure via v1 HTTPException handler
 
@@ -277,7 +277,7 @@ except CampaignNotFoundError:
 
 ## Testing Strategy
 
-CipherSwarm uses a **three-tier testing architecture**:
+Ouroboros uses a **three-tier testing architecture**:
 
 ### Tier 1: Backend (`just test-backend`)
 
@@ -396,7 +396,7 @@ From `docker-compose.yml` and `docker-compose.dev.yml`:
 
 ### Git Workflow - V2-Primary Development
 
-CipherSwarm uses a **streamlined workflow** focused on v2 development with v1 archived for reference:
+Ouroboros uses a **streamlined workflow** focused on v2 development with v1 archived for reference:
 
 #### Branch Strategy
 
@@ -546,4 +546,4 @@ Before considering this WARP.md complete:
 
 ---
 
-Built with ❤️ for efficient AI-assisted development on CipherSwarm
+Built with ❤️ for efficient AI-assisted development on Ouroboros

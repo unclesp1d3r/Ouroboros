@@ -1,6 +1,6 @@
 # System Components
 
-This document details the core components of the CipherSwarm system and their current implementation status.
+This document details the core components of the Ouroboros system and their current implementation status.
 
 ## FastAPI Backend
 
@@ -200,20 +200,20 @@ erDiagram
     Project ||--o{ Agent : "assigned to"
     Project ||--o{ HashList : contains
     Project ||--o{ AttackResourceFile : "owns (optional)"
-    
+
     Campaign ||--o{ Attack : contains
     Campaign ||--|| HashList : targets
-    
+
     Attack ||--o{ Task : generates
     Attack ||--o{ AttackResourceFile : uses
     Attack ||--o{ CrackResult : produces
-    
+
     Task ||--|| Agent : "assigned to"
     Task ||--o{ CrackResult : produces
-    
+
     HashList ||--o{ HashItem : contains
     HashItem ||--o{ CrackResult : "cracked as"
-    
+
     Agent ||--o{ Task : executes
     Agent ||--o{ AgentError : reports
     Agent ||--o{ HashcatBenchmark : "has benchmarks"
@@ -450,7 +450,7 @@ class StorageService:
 ### Bucket Structure
 
 ```text
-cipherswarm-resources/
+ouroboros-resources/
 ├── wordlists/
 │   ├── {uuid}/rockyou.txt
 │   └── {uuid}/custom-wordlist.txt
@@ -523,7 +523,7 @@ export const campaignUpdates = writable<CampaignUpdate[]>([]);
 
 if (browser) {
     const eventSource = new EventSource('/api/v1/web/live/campaigns');
-    
+
     eventSource.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.trigger === 'refresh') {
@@ -536,7 +536,7 @@ if (browser) {
 // Component usage
 <script lang="ts">
     import { campaignUpdates } from '$lib/stores/events';
-    
+
     $: if ($campaignUpdates.length > 0) {
         // Handle real-time updates
         updateCampaignData();

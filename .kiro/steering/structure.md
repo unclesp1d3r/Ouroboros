@@ -1,9 +1,9 @@
-# CipherSwarm Project Structure
+# Ouroboros Project Structure
 
 ## Root Directory Layout
 
 ```
-CipherSwarm/
+Ouroboros/
 ├── app/                    # Backend Python application
 ├── frontend/               # SvelteKit frontend application
 ├── alembic/               # Database migrations

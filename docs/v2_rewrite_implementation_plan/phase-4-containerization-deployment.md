@@ -1,6 +1,6 @@
 # Phase 4: Containerization and Deployment
 
-This document outlines the implementation plan for containerizing CipherSwarm and deploying the full stack using Docker and Docker Compose, following CipherSwarm's Docker standards and [FastAPI Docker Best Practices](https://fastapi.tiangolo.com/deployment/docker/).
+This document outlines the implementation plan for containerizing Ouroboros and deploying the full stack using Docker and Docker Compose, following Ouroboros's Docker standards and [FastAPI Docker Best Practices](https://fastapi.tiangolo.com/deployment/docker/).
 
 ---
 
@@ -20,9 +20,9 @@ This document outlines the implementation plan for containerizing CipherSwarm an
 
 ## Context
 
-- **Goal:** Enable reproducible, secure, and efficient deployment of CipherSwarm using containers.
+- **Goal:** Enable reproducible, secure, and efficient deployment of Ouroboros using containers.
 - **Scope:** FastAPI app, PostgreSQL, MinIO, and Nginx (for production), with optional Redis for caching, with development and production configurations.
-- **Critical Standards (from CipherSwarm Docker Guidelines):**
+- **Critical Standards (from Ouroboros Docker Guidelines):**
   - **FastAPI Application:**
     - Python 3.13 base image
     - Use `uv` for dependency management

@@ -1,1 +1,1 @@
-"""Scripts package for CipherSwarm."""
+"""Scripts package for Ouroboros."""

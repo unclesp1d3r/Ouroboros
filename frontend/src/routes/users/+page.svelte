@@ -123,7 +123,7 @@
 </script>
 
 <svelte:head>
-    <title>Users - CipherSwarm</title>
+    <title>Users - Ouroboros</title>
 </svelte:head>
 
 <div class="container mx-auto p-6">

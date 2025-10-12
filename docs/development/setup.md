@@ -1,6 +1,6 @@
 # Development Setup
 
-This guide covers setting up your development environment for CipherSwarm
+This guide covers setting up your development environment for Ouroboros
 
 ---
 
@@ -48,8 +48,8 @@ This guide covers setting up your development environment for CipherSwarm
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/cipherswarm.git
-   cd cipherswarm
+   git clone https://github.com/yourusername/ouroboros.git
+   cd ouroboros
    ```
 
 2. **Create Virtual Environment**
@@ -126,7 +126,7 @@ ENVIRONMENT=development
 DEBUG=true
 
 # Database
-DATABASE_URL=postgresql+asyncpg://cipherswarm:development@localhost:5432/cipherswarm_dev
+DATABASE_URL=postgresql+asyncpg://ouroboros:development@localhost:5432/cipherswarm_dev
 
 # Redis
 REDIS_URL=redis://localhost:6379/0

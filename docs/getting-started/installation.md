@@ -1,8 +1,8 @@
 # Installation Guide
 
-This guide will help you install and deploy CipherSwarm for production use. CipherSwarm is a distributed password cracking management system that coordinates multiple hashcat instances across your network.
+This guide will help you install and deploy Ouroboros for production use. Ouroboros is a distributed password cracking management system that coordinates multiple hashcat instances across your network.
 
-> **Important**: CipherSwarm is currently in active development. Docker-based deployment is planned for a future release. This guide covers the current installation method suitable for production deployment.
+> **Important**: Ouroboros is currently in active development. Docker-based deployment is planned for a future release. This guide covers the current installation method suitable for production deployment.
 
 ---
 
@@ -75,23 +75,23 @@ This guide will help you install and deploy CipherSwarm for production use. Ciph
 
 ### 1. Create System User
 
-Create a dedicated user for CipherSwarm:
+Create a dedicated user for Ouroboros:
 
 ```bash
-# Create cipherswarm user
-sudo useradd -m -s /bin/bash cipherswarm
-sudo usermod -aG sudo cipherswarm
+# Create ouroboros user
+sudo useradd -m -s /bin/bash ouroboros
+sudo usermod -aG sudo ouroboros
 
-# Switch to cipherswarm user
-sudo su - cipherswarm
+# Switch to ouroboros user
+sudo su - ouroboros
 ```
 
-### 2. Download and Setup CipherSwarm
+### 2. Download and Setup Ouroboros
 
 ```bash
 # Clone the repository
-git clone https://github.com/unclesp1d3r/CipherSwarm.git
-cd CipherSwarm
+git clone https://github.com/unclesp1d3r/Ouroboros.git
+cd Ouroboros
 
 # Install dependencies
 uv sync
@@ -106,10 +106,10 @@ uv sync
 sudo -u postgres psql
 
 # Create database and user
-CREATE DATABASE cipherswarm;
-CREATE USER cipherswarm WITH PASSWORD 'your_secure_password_here';
-GRANT ALL PRIVILEGES ON DATABASE cipherswarm TO cipherswarm;
-ALTER USER cipherswarm CREATEDB;  -- Needed for migrations
+CREATE DATABASE ouroboros;
+CREATE USER ouroboros WITH PASSWORD 'your_secure_password_here';
+GRANT ALL PRIVILEGES ON DATABASE ouroboros TO ouroboros;
+ALTER USER ouroboros CREATEDB;  -- Needed for migrations
 \q
 ```
 
@@ -130,9 +130,9 @@ ACCESS_TOKEN_EXPIRE_MINUTES=60
 
 # Database Configuration
 POSTGRES_SERVER=localhost
-POSTGRES_USER=cipherswarm
+POSTGRES_USER=ouroboros
 POSTGRES_PASSWORD=your_secure_password_here
-POSTGRES_DB=cipherswarm
+POSTGRES_DB=ouroboros
 
 # Initial Admin User - CHANGE THESE VALUES
 FIRST_SUPERUSER=admin@yourdomain.com
@@ -155,13 +155,13 @@ ENABLE_ADDITIONAL_HASH_TYPES=false
 MINIO_ENDPOINT=localhost:9000
 MINIO_ACCESS_KEY=your_minio_access_key
 MINIO_SECRET_KEY=your_minio_secret_key
-MINIO_BUCKET=cipherswarm-resources
+MINIO_BUCKET=ouroboros-resources
 MINIO_SECURE=false
 
 # Logging Configuration
 LOG_LEVEL=INFO
 LOG_TO_FILE=true
-LOG_FILE_PATH=/var/log/cipherswarm/app.log
+LOG_FILE_PATH=/var/log/ouroboros/app.log
 LOG_RETENTION=30 days
 LOG_ROTATION=100 MB
 
@@ -193,9 +193,9 @@ sudo mv minio /usr/local/bin/
 
 # Create data directory
 sudo mkdir -p /opt/minio/data
-sudo chown cipherswarm:cipherswarm /opt/minio/data
+sudo chown ouroboros:ouroboros /opt/minio/data
 
-# Start MinIO (as cipherswarm user)
+# Start MinIO (as ouroboros user)
 minio server /opt/minio/data --console-address ":9001"
 ```
 
@@ -203,26 +203,26 @@ minio server /opt/minio/data --console-address ":9001"
 
 - Access MinIO Console: <http://your-server:9001>
 - Login with your MinIO credentials
-- Create bucket: `cipherswarm-resources`
+- Create bucket: `ouroboros-resources`
 - Set appropriate access policies
 
 ### 5. Create System Service
 
-Create a systemd service for CipherSwarm:
+Create a systemd service for Ouroboros:
 
 ```bash
-sudo tee /etc/systemd/system/cipherswarm.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/ouroboros.service > /dev/null <<EOF
 [Unit]
-Description=CipherSwarm Password Cracking Management System
+Description=Ouroboros Password Cracking Management System
 After=network.target postgresql.service redis.service
 
 [Service]
 Type=simple
-User=cipherswarm
-Group=cipherswarm
-WorkingDirectory=/home/cipherswarm/CipherSwarm
-Environment=PATH=/home/cipherswarm/CipherSwarm/.venv/bin
-ExecStart=/home/cipherswarm/CipherSwarm/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+User=ouroboros
+Group=ouroboros
+WorkingDirectory=/home/ouroboros/Ouroboros
+Environment=PATH=/home/ouroboros/Ouroboros/.venv/bin
+ExecStart=/home/ouroboros/Ouroboros/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
 Restart=always
 RestartSec=10
 
@@ -232,8 +232,8 @@ EOF
 
 # Enable and start the service
 sudo systemctl daemon-reload
-sudo systemctl enable cipherswarm
-sudo systemctl start cipherswarm
+sudo systemctl enable ouroboros
+sudo systemctl start ouroboros
 ```
 
 ### 6. Setup Reverse Proxy (Recommended)
@@ -246,7 +246,7 @@ sudo apt update
 sudo apt install nginx
 
 # Create Nginx configuration
-sudo tee /etc/nginx/sites-available/cipherswarm > /dev/null <<EOF
+sudo tee /etc/nginx/sites-available/ouroboros > /dev/null <<EOF
 server {
     listen 80;
     server_name your-domain.com;  # Replace with your domain
@@ -276,7 +276,7 @@ server {
 EOF
 
 # Enable the site
-sudo ln -s /etc/nginx/sites-available/cipherswarm /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/ouroboros /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
@@ -286,11 +286,11 @@ sudo systemctl restart nginx
 ### 1. Check Services
 
 ```bash
-# Check CipherSwarm service
-sudo systemctl status cipherswarm
+# Check Ouroboros service
+sudo systemctl status ouroboros
 
 # Check database connection
-psql -U cipherswarm -d cipherswarm -h localhost -c "SELECT version();"
+psql -U ouroboros -d ouroboros -h localhost -c "SELECT version();"
 
 # Check Redis (if using)
 redis-cli ping
@@ -320,7 +320,7 @@ sudo ufw allow ssh
 sudo ufw allow 80
 sudo ufw allow 443
 
-# Allow CipherSwarm port (if not using reverse proxy)
+# Allow Ouroboros port (if not using reverse proxy)
 sudo ufw allow 8000
 
 # Enable firewall
@@ -356,19 +356,19 @@ sudo crontab -e
 ### 1. Updates
 
 ```bash
-# Update CipherSwarm
-cd /home/cipherswarm/CipherSwarm
+# Update Ouroboros
+cd /home/ouroboros/Ouroboros
 git pull origin main
 uv sync
 uv run alembic upgrade head
-sudo systemctl restart cipherswarm
+sudo systemctl restart ouroboros
 ```
 
 ### 2. Backups
 
 ```bash
 # Database backup
-pg_dump -U cipherswarm -h localhost cipherswarm > backup_$(date +%Y%m%d).sql
+pg_dump -U ouroboros -h localhost ouroboros > backup_$(date +%Y%m%d).sql
 
 # MinIO backup
 # Use MinIO client (mc) or your preferred backup solution
@@ -378,10 +378,10 @@ pg_dump -U cipherswarm -h localhost cipherswarm > backup_$(date +%Y%m%d).sql
 
 ```bash
 # Check logs
-sudo journalctl -u cipherswarm -f
+sudo journalctl -u ouroboros -f
 
 # Check application logs
-tail -f /var/log/cipherswarm/app.log
+tail -f /var/log/ouroboros/app.log
 
 # Monitor system resources
 htop
@@ -396,25 +396,25 @@ htop
 sudo systemctl status postgresql
 
 # Test connection
-psql -U cipherswarm -d cipherswarm -h localhost
+psql -U ouroboros -d ouroboros -h localhost
 ```
 
 ### 2. Permission Issues
 
 ```bash
 # Fix file permissions
-sudo chown -R cipherswarm:cipherswarm /home/cipherswarm/CipherSwarm
-sudo chmod -R 755 /home/cipherswarm/CipherSwarm
+sudo chown -R ouroboros:ouroboros /home/ouroboros/Ouroboros
+sudo chmod -R 755 /home/ouroboros/Ouroboros
 ```
 
 ### 3. Service Won't Start
 
 ```bash
 # Check service logs
-sudo journalctl -u cipherswarm -n 50
+sudo journalctl -u ouroboros -n 50
 
 # Check configuration
-cd /home/cipherswarm/CipherSwarm
+cd /home/ouroboros/Ouroboros
 uv run python -c "from app.core.config import settings; print('Config loaded successfully')"
 ```
 
@@ -442,7 +442,7 @@ See the [Quick Start Guide](quick-start.md) for a walkthrough of these steps.
 ## Production Notes
 
 - **Performance**: Consider using a dedicated database server for large deployments
-- **Scaling**: Multiple CipherSwarm instances can share the same database and MinIO
+- **Scaling**: Multiple Ouroboros instances can share the same database and MinIO
 - **Monitoring**: Implement proper monitoring and alerting for production use
 - **Backup**: Establish regular backup procedures for database and MinIO data
 - **Security**: Follow security best practices for your environment
@@ -453,5 +453,5 @@ If you encounter issues:
 
 1. Check the [Troubleshooting Guide](../user-guide/troubleshooting.md)
 2. Review the logs for error messages
-3. Search [GitHub Issues](https://github.com/unclesp1d3r/CipherSwarm/issues)
+3. Search [GitHub Issues](https://github.com/unclesp1d3r/Ouroboros/issues)
 4. Create a new issue with detailed information about your problem

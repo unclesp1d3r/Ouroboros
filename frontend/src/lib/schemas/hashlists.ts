@@ -1,5 +1,5 @@
 /**
- * Hash list schemas for CipherSwarm
+ * Hash list schemas for Ouroboros
  * Used by /api/v1/web/hash_lists/* endpoints
  * Based on authoritative backend API schema
  */

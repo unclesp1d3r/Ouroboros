@@ -1,6 +1,6 @@
 # Addendum: Full Testing Architecture Implementation (Post-SSR Migration)
 
-This document defines the three-layer test system for CipherSwarm, aligned to use **Python 3.13 + `uv`**, **Node + `pnpm`**, and **Docker**.
+This document defines the three-layer test system for Ouroboros, aligned to use **Python 3.13 + `uv`**, **Node + `pnpm`**, and **Docker**.
 
 ---
 
@@ -36,7 +36,7 @@ This document defines the three-layer test system for CipherSwarm, aligned to us
 
 ## Intent
 
-As we transition the CipherSwarm frontend from a mocked SPA-style workflow to a server-rendered SvelteKit application backed by real API calls, it's critical that our test architecture evolves in parallel. This task formalizes a three-tiered test strategy to ensure quality at every layer of the stack: fast backend tests for core logic, frontend tests with mocked APIs for UX and layout, and a new full-stack E2E test layer driven by Playwright against real Dockerized backend services. These tiers will be orchestrated via `just` recipes so developers can test only what they're working on, while `just ci-check` runs the full suite to catch regressions before merge or release. We should implement this with flexibility, reusing existing patterns where possible, while ensuring each layer is isolated, deterministic, and fully automated.
+As we transition the Ouroboros frontend from a mocked SPA-style workflow to a server-rendered SvelteKit application backed by real API calls, it's critical that our test architecture evolves in parallel. This task formalizes a three-tiered test strategy to ensure quality at every layer of the stack: fast backend tests for core logic, frontend tests with mocked APIs for UX and layout, and a new full-stack E2E test layer driven by Playwright against real Dockerized backend services. These tiers will be orchestrated via `just` recipes so developers can test only what they're working on, while `just ci-check` runs the full suite to catch regressions before merge or release. We should implement this with flexibility, reusing existing patterns where possible, while ensuring each layer is isolated, deterministic, and fully automated.
 
 ---
 
@@ -130,7 +130,7 @@ test-frontend:
 ### Current State Analysis
 
 - ❌ **Docker Compose E2E setup:** Does not exist - needs creation
-- ❌ **Dockerfiles:** Backend and frontend Dockerfiles do not exist in CipherSwarm (only exist in CipherSwarmAgent)
+- ❌ **Dockerfiles:** Backend and frontend Dockerfiles do not exist in Ouroboros (only exist in CipherSwarmAgent)
 - ❌ **Docker healthcheck configuration:** No Docker healthcheck setup for containers
 - ❌ **E2E data seeding:** No dedicated seeding scripts for E2E tests
 - ❌ **Playwright global setup/teardown:** Not configured for Docker backend

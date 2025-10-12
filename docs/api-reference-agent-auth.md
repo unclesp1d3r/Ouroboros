@@ -1,6 +1,6 @@
-# CipherSwarm Agent & Authentication API Reference
+# Ouroboros Agent & Authentication API Reference
 
-This document provides a comprehensive reference for all CipherSwarm API endpoints that are NOT part of the `/api/v1/web/*` or `/api/v1/control/*` interfaces. These endpoints are primarily used by CipherSwarm agents and authentication systems.
+This document provides a comprehensive reference for all Ouroboros API endpoints that are NOT part of the `/api/v1/web/*` or `/api/v1/control/*` interfaces. These endpoints are primarily used by Ouroboros agents and authentication systems.
 
 ---
 
@@ -8,7 +8,7 @@ This document provides a comprehensive reference for all CipherSwarm API endpoin
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=2 --minlevel=1 -->
 
-- [CipherSwarm Agent & Authentication API Reference](#cipherswarm-agent--authentication-api-reference)
+- [Ouroboros Agent & Authentication API Reference](#ouroboros-agent--authentication-api-reference)
   - [Table of Contents](#table-of-contents)
   - [Authentication](#authentication)
   - [General Authentication Endpoints](#general-authentication-endpoints)
@@ -593,7 +593,7 @@ Agents should report errors using the dedicated error endpoint:
 
 ## API Version Compatibility
 
-These endpoints represent the v1 Agent API, which is locked to the contract defined in `contracts/v1_api_swagger.json`. All endpoints must maintain exact compatibility with the legacy Ruby-on-Rails version of CipherSwarm.
+These endpoints represent the v1 Agent API, which is locked to the contract defined in `contracts/v1_api_swagger.json`. All endpoints must maintain exact compatibility with the legacy Ruby-on-Rails version of Ouroboros.
 
 Key compatibility requirements:
 

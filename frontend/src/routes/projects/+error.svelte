@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-    <title>Error - Projects - CipherSwarm</title>
+    <title>Error - Projects - Ouroboros</title>
 </svelte:head>
 
 <div class="container mx-auto space-y-6 p-6">

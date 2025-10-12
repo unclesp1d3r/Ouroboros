@@ -44,7 +44,7 @@ export const campaignsStore = {
     get loading() {
         return campaignState.loading;
     },
-    
+
     // Actions
     async loadCampaigns() {
         // Implementation
@@ -91,9 +91,9 @@ $effect(() => {
 ```svelte
 <script lang="ts">
     // ✅ CORRECT - Use $props() for component props
-    let { campaign, onUpdate }: { 
-        campaign: Campaign; 
-        onUpdate?: (campaign: Campaign) => void 
+    let { campaign, onUpdate }: {
+        campaign: Campaign;
+        onUpdate?: (campaign: Campaign) => void
     } = $props();
 </script>
 ```
@@ -103,7 +103,7 @@ $effect(() => {
 ```svelte
 <script lang="ts">
     import { campaignsStore } from '$lib/stores/campaigns.svelte';
-    
+
     // ✅ CORRECT - Access store state directly
     let campaigns = $derived(campaignsStore.campaigns);
     let loading = $derived(campaignsStore.loading);
@@ -118,7 +118,7 @@ $effect(() => {
 <!-- ✅ CORRECT - Use SSR data directly in pages -->
 <script lang="ts">
     export let data: PageData;
-    
+
     // Use SSR data directly, not store data
     let campaigns = $derived(data.campaigns.items);
     let totalCount = $derived(data.campaigns.total_count);
@@ -221,6 +221,6 @@ export const campaignsStore = {
 
 ## File References
 
-- Store examples: [campaigns.svelte.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/stores/campaigns.svelte.ts)
-- Component usage: [CampaignProgress.svelte](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/components/campaigns/CampaignProgress.svelte)
-- SSR integration: [+page.svelte](mdc:CipherSwarm/CipherSwarm/frontend/src/routes/campaigns/+page.svelte)
+- Store examples: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
+- Component usage: [CampaignProgress.svelte](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.svelte)
+- SSR integration: [+page.svelte](mdc:Ouroboros/Ouroboros/frontend/src/routes/campaigns/+page.svelte)

@@ -1,5 +1,5 @@
 /**
- * Agent schemas for CipherSwarm
+ * Agent schemas for Ouroboros
  * Used by /api/v1/web/agents/* endpoints
  * Based on authoritative backend API schema
  */

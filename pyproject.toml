@@ -1,5 +1,5 @@
 [project]
-name = "cipherswarm"
+name = "ouroboros"
 version = "0.1.0"
 description = "A distributed password cracking management system"
 authors = [{ name = "UncleSp1d3r", email = "unclesp1d3r@evilbitlabs.io" }]

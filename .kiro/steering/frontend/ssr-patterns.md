@@ -24,18 +24,18 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
     if (process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT_TEST) {
         return { campaigns: mockCampaignData };
     }
-    
+
     try {
         const response = await serverApi.get('/api/v1/web/campaigns/', {
-            headers: { 
+            headers: {
                 Cookie: cookies.toString(),
-                'User-Agent': 'CipherSwarm-Frontend/1.0'
+                'User-Agent': 'Ouroboros-Frontend/1.0'
             }
         });
-        
+
         // Parse response with schema validation
         const campaignsData = CampaignListResponseSchema.parse(response.data);
-        
+
         return {
             campaigns: campaignsData,
             meta: {
@@ -48,7 +48,7 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
         if (error.response?.status === 401) {
             throw redirect(302, '/login');
         }
-        
+
         // Handle other errors
         console.error('Failed to load campaigns:', error);
         throw error(500, 'Failed to load campaigns');
@@ -62,18 +62,18 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 // +layout.server.ts - Global authentication check
 export const load: LayoutServerLoad = async ({ cookies }) => {
     const sessionId = cookies.get('sessionid');
-    
+
     if (!sessionId) {
         return { user: null, isAuthenticated: false };
     }
-    
+
     try {
         const response = await serverApi.get('/api/v1/auth/me/', {
             headers: { Cookie: `sessionid=${sessionId}` }
         });
-        
+
         const userData = UserReadSchema.parse(response.data);
-        
+
         return {
             user: userData,
             isAuthenticated: true
@@ -92,11 +92,11 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 // +page.server.ts - Dynamic route with parameters
 export const load: PageServerLoad = async ({ params, cookies }) => {
     const { id } = params;
-    
+
     if (!id || isNaN(Number(id))) {
         throw error(400, 'Invalid campaign ID');
     }
-    
+
     try {
         const [campaignResponse, attacksResponse] = await Promise.all([
             serverApi.get(`/api/v1/web/campaigns/${id}/`, {
@@ -106,10 +106,10 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
                 headers: { Cookie: cookies.toString() }
             })
         ]);
-        
+
         const campaign = CampaignReadSchema.parse(campaignResponse.data);
         const attacks = AttackListResponseSchema.parse(attacksResponse.data);
-        
+
         return {
             campaign,
             attacks,
@@ -135,14 +135,14 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 <!-- +page.svelte - Use SSR data directly -->
 <script lang="ts">
     import type { PageData } from './$types';
-    
+
     let { data }: { data: PageData } = $props();
-    
+
     // Use SSR data directly for initial render
     let campaigns = $derived(data.campaigns.items);
     let totalCount = $derived(data.campaigns.total_count);
     let currentPage = $derived(data.campaigns.page);
-    
+
     // Compute derived values from SSR data
     let activeCampaigns = $derived(
         campaigns.filter(c => c.status === 'active')
@@ -151,14 +151,14 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 
 <div class="campaigns-list">
     <h1>Campaigns ({totalCount})</h1>
-    
+
     {#each campaigns as campaign}
         <CampaignCard {campaign} />
     {/each}
-    
-    <Pagination 
-        currentPage={currentPage} 
-        totalPages={data.campaigns.total_pages} 
+
+    <Pagination
+        currentPage={currentPage}
+        totalPages={data.campaigns.total_pages}
     />
 </div>
 ```
@@ -171,12 +171,12 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
     import type { PageData } from './$types';
     import { campaignsStore } from '$lib/stores/campaigns.svelte';
     import { onMount } from 'svelte';
-    
+
     let { data }: { data: PageData } = $props();
-    
+
     // Use SSR data for initial render
     let campaigns = $derived(data.campaigns.items);
-    
+
     // Hydrate store only if components need reactive updates
     $effect(() => {
         // Only hydrate if we need real-time updates or cross-component state
@@ -184,7 +184,7 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
             campaignsStore.hydrate(data.campaigns);
         }
     });
-    
+
     // Use store data for reactive operations
     let storeCampaigns = $derived(campaignsStore.campaigns);
     let isLoading = $derived(campaignsStore.loading);
@@ -204,35 +204,35 @@ import { CampaignCreateSchema } from '$lib/schemas/campaigns';
 
 export const load: PageServerLoad = async () => {
     const form = await superValidate(zod(CampaignCreateSchema));
-    
+
     return { form };
 };
 
 export const actions = {
     create: async ({ request, cookies }) => {
         const form = await superValidate(request, zod(CampaignCreateSchema));
-        
+
         if (!form.valid) {
             return fail(400, { form });
         }
-        
+
         try {
             const response = await serverApi.post('/api/v1/web/campaigns/', form.data, {
                 headers: { Cookie: cookies.toString() }
             });
-            
+
             const newCampaign = CampaignReadSchema.parse(response.data);
-            
+
             throw redirect(302, `/campaigns/${newCampaign.id}`);
         } catch (error) {
             if (error.response?.status === 400) {
-                return fail(400, { 
+                return fail(400, {
                     form,
                     message: 'Invalid campaign data'
                 });
             }
-            
-            return fail(500, { 
+
+            return fail(500, {
                 form,
                 message: 'Failed to create campaign'
             });
@@ -249,9 +249,9 @@ export const actions = {
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
     import { CampaignCreateSchema } from '$lib/schemas/campaigns';
-    
+
     let { data, message = null } = $props();
-    
+
     const { form, errors, enhance, submitting } = superForm(data.form, {
         validators: zodClient(CampaignCreateSchema),
         resetForm: false,
@@ -267,9 +267,9 @@ export const actions = {
 <form method="POST" action="?/create" use:enhance>
     <div class="form-group">
         <label for="name">Campaign Name</label>
-        <input 
+        <input
             id="name"
-            name="name" 
+            name="name"
             bind:value={$form.name}
             class:error={$errors.name}
         />
@@ -277,11 +277,11 @@ export const actions = {
             <span class="error">{$errors.name}</span>
         {/if}
     </div>
-    
+
     <button type="submit" disabled={$submitting}>
         {$submitting ? 'Creating...' : 'Create Campaign'}
     </button>
-    
+
     {#if message}
         <div class="message">{message}</div>
     {/if}
@@ -296,14 +296,14 @@ export const actions = {
 // +error.svelte - Error page component
 <script lang="ts">
     import { page } from '$app/stores';
-    
+
     let { status, error } = $props();
 </script>
 
 <div class="error-page">
     <h1>{status}</h1>
     <p>{error?.message || 'An unexpected error occurred'}</p>
-    
+
     {#if status === 404}
         <p>The page you're looking for doesn't exist.</p>
         <a href="/">Go home</a>
@@ -323,7 +323,7 @@ export const actions = {
 // +page.server.ts - Error recovery patterns
 export const load: PageServerLoad = async ({ cookies, depends }) => {
     depends('campaigns:list');
-    
+
     try {
         const response = await serverApi.get('/api/v1/web/campaigns/');
         return { campaigns: response.data };
@@ -335,7 +335,7 @@ export const load: PageServerLoad = async ({ cookies, depends }) => {
                 error: 'Service temporarily unavailable'
             };
         }
-        
+
         // Only throw for critical errors
         throw error(500, 'Failed to load campaigns');
     }
@@ -356,7 +356,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
             serverApi.get('/api/v1/web/projects/'),
             serverApi.get('/api/v1/web/agents/')
         ]);
-        
+
         return {
             campaigns: CampaignListResponseSchema.parse(campaignsResponse.data),
             projects: ProjectListResponseSchema.parse(projectsResponse.data),
@@ -375,22 +375,22 @@ export const load: PageServerLoad = async ({ cookies }) => {
 // +page.server.ts - Load data conditionally
 export const load: PageServerLoad = async ({ url, cookies }) => {
     const showAdvanced = url.searchParams.get('advanced') === 'true';
-    
+
     const basicDataPromise = serverApi.get('/api/v1/web/campaigns/');
-    
+
     // Only load additional data if needed
-    const advancedDataPromise = showAdvanced 
+    const advancedDataPromise = showAdvanced
         ? serverApi.get('/api/v1/web/campaigns/analytics/')
         : Promise.resolve(null);
-    
+
     const [basicResponse, advancedResponse] = await Promise.all([
         basicDataPromise,
         advancedDataPromise
     ]);
-    
+
     return {
         campaigns: CampaignListResponseSchema.parse(basicResponse.data),
-        analytics: advancedResponse ? 
+        analytics: advancedResponse ?
             CampaignAnalyticsSchema.parse(advancedResponse.data) : null
     };
 };
@@ -423,23 +423,23 @@ describe('campaigns load function', () => {
                 total_pages: 1
             }
         };
-        
+
         vi.mocked(serverApi.get).mockResolvedValue(mockResponse);
-        
+
         const result = await load({
             cookies: new Map([['sessionid', 'test-session']]),
             url: new URL('http://localhost/campaigns'),
             params: {}
         });
-        
+
         expect(result.campaigns).toEqual(mockResponse.data);
     });
-    
+
     it('handles authentication errors', async () => {
         vi.mocked(serverApi.get).mockRejectedValue({
             response: { status: 401 }
         });
-        
+
         await expect(load({
             cookies: new Map(),
             url: new URL('http://localhost/campaigns'),
@@ -457,13 +457,13 @@ import { test, expect } from '@playwright/test';
 
 test('campaigns page loads with SSR data', async ({ page }) => {
     await page.goto('/campaigns');
-    
+
     // Verify SSR content is immediately visible
     await expect(page.locator('h1')).toContainText('Campaigns');
-    
+
     // Verify campaign data is rendered
     await expect(page.locator('[data-testid="campaign-item"]')).toHaveCount(3);
-    
+
     // Verify no loading states on initial render
     await expect(page.locator('[data-testid="loading"]')).not.toBeVisible();
 });
@@ -488,9 +488,9 @@ test('campaigns page loads with SSR data', async ({ page }) => {
 <!-- ❌ WRONG - Don't load data in components -->
 <script>
     import { onMount } from 'svelte';
-    
+
     let campaigns = [];
-    
+
     onMount(async () => {
         const response = await fetch('/api/campaigns');
         campaigns = await response.json();
@@ -505,7 +505,7 @@ test('campaigns page loads with SSR data', async ({ page }) => {
 <script>
     export let data;
     import { getCampaigns } from '$lib/stores/campaigns.svelte';
-    
+
     // This creates confusion about data source
     let campaigns = $derived(getCampaigns());
 </script>
@@ -523,7 +523,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 ## File References
 
-- Load function examples: [+page.server.ts](mdc:CipherSwarm/frontend/src/routes/campaigns/+page.server.ts)
-- Component usage: [+page.svelte](mdc:CipherSwarm/frontend/src/routes/campaigns/+page.svelte)
-- Error handling: [+error.svelte](mdc:CipherSwarm/frontend/src/routes/+error.svelte)
-- Schema integration: [campaigns.ts](mdc:CipherSwarm/frontend/src/lib/schemas/campaigns.ts)
+- Load function examples: [+page.server.ts](mdc:Ouroboros/frontend/src/routes/campaigns/+page.server.ts)
+- Component usage: [+page.svelte](mdc:Ouroboros/frontend/src/routes/campaigns/+page.svelte)
+- Error handling: [+error.svelte](mdc:Ouroboros/frontend/src/routes/+error.svelte)
+- Schema integration: [campaigns.ts](mdc:Ouroboros/frontend/src/lib/schemas/campaigns.ts)

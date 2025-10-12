@@ -186,7 +186,7 @@
 </script>
 
 <svelte:head>
-    <title>Resource: {data.resource.file_name} - CipherSwarm</title>
+    <title>Resource: {data.resource.file_name} - Ouroboros</title>
 </svelte:head>
 
 <div class="container mx-auto space-y-6 p-6">

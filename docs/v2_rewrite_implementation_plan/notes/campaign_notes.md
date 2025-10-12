@@ -1,6 +1,6 @@
-# CipherSwarm Campaign UX and Behavior
+# Ouroboros Campaign UX and Behavior
 
-## 🧠 CipherSwarm — Campaign UX and Behavior Context
+## 🧠 Ouroboros — Campaign UX and Behavior Context
 
 ### 🎯 Campaign Attack Ordering
 

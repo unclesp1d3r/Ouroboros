@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-The following table shows which versions of CipherSwarm are currently being supported with security updates:
+The following table shows which versions of Ouroboros are currently being supported with security updates:
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -12,7 +12,7 @@ The following table shows which versions of CipherSwarm are currently being supp
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in CipherSwarm, please help us by reporting it responsibly.
+If you discover a security vulnerability in Ouroboros, please help us by reporting it responsibly.
 
 ### How to Report
 
@@ -22,14 +22,14 @@ Instead, please use one of the following methods:
 
 1. **GitHub Security Advisories** (Preferred)
 
-   - Go to the [Security tab](https://github.com/UncleSp1d3r/CipherSwarm/security) of this repository
+   - Go to the [Security tab](https://github.com/UncleSp1d3r/Ouroboros/security) of this repository
    - Click "Report a vulnerability"
    - Fill out the security advisory form
 
 2. **Private Email** (Alternative)
 
    - Email: [UncleSp1d3r](mailto:unclespider@protonmail.com)
-   - Subject: "CipherSwarm Security Report"
+   - Subject: "Ouroboros Security Report"
    - Include detailed information about the vulnerability
    - My PGP key is available [on keys.openpgp.org](https://keys.openpgp.org/vks/v1/by-fingerprint/6F21D117858E4C8F7BE79DCFDEB64E8A0CA4ED3Ee)
 
@@ -59,7 +59,7 @@ As a single maintainer, I aim for the following response times:
 
 **I can investigate and fix:**
 
-- Code vulnerabilities in the CipherSwarm codebase
+- Code vulnerabilities in the Ouroboros codebase
 - Configuration security issues
 - Dependency vulnerabilities (via `uv`)
 
@@ -95,7 +95,7 @@ As a single maintainer, I aim for the following response times:
 
 ### For Operators
 
-- **Keep CipherSwarm Updated**: Always use the latest supported version
+- **Keep Ouroboros Updated**: Always use the latest supported version
 - **Network Security**: Deploy behind proper firewall rules and network segmentation
 - **Access Control**: Use strong authentication and limit user privileges
 - **Monitoring**: Monitor logs for suspicious activities
@@ -118,7 +118,7 @@ As a single maintainer, I aim for the following response times:
 
 ### Password Handling
 
-- CipherSwarm handles password hashes, never plaintext passwords
+- Ouroboros handles password hashes, never plaintext passwords
 - Ensure proper access controls on hash list uploads
 - Use appropriate network security when handling sensitive data
 
@@ -150,12 +150,12 @@ I focus on fixing code vulnerabilities, but users are responsible for their depl
 
 ## Contact
 
-For non-security related issues, please use the [GitHub Issues](https://github.com/UncleSp1d3r/CipherSwarm/issues) page.
+For non-security related issues, please use the [GitHub Issues](https://github.com/UncleSp1d3r/Ouroboros/issues) page.
 
 For questions about this security policy, you can:
 
-- Create a [GitHub Discussion](https://github.com/UncleSp1d3r/CipherSwarm/discussions)
-- Open a general [GitHub Issue](https://github.com/UncleSp1d3r/CipherSwarm/issues)
+- Create a [GitHub Discussion](https://github.com/UncleSp1d3r/Ouroboros/discussions)
+- Open a general [GitHub Issue](https://github.com/UncleSp1d3r/Ouroboros/issues)
 
 ## Acknowledgments
 

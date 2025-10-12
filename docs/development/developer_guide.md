@@ -1,6 +1,6 @@
-# CipherSwarm Developer Guide
+# Ouroboros Developer Guide
 
-CipherSwarm is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
 ---
 
@@ -8,7 +8,7 @@ CipherSwarm is a distributed password cracking management system built with Fast
 
 <!-- mdformat-toc start --slug=gitlab --no-anchors --maxlevel=3 --minlevel=1 -->
 
-- [CipherSwarm Developer Guide](#cipherswarm-developer-guide)
+- [Ouroboros Developer Guide](#ouroboros-developer-guide)
   - [Table of Contents](#table-of-contents)
   - [1. Project Architecture & Core Concepts](#1-project-architecture-core-concepts)
     - [Project Overview](#project-overview)
@@ -106,7 +106,7 @@ CipherSwarm is a distributed password cracking management system built with Fast
 
 ### Project Context Management
 
-CipherSwarm enforces strict project-based isolation. Users can belong to multiple projects, and the system tracks an "active project" context for each user session:
+Ouroboros enforces strict project-based isolation. Users can belong to multiple projects, and the system tracks an "active project" context for each user session:
 
 - **Context Endpoints**:
   - `GET /api/v1/web/auth/context` - Get current user + project context
@@ -119,7 +119,7 @@ CipherSwarm enforces strict project-based isolation. Users can belong to multipl
 
 ### Real-time Updates (Server-Sent Events)
 
-CipherSwarm v2 uses Server-Sent Events (SSE) for real-time notifications:
+Ouroboros v2 uses Server-Sent Events (SSE) for real-time notifications:
 
 - **Architecture**: In-memory event broadcasting, no Redis dependency
 - **Event Types**: Campaign updates, agent status, toast notifications

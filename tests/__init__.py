@@ -1,1 +1,1 @@
-"""Test package for CipherSwarm."""
+"""Test package for Ouroboros."""

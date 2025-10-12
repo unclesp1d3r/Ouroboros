@@ -1,6 +1,6 @@
 # Phase 2: API Implementation
 
-This document defines the complete Phase 2 API architecture for CipherSwarm. To keep this file manageable, detailed implementations are split into sub-files in the `phase-2-api-implementation-parts` directory.
+This document defines the complete Phase 2 API architecture for Ouroboros. To keep this file manageable, detailed implementations are split into sub-files in the `phase-2-api-implementation-parts` directory.
 
 ---
 
@@ -48,12 +48,12 @@ This document defines the complete Phase 2 API architecture for CipherSwarm. To 
 
 ### Hash Guessing Logic
 
-CipherSwarm should include a reusable hash analysis and type inference utility built around the [Name-That-Hash](https://github.com/bee-san/Name-That-Hash) library. This utility should be implemented in the service layer and callable from both the Web UI API and the Control API. It is responsible for examining pasted text, extracted hash lines, or uploaded artifacts and returning likely hash types based on structure, length, encoding, and known patterns.
+Ouroboros should include a reusable hash analysis and type inference utility built around the [Name-That-Hash](https://github.com/bee-san/Name-That-Hash) library. This utility should be implemented in the service layer and callable from both the Web UI API and the Control API. It is responsible for examining pasted text, extracted hash lines, or uploaded artifacts and returning likely hash types based on structure, length, encoding, and known patterns.
 
 The service must:
 
 - Use `name-that-hash`'s native Python API (not subprocess)
-- Wrap its response in CipherSwarm-style confidence-ranked outputs
+- Wrap its response in Ouroboros-style confidence-ranked outputs
 - Be independently unit tested
 - Be integration tested via the Web UI's hash validation endpoint capable of examining pasted text, extracted hash lines, or uploaded artifacts and returning likely hash types based on structure, length, encoding, and known patterns.
 
@@ -98,7 +98,7 @@ This layer will power:
 
 - Crackable Uploads (Web UI)
 - Direct hash submission tools (Control API)
-- Potential future CLI tools like `cipherswarm guess-hash`
+- Potential future CLI tools like `ouroboros guess-hash`
 
 ---
 
@@ -130,7 +130,7 @@ The Web UI API provides a comprehensive REST interface for the SvelteKit fronten
 
 ## Shared Schema: Save/Load
 
-CipherSwarm supports export and import of core objects using a shared JSON-based schema. These templates are used by both the Web UI and the Control API to persist, modify, and replicate campaign structures across environments.
+Ouroboros supports export and import of core objects using a shared JSON-based schema. These templates are used by both the Web UI and the Control API to persist, modify, and replicate campaign structures across environments.
 
 ### Scope
 
@@ -160,7 +160,7 @@ The following object types support import/export:
 ### Validation
 
 - JSON templates must be validated against their Pydantic schema before use
-- Cipherswarm should ignore unknown fields on templates
+- Ouroboros should ignore unknown fields on templates
 
 ### Sample Structure
 
@@ -218,7 +218,7 @@ On import:
 
 **Overall Status: 🔄 IN PROGRESS** (2 of 3 parts completed)
 
-Phase 2 has made significant progress with Parts 1 and 2 completed, delivering core API functionality for CipherSwarm:
+Phase 2 has made significant progress with Parts 1 and 2 completed, delivering core API functionality for Ouroboros:
 
 ### Completed Components
 

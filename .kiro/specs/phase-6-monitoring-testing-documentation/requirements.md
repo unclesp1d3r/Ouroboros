@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This specification defines the comprehensive monitoring, testing, and documentation requirements for CipherSwarm Phase 6. This final phase ensures that CipherSwarm is well-tested, observable, and documented before public or operational deployment. The phase focuses on establishing robust testing coverage, implementing comprehensive monitoring and observability, creating thorough documentation, and providing data seeding capabilities for development and demonstration purposes.
+This specification defines the comprehensive monitoring, testing, and documentation requirements for Ouroboros Phase 6. This final phase ensures that Ouroboros is well-tested, observable, and documented before public or operational deployment. The phase focuses on establishing robust testing coverage, implementing comprehensive monitoring and observability, creating thorough documentation, and providing data seeding capabilities for development and demonstration purposes.
 
 ## Requirements
 

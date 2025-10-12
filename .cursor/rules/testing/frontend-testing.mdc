@@ -1,26 +1,29 @@
 ---
-description: 
+description:
 globs: frontend/**/*
 alwaysApply: false
 ---
 # Frontend Testing Patterns and Best Practices
 
 ## Overview
-This rule consolidates all frontend testing patterns for CipherSwarm's SvelteKit 5 application, covering unit testing with runes, SSR testing expectations, component testing, and Vitest configuration.
+
+This rule consolidates all frontend testing patterns for Ouroboros's SvelteKit 5 application, covering unit testing with runes, SSR testing expectations, component testing, and Vitest configuration.
 
 ## Test Environment Setup and Configuration
 
 ### Environment Detection
+
 ```typescript
 // ✅ CORRECT - Comprehensive test environment detection
-if (process.env.NODE_ENV === 'test' || 
-    process.env.PLAYWRIGHT_TEST || 
+if (process.env.NODE_ENV === 'test' ||
+    process.env.PLAYWRIGHT_TEST ||
     process.env.CI) {
     return { mockData };
 }
 ```
 
 ### Vitest Configuration
+
 Configure Vitest for SvelteKit 5 components with proper test environment setup:
 
 ```typescript
@@ -53,6 +56,7 @@ export default defineConfig({
 ## SvelteKit 5 Unit Testing Patterns
 
 ### Store Testing with Runes
+
 ```typescript
 // ✅ CORRECT - Mock .svelte.ts store files
 vi.mock('$lib/stores/campaigns.svelte', () => ({
@@ -70,6 +74,7 @@ vi.mock('$lib/stores/campaigns.svelte', () => ({
 ```
 
 ### Component Testing with SSR Data
+
 ```typescript
 // ✅ CORRECT - Test components with mock SSR data structure
 import type { PageData } from './$types';
@@ -93,12 +98,13 @@ const mockPageData: PageData = {
     }
 };
 
-render(CampaignsList, { 
-    props: { data: mockPageData } 
+render(CampaignsList, {
+    props: { data: mockPageData }
 });
 ```
 
 ### Mock Data Consistency
+
 ```typescript
 // ✅ CRITICAL - Mock data must match API structure exactly
 const mockCampaigns = {
@@ -117,6 +123,7 @@ const mockCampaigns = {
 ```
 
 ### Runtime Errors from Store Exports
+
 ```typescript
 // ❌ PROBLEM - Direct $derived exports cause test failures
 export const campaigns = $derived(campaignState.campaigns);
@@ -135,6 +142,7 @@ export function getCampaigns() {
 ## SSR vs SPA Testing Patterns
 
 ### SSR Data vs Store Data
+
 - **Pages should use SSR data directly** when possible
 - **Only hydrate stores when components need reactive updates**
 - **Avoid mixing SSR data and store data in the same component**
@@ -143,7 +151,7 @@ export function getCampaigns() {
 <!-- ✅ CORRECT - Use SSR data directly -->
 <script lang="ts">
     export let data: PageData;
-    
+
     let campaigns = $derived(data.campaigns.items);
     let totalCount = $derived(data.campaigns.total_count);
 </script>
@@ -152,12 +160,13 @@ export function getCampaigns() {
 <script lang="ts">
     export let data: PageData;
     import { getCampaigns } from '$lib/stores/campaigns.svelte';
-    
+
     let campaigns = $derived(getCampaigns()); // This creates confusion
 </script>
 ```
 
 ### Load Function Testing Patterns
+
 ```typescript
 // ✅ CORRECT - Robust load function with error handling
 export const load: PageServerLoad = async ({ cookies, url, params }) => {
@@ -165,12 +174,12 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
     if (process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT_TEST) {
         return { campaigns: mockCampaignData };
     }
-    
+
     try {
         const response = await serverApi.get('/api/v1/web/campaigns/', {
             headers: { Cookie: cookies.get('sessionid') || '' }
         });
-        
+
         return {
             campaigns: response.data,
             meta: {
@@ -188,6 +197,7 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 ```
 
 ### Store Hydration Testing
+
 ```typescript
 // ✅ CORRECT - Test store hydration when reactive updates needed
 $effect(() => {
@@ -201,6 +211,7 @@ $effect(() => {
 ## Component Testing Best Practices
 
 ### Test Structure and Organization
+
 ```typescript
 // ✅ CORRECT - Comprehensive component test structure
 import { render, screen } from '@testing-library/svelte';
@@ -225,6 +236,7 @@ test('displays campaign information correctly', () => {
 ```
 
 ### Form Testing with Superforms
+
 ```typescript
 // ✅ CORRECT - Test form components with proper mock setup
 import { superForm } from 'sveltekit-superforms';
@@ -249,20 +261,21 @@ test('form renders with correct fields', () => {
     };
 
     render(CampaignForm, { props: { data: { form: mockFormData } } });
-    
+
     expect(screen.getByLabelText('Campaign Name')).toBeInTheDocument();
     expect(screen.getByLabelText('Description')).toBeInTheDocument();
 });
 ```
 
 ### Event Handling Testing
+
 ```typescript
 // ✅ CORRECT - Test component events and interactions
 import { fireEvent } from '@testing-library/svelte';
 
 test('emits delete event when delete button clicked', async () => {
-    const component = render(CampaignCard, { 
-        props: { campaign: mockCampaign } 
+    const component = render(CampaignCard, {
+        props: { campaign: mockCampaign }
     });
 
     const deleteButton = screen.getByText('Delete');
@@ -276,6 +289,7 @@ test('emits delete event when delete button clicked', async () => {
 ## Store Testing Patterns
 
 ### Store Hydration Implementation Testing
+
 ```typescript
 // ✅ CORRECT - Test store hydration methods with proper runes pattern
 let campaignState = $state({
@@ -293,7 +307,7 @@ export const campaignsStore = {
         campaignState.page = ssrData.page;
         campaignState.loading = false;
     },
-    
+
     // Reactive getters
     get campaigns() { return campaignState.campaigns; },
     get loading() { return campaignState.loading; },
@@ -311,7 +325,7 @@ test('hydrateCampaigns updates store state correctly', () => {
     };
 
     campaignsStore.hydrateCampaigns(mockData);
-    
+
     expect(campaignsStore.campaigns).toEqual(mockData.items);
     expect(campaignsStore.loading).toBe(false);
     expect(campaignsStore.totalCount).toBe(1);
@@ -319,6 +333,7 @@ test('hydrateCampaigns updates store state correctly', () => {
 ```
 
 ### When to Hydrate Stores
+
 - **Components need reactive updates** after initial SSR load
 - **Real-time data updates** (polling, WebSocket updates)
 - **Cross-component state sharing** is required
@@ -336,6 +351,7 @@ $effect(() => {
 ## Error Handling Testing
 
 ### Load Function Error Testing
+
 ```typescript
 // ✅ CORRECT - Test error handling in load functions
 import { redirect, error } from '@sveltejs/kit';
@@ -360,6 +376,7 @@ test('load function handles 500 errors gracefully', async () => {
 ```
 
 ### Component Error State Testing
+
 ```typescript
 // ✅ CORRECT - Test component error states
 test('displays error message when data loading fails', () => {
@@ -369,7 +386,7 @@ test('displays error message when data loading fails', () => {
     };
 
     render(CampaignsList, { props: { data: mockPageData } });
-    
+
     expect(screen.getByText('Failed to load campaigns')).toBeInTheDocument();
     expect(screen.queryByText('Test Campaign')).not.toBeInTheDocument();
 });
@@ -378,30 +395,32 @@ test('displays error message when data loading fails', () => {
 ## Form Migration and Testing Patterns
 
 ### Modal to Route Testing
+
 ```typescript
 // ✅ CORRECT - Test route-based modals with proper navigation
 test('campaign creation modal opens from campaigns list', async () => {
     render(CampaignsList, { props: { data: mockPageData } });
-    
+
     const createButton = screen.getByText('Create Campaign');
     await fireEvent.click(createButton);
-    
+
     // Test navigation to modal route
     expect(mockNavigate).toHaveBeenCalledWith('/campaigns/new');
 });
 ```
 
 ### Superforms Integration Testing
+
 ```typescript
 // ✅ CORRECT - Test superforms with proper validation
 test('form validates required fields', async () => {
-    const { container } = render(CampaignForm, { 
-        props: { data: { form: mockFormData } } 
+    const { container } = render(CampaignForm, {
+        props: { data: { form: mockFormData } }
     });
-    
+
     const submitButton = screen.getByText('Create Campaign');
     await fireEvent.click(submitButton);
-    
+
     expect(screen.getByText('Name is required')).toBeInTheDocument();
 });
 ```
@@ -409,6 +428,7 @@ test('form validates required fields', async () => {
 ## Test Command Patterns and Workflow
 
 ### Development Testing Commands
+
 ```bash
 # ✅ Fast iteration during development
 pnpm exec vitest run                    # Unit tests only
@@ -420,6 +440,7 @@ pnpm exec vitest run src/routes/campaigns/
 ```
 
 ### Verification Testing Commands
+
 ```bash
 # ✅ Frontend-specific verification
 just frontend-check        # Unit tests + linting
@@ -432,6 +453,7 @@ pnpm exec vitest run --coverage
 ## Common Testing Issues and Solutions
 
 ### Import and Module Issues
+
 ```typescript
 // ✅ CORRECT - Proper SvelteKit imports in tests
 import { page } from '$app/state'; // Not $app/stores in Svelte 5
@@ -445,6 +467,7 @@ vi.mock('$app/navigation', () => ({
 ```
 
 ### Component Lifecycle Testing
+
 ```typescript
 // ✅ CORRECT - Test component lifecycle with proper cleanup
 import { cleanup } from '@testing-library/svelte';
@@ -456,17 +479,18 @@ afterEach(() => {
 ```
 
 ### Async Component Testing
+
 ```typescript
 // ✅ CORRECT - Handle async operations in components
 test('loads data asynchronously', async () => {
     const promise = Promise.resolve(mockData);
     vi.mocked(fetchData).mockReturnValue(promise);
-    
+
     render(AsyncComponent);
-    
+
     // Wait for async operations to complete
     await promise;
-    
+
     expect(screen.getByText('Data loaded')).toBeInTheDocument();
 });
 ```
@@ -474,8 +498,9 @@ test('loads data asynchronously', async () => {
 ## Coverage Requirements and Standards
 
 ### Unit Test Coverage
+
 - **Target Coverage**: 80%+ for all critical components
-- **Focus Areas**: 
+- **Focus Areas**:
   - Component rendering with various props
   - Event handling and user interactions
   - Store integration and state management
@@ -483,6 +508,7 @@ test('loads data asynchronously', async () => {
   - Error states and edge cases
 
 ### Test Quality Standards
+
 - Use descriptive test names that explain the scenario
 - Test behavior, not implementation details
 - Mock external dependencies appropriately
@@ -490,6 +516,7 @@ test('loads data asynchronously', async () => {
 - Use proper assertions and matchers
 
 ### Testing Best Practices
+
 - **Arrange-Act-Assert pattern**: Structure tests clearly
 - **Single responsibility**: Each test should verify one behavior
 - **Deterministic tests**: Avoid flaky tests with proper mocking
@@ -498,20 +525,15 @@ test('loads data asynchronously', async () => {
 ## Integration with Backend Testing
 
 ### API Mock Consistency
+
 - Frontend mocks must match backend API responses exactly
 - Use the same data structures and field names
 - Maintain consistency between test environments
 - Validate mock data against actual API schemas when possible
 
 ### Test Data Management
+
 - Use consistent test data across frontend and backend
 - Share common test utilities where appropriate
 - Ensure mock data reflects real-world scenarios
 - Update mocks when API contracts change
-
-
-
-
-
-
-

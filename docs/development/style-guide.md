@@ -1,9 +1,9 @@
-# CipherSwarm UI Style Guide
+# Ouroboros UI Style Guide
 
 **Version:** 1.0
 **Last Reviewed:** 2025-05-16
 
-This document defines the visual design and behavior standards for the CipherSwarm frontend. It ensures consistency across pages, components, and themes, while staying fully offline-capable and budget-friendly.
+This document defines the visual design and behavior standards for the Ouroboros frontend. It ensures consistency across pages, components, and themes, while staying fully offline-capable and budget-friendly.
 
 ---
 
@@ -163,7 +163,7 @@ All UI elements should use Flowbite or native Tailwind components.
 
 ## 🖥️ Viewport & Small Window Considerations
 
-CipherSwarm is not designed for mobile-first usage but must remain usable in constrained browser windows (e.g., side-by-side dev consoles or dashboards).
+Ouroboros is not designed for mobile-first usage but must remain usable in constrained browser windows (e.g., side-by-side dev consoles or dashboards).
 
 - Minimum target resolution: 768px width
 

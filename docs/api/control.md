@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Control API (`/api/v1/control/*`) is designed for command-line interface (CLI) and Terminal User Interface (TUI) clients. This API provides programmatic access to CipherSwarm functionality for automation, scripting, and advanced users who prefer command-line tools.
+The Control API (`/api/v1/control/*`) is designed for command-line interface (CLI) and Terminal User Interface (TUI) clients. This API provides programmatic access to Ouroboros functionality for automation, scripting, and advanced users who prefer command-line tools.
 
 Key features:
 
@@ -32,7 +32,7 @@ The Control API implements [RFC9457](https://datatracker.ietf.org/doc/html/rfc94
 
 ```json
 {
-  "type": "https://cipherswarm.example.com/problems/validation-error",
+  "type": "https://ouroboros.example.com/problems/validation-error",
   "title": "Validation Error",
   "status": 422,
   "detail": "The request contains invalid data",

@@ -94,11 +94,11 @@ Related to #
 - [ ] All required status checks pass
 - [ ] Targets `main` branch (v2-primary workflow)
 - [ ] Conventional Commit title follows format: `type(scope): description`
-- [ ] Changes align with CipherSwarm architecture patterns from WARP.md
+- [ ] Changes align with Ouroboros architecture patterns from WARP.md
 - [ ] No direct database queries; uses SQLAlchemy ORM/async patterns
 - [ ] Error handling uses appropriate exceptions (HTTPException vs RFC9457)
 - [ ] No direct pushes to protected branches (PR-only workflow)
 
 ---
 
-*This template ensures compliance with WARP.md golden rules and CipherSwarm development standards.*
+*This template ensures compliance with WARP.md golden rules and Ouroboros development standards.*

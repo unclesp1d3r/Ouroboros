@@ -1,6 +1,6 @@
-# CipherSwarm Implementation Plan
+# Ouroboros Implementation Plan
 
-This document outlines the phased implementation plan for rebuilding CipherSwarm with FastAPI, SvelteKit, and modern backend architecture. Each phase builds upon the last and ensures a modular, testable, and maintainable system.
+This document outlines the phased implementation plan for rebuilding Ouroboros with FastAPI, SvelteKit, and modern backend architecture. Each phase builds upon the last and ensures a modular, testable, and maintainable system.
 
 ---
 
@@ -8,7 +8,7 @@ This document outlines the phased implementation plan for rebuilding CipherSwarm
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=3 --minlevel=1 -->
 
-- [CipherSwarm Implementation Plan](#cipherswarm-implementation-plan)
+- [Ouroboros Implementation Plan](#ouroboros-implementation-plan)
   - [Table of Contents](#table-of-contents)
   - [Implementation Phases](#implementation-phases)
     - [Phase 1: Core Infrastructure (Completed)](#phase-1-core-infrastructure-completed)

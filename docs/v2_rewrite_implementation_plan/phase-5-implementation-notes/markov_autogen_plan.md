@@ -1,4 +1,4 @@
-# CipherSwarm Phase 5 - Markov Model (hcstat2) Auto-Generation
+# Ouroboros Phase 5 - Markov Model (hcstat2) Auto-Generation
 
 ---
 
@@ -6,7 +6,7 @@
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=2 --minlevel=1 -->
 
-- [CipherSwarm Phase 5 - Markov Model (hcstat2) Auto-Generation](#cipherswarm-phase-5---markov-model-hcstat2-auto-generation)
+- [Ouroboros Phase 5 - Markov Model (hcstat2) Auto-Generation](#ouroboros-phase-5---markov-model-hcstat2-auto-generation)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Purpose of hcstat2](#purpose-of-hcstat2)
@@ -22,9 +22,9 @@
 
 ## Overview
 
-This document defines how CipherSwarm will automatically generate and evolve `hcstat2` files used for Markov-mode brute-force attacks. These models are built from recovered passwords and used to prioritize high-probability guesses during mask-based cracking. Markov support will be seamlessly integrated into the Brute-Force Attack configuration.
+This document defines how Ouroboros will automatically generate and evolve `hcstat2` files used for Markov-mode brute-force attacks. These models are built from recovered passwords and used to prioritize high-probability guesses during mask-based cracking. Markov support will be seamlessly integrated into the Brute-Force Attack configuration.
 
-An internal implementation based on PACK’s `statsgen` will be developed and maintained by CipherSwarm to ensure performance, correctness, and long-term support.
+An internal implementation based on PACK’s `statsgen` will be developed and maintained by Ouroboros to ensure performance, correctness, and long-term support.
 
 ---
 

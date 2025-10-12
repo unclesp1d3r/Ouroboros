@@ -1,5 +1,5 @@
 # CodeRabbit AI Configuration
-# Optimized for CipherSwarm dual-track development workflow
+# Optimized for Ouroboros dual-track development workflow
 
 # Review settings
 reviews:
@@ -11,9 +11,9 @@ reviews:
   poem: false
   review_status: true
 
-  # Custom instructions for CipherSwarm
+  # Custom instructions for Ouroboros
   instructions: |
-    You are reviewing code for CipherSwarm, a distributed password cracking management platform.
+    You are reviewing code for Ouroboros, a distributed password cracking management platform.
 
     Key considerations:
 
@@ -86,7 +86,7 @@ reviews:
 # Language-specific settings
 language_settings:
   python:
-    # Focus on CipherSwarm Python patterns
+    # Focus on Ouroboros Python patterns
     review_style: "concise"
 
   typescript:

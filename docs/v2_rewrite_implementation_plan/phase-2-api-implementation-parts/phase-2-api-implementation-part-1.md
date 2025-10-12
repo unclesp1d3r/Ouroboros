@@ -1,6 +1,6 @@
 # 🔐 Agent API (High Priority)
 
-The agent API is used by the agent to register, heartbeat, and report results. It is also used by the distributed CipherSwarm agents to obtain task assignments and submit results.
+The agent API is used by the agent to register, heartbeat, and report results. It is also used by the distributed Ouroboros agents to obtain task assignments and submit results.
 
 ## 🔐 Agent Authentication & Session Management
 

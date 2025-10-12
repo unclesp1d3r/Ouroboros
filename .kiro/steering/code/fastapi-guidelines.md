@@ -6,7 +6,7 @@
 
 ## Description
 
-Standards and best practices for FastAPI development in the CipherSwarm project.
+Standards and best practices for FastAPI development in the Ouroboros project.
 
 ## File Glob Patterns
 

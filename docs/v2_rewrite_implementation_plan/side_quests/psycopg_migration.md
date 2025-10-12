@@ -9,7 +9,7 @@ Follow these three tasks in order. Do not start the next task until all tests pa
 ### 🧪 Task 1: Update `test-guidelines.mdc` for the new test infrastructure
 
 \[x\] Context:
-CipherSwarm is migrating from `pytest-postgresql` and `asyncpg` to `testcontainers-python` and `psycopg3`. These changes affect test strategy and tooling expectations. Your first step is to update our project's testing guidance to reflect this shift.
+Ouroboros is migrating from `pytest-postgresql` and `asyncpg` to `testcontainers-python` and `psycopg3`. These changes affect test strategy and tooling expectations. Your first step is to update our project's testing guidance to reflect this shift.
 
 🔧 What to do:
 

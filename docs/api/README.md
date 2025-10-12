@@ -1,6 +1,6 @@
-# CipherSwarm API Documentation
+# Ouroboros API Documentation
 
-This directory contains comprehensive documentation for all CipherSwarm API interfaces.
+This directory contains comprehensive documentation for all Ouroboros API interfaces.
 
 ## Documentation Structure
 
@@ -24,7 +24,7 @@ This directory contains comprehensive documentation for all CipherSwarm API inte
 
 ### 1. Agent API (`/api/v1/client/*`)
 
-**Purpose**: Legacy-compatible interface for CipherSwarm agents
+**Purpose**: Legacy-compatible interface for Ouroboros agents
 **Authentication**: Bearer tokens (`csa_<agent_id>_<token>`)
 **Key Features**:
 

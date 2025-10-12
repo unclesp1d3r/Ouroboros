@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Phase 1 Core Infrastructure design establishes the foundational architecture for CipherSwarm v2, focusing on database models, authentication, and core API structure. This design leverages FastAPI's async capabilities, SQLAlchemy's ORM features, and PostgreSQL's robustness to create a scalable foundation for distributed password cracking management.
+The Phase 1 Core Infrastructure design establishes the foundational architecture for Ouroboros v2, focusing on database models, authentication, and core API structure. This design leverages FastAPI's async capabilities, SQLAlchemy's ORM features, and PostgreSQL's robustness to create a scalable foundation for distributed password cracking management.
 
 The architecture follows a layered approach with clear separation between API endpoints, business logic services, data models, and database access. All components are designed to support high concurrency and distributed operations while maintaining data consistency and security.
 
@@ -378,7 +378,7 @@ agent_project_association = Table(
 
 ```python
 class CipherSwarmException(Exception):
-    """Base exception for all CipherSwarm errors"""
+    """Base exception for all Ouroboros errors"""
 
     pass
 

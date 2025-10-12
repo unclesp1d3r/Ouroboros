@@ -1,4 +1,4 @@
-"""AgentError model for tracking errors reported by CipherSwarm agents."""
+"""AgentError model for tracking errors reported by Ouroboros agents."""
 
 import enum
 from typing import Any
@@ -21,7 +21,7 @@ class Severity(enum.Enum):
 
 
 class AgentError(Base):
-    """Represents an error reported by a CipherSwarm agent.
+    """Represents an error reported by a Ouroboros agent.
 
     Attributes:
         id: Unique identifier for the error event.

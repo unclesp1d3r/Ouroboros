@@ -1,6 +1,6 @@
 # Performance Optimization Guide
 
-This guide covers performance optimization strategies for CipherSwarm v2, including hardware configuration, attack optimization, and system tuning.
+This guide covers performance optimization strategies for Ouroboros v2, including hardware configuration, attack optimization, and system tuning.
 
 ---
 
@@ -44,7 +44,7 @@ This guide covers performance optimization strategies for CipherSwarm v2, includ
 
 ## Overview
 
-CipherSwarm v2 introduces several performance enhancements:
+Ouroboros v2 introduces several performance enhancements:
 
 - **Complexity Scoring**: Intelligent attack prioritization
 - **Keyspace Estimation**: Real-time performance predictions
@@ -125,8 +125,8 @@ echo 'vm.dirty_ratio=5' >> /etc/sysctl.conf
 
 ```bash
 # Use SSD for cache and temporary files
-cache_dir: /ssd/cache/cipherswarm
-temp_dir: /ssd/tmp/cipherswarm
+cache_dir: /ssd/cache/ouroboros
+temp_dir: /ssd/tmp/ouroboros
 
 # Storage recommendations
 Cache: 100GB+ SSD for resource caching
@@ -151,7 +151,7 @@ resources:
 
 #### Complexity-Based Prioritization
 
-CipherSwarm v2 uses complexity scoring to optimize attack order:
+Ouroboros v2 uses complexity scoring to optimize attack order:
 
 ```yaml
 Attack Complexity Levels:
@@ -317,7 +317,7 @@ Key Metrics:
   - Task completion rate
 
 Monitoring Tools:
-  - CipherSwarm dashboard
+  - Ouroboros dashboard
   - Agent performance charts
   - System monitoring (nvidia-smi, htop)
 ```
@@ -328,7 +328,7 @@ Establish performance baselines:
 
 ```bash
 # Benchmark agent performance
-cipherswarm-agent benchmark
+ouroboros-agent benchmark
 ```
 
 ```text
@@ -403,7 +403,7 @@ Optimize resource caching:
 ```yaml
 # Cache configuration
 resources:
-  cache_dir: /ssd/cache/cipherswarm
+  cache_dir: /ssd/cache/ouroboros
   max_cache: 100GB
   cleanup_interval: 3600    # Clean every hour
     # Cache policies

@@ -99,7 +99,7 @@ Thumbs.db
 site/*
 test_screenshots/*
 
-cipherswarm-workspace.code-workspace
+ouroboros-workspace.code-workspace
 
 # Frontend
 **/test-results/*

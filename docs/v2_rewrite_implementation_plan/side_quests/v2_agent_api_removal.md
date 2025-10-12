@@ -1,6 +1,6 @@
 # v2 Agent API Removal & v1 Decoupling Checklist - Completed
 
-This checklist provides a step-by-step plan to fully decouple and remove the v2 Agent API implementation from CipherSwarm, while ensuring the v1 Agent API remains fully functional and strictly compliant with the legacy OpenAPI specification (`contracts/v1_api_swagger.json`).
+This checklist provides a step-by-step plan to fully decouple and remove the v2 Agent API implementation from Ouroboros, while ensuring the v1 Agent API remains fully functional and strictly compliant with the legacy OpenAPI specification (`contracts/v1_api_swagger.json`).
 
 ---
 

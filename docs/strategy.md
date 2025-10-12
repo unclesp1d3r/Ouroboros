@@ -1,8 +1,8 @@
-# CipherSwarm v2: Intent and Strategic Direction
+# Ouroboros v2: Intent and Strategic Direction
 
 ## 🔄 Context & Motivation
 
-CipherSwarm v2 is a full rewrite of the original CipherSwarm project (legacy Ruby on Rails + Hotwire UI). The legacy system was functional but limited — it provided basic agent/task control and some UI affordances, but was hard to scale, automate, or modernize.
+Ouroboros v2 is a full rewrite of the original Ouroboros project (legacy Ruby on Rails + Hotwire UI). The legacy system was functional but limited — it provided basic agent/task control and some UI affordances, but was hard to scale, automate, or modernize.
 
 The rewrite is about more than just porting code. It's a shift in philosophy:
 
@@ -62,7 +62,7 @@ We're building this for red team operators, system admins, and long-term maintai
 
 ## 🧭 Strategic North Star
 
-CipherSwarm v2 isn't just about cracking faster — it's about cracking **smarter**:
+Ouroboros v2 isn't just about cracking faster — it's about cracking **smarter**:
 
 - Give users the tools they need without making them learn internals
 - Make live feedback and visibility the default

@@ -3,7 +3,7 @@
 ## Overview
 
 This directory contains full-stack End-to-End (E2E) tests for
-CipherSwarm. These tests run against a real Docker backend stack and
+Ouroboros. These tests run against a real Docker backend stack and
 validate complete user workflows from frontend to database.
 
 ## Architecture
@@ -173,7 +173,7 @@ await expect(page).toHaveURL(/\/dashboard/);
 
    ```bash
    # Run seeding manually to see errors
-   E2E_DATABASE_URL="postgresql://cipherswarm:cipherswarm@localhost:5444/cipherswarm_e2e" \
+   E2E_DATABASE_URL="postgresql://ouroboros:ouroboros@localhost:5444/cipherswarm_e2e" \
        uv run python scripts/seed_e2e_data.py
    ```
 

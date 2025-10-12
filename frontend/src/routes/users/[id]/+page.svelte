@@ -78,7 +78,7 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <svelte:head>
-    <title>User Details - {data.user.name} - CipherSwarm</title>
+    <title>User Details - {data.user.name} - Ouroboros</title>
 </svelte:head>
 
 <Dialog open={true} onOpenChange={handleClose}>

@@ -1,6 +1,6 @@
 # Testing Guide
 
-CipherSwarm uses a comprehensive testing strategy with multiple layers of validation to ensure code quality, API compliance, and system reliability.
+Ouroboros uses a comprehensive testing strategy with multiple layers of validation to ensure code quality, API compliance, and system reliability.
 
 ## Testing Architecture
 
@@ -44,7 +44,7 @@ just test
 # Run only unit tests
 pytest tests/unit/
 
-# Run only integration tests  
+# Run only integration tests
 pytest tests/integration/
 
 # Run specific test file
@@ -134,7 +134,7 @@ Integration tests validate API endpoints and cross-component interactions:
 
 ### Factories
 
-CipherSwarm uses Polyfactory for generating test data:
+Ouroboros uses Polyfactory for generating test data:
 
 ```python
 # Example factory usage
@@ -279,7 +279,7 @@ python_files = test_*.py
 python_classes = Test*
 python_functions = test_*
 asyncio_mode = auto
-addopts = 
+addopts =
     --cov=app
     --cov-report=xml
     --cov-report=term-missing

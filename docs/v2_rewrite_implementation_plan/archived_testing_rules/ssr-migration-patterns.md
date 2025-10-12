@@ -2,7 +2,7 @@
 
 ## Overview
 
-This rule documents proven patterns for migrating SvelteKit applications from SPA to SSR, based on the comprehensive migration outlined in [spa_to_ssr.md](mdc:CipherSwarm/CipherSwarm/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md).
+This rule documents proven patterns for migrating SvelteKit applications from SPA to SSR, based on the comprehensive migration outlined in [spa_to_ssr.md](mdc:Ouroboros/Ouroboros/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md).
 
 ## Data Loading Patterns
 
@@ -662,7 +662,7 @@ export const actions: Actions = {
 
 ## File References
 
-- Migration plan: [spa_to_ssr.md](mdc:CipherSwarm/CipherSwarm/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md)
-- Store examples: [campaigns.svelte.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/stores/campaigns.svelte.ts)
-- SSR load functions: [+page.server.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/routes/campaigns/+page.server.ts)
-- Component patterns: [+page.svelte](mdc:CipherSwarm/CipherSwarm/frontend/src/routes/campaigns/+page.svelte)
+- Migration plan: [spa_to_ssr.md](mdc:Ouroboros/Ouroboros/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md)
+- Store examples: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
+- SSR load functions: [+page.server.ts](mdc:Ouroboros/Ouroboros/frontend/src/routes/campaigns/+page.server.ts)
+- Component patterns: [+page.svelte](mdc:Ouroboros/Ouroboros/frontend/src/routes/campaigns/+page.svelte)

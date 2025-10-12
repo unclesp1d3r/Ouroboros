@@ -1,16 +1,18 @@
 ---
-description: This rule documents patterns for implementing Server-Sent Events in CipherSwarm for real-time dashboard updates, based on successful SSE implementation and debugging.
-globs: 
+description: This rule documents patterns for implementing Server-Sent Events in Ouroboros for real-time dashboard updates, based on successful SSE implementation and debugging.
+globs:
 alwaysApply: false
 ---
 # SSE (Server-Sent Events) Implementation Patterns
 
 ## Overview
-This rule documents patterns for implementing Server-Sent Events in CipherSwarm for real-time dashboard updates, based on successful SSE implementation and debugging.
+
+This rule documents patterns for implementing Server-Sent Events in Ouroboros for real-time dashboard updates, based on successful SSE implementation and debugging.
 
 ## Backend SSE Implementation
 
 ### Correct Media Type Configuration
+
 ```python
 # ✅ CORRECT - Use proper SSE media type
 @router.get("/live/campaigns")
@@ -21,7 +23,7 @@ async def get_campaign_events():
     )
 
 # ❌ WRONG - Using text/plain breaks SSE
-@router.get("/live/campaigns") 
+@router.get("/live/campaigns")
 async def get_campaign_events():
     return StreamingResponse(
         event_service.get_campaign_events(),
@@ -30,6 +32,7 @@ async def get_campaign_events():
 ```
 
 ### SSE Event Format
+
 ```python
 # ✅ CORRECT - Proper SSE event format
 async def get_campaign_events():
@@ -42,6 +45,7 @@ async def get_campaign_events():
 ```
 
 ### Authentication with SSE
+
 ```python
 # ✅ CORRECT - SSE endpoints must handle authentication
 @router.get("/live/campaigns")
@@ -57,6 +61,7 @@ async def get_campaign_events(
 ## Frontend SSE Implementation
 
 ### SSE Service Pattern
+
 ```typescript
 // ✅ CORRECT - Robust SSE service with connection tracking
 export class SSEService {
@@ -100,7 +105,7 @@ export class SSEService {
         } else {
             this.connectionStatus.connectedEndpoints.delete(endpoint);
         }
-        
+
         // Overall connection status based on any active connections
         this.connectionStatus.connected = this.connectionStatus.connectedEndpoints.size > 0;
     }
@@ -108,15 +113,16 @@ export class SSEService {
 ```
 
 ### Component Integration
+
 ```svelte
 <!-- ✅ CORRECT - SSE integration in dashboard components -->
 <script lang="ts">
     import { sseService } from '$lib/services/sse';
     import { onMount } from 'svelte';
-    
+
     let campaigns = $state([]);
     let connectionStatus = $derived(sseService.connected);
-    
+
     onMount(() => {
         // Connect to SSE for real-time updates
         sseService.connect('/api/v1/web/live/campaigns', (event) => {
@@ -125,7 +131,7 @@ export class SSEService {
                 updateCampaignData(event);
             }
         });
-        
+
         return () => {
             sseService.disconnect('/api/v1/web/live/campaigns');
         };
@@ -138,7 +144,7 @@ export class SSEService {
     {:else}
         <div class="status-indicator disconnected">Real-time updates disconnected</div>
     {/if}
-    
+
     <!-- Dashboard content -->
 </div>
 ```
@@ -146,24 +152,29 @@ export class SSEService {
 ## Common SSE Issues and Solutions
 
 ### Media Type Mismatch
+
 **Problem**: SSE connections fail immediately after establishment
 **Solution**: Ensure backend uses `media_type="text/event-stream"`
 
 ### Authentication Failures
+
 **Problem**: SSE connections receive 401 errors
 **Solution**: Use `withCredentials: true` in EventSource constructor
 
 ### Connection Status Tracking
+
 **Problem**: Frontend shows "disconnected" despite working connections
 **Solution**: Only treat `EventSource.CLOSED` state as actual disconnection
 
 ### Keep-Alive Handling
+
 **Problem**: Connections timeout after 30 seconds
 **Solution**: Backend should send periodic ping messages, frontend should filter them
 
 ## Testing SSE Implementation
 
 ### Backend Tests
+
 ```python
 def test_sse_media_type():
     response = client.get("/api/v1/web/live/campaigns")
@@ -172,16 +183,17 @@ def test_sse_media_type():
 ```
 
 ### Frontend Tests
+
 ```typescript
 test('SSE service connects and receives events', async () => {
     const mockEventSource = vi.fn();
     global.EventSource = mockEventSource;
-    
+
     const service = new SSEService();
     const onMessage = vi.fn();
-    
+
     service.connect('/test-endpoint', onMessage);
-    
+
     expect(mockEventSource).toHaveBeenCalledWith('/test-endpoint', {
         withCredentials: true
     });
@@ -191,6 +203,7 @@ test('SSE service connects and receives events', async () => {
 ## Development and Debugging
 
 ### Vite Proxy Configuration
+
 ```typescript
 // ✅ CORRECT - Vite proxy for SSE endpoints
 export default defineConfig({
@@ -210,6 +223,7 @@ export default defineConfig({
 ```
 
 ### Browser DevTools Debugging
+
 - Check Network tab for SSE connections (should show as "eventsource" type)
 - Look for proper `text/event-stream` content-type in response headers
 - Monitor console for EventSource errors and reconnection attempts
@@ -218,6 +232,7 @@ export default defineConfig({
 ## Performance Considerations
 
 ### Connection Management
+
 ```typescript
 // ✅ CORRECT - Proper connection cleanup
 export class SSEService {
@@ -229,7 +244,7 @@ export class SSEService {
             this.updateConnectionStatus(endpoint, false);
         }
     }
-    
+
     disconnectAll(): void {
         for (const [endpoint] of this.connections) {
             this.disconnect(endpoint);
@@ -239,11 +254,12 @@ export class SSEService {
 ```
 
 ### Reconnection Strategy
+
 ```typescript
 // ✅ CORRECT - Exponential backoff for reconnection
 private scheduleReconnect(endpoint: string, onMessage: Function): void {
     const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
-    
+
     setTimeout(() => {
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;
@@ -272,4 +288,3 @@ private scheduleReconnect(endpoint: string, onMessage: Function): void {
 - Forgetting to clean up EventSource connections
 - Not handling keep-alive ping messages
 - Hardcoding connection endpoints without environment detection
-

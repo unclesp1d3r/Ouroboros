@@ -32,7 +32,7 @@ const defaultConfig: AppConfig = {
     publicApiBaseUrl: 'http://localhost:8000',
     tokenExpireMinutes: 60,
     debug: false, // Default to false, enable via environment variable
-    appName: 'CipherSwarm',
+    appName: 'Ouroboros',
     appVersion: '2.0.0',
     enableExperimentalFeatures: false,
 };

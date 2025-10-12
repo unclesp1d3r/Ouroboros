@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug to help us improve CipherSwarm
+description: Report a bug to help us improve Ouroboros
 title: "[BUG] "
 labels: ["type:fix", "priority:P2"]
 assignees: []
@@ -63,7 +63,7 @@ body:
           value: |
               - OS: [e.g. Ubuntu 22.04]
               - Python Version: [e.g. 3.13.0]
-              - CipherSwarm Version: [e.g. v0.6.7 or commit hash]
+              - Ouroboros Version: [e.g. v0.6.7 or commit hash]
               - Agent Version (if applicable): [e.g. 1.0.0]
               - Hashcat Version (if applicable): [e.g. 6.2.6]
               - Browser (if Web UI issue): [e.g. Chrome 120]

@@ -23,7 +23,7 @@ async function globalTeardown(config: FullConfig) {
         // Additional cleanup: remove any dangling images from the E2E build
         console.log('🗑️  Cleaning up dangling Docker images...');
         try {
-            execSync('docker image prune -f --filter label=project=cipherswarm-e2e', {
+            execSync('docker image prune -f --filter label=project=ouroboros-e2e', {
                 stdio: 'pipe',
             });
         } catch (error) {

@@ -32,7 +32,7 @@ test.describe('Campaigns List Page (SSR)', () => {
     test.describe('Basic Page Rendering', () => {
         test('renders campaigns list page with SSR data', async ({ page }) => {
             // Verify page title is set correctly
-            await expect(page).toHaveTitle(/Campaigns - CipherSwarm/);
+            await expect(page).toHaveTitle(/Campaigns - Ouroboros/);
 
             // Verify main heading
             await expect(page.locator('[data-testid="campaigns-title"]')).toContainText(

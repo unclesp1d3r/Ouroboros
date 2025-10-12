@@ -1,6 +1,6 @@
 # Attack Configuration Guide
 
-This guide covers the configuration of different attack types in CipherSwarm v2, including the new attack editors, ephemeral resources, and real-time estimation features.
+This guide covers the configuration of different attack types in Ouroboros v2, including the new attack editors, ephemeral resources, and real-time estimation features.
 
 ---
 
@@ -50,7 +50,7 @@ This guide covers the configuration of different attack types in CipherSwarm v2,
 
 ## Attack Types Overview
 
-CipherSwarm v2 supports multiple attack types with enhanced configuration and user-friendly interfaces:
+Ouroboros v2 supports multiple attack types with enhanced configuration and user-friendly interfaces:
 
 1. **Dictionary Attack**
 
@@ -544,7 +544,7 @@ Attacks are automatically assigned complexity scores (1-5):
 
 ### Hash Type Detection
 
-CipherSwarm v2 includes automatic hash type detection:
+Ouroboros v2 includes automatic hash type detection:
 
 - **Confidence Scoring**: Shows detection confidence (0-100%)
 - **Multiple Suggestions**: Lists possible hash types

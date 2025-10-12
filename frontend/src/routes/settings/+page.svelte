@@ -106,7 +106,7 @@
 </script>
 
 <svelte:head>
-    <title>Settings - CipherSwarm</title>
+    <title>Settings - Ouroboros</title>
 </svelte:head>
 
 <div class="container mx-auto py-6">

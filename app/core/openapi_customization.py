@@ -1,4 +1,4 @@
-"""OpenAPI documentation customization for CipherSwarm APIs."""
+"""OpenAPI documentation customization for Ouroboros APIs."""
 
 from typing import Any
 
@@ -21,8 +21,8 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
 
     # Add custom OpenAPI extensions
     openapi_schema["info"]["x-logo"] = {
-        "url": "https://raw.githubusercontent.com/unclesp1d3r/CipherSwarm/main/docs/assets/logo.png",
-        "altText": "CipherSwarm Logo",
+        "url": "https://raw.githubusercontent.com/unclesp1d3r/Ouroboros/main/docs/assets/logo.png",
+        "altText": "Ouroboros Logo",
     }
 
     # Add comprehensive tags for better organization
@@ -32,15 +32,15 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
             "description": "User authentication and session management endpoints. Handles login, logout, JWT token management, and project context switching.",
             "externalDocs": {
                 "description": "Authentication Guide",
-                "url": "https://docs.cipherswarm.example.com/api/authentication",
+                "url": "https://docs.ouroboros.example.com/api/authentication",
             },
         },
         {
             "name": "Agent API",
-            "description": "Legacy-compatible API for CipherSwarm agents. Maintains strict backward compatibility with v1 specification for agent registration, task management, and result submission.",
+            "description": "Legacy-compatible API for Ouroboros agents. Maintains strict backward compatibility with v1 specification for agent registration, task management, and result submission.",
             "externalDocs": {
                 "description": "Agent API Documentation",
-                "url": "https://docs.cipherswarm.example.com/api/agent",
+                "url": "https://docs.ouroboros.example.com/api/agent",
             },
         },
         {
@@ -48,7 +48,7 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
             "description": "Rich API interface for the SvelteKit web application. Provides comprehensive campaign management, real-time updates, and administrative functions.",
             "externalDocs": {
                 "description": "Web UI API Documentation",
-                "url": "https://docs.cipherswarm.example.com/api/web",
+                "url": "https://docs.ouroboros.example.com/api/web",
             },
         },
         {
@@ -56,7 +56,7 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
             "description": "Programmatic API for CLI tools and automation. Features RFC9457-compliant error responses and batch operations for scripting and integration.",
             "externalDocs": {
                 "description": "Control API Documentation",
-                "url": "https://docs.cipherswarm.example.com/api/control",
+                "url": "https://docs.ouroboros.example.com/api/control",
             },
         },
         {
@@ -119,7 +119,7 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
                 "type": "string",
                 "description": "Human-readable error message",
                 "example": "Invalid authentication token",
-            }
+            },
         },
         "required": ["error"],
         "description": "Standard error response format for Agent API (legacy compatibility)",
@@ -150,8 +150,8 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
                         },
                         "description": "Validation error details",
                     },
-                ]
-            }
+                ],
+            },
         },
         "required": ["detail"],
         "description": "Standard error response format for Web UI API (FastAPI format)",
@@ -164,7 +164,7 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
                 "type": "string",
                 "format": "uri",
                 "description": "URI identifying the problem type",
-                "example": "https://cipherswarm.example.com/problems/validation-error",
+                "example": "https://ouroboros.example.com/problems/validation-error",
             },
             "title": {
                 "type": "string",
@@ -224,7 +224,7 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
             "summary": "Example agent",
             "value": {
                 "id": 789,
-                "client_signature": "CipherSwarm-Agent/2.1.0",
+                "client_signature": "Ouroboros-Agent/2.1.0",
                 "hostname": "gpu-worker-01.corp.local",
                 "operating_system": "linux",
                 "state": "active",
@@ -245,13 +245,13 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
                         "msg": "ensure this value is greater than or equal to 0",
                         "type": "value_error.number.not_ge",
                     },
-                ]
+                ],
             },
         },
         "ProblemDetailsExample": {
             "summary": "RFC9457 Problem Details error",
             "value": {
-                "type": "https://cipherswarm.example.com/problems/validation-error",
+                "type": "https://ouroboros.example.com/problems/validation-error",
                 "title": "Validation Error",
                 "status": 422,
                 "detail": "The request contains invalid data",
@@ -261,7 +261,7 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
                         "field": "name",
                         "message": "Campaign name is required",
                         "code": "required",
-                    }
+                    },
                 ],
             },
         },
@@ -283,7 +283,7 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
                 # Add security requirements based on API type
                 if "/api/v1/client/" in path or "/api/v1/agent/" in path:
                     if path not in [
-                        "/api/v1/client/authenticate"
+                        "/api/v1/client/authenticate",
                     ]:  # Exclude auth endpoints
                         operation["security"] = [{"AgentBearer": []}]
                 elif "/api/v1/web/" in path:
@@ -301,10 +301,10 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
                 # Add authentication error responses
                 if "security" in operation:
                     operation["responses"]["401"] = {
-                        "description": "Authentication required or invalid credentials"
+                        "description": "Authentication required or invalid credentials",
                     }
                     operation["responses"]["403"] = {
-                        "description": "Insufficient permissions for this operation"
+                        "description": "Insufficient permissions for this operation",
                     }
 
                 # Add rate limiting response

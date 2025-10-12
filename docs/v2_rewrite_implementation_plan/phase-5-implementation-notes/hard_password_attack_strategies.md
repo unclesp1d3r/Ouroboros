@@ -1,4 +1,4 @@
-# CipherSwarm Phase 5 - Hard Password Attack Strategies
+# Ouroboros Phase 5 - Hard Password Attack Strategies
 
 ---
 
@@ -6,7 +6,7 @@
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=3 --minlevel=1 -->
 
-- [CipherSwarm Phase 5 - Hard Password Attack Strategies](#cipherswarm-phase-5---hard-password-attack-strategies)
+- [Ouroboros Phase 5 - Hard Password Attack Strategies](#ouroboros-phase-5---hard-password-attack-strategies)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Smarter Dictionaries](#smarter-dictionaries)
@@ -49,9 +49,9 @@
 
 ## Overview
 
-This document outlines advanced techniques for targeting difficult-to-crack passwords within CipherSwarm. These strategies build on insights from over 50,000 previously recovered passwords and propose a framework for leveraging those successes to crack harder, more resistant hashes.
+This document outlines advanced techniques for targeting difficult-to-crack passwords within Ouroboros. These strategies build on insights from over 50,000 previously recovered passwords and propose a framework for leveraging those successes to crack harder, more resistant hashes.
 
-The focus is on smarter wordlists, adaptive rules, and feedback-informed attack planning. These techniques are complementary to the meta-dictionary strategy and can be integrated into CipherSwarm as part of Phase 5 enhancements.
+The focus is on smarter wordlists, adaptive rules, and feedback-informed attack planning. These techniques are complementary to the meta-dictionary strategy and can be integrated into Ouroboros as part of Phase 5 enhancements.
 
 ---
 
@@ -133,9 +133,9 @@ Hashcat's Markov mode prioritizes guesses based on statistical likelihood using 
 - **Position frequency**: Which characters appear most at each position.
 - **Transition frequency**: Given character `c`, what likely comes next.
 
-#### CipherSwarm Usage
+#### Ouroboros Usage
 
-- CipherSwarm will generate per-project `hcstat2` files from cracked passwords.
+- Ouroboros will generate per-project `hcstat2` files from cracked passwords.
 - These will be stored and versioned for each campaign or hashlist.
 - Markov-based brute-force will be an *opt-in checkbox* in the Mask Attack Editor UI, requiring no special knowledge to activate.
 
@@ -175,7 +175,7 @@ Hashcat's Markov mode prioritizes guesses based on statistical likelihood using 
 
 ## PACK-Style Adaptive Mask and Rule Integration
 
-CipherSwarm will natively integrate PACK-style tools to make cracking more adaptive and self-tuning. Rather than rely on aging external scripts, CipherSwarm will embed the following capabilities directly into the platform:
+Ouroboros will natively integrate PACK-style tools to make cracking more adaptive and self-tuning. Rather than rely on aging external scripts, Ouroboros will embed the following capabilities directly into the platform:
 
 ### Internal `maskgen` Equivalent
 
@@ -212,7 +212,7 @@ CipherSwarm will natively integrate PACK-style tools to make cracking more adapt
 
 ## Rule-Based Effectiveness from Debug Output
 
-CipherSwarm will leverage hashcat’s `--debug-mode` output (specifically mode 3) to analyze how cracked passwords were transformed from base dictionary inputs.
+Ouroboros will leverage hashcat’s `--debug-mode` output (specifically mode 3) to analyze how cracked passwords were transformed from base dictionary inputs.
 
 ### Data Captured
 
@@ -288,4 +288,4 @@ CipherSwarm will leverage hashcat’s `--debug-mode` output (specifically mode 3
 
 ## Summary
 
-These strategies turn CipherSwarm from a traditional orchestrator into an adaptive, learning, and feedback-driven cracking engine. The best passwords to crack are the ones that teach you how to crack the rest. By folding every success and failure back into the system, CipherSwarm stays ahead of static dictionaries and rulesets.
+These strategies turn Ouroboros from a traditional orchestrator into an adaptive, learning, and feedback-driven cracking engine. The best passwords to crack are the ones that teach you how to crack the rest. By folding every success and failure back into the system, Ouroboros stays ahead of static dictionaries and rulesets.

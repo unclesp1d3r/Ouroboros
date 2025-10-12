@@ -1,4 +1,4 @@
-"""Database package for CipherSwarm."""
+"""Database package for Ouroboros."""
 
 from .config import DatabaseSettings
 from .health import check_database_health

@@ -1,4 +1,4 @@
-# Testing Patterns and Best Practices for CipherSwarm
+# Testing Patterns and Best Practices for Ouroboros
 
 ## Test Organization and Structure
 

@@ -1,10 +1,10 @@
 # API Reference
 
-This document provides detailed specifications for all CipherSwarm APIs.
+This document provides detailed specifications for all Ouroboros APIs.
 
 ## API Versioning
 
-CipherSwarm provides three distinct APIs:
+Ouroboros provides three distinct APIs:
 
 1. **Agent API** (`/api/v1/client/*`)
 
@@ -75,7 +75,7 @@ Content-Type: application/json
     "name": "agent1",
     "operating_system": "Linux",
     "devices": ["NVIDIA GeForce RTX 3080", "Intel Core i7-9700K"],
-    "client_signature": "CipherSwarm-Agent/1.0.0"
+    "client_signature": "Ouroboros-Agent/1.0.0"
 }
 
 Response:
@@ -765,7 +765,7 @@ Response:
 
 ```json
 {
-  "type": "https://cipherswarm.example.com/problems/validation-error",
+  "type": "https://ouroboros.example.com/problems/validation-error",
   "title": "Validation Error",
   "status": 422,
   "detail": "The hash string format is invalid",

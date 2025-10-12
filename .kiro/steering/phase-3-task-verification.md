@@ -110,7 +110,7 @@ This rule defines the verification patterns and completion criteria for Phase 3 
 ### Navigation Verification
 
 ```typescript
-// Verify navigation functionality  
+// Verify navigation functionality
 - Test sidebar navigation between sections
 - Confirm breadcrumb consistency
 - Verify deep linking support
@@ -141,23 +141,23 @@ This rule defines the verification patterns and completion criteria for Phase 3 
 
 ### Key Implementation Files
 
-- Dashboard: [+page.svelte](mdc:CipherSwarm/frontend/src/routes/+page.svelte)
-- SSR Load Functions: [+page.server.ts](mdc:CipherSwarm/frontend/src/routes/+page.server.ts)
-- Component Library: [components/ui/](mdc:CipherSwarm/frontend/src/lib/components/ui)
-- Stores: [stores/](mdc:CipherSwarm/frontend/src/lib/stores)
-- Schemas: [schemas/](mdc:CipherSwarm/frontend/src/lib/schemas)
+- Dashboard: [+page.svelte](mdc:Ouroboros/frontend/src/routes/+page.svelte)
+- SSR Load Functions: [+page.server.ts](mdc:Ouroboros/frontend/src/routes/+page.server.ts)
+- Component Library: [components/ui/](mdc:Ouroboros/frontend/src/lib/components/ui)
+- Stores: [stores/](mdc:Ouroboros/frontend/src/lib/stores)
+- Schemas: [schemas/](mdc:Ouroboros/frontend/src/lib/schemas)
 
 ### Testing Files
 
-- Mock E2E Tests: [e2e/](mdc:CipherSwarm/frontend/e2e)
-- Full E2E Tests: [tests/e2e/](mdc:CipherSwarm/frontend/tests/e2e)
-- Test Utilities: [test-utils.ts](mdc:CipherSwarm/frontend/tests/test-utils.ts)
+- Mock E2E Tests: [e2e/](mdc:Ouroboros/frontend/e2e)
+- Full E2E Tests: [tests/e2e/](mdc:Ouroboros/frontend/tests/e2e)
+- Test Utilities: [test-utils.ts](mdc:Ouroboros/frontend/tests/test-utils.ts)
 
 ### Configuration Files
 
-- OpenAPI Contract: [current_api_openapi.json](mdc:CipherSwarm/contracts/current_api_openapi.json)
-- Playwright Config (Mock): [playwright.config.ts](mdc:CipherSwarm/frontend/playwright.config.ts)
-- Playwright Config (E2E): [playwright.config.e2e.ts](mdc:CipherSwarm/frontend/playwright.config.e2e.ts)
+- OpenAPI Contract: [current_api_openapi.json](mdc:Ouroboros/contracts/current_api_openapi.json)
+- Playwright Config (Mock): [playwright.config.ts](mdc:Ouroboros/frontend/playwright.config.ts)
+- Playwright Config (E2E): [playwright.config.e2e.ts](mdc:Ouroboros/frontend/playwright.config.e2e.ts)
 
 ## Best Practices
 

@@ -1,6 +1,6 @@
 # Agent Cracking Operation Flowchart
 
-This document outlines the typical lifecycle of a CipherSwarm agent and its interaction with the server API during a cracking operation.
+This document outlines the typical lifecycle of a Ouroboros agent and its interaction with the server API during a cracking operation.
 
 ## Flowchart
 

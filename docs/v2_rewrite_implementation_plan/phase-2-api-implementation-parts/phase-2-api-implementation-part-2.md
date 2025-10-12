@@ -233,7 +233,7 @@ _All views should support Svelte SSE triggers or polling to allow dynamic refres
 
 ## Hash List Management
 
-Hash lists are a collection of hashes that can be used in a campaign. They are a fundemental core component of CipherSwarm and are the primary way to manage hashes within a project. When a hash list is added to the system, either through the upload of a file containing hashes or through the creation of a new hash list, the hashes are stored in the database as hash items and are associated with the hash list. When a campaign is created, the hash list can be selected and the hashes in the hash list will be the focus of the attacks. When an agent requests a task, which is a subset of an attack, the agent will receive a dynamically generated download file containing the uncracked hashes from the hash list in a format that is compatible with hashcat. As the agent processes the hashes, the agent will submit the cracked hashes back to the system and the system will update the hash list with the cracked hashes. If another agent successfully cracks a hash that is part of a hash list that is being worked by another agent, all agents working on the hash list will be notified and directed to download a zap list, which contains the hashes that have been cracked since the they downloaded the hash list. The agent portion of this process is handled by the Agent API, here we will be implementing the endpoints for the user interface to manage hash lists.
+Hash lists are a collection of hashes that can be used in a campaign. They are a fundemental core component of Ouroboros and are the primary way to manage hashes within a project. When a hash list is added to the system, either through the upload of a file containing hashes or through the creation of a new hash list, the hashes are stored in the database as hash items and are associated with the hash list. When a campaign is created, the hash list can be selected and the hashes in the hash list will be the focus of the attacks. When an agent requests a task, which is a subset of an attack, the agent will receive a dynamically generated download file containing the uncracked hashes from the hash list in a format that is compatible with hashcat. As the agent processes the hashes, the agent will submit the cracked hashes back to the system and the system will update the hash list with the cracked hashes. If another agent successfully cracks a hash that is part of a hash list that is being worked by another agent, all agents working on the hash list will be notified and directed to download a zap list, which contains the hashes that have been cracked since the they downloaded the hash list. The agent portion of this process is handled by the Agent API, here we will be implementing the endpoints for the user interface to manage hash lists.
 
 Since hash lists are one of the most sensitive components of the system, they are always restricted to a specific project and are never visible to other projects. This is enforced by the system and the user interface should reflect this restriction. If an attack successfully cracks a hash that appears in multiple hash lists across different projects, the hash item in each project will be updated with the found plaintext value, but it is not revealed to the user what attack found the plaintext (unlike when a hash is cracked in a campaign that is part of the user's project). This is to avoid leaking information about password reuse across multiple projects.
 
@@ -250,7 +250,7 @@ Since hash lists are one of the most sensitive components of the system, they ar
 
 #### Save/Load Schema Design
 
-CipherSwarm should allow saving and loading of both individual Attacks and entire Campaigns via a custom JSON format. This will support backup, sharing, and preconfiguration workflows.
+Ouroboros should allow saving and loading of both individual Attacks and entire Campaigns via a custom JSON format. This will support backup, sharing, and preconfiguration workflows.
 
 🔐 The exported format must include:
 
@@ -307,7 +307,7 @@ This schema should be versioned and tested against a validation spec.
 
 #### Ephemeral Resources
 
-Attacks can support ephemeral resources that can be created and edited within the attack editor. These resources are still persisted to the database, but they are stored as part of an AttackResourceFile record as a JSON structure, and are not visible in the Resource Browser or available for reuse in other attacks. They are deleted when the attack is deleted, they do not have a backing file in S3, and they are exported inline if the attack is exported within the same JSON file. The Agent API will provide a non-signed URL to agents to access these resources when the attack is running and they are downloaded directly from CipherSwarm, rather than the MinIO service.
+Attacks can support ephemeral resources that can be created and edited within the attack editor. These resources are still persisted to the database, but they are stored as part of an AttackResourceFile record as a JSON structure, and are not visible in the Resource Browser or available for reuse in other attacks. They are deleted when the attack is deleted, they do not have a backing file in S3, and they are exported inline if the attack is exported within the same JSON file. The Agent API will provide a non-signed URL to agents to access these resources when the attack is running and they are downloaded directly from Ouroboros, rather than the MinIO service.
 
 ---
 
@@ -434,7 +434,7 @@ For additional notes on the agent management, see [Agent Notes](../notes/agent_n
 - [x] `PATCH /api/v1/web/agents/{id}/config` - Update `AdvancedAgentConfiguration` toggles (backend_ignore, opencl, etc.) `task_id:agent.config_update`
 - [x] `PATCH /api/v1/web/agents/{id}/devices` - Toggle individual backend devices (stored as stringified int list) `task_id:agent.device_toggle`
   - This will toggle the individual backend devices for the agent. It should take a `devices` as a parameter and update the `backend_device` for the agent.
-  - The backend devices are stored in Cipherswarm on the Agent model as `list[str]` of their descriptive names in `Agent.devices` and the actual setting of what should be enabled is a comma-seperated list of integers, 1-indexed, so it'll be a little weird to figure out. We'll probably need a better way to do this in the future, but this is a limitation of v1 of the Agent API. See [Hardware](../notes/ui_screens/agent_detail_tabs.md#hardware) above for more details.
+  - The backend devices are stored in Ouroboros on the Agent model as `list[str]` of their descriptive names in `Agent.devices` and the actual setting of what should be enabled is a comma-seperated list of integers, 1-indexed, so it'll be a little weird to figure out. We'll probably need a better way to do this in the future, but this is a limitation of v1 of the Agent API. See [Hardware](../notes/ui_screens/agent_detail_tabs.md#hardware) above for more details.
 - [x] `POST /api/v1/web/agents/{id}/benchmark` - Trigger new benchmark run (set to `pending`) `task_id:agent.benchmark_trigger`
   - This changes the agent's state to `pending`, which causes the agent to run a benchmark. See [Agent Benchmark Compatibility](../core_algorithm_implementation_guide.md#agent-benchmark-compatibility) for more details.
 - [x] `GET /api/v1/web/agents/{id}/errors` - Fetch structured log stream `task_id:agent.log_stream`
@@ -475,7 +475,7 @@ _Includes real-time updating views, hardware configuration toggles, performance 
 
 ### Resource Browser
 
-CipherSwarm uses `AttackResourceFile` objects to represent reusable cracking resources such as mask lists, wordlists, rule files, and custom charsets. All uploads go through the CipherSwarm backend, which creates the database record and issues a presigned S3 upload URL. No object in storage should exist without a matching DB entry. Each file includes a declared `resource_type` that drives editor behavior, validation rules, and allowed usage in attacks.
+Ouroboros uses `AttackResourceFile` objects to represent reusable cracking resources such as mask lists, wordlists, rule files, and custom charsets. All uploads go through the Ouroboros backend, which creates the database record and issues a presigned S3 upload URL. No object in storage should exist without a matching DB entry. Each file includes a declared `resource_type` that drives editor behavior, validation rules, and allowed usage in attacks.
 
 Line-oriented resources (masks, rules, small wordlists) may be edited interactively in the Web UI. Each line is validated individually and exposed via a dedicated endpoint. Larger files must be downloaded, edited offline, and reuploaded.
 
@@ -566,7 +566,7 @@ Editor behavior must respect the declared type:
 
 (\*) Editing of large word lists may be disabled based on configured size thresholds.
 
-Uploads must be initiated via CipherSwarm, which controls both presigned S3 access and DB row creation. No orphaned files should exist. The backend remains source of truth for metadata, content type, and validation enforcement.
+Uploads must be initiated via Ouroboros, which controls both presigned S3 access and DB row creation. No orphaned files should exist. The backend remains source of truth for metadata, content type, and validation enforcement.
 
 🚨 Validation errors for resource line editing should follow FastAPI + Pydantic idioms. Use `HTTPException(status_code=422, detail=...)` for top-level form errors, and structured `ValidationError` objects for per-line issues:
 
@@ -608,11 +608,11 @@ This should be returned from:
 
 For valid input, return `204 No Content` or the updated data, which controls both presign + DB insert. No orphaned files should exist. The backend remains source of truth for metadata, content type, and validation enforcement.
 
-🔒 All uploaded resource files must originate from the CipherSwarm backend, which controls presigned upload URLs and creates the corresponding database entry in `AttackResourceFile` (defined in `app.models.attack_resource_file`). There should never be a case where a file exists in the object store without a corresponding DB row. The S3-compatible backend is used strictly for offloading large file transfer workloads (uploads/downloads by UI and agents), not as an authoritative metadata source.
+🔒 All uploaded resource files must originate from the Ouroboros backend, which controls presigned upload URLs and creates the corresponding database entry in `AttackResourceFile` (defined in `app.models.attack_resource_file`). There should never be a case where a file exists in the object store without a corresponding DB row. The S3-compatible backend is used strictly for offloading large file transfer workloads (uploads/downloads by UI and agents), not as an authoritative metadata source.
 
 💡 The UI should detect resource type and size to determine whether inline editing or full download is allowed. The backend should expose content metadata to guide this decision, such as `line_count`, `byte_size`, and `resource_type`. The frontend may display masks, rules, and short wordlists with line-level controls; long wordlists or binary-formatted resources must fall back to download/reupload workflows.
 
-_Includes support for uploading, viewing, linking, and editing attack resources (mask lists, word lists, rule lists, and custom charsets). Resources are stored in an S3-compatible object store (typically MinIO), but CipherSwarm must track metadata, linkage, and validation. Users should be able to inspect and edit resource content directly in the browser via web-based interactions._
+_Includes support for uploading, viewing, linking, and editing attack resources (mask lists, word lists, rule lists, and custom charsets). Resources are stored in an S3-compatible object store (typically MinIO), but Ouroboros must track metadata, linkage, and validation. Users should be able to inspect and edit resource content directly in the browser via web-based interactions._
 
 🔐 Direct editing is permitted only for resources under a safe size threshold (e.g., < 5,000 lines or < 1MB). Larger files must be downloaded, edited offline, and reuploaded. This threshold should be configurable via an environment variable or application setting (e.g., `RESOURCE_EDIT_MAX_SIZE_MB`, `RESOURCE_EDIT_MAX_LINES`) to allow for deployment-specific tuning.
 
@@ -646,7 +646,7 @@ class ResourceLine(BaseModel):
 
 These may be backed by temporary parsed representations for S3-stored resources, cached in memory or a staging DB table for edit sessions.
 
-_Includes support for uploading, viewing, linking, and editing attack resources (mask lists, word lists, rule lists, and custom charsets). Resources are stored in an S3-compatible object store (typically MinIO), but CipherSwarm must track metadata, linkage, and validation. Users should be able to inspect and edit resource content directly in the browser via HTMX-supported interactions._
+_Includes support for uploading, viewing, linking, and editing attack resources (mask lists, word lists, rule lists, and custom charsets). Resources are stored in an S3-compatible object store (typically MinIO), but Ouroboros must track metadata, linkage, and validation. Users should be able to inspect and edit resource content directly in the browser via HTMX-supported interactions._
 
 🔐 Direct editing is permitted only for resources under a safe size threshold (e.g., < 5,000 lines or < 1MB). Larger files must be downloaded, edited offline, and reuploaded. This threshold should be configurable via an environment variable or application setting (e.g., `RESOURCE_EDIT_MAX_SIZE_MB`, `RESOURCE_EDIT_MAX_LINES`) to allow for deployment-specific tuning.
 

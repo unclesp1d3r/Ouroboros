@@ -9,7 +9,7 @@ import axios, {
 import { z } from 'zod';
 
 /**
- * Server-side API client for CipherSwarm backend
+ * Server-side API client for Ouroboros backend
  * This client is designed to be used in +page.server.ts files and server actions
  */
 export class ServerApiClient {

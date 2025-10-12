@@ -2,7 +2,7 @@
 
 ## Overview
 
-This implementation plan transforms the Web UI API v1 requirements and design into actionable coding tasks. The plan follows a test-driven development approach with incremental progress, building upon the existing CipherSwarm infrastructure while adding comprehensive web interface capabilities.
+This implementation plan transforms the Web UI API v1 requirements and design into actionable coding tasks. The plan follows a test-driven development approach with incremental progress, building upon the existing Ouroboros infrastructure while adding comprehensive web interface capabilities.
 
 The implementation is organized into logical phases that can be executed independently while maintaining system functionality. Each task includes specific requirements references and builds incrementally toward the complete Web UI API.
 
@@ -482,7 +482,7 @@ The implementation is organized into logical phases that can be executed indepen
 
 - Follow test-driven development (TDD) principles
 - Implement service layer functions before API endpoints
-- Use existing CipherSwarm patterns and conventions
+- Use existing Ouroboros patterns and conventions
 - Maintain backward compatibility with existing Agent APIs
 
 ### Quality Standards

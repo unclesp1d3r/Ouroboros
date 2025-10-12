@@ -1,6 +1,6 @@
 # Agent Setup Guide
 
-This guide covers the installation, registration, and configuration of CipherSwarm v2 agents.
+This guide covers the installation, registration, and configuration of Ouroboros v2 agents.
 
 ---
 
@@ -16,7 +16,7 @@ This guide covers the installation, registration, and configuration of CipherSwa
     - [2. Project-Based Access Control](#2-project-based-access-control)
   - [Installation](#installation)
     - [1. Install Dependencies](#1-install-dependencies)
-    - [2. Install CipherSwarm Agent](#2-install-cipherswarm-agent)
+    - [2. Install Ouroboros Agent](#2-install-ouroboros-agent)
   - [Configuration](#configuration)
     - [1. Basic Setup](#1-basic-setup)
     - [2. Authentication Configuration](#2-authentication-configuration)
@@ -70,7 +70,7 @@ This guide covers the installation, registration, and configuration of CipherSwa
 
 2. **Network Requirements**
 
-   - Outbound HTTPS access to CipherSwarm server
+   - Outbound HTTPS access to Ouroboros server
    - Port 443 (HTTPS) or custom port accessible
    - Stable internet connection
    - Access to MinIO object storage (for resource downloads)
@@ -82,13 +82,13 @@ This guide covers the installation, registration, and configuration of CipherSwa
 
 ## Agent Registration (Administrator)
 
-Before installing an agent, an administrator must register it through the CipherSwarm web interface:
+Before installing an agent, an administrator must register it through the Ouroboros web interface:
 
 ### 1. Web Interface Registration
 
 1. **Login as Administrator**
 
-   - Access the CipherSwarm web interface
+   - Access the Ouroboros web interface
    - Login with administrator credentials
 
 2. **Navigate to Agent Management**
@@ -115,7 +115,7 @@ Before installing an agent, an administrator must register it through the Cipher
 
 ### 2. Project-Based Access Control
 
-CipherSwarm v2 introduces project-based organization:
+Ouroboros v2 introduces project-based organization:
 
 - **Multi-tenancy**: Agents can be assigned to multiple projects
 - **Isolation**: Agents only see tasks from assigned projects
@@ -141,7 +141,7 @@ brew install python@3.13 hashcat
 choco install python313 hashcat
 ```
 
-### 2. Install CipherSwarm Agent
+### 2. Install Ouroboros Agent
 
 ```bash
 # Create virtual environment
@@ -151,7 +151,7 @@ source .venv/bin/activate  # Unix/macOS
 .venv\Scripts\activate     # Windows
 
 # Install agent
-pip install cipherswarm-agent
+pip install ouroboros-agent
 ```
 
 ## Configuration
@@ -160,27 +160,27 @@ pip install cipherswarm-agent
 
 ```bash
 # Initialize agent
-cipherswarm-agent init
+ouroboros-agent init
 
 # Configure server connection (HTTPS required in v2)
-cipherswarm-agent config set server.url https://cipherswarm.example.com
-cipherswarm-agent config set agent.token "csa_123_abc..."
-cipherswarm-agent config set agent.name "GPU-Node-01"
+ouroboros-agent config set server.url https://ouroboros.example.com
+ouroboros-agent config set agent.token "csa_123_abc..."
+ouroboros-agent config set agent.name "GPU-Node-01"
 ```
 
 ### 2. Authentication Configuration
 
-CipherSwarm v2 uses bearer token authentication:
+Ouroboros v2 uses bearer token authentication:
 
 ```yaml
 server:
-  url: https://cipherswarm.example.com
+  url: https://ouroboros.example.com
   verify_ssl: true
   timeout: 30
 
 authentication:
   token: csa_123_abc...      # From web interface registration
-  token_file: /etc/cipherswarm/token
+  token_file: /etc/ouroboros/token
   token_permissions: 0600
 ```
 
@@ -190,14 +190,14 @@ Create `agent.yaml`:
 
 ```yaml
 server:
-  url: https://cipherswarm.example.com
+  url: https://ouroboros.example.com
   verify_ssl: true
   timeout: 30
   api_version: v1      # Agent API version
 
 authentication:
   token: csa_123_abc...
-  token_file: /etc/cipherswarm/token
+  token_file: /etc/ouroboros/token
   token_permissions: 0600
 
 agent:
@@ -241,8 +241,8 @@ hashcat:
   benchmark_all: false    # Enable additional hash types
 
 resources:
-  cache_dir: /var/cache/cipherswarm
-  temp_dir: /tmp/cipherswarm
+  cache_dir: /var/cache/ouroboros
+  temp_dir: /tmp/ouroboros
   max_cache: 50GB
   cleanup_interval: 3600
 
@@ -276,9 +276,9 @@ monitoring:
 
 security:
     # TLS/SSL (recommended for production)
-  cert_file: /etc/cipherswarm/cert.pem
-  key_file: /etc/cipherswarm/key.pem
-  ca_file: /etc/cipherswarm/ca.pem
+  cert_file: /etc/ouroboros/cert.pem
+  key_file: /etc/ouroboros/key.pem
+  ca_file: /etc/ouroboros/ca.pem
 
     # Network restrictions
   allowed_ips:
@@ -299,22 +299,22 @@ Agents automatically receive project assignments from the server:
 
 ### 1. Systemd Service (Recommended)
 
-Create `/etc/systemd/system/cipherswarm-agent.service`:
+Create `/etc/systemd/system/ouroboros-agent.service`:
 
 ```ini
 [Unit]
-Description=CipherSwarm v2 Agent
+Description=Ouroboros v2 Agent
 After=network.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-User=cipherswarm
-Group=cipherswarm
+User=ouroboros
+Group=ouroboros
 Environment=PATH=/usr/local/bin:/usr/bin:/bin
 Environment=PYTHONUNBUFFERED=1
-WorkingDirectory=/var/lib/cipherswarm
-ExecStart=/usr/local/bin/cipherswarm-agent run --config /etc/cipherswarm/agent.yaml
+WorkingDirectory=/var/lib/ouroboros
+ExecStart=/usr/local/bin/ouroboros-agent run --config /etc/ouroboros/agent.yaml
 Restart=always
 RestartSec=5
 TimeoutStopSec=30
@@ -324,7 +324,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/var/lib/cipherswarm /var/cache/cipherswarm /tmp/cipherswarm
+ReadWritePaths=/var/lib/ouroboros /var/cache/ouroboros /tmp/ouroboros
 
 [Install]
 WantedBy=multi-user.target
@@ -333,9 +333,9 @@ WantedBy=multi-user.target
 Enable and start the service:
 
 ```bash
-sudo systemctl enable cipherswarm-agent
-sudo systemctl start cipherswarm-agent
-sudo systemctl status cipherswarm-agent
+sudo systemctl enable ouroboros-agent
+sudo systemctl start ouroboros-agent
+sudo systemctl status ouroboros-agent
 ```
 
 ### 2. Docker Container
@@ -350,48 +350,48 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Create user
-RUN useradd -m -u 1000 cipherswarm
+RUN useradd -m -u 1000 ouroboros
 
 # Install agent
-RUN pip install cipherswarm-agent
+RUN pip install ouroboros-agent
 
 # Create directories
-RUN mkdir -p /etc/cipherswarm /var/lib/cipherswarm /var/cache/cipherswarm
-RUN chown -R cipherswarm:cipherswarm /etc/cipherswarm /var/lib/cipherswarm /var/cache/cipherswarm
+RUN mkdir -p /etc/ouroboros /var/lib/ouroboros /var/cache/ouroboros
+RUN chown -R ouroboros:ouroboros /etc/ouroboros /var/lib/ouroboros /var/cache/ouroboros
 
 # Copy configuration
-COPY agent.yaml /etc/cipherswarm/agent.yaml
-COPY token /etc/cipherswarm/token
-RUN chmod 600 /etc/cipherswarm/token
-RUN chown cipherswarm:cipherswarm /etc/cipherswarm/token
+COPY agent.yaml /etc/ouroboros/agent.yaml
+COPY token /etc/ouroboros/token
+RUN chmod 600 /etc/ouroboros/token
+RUN chown ouroboros:ouroboros /etc/ouroboros/token
 
 # Switch to non-root user
-USER cipherswarm
-WORKDIR /var/lib/cipherswarm
+USER ouroboros
+WORKDIR /var/lib/ouroboros
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD cipherswarm-agent status || exit 1
+    CMD ouroboros-agent status || exit 1
 
 # Run agent
-CMD ["cipherswarm-agent", "run", "--config", "/etc/cipherswarm/agent.yaml"]
+CMD ["ouroboros-agent", "run", "--config", "/etc/ouroboros/agent.yaml"]
 ```
 
 Build and run:
 
 ```bash
 # Build image
-docker build -t cipherswarm-agent:v2 .
+docker build -t ouroboros-agent:v2 .
 
 # Run container
 docker run -d \
-    --name cipherswarm-agent \
+    --name ouroboros-agent \
     --gpus all \
     --restart unless-stopped \
-    -v /etc/cipherswarm:/etc/cipherswarm:ro \
-    -v /var/cache/cipherswarm:/var/cache/cipherswarm \
-    -v /tmp/cipherswarm:/tmp/cipherswarm \
-    cipherswarm-agent:v2
+    -v /etc/ouroboros:/etc/ouroboros:ro \
+    -v /var/cache/ouroboros:/var/cache/ouroboros \
+    -v /tmp/ouroboros:/tmp/ouroboros \
+    ouroboros-agent:v2
 ```
 
 ### 3. Docker Compose
@@ -400,9 +400,9 @@ docker run -d \
 version: '3.8'
 
 services:
-  cipherswarm-agent:
-    image: cipherswarm-agent:v2
-    container_name: cipherswarm-agent
+  ouroboros-agent:
+    image: ouroboros-agent:v2
+    container_name: ouroboros-agent
     restart: unless-stopped
 
     # GPU access
@@ -415,9 +415,9 @@ services:
               capabilities: [gpu]
     # Volumes
     volumes:
-      - /etc/cipherswarm:/etc/cipherswarm:ro
-      - /var/cache/cipherswarm:/var/cache/cipherswarm
-      - /tmp/cipherswarm:/tmp/cipherswarm
+      - /etc/ouroboros:/etc/ouroboros:ro
+      - /var/cache/ouroboros:/var/cache/ouroboros
+      - /tmp/ouroboros:/tmp/ouroboros
 
     # Environment
     environment:
@@ -426,7 +426,7 @@ services:
 
     # Health check
     healthcheck:
-      test: [CMD, cipherswarm-agent, status]
+      test: [CMD, ouroboros-agent, status]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -485,32 +485,32 @@ Administrators can monitor agents through the web interface:
 
 ```bash
 # Service logs
-journalctl -u cipherswarm-agent -f
+journalctl -u ouroboros-agent -f
 
 # Agent logs
-tail -f /var/log/cipherswarm/agent.log
+tail -f /var/log/ouroboros/agent.log
 
 # Docker logs
-docker logs -f cipherswarm-agent
+docker logs -f ouroboros-agent
 ```
 
 ### 2. Agent Status Commands
 
 ```bash
 # Check agent status
-cipherswarm-agent status
+ouroboros-agent status
 
 # Test server connection
-cipherswarm-agent test connection
+ouroboros-agent test connection
 
 # Verify authentication
-cipherswarm-agent test auth
+ouroboros-agent test auth
 
 # Hardware diagnostics
-cipherswarm-agent diagnostics
+ouroboros-agent diagnostics
 
 # Benchmark performance
-cipherswarm-agent benchmark
+ouroboros-agent benchmark
 ```
 
 ### 3. Performance Metrics
@@ -537,14 +537,14 @@ cipherswarm_agent_hash_rate{gpu="0"} 1250000
 
 ```bash
 # Check token validity
-cipherswarm-agent test auth
+ouroboros-agent test auth
 
 # Verify token format
 echo $CIPHERSWARM_TOKEN | grep -E '^csa_[0-9]+_[a-zA-Z0-9]+$'
 
 # Test server connectivity
 curl -H "Authorization: Bearer $CIPHERSWARM_TOKEN" \
-    https://cipherswarm.example.com/api/v1/client/configuration
+    https://ouroboros.example.com/api/v1/client/configuration
 ```
 
 ### 2. Project Access Issues
@@ -609,16 +609,16 @@ iotop
 
 ```bash
 # Update agent software
-pip install --upgrade cipherswarm-agent
+pip install --upgrade ouroboros-agent
 
 # Update configuration
-cipherswarm-agent config update
+ouroboros-agent config update
 
 # Restart service
-sudo systemctl restart cipherswarm-agent
+sudo systemctl restart ouroboros-agent
 
 # Verify update
-cipherswarm-agent --version
+ouroboros-agent --version
 ```
 
 ### 2. Token Rotation
@@ -634,29 +634,29 @@ When tokens need to be rotated:
 
 ```bash
 # Backup configuration
-cp /etc/cipherswarm/agent.yaml /etc/cipherswarm/agent.yaml.bak
-cp /etc/cipherswarm/token /etc/cipherswarm/token.bak
+cp /etc/ouroboros/agent.yaml /etc/ouroboros/agent.yaml.bak
+cp /etc/ouroboros/token /etc/ouroboros/token.bak
 
 # Backup cache (optional)
-tar -czf cipherswarm-cache-backup.tar.gz /var/cache/cipherswarm
+tar -czf ouroboros-cache-backup.tar.gz /var/cache/ouroboros
 
 # Recovery
-cp /etc/cipherswarm/agent.yaml.bak /etc/cipherswarm/agent.yaml
-cp /etc/cipherswarm/token.bak /etc/cipherswarm/token
-sudo systemctl restart cipherswarm-agent
+cp /etc/ouroboros/agent.yaml.bak /etc/ouroboros/agent.yaml
+cp /etc/ouroboros/token.bak /etc/ouroboros/token
+sudo systemctl restart ouroboros-agent
 ```
 
 ### 4. Cleanup
 
 ```bash
 # Clear cache
-cipherswarm-agent cleanup cache
+ouroboros-agent cleanup cache
 
 # Remove temporary files
-cipherswarm-agent cleanup temp
+ouroboros-agent cleanup temp
 
 # Reset agent (removes all local data)
-cipherswarm-agent reset --confirm
+ouroboros-agent reset --confirm
 ```
 
 ## Security Best Practices

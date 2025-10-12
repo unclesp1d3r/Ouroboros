@@ -19,7 +19,7 @@
 </script>
 
 <svelte:head>
-    <title>CipherSwarm</title>
+    <title>Ouroboros</title>
 </svelte:head>
 
 {#if showSidebar}
@@ -30,7 +30,7 @@
                 <Sidebar.Trigger class="ml-1" />
                 <div class="flex flex-1 items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <span class="text-lg font-semibold">CipherSwarm</span>
+                        <span class="text-lg font-semibold">Ouroboros</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <NightModeToggleButton />

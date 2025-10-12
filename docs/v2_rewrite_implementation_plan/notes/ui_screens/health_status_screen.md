@@ -1,4 +1,4 @@
-# CipherSwarm System Health UX Design
+# Ouroboros System Health UX Design
 
 Last updated: 2025-05-27
 
@@ -8,7 +8,7 @@ Last updated: 2025-05-27
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=2 --minlevel=1 -->
 
-- [CipherSwarm System Health UX Design](#cipherswarm-system-health-ux-design)
+- [Ouroboros System Health UX Design](#ouroboros-system-health-ux-design)
   - [Table of Contents](#table-of-contents)
   - [Purpose](#purpose)
   - [Layout Overview](#layout-overview)
@@ -26,11 +26,11 @@ Last updated: 2025-05-27
 
 ## Purpose
 
-The System Health page serves as an operational dashboard, offering immediate insights into the status and performance of critical backend services. It aims to facilitate proactive monitoring and swift issue identification, ensuring the reliability and efficiency of CipherSwarm's infrastructure.
+The System Health page serves as an operational dashboard, offering immediate insights into the status and performance of critical backend services. It aims to facilitate proactive monitoring and swift issue identification, ensuring the reliability and efficiency of Ouroboros's infrastructure.
 
 ## Layout Overview
 
-The page uses a **responsive grid layout**, with each service (MinIO, Redis, PostgreSQL) represented as a distinct **status card**. Each card provides real-time metrics and status indicators at a glance. The visual design is inspired by Flowbite's Server Status component, aligning with existing CipherSwarm styling.
+The page uses a **responsive grid layout**, with each service (MinIO, Redis, PostgreSQL) represented as a distinct **status card**. Each card provides real-time metrics and status indicators at a glance. The visual design is inspired by Flowbite's Server Status component, aligning with existing Ouroboros styling.
 
 ## Service Status Cards
 
@@ -194,7 +194,7 @@ This data is hidden for standard users to reduce clutter and limit sensitive sys
 
 ## Observability Notes
 
-CipherSwarm prioritizes lightweight, embedded observability over heavy external integration. This health dashboard reflects that intent:
+Ouroboros prioritizes lightweight, embedded observability over heavy external integration. This health dashboard reflects that intent:
 
 - Metrics should be pulled directly from local service APIs or shallow internal probes.
 
@@ -205,7 +205,7 @@ CipherSwarm prioritizes lightweight, embedded observability over heavy external 
   - A shared `metrics.ts` module or Svelte store can abstract the source
   - If Prometheus or OpenTelemetry is adopted later, it should be easy to drop in as a provider
 
-This keeps the UX fast, testable, and offline-compatible — aligning with CipherSwarm's goals.
+This keeps the UX fast, testable, and offline-compatible — aligning with Ouroboros's goals.
 
 ### MinIO via `minio-py`
 

@@ -1,4 +1,4 @@
-"""Pydantic schemas for the AgentError model in CipherSwarm."""
+"""Pydantic schemas for the AgentError model in Ouroboros."""
 
 from datetime import datetime
 from typing import Annotated, Any

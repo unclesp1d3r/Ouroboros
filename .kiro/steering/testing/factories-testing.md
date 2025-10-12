@@ -6,7 +6,7 @@ fileMatchPattern:
   - scripts/seed\_\*.py
 ---
 
-# CipherSwarm Factory Testing Patterns
+# Ouroboros Factory Testing Patterns
 
 ## Polyfactory Usage Patterns
 

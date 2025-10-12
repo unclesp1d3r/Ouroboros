@@ -2,7 +2,7 @@
 
 ## inclusion: fileMatch fileMatchPattern: \[frontend/**/\*.ts, frontend/**/*.svelte, frontend/\*\*/*.js\]
 
-# CipherSwarm Frontend Development Guide
+# Ouroboros Frontend Development Guide
 
 ## Technology Stack
 

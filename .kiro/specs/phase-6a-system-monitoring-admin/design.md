@@ -2,7 +2,7 @@
 
 ## Overview
 
-The System Monitoring & Administrative Features provide comprehensive system oversight, audit compliance, and administrative control capabilities for CipherSwarm. This design implements real-time monitoring dashboards, comprehensive audit logging, fleet management, and advanced administrative controls while maintaining security, performance, and usability standards.
+The System Monitoring & Administrative Features provide comprehensive system oversight, audit compliance, and administrative control capabilities for Ouroboros. This design implements real-time monitoring dashboards, comprehensive audit logging, fleet management, and advanced administrative controls while maintaining security, performance, and usability standards.
 
 ## Architecture
 
@@ -17,14 +17,14 @@ graph TB
         FleetMgmt[Fleet Management]
         CampAdmin[Campaign Admin]
     end
-    
+
     subgraph "API Layer"
         AdminAPI[Admin API Endpoints]
         MonitorAPI[Monitoring API]
         AuditAPI[Audit API]
         FleetAPI[Fleet API]
     end
-    
+
     subgraph "Service Layer"
         HealthSvc[Health Service]
         AuditSvc[Audit Service]
@@ -32,25 +32,25 @@ graph TB
         FleetSvc[Fleet Service]
         NotifySvc[Notification Service]
     end
-    
+
     subgraph "Data Layer"
         Redis[(Redis)]
         PostgreSQL[(PostgreSQL)]
         MinIO[(MinIO)]
         AuditDB[(Audit Store)]
     end
-    
+
     AdminDash --> AdminAPI
     HealthMon --> MonitorAPI
     AuditLog --> AuditAPI
     FleetMgmt --> FleetAPI
     CampAdmin --> AdminAPI
-    
+
     AdminAPI --> AdminSvc
     MonitorAPI --> HealthSvc
     AuditAPI --> AuditSvc
     FleetAPI --> FleetSvc
-    
+
     HealthSvc --> Redis
     HealthSvc --> PostgreSQL
     HealthSvc --> MinIO
@@ -68,20 +68,20 @@ graph TB
         PermCheck[Permission Checker]
         SensFilter[Sensitivity Filter]
     end
-    
+
     subgraph "Authorization Matrix"
         AdminRole[Admin Role]
         UserRole[User Role]
         ProjectScope[Project Scope]
         GlobalScope[Global Scope]
     end
-    
+
     subgraph "Access Control"
         ResourceACL[Resource ACL]
         AuditACL[Audit Access]
         SystemACL[System Access]
     end
-    
+
     AuthGuard --> AdminRole
     AuthGuard --> UserRole
     PermCheck --> ProjectScope

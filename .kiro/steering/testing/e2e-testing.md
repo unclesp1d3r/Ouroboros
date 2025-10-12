@@ -12,7 +12,7 @@ fileMatchPattern:
   - frontend/tests/global-teardown.e2e.ts
 ---
 
-# CipherSwarm E2E Testing Patterns
+# Ouroboros E2E Testing Patterns
 
 ## E2E Testing Infrastructure
 

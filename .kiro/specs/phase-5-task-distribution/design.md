@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Phase 5 Task Distribution System transforms CipherSwarm from a basic orchestrator into an intelligent, adaptive distributed cracking platform. This system implements advanced scheduling algorithms, real-time agent coordination, and feedback-driven optimization to maximize cracking efficiency across heterogeneous agent fleets.
+The Phase 5 Task Distribution System transforms Ouroboros from a basic orchestrator into an intelligent, adaptive distributed cracking platform. This system implements advanced scheduling algorithms, real-time agent coordination, and feedback-driven optimization to maximize cracking efficiency across heterogeneous agent fleets.
 
 The design centers around WorkSlice-based task distribution, where attacks are divided into precisely controlled keyspace segments that can be efficiently distributed, monitored, and reassigned based on agent capabilities and real-time performance data.
 
@@ -18,42 +18,42 @@ graph TB
         WS[WorkSlice Manager]
         LM[Lease Manager]
     end
-    
+
     subgraph "Agent Coordination"
         AH[Agent Health Monitor]
         SS[Status Streaming]
         BS[Backoff System]
         LS[Load Smoother]
     end
-    
+
     subgraph "Intelligence Layer"
         FL[Feedback Loop]
         ML[Markov Learning]
         RL[Rule Learning]
         DAG[DAG Engine]
     end
-    
+
     subgraph "Data Layer"
         Redis[(Redis Cache)]
         DB[(PostgreSQL)]
         MinIO[(MinIO Storage)]
     end
-    
+
     TP --> WS
     AS --> WS
     WS --> LM
     LM --> Redis
-    
+
     AH --> AS
     SS --> AH
     BS --> SS
     LS --> SS
-    
+
     FL --> TP
     ML --> FL
     RL --> FL
     DAG --> TP
-    
+
     WS --> DB
     FL --> DB
     DAG --> MinIO
@@ -529,4 +529,4 @@ class ErrorRecoveryService:
 - Optimized Redis operations for lease management
 - Background workers for non-critical processing
 
-This design provides a comprehensive foundation for implementing CipherSwarm's advanced task distribution system, enabling intelligent, adaptive, and fault-tolerant distributed password cracking operations.
+This design provides a comprehensive foundation for implementing Ouroboros's advanced task distribution system, enabling intelligent, adaptive, and fault-tolerant distributed password cracking operations.

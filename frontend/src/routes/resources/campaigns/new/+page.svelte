@@ -50,7 +50,7 @@
 </script>
 
 <svelte:head>
-    <title>Create Campaign - CipherSwarm</title>
+    <title>Create Campaign - Ouroboros</title>
 </svelte:head>
 
 <Dialog.Root bind:open onOpenChange={handleClose}>

@@ -1,4 +1,4 @@
-"""Pydantic schemas for the Project model in CipherSwarm."""
+"""Pydantic schemas for the Project model in Ouroboros."""
 
 from datetime import datetime
 from typing import TYPE_CHECKING, Annotated

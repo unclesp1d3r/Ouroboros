@@ -118,7 +118,7 @@
 </script>
 
 <svelte:head>
-    <title>Campaigns - CipherSwarm</title>
+    <title>Campaigns - Ouroboros</title>
 </svelte:head>
 
 <Card class="mx-auto mt-8 w-full max-w-5xl">

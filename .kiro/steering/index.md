@@ -2,9 +2,9 @@
 
 ## inclusion: manual
 
-# CipherSwarm Development Rules Index
+# Ouroboros Development Rules Index
 
-This document provides an index of all development rules and guidelines for the CipherSwarm project.
+This document provides an index of all development rules and guidelines for the Ouroboros project.
 
 ## 📁 Rule Categories
 

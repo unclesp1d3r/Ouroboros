@@ -1,4 +1,4 @@
-# 🧃 justfile — CipherSwarm Developer Tasks
+# 🧃 justfile — Ouroboros Developer Tasks
 set shell := ["bash", "-cu"]
 set windows-powershell := true
 set dotenv-load := true

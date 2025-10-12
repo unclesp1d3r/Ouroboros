@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This specification defines the implementation of advanced features and real-time capabilities for CipherSwarm's web interface. Building upon the core functionality verification, user management systems, Phase 2b Resource Management infrastructure, the completed crackable uploads pipeline, and the name-that-hash integration via HashGuessService, this feature set focuses on enhancing user experience through real-time updates via Server-Sent Events (SSE), advanced attack configuration options, comprehensive resource management workflows, and enhanced campaign operations.
+This specification defines the implementation of advanced features and real-time capabilities for Ouroboros's web interface. Building upon the core functionality verification, user management systems, Phase 2b Resource Management infrastructure, the completed crackable uploads pipeline, and the name-that-hash integration via HashGuessService, this feature set focuses on enhancing user experience through real-time updates via Server-Sent Events (SSE), advanced attack configuration options, comprehensive resource management workflows, and enhanced campaign operations.
 
 The implementation emphasizes lightweight trigger notifications rather than full data streaming, project-scoped security, MinIO-based object storage with presigned URLs, plugin-based hash extraction architecture, intelligent hash type detection using the name-that-hash library, and comprehensive testing coverage with both mocked and full end-to-end tests. All resource management builds upon the existing StorageService and AttackResourceFile models established in Phase 2b, while crackable uploads utilize the HashUploadTask, UploadResourceFile, RawHash, and UploadErrorEntry models with background processing pipeline and HashGuessService for automatic hash type inference.
 
@@ -10,7 +10,7 @@ The implementation emphasizes lightweight trigger notifications rather than full
 
 ### Requirement 1: Real-Time Communication Infrastructure
 
-**User Story:** As a CipherSwarm operator, I want real-time updates on system status and campaign progress, so that I can monitor operations without manually refreshing pages.
+**User Story:** As a Ouroboros operator, I want real-time updates on system status and campaign progress, so that I can monitor operations without manually refreshing pages.
 
 #### Acceptance Criteria
 
@@ -36,7 +36,7 @@ The implementation emphasizes lightweight trigger notifications rather than full
 
 ### Requirement 3: Toast Notification System
 
-**User Story:** As a CipherSwarm user, I want informative notifications about system events and crack discoveries, so that I can stay informed without constantly monitoring the interface.
+**User Story:** As a Ouroboros user, I want informative notifications about system events and crack discoveries, so that I can stay informed without constantly monitoring the interface.
 
 #### Acceptance Criteria
 
@@ -140,7 +140,7 @@ The implementation emphasizes lightweight trigger notifications rather than full
 6. WHEN validating operations THEN the system SHALL implement multi-stage validation to prevent malformed campaign creation
 7. WHEN deleting hash lists THEN the system SHALL perform cascade checks to prevent orphaned references
 8. WHEN analyzing pasted hash text THEN the system SHALL use `name-that-hash` native Python API (not subprocess) for hash type inference
-9. WHEN displaying hash analysis results THEN the system SHALL wrap `name-that-hash` responses in CipherSwarm-style confidence-ranked outputs
+9. WHEN displaying hash analysis results THEN the system SHALL wrap `name-that-hash` responses in Ouroboros-style confidence-ranked outputs
 
 ### Requirement 10: Crackable Upload Processing
 

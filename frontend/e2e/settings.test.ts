@@ -7,7 +7,7 @@ test.describe('Settings Page', () => {
     });
 
     test('should display settings page with correct title', async ({ page }) => {
-        await expect(page).toHaveTitle('Settings - CipherSwarm');
+        await expect(page).toHaveTitle('Settings - Ouroboros');
         await expect(page.locator('h1')).toContainText('Settings');
         await expect(page.locator('p').first()).toContainText(
             'Manage your account settings and preferences'

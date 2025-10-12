@@ -119,7 +119,7 @@
 </script>
 
 <svelte:head>
-    <title>Upload Resource - CipherSwarm</title>
+    <title>Upload Resource - Ouroboros</title>
 </svelte:head>
 
 <div class="container mx-auto py-8">

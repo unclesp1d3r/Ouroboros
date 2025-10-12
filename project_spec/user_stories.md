@@ -1,4 +1,4 @@
-# CipherSwarm User Stories
+# Ouroboros User Stories
 
 **Version**: 2.0\
 **Status**: Draft\
@@ -51,7 +51,7 @@
 ### Story: AC-001 - User Login and Session Management
 
 **As a** Red Team Operator\
-**I want to** log into CipherSwarm with my username and password\
+**I want to** log into Ouroboros with my username and password\
 **So that** I can access my campaigns and maintain session persistence across browser reloads
 
 **Acceptance Criteria:**
@@ -487,7 +487,7 @@
 ### Story: UX-001 - Responsive Design and Accessibility
 
 **As a** user with disabilities\
-**I want to** use CipherSwarm with assistive technologies\
+**I want to** use Ouroboros with assistive technologies\
 **So that** I can participate in password cracking operations regardless of my physical capabilities
 
 **Acceptance Criteria:**
@@ -507,7 +507,7 @@
 ### Story: UX-002 - Progressive Enhancement and Offline Capability
 
 **As a** Red Team Operator in an airgapped environment\
-**I want to** use CipherSwarm without external dependencies\
+**I want to** use Ouroboros without external dependencies\
 **So that** I can operate in secure, disconnected networks
 
 **Acceptance Criteria:**
@@ -529,7 +529,7 @@
 ### Story: IM-001 - Agent Compatibility Maintenance
 
 **As an** Infrastructure Administrator with existing agents\
-**I want to** migrate to CipherSwarm v2 without reconfiguring my agent fleet\
+**I want to** migrate to Ouroboros v2 without reconfiguring my agent fleet\
 **So that** I can benefit from new features while maintaining operational continuity
 
 **Acceptance Criteria:**
@@ -672,4 +672,4 @@ graph LR
 
 ---
 
-**Note**: These user stories are derived from the comprehensive user flows documented in `docs/v2_rewrite_implementation_plan/notes/user_flows_notes.md` and reflect the current implementation status of the CipherSwarm v2 rewrite project.
+**Note**: These user stories are derived from the comprehensive user flows documented in `docs/v2_rewrite_implementation_plan/notes/user_flows_notes.md` and reflect the current implementation status of the Ouroboros v2 rewrite project.

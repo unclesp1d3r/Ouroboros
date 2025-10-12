@@ -2,7 +2,7 @@
 
 ## Overview
 
-This design document outlines the comprehensive technical approach for implementing Phase 3 Step 2: Core Functionality Verification & Completion. This phase encompasses not only verifying that existing CipherSwarm features work correctly with the newly implemented authentication system, but also completing critical gaps in user management functionality, implementing comprehensive visual components based on UI design specifications, and migrating from legacy HTMX/Jinja templates to modern SvelteKit 5 components.
+This design document outlines the comprehensive technical approach for implementing Phase 3 Step 2: Core Functionality Verification & Completion. This phase encompasses not only verifying that existing Ouroboros features work correctly with the newly implemented authentication system, but also completing critical gaps in user management functionality, implementing comprehensive visual components based on UI design specifications, and migrating from legacy HTMX/Jinja templates to modern SvelteKit 5 components.
 
 The design addresses eight major areas:
 
@@ -43,7 +43,7 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
   if (!session) {
     throw redirect(302, `/login?redirect=${url.pathname}`);
   }
-  
+
   try {
     const data = await authenticatedApiCall(session.token, endpoint);
     return { data, user: session.user, project: session.project };
@@ -534,7 +534,7 @@ export const actions: Actions = {
   create: async ({ request, cookies }) => {
     const form = await superValidate(request, campaignSchema);
     if (!form.valid) return fail(400, { form });
-    
+
     const result = await api.post('/api/v1/web/campaigns/', form.data);
     return { form, success: true };
   }
@@ -548,7 +548,7 @@ export const actions: Actions = {
 // Svelte: $state rune with reactive updates
 <script lang="ts">
   let open = $state(false);
-  
+
   function toggleOpen() {
     open = !open;
   }
@@ -571,9 +571,9 @@ export const actions: Actions = {
   default: async ({ request, cookies }) => {
     const form = await superValidate(request, loginSchema);
     if (!form.valid) return fail(400, { form });
-    
+
     const { user, token, projects } = await authenticate(form.data);
-    
+
     // Set secure session cookie
     cookies.set('sessionid', token, {
       httpOnly: true,
@@ -581,7 +581,7 @@ export const actions: Actions = {
       sameSite: 'strict',
       maxAge: 60 * 60 * 24 * 7 // 7 days
     });
-    
+
     // Handle project selection
     if (projects.length === 1) {
       cookies.set('project_id', projects[0].id);
@@ -611,16 +611,16 @@ export const projectStore = writable<ProjectContext>({
 
 export async function switchProject(projectId: string) {
   projectStore.update(ctx => ({ ...ctx, switching: true }));
-  
+
   await api.post('/api/v1/web/auth/context', { project_id: projectId });
-  
+
   // Refresh all data after project switch
   await invalidateAll();
-  
-  projectStore.update(ctx => ({ 
-    ...ctx, 
+
+  projectStore.update(ctx => ({
+    ...ctx,
     current: ctx.available.find(p => p.id === projectId) || null,
-    switching: false 
+    switching: false
   }));
 }
 ```
@@ -678,7 +678,7 @@ interface AttackConfig {
 let attackConfig = $state<AttackConfig>({ type: 'dictionary', parameters: {}, resources: [] });
 let keyspaceEstimate = $derived.by(async () => {
   if (!attackConfig.type || !attackConfig.parameters) return null;
-  
+
   const response = await api.post('/api/v1/web/attacks/estimate', attackConfig);
   return response.keyspace;
 });
@@ -783,7 +783,7 @@ export const config = configSchema.parse({
   publicApiBaseUrl: env.PUBLIC_API_BASE_URL || env.VITE_API_BASE_URL,
   tokenExpireMinutes: parseInt(env.VITE_TOKEN_EXPIRE_MINUTES || '60'),
   debug: env.VITE_DEBUG === 'true',
-  appName: env.VITE_APP_NAME || 'CipherSwarm',
+  appName: env.VITE_APP_NAME || 'Ouroboros',
   appVersion: env.VITE_APP_VERSION || '2.0.0',
   enableExperimentalFeatures: env.VITE_ENABLE_EXPERIMENTAL_FEATURES === 'true'
 });
@@ -808,9 +808,9 @@ describe('Dashboard', () => {
       cracks: { recent: 42 },
       hashRate: 1500000
     };
-    
+
     render(Dashboard, { props: { data: mockData } });
-    
+
     expect(screen.getByText('5 / 10')).toBeInTheDocument();
     expect(screen.getByText('3 running')).toBeInTheDocument();
   });
@@ -823,7 +823,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Dashboard', () => {
   test('displays real-time updates', async ({ page }) => {
     await page.goto('/dashboard');
-    
+
     // Mock SSE events
     await page.route('/api/v1/web/live/campaigns', route => {
       route.fulfill({
@@ -832,7 +832,7 @@ test.describe('Dashboard', () => {
         body: 'data: {"type": "campaign_update", "data": {"id": "1", "progress": 75}}\n\n'
       });
     });
-    
+
     await expect(page.locator('[data-testid="campaign-progress"]')).toContainText('75%');
   });
 });
@@ -1145,7 +1145,7 @@ interface AttackTemplate {
 export async function exportCampaign(campaignId: string): Promise<CampaignTemplate> {
   const campaign = await api.get(`/api/v1/web/campaigns/${campaignId}`);
   const attacks = await api.get(`/api/v1/web/campaigns/${campaignId}/attacks`);
-  
+
   return {
     name: campaign.name,
     description: campaign.description,
@@ -1170,7 +1170,7 @@ export async function importTemplate(template: CampaignTemplate): Promise<void> 
   if (!validationResult.success) {
     throw new Error('Invalid template format');
   }
-  
+
   // Pre-fill campaign wizard with template data
   wizardStore.update(state => ({
     ...state,
@@ -1243,7 +1243,7 @@ let editorState = $state<RuleEditorState>({
 // Diff visualization
 let diffResult = $derived(() => {
   if (!editorState.showOverlay) return null;
-  
+
   return generateDiff(editorState.content, editorState.learnedRules.join('\n'));
 });
 
@@ -1356,9 +1356,9 @@ onMount(() => {
       });
     }
   });
-  
+
   observer.observe({ entryTypes: ['navigation', 'paint', 'largest-contentful-paint'] });
 });
 ```
 
-This comprehensive design document now covers all aspects of the core functionality verification and completion phase, providing detailed technical specifications for implementing the complete modernization of CipherSwarm's frontend while maintaining all existing functionality and adding comprehensive new features.
+This comprehensive design document now covers all aspects of the core functionality verification and completion phase, providing detailed technical specifications for implementing the complete modernization of Ouroboros's frontend while maintaining all existing functionality and adding comprehensive new features.

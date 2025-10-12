@@ -1,6 +1,6 @@
 # Phase 6: Monitoring, Testing & Documentation
 
-This final phase ensures that CipherSwarm is well-tested, observable, and documented before public or operational deployment.
+This final phase ensures that Ouroboros is well-tested, observable, and documented before public or operational deployment.
 
 ---
 

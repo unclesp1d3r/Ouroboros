@@ -1,4 +1,4 @@
-"""Agent model for CipherSwarm distributed cracking agents."""
+"""Agent model for Ouroboros distributed cracking agents."""
 
 import enum
 from datetime import datetime
@@ -51,7 +51,7 @@ class OperatingSystemEnum(enum.Enum):
 
 
 class Agent(Base):
-    """Represents a distributed cracking agent in CipherSwarm.
+    """Represents a distributed cracking agent in Ouroboros.
 
     Fields:
         - id (int): The ID of the agent.

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This design document outlines the containerization and deployment architecture for CipherSwarm Phase 4. The solution provides a complete Docker-based deployment strategy that supports both development and production environments, following FastAPI best practices and CipherSwarm's security standards.
+This design document outlines the containerization and deployment architecture for Ouroboros Phase 4. The solution provides a complete Docker-based deployment strategy that supports both development and production environments, following FastAPI best practices and Ouroboros's security standards.
 
 The design emphasizes reproducibility, security, scalability, and operational simplicity through containerization of all services, automated deployment workflows, and comprehensive monitoring capabilities.
 
@@ -18,18 +18,18 @@ graph TB
         db[(PostgreSQL 16+<br/>Persistent Storage)]
         minio[MinIO Object Storage<br/>S3-compatible<br/>TLS enabled]
         redis[(Redis Cache<br/>Cashews + Celery)]
-        
+
         nginx --> app
         app --> db
         app --> minio
         app --> redis
     end
-    
+
     subgraph "Development Environment"
         app_dev[FastAPI Application<br/>Hot Reload<br/>Debug Mode]
         db_dev[(PostgreSQL 16+<br/>Development Data)]
         minio_dev[MinIO Object Storage<br/>Development Buckets]
-        
+
         app_dev --> db_dev
         app_dev --> minio_dev
     end
@@ -50,7 +50,7 @@ graph TB
 
 - **Version**: PostgreSQL 16+ for latest features and security
 - **Storage**: Persistent volumes for data durability
-- **Configuration**: Optimized for CipherSwarm workloads
+- **Configuration**: Optimized for Ouroboros workloads
 - **Backup**: Automated backup hooks and restore procedures
 - **Security**: SSL connections required, limited user privileges
 
@@ -65,7 +65,7 @@ graph TB
 #### Redis Cache Container (Optional)
 
 - **Purpose**: Cashews caching backend and Celery task queue
-- **Configuration**: Optimized for CipherSwarm caching patterns
+- **Configuration**: Optimized for Ouroboros caching patterns
 - **Persistence**: Optional persistence for task queue reliability
 - **Development**: In-memory caching used instead for simplicity
 
@@ -170,7 +170,7 @@ services:
       dockerfile: docker/app/Dockerfile.prod
     environment:
       - ENVIRONMENT=production
-      - DATABASE_URL=postgresql://prod:${DB_PASSWORD}@db:5432/cipherswarm
+      - DATABASE_URL=postgresql://prod:${DB_PASSWORD}@db:5432/ouroboros
       - MINIO_ENDPOINT=minio:9000
       - REDIS_URL=redis://redis:6379
     depends_on:
@@ -189,7 +189,7 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_DB=cipherswarm
+      - POSTGRES_DB=ouroboros
       - POSTGRES_USER=prod
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
@@ -366,7 +366,7 @@ CACHE_URL=mem://
 
 ```bash
 # Database
-DATABASE_URL=postgresql://prod:${DB_PASSWORD}@db:5432/cipherswarm
+DATABASE_URL=postgresql://prod:${DB_PASSWORD}@db:5432/ouroboros
 DB_PASSWORD=${DB_PASSWORD}
 
 # MinIO
@@ -479,12 +479,12 @@ async def health_check(db: AsyncSession = Depends(get_db)):
 
 ```bash
 # Test development build
-docker build -f docker/app/Dockerfile.dev -t cipherswarm:dev .
-docker run --rm cipherswarm:dev python -c "import app; print('Build successful')"
+docker build -f docker/app/Dockerfile.dev -t ouroboros:dev .
+docker run --rm ouroboros:dev python -c "import app; print('Build successful')"
 
 # Test production build
-docker build -f docker/app/Dockerfile.prod -t cipherswarm:prod .
-docker run --rm cipherswarm:prod python -c "import app; print('Build successful')"
+docker build -f docker/app/Dockerfile.prod -t ouroboros:prod .
+docker run --rm ouroboros:prod python -c "import app; print('Build successful')"
 ```
 
 #### Integration Testing
@@ -534,10 +534,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build development image
-        run: docker build -f docker/app/Dockerfile.dev -t cipherswarm:dev .
+        run: docker build -f docker/app/Dockerfile.dev -t ouroboros:dev .
 
       - name: Build production image
-        run: docker build -f docker/app/Dockerfile.prod -t cipherswarm:prod .
+        run: docker build -f docker/app/Dockerfile.prod -t ouroboros:prod .
 
       - name: Test development stack
         run: |
@@ -549,7 +549,7 @@ jobs:
       - name: Security scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: cipherswarm:prod
+          image-ref: ouroboros:prod
           format: sarif
           output: trivy-results.sarif
 ```

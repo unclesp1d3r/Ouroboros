@@ -1,6 +1,6 @@
 # Frontend Development Guide
 
-This guide covers frontend development for CipherSwarm's SvelteKit application, including the new configuration system, development patterns, and best practices.
+This guide covers frontend development for Ouroboros's SvelteKit application, including the new configuration system, development patterns, and best practices.
 
 ## Table of Contents
 
@@ -61,7 +61,7 @@ frontend/
 
 ### Migration from SPA to SSR
 
-CipherSwarm is transitioning from a Static SPA to a full SSR application:
+Ouroboros is transitioning from a Static SPA to a full SSR application:
 
 - **Before**: `adapter-static` with `fallback: 'index.html'`
 - **After**: `adapter-node` with full SSR capabilities
@@ -83,7 +83,7 @@ The configuration system provides type-safe, environment-aware configuration for
 # frontend/.env.example (template)
 VITE_API_BASE_URL=http://localhost:8000
 PUBLIC_API_BASE_URL=http://localhost:8000
-VITE_APP_NAME=CipherSwarm
+VITE_APP_NAME=Ouroboros
 VITE_APP_VERSION=2.0.0
 VITE_DEBUG=false
 VITE_ENABLE_EXPERIMENTAL_FEATURES=false
@@ -98,7 +98,7 @@ SESSION_SECRET=your-session-secret
 # frontend/.env (local development)
 VITE_API_BASE_URL=http://localhost:8000
 PUBLIC_API_BASE_URL=http://localhost:8000
-VITE_APP_NAME=CipherSwarm
+VITE_APP_NAME=Ouroboros
 VITE_APP_VERSION=2.0.0
 VITE_DEBUG=true
 VITE_ENABLE_EXPERIMENTAL_FEATURES=true
@@ -138,7 +138,7 @@ export interface AppConfig {
 import { config, getApiBaseUrl, isDevelopment, isExperimentalEnabled } from '$lib/config';
 
 // Access configuration directly
-console.log(config.appName); // "CipherSwarm"
+console.log(config.appName); // "Ouroboros"
 console.log(config.appVersion); // "2.0.0"
 
 // Use utility functions
@@ -157,7 +157,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async () => {
   // Use server-side API URL for server-to-server communication
   const response = await fetch(`${config.apiBaseUrl}/api/v1/web/campaigns`);
-  
+
   return {
     campaigns: await response.json()
   };
@@ -168,10 +168,10 @@ export const load: PageServerLoad = async () => {
 <!-- +page.svelte (client-side) -->
 <script lang="ts">
   import { getApiUrl, isDevelopment } from '$lib/config';
-  
+
   // Use public URL for client-side requests
   const apiUrl = getApiUrl('/api/v1/web/campaigns');
-  
+
   // Conditional features based on environment
   const showDebugInfo = isDevelopment();
 </script>
@@ -260,14 +260,14 @@ import { config, getApiBaseUrl, isDevelopment } from '$lib/config';
 
 describe('Configuration', () => {
   it('loads default configuration', () => {
-    expect(config.appName).toBe('CipherSwarm');
+    expect(config.appName).toBe('Ouroboros');
     expect(config.appVersion).toBe('2.0.0');
   });
 
   it('provides utility functions', () => {
     const apiUrl = getApiBaseUrl();
     expect(apiUrl).toBe('http://localhost:8000');
-    
+
     const isDev = isDevelopment();
     expect(typeof isDev).toBe('boolean');
   });
@@ -361,7 +361,7 @@ Create `.vscode/settings.json` in the frontend directory:
 
 ### Shadcn-Svelte Components
 
-CipherSwarm uses Shadcn-Svelte for consistent, accessible UI components:
+Ouroboros uses Shadcn-Svelte for consistent, accessible UI components:
 
 ```svelte
 <!-- Example: Using Shadcn-Svelte components -->
@@ -390,10 +390,10 @@ CipherSwarm uses Shadcn-Svelte for consistent, accessible UI components:
   import type { Campaign } from '$lib/types';
   import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
-  
+
   export let campaign: Campaign;
   export let showActions = true;
-  
+
   // Component logic here
 </script>
 
@@ -405,7 +405,7 @@ CipherSwarm uses Shadcn-Svelte for consistent, accessible UI components:
     <Badge variant={campaign.status === 'active' ? 'success' : 'secondary'}>
       {campaign.status}
     </Badge>
-    
+
     {#if showActions}
       <div class="actions">
         <!-- Action buttons -->
@@ -435,7 +435,7 @@ CipherSwarm uses Shadcn-Svelte for consistent, accessible UI components:
 
 ### Overview
 
-CipherSwarm uses Superforms v2 with Formsnap for type-safe, progressive enhancement forms that follow SvelteKit conventions.
+Ouroboros uses Superforms v2 with Formsnap for type-safe, progressive enhancement forms that follow SvelteKit conventions.
 
 ### Basic Form Pattern
 
@@ -470,11 +470,11 @@ export const load: PageServerLoad = async ({ cookies }) => {
 export const actions: Actions = {
   default: async ({ request, cookies }) => {
     const form = await superValidate(request, zod(campaignSchema));
-    
+
     if (!form.valid) {
       return fail(400, { form });
     }
-    
+
     try {
       // Convert form data to API format
       const apiPayload = {
@@ -483,11 +483,11 @@ export const actions: Actions = {
         hash_list_id: form.data.hashListId,
         priority: form.data.priority
       };
-      
+
       const campaign = await serverApi.post('/api/v1/web/campaigns/', apiPayload, {
         headers: { Cookie: cookies.get('sessionid') || '' }
       });
-      
+
       return redirect(303, `/campaigns/${campaign.id}`);
     } catch (error) {
       return fail(500, { form, message: 'Failed to create campaign' });
@@ -506,7 +506,7 @@ export const actions: Actions = {
   import { Input } from '$lib/components/ui/input';
   import { Textarea } from '$lib/components/ui/textarea';
   import { campaignSchema } from './schema';
-  
+
   export let data;
 
   const { form, errors, enhance, submitting } = superForm(data.form, {
@@ -546,13 +546,13 @@ export const actions: Actions = {
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { FileInput } from '$lib/components/ui/file-input';
-  
+
   let files: FileList;
   let uploading = false;
 </script>
 
-<form 
-  method="POST" 
+<form
+  method="POST"
   enctype="multipart/form-data"
   use:enhance={() => {
     uploading = true;
@@ -575,16 +575,16 @@ export const actions: Actions = {
 <script lang="ts">
   import { superForm } from 'sveltekit-superforms';
   import { arrayProxy } from 'sveltekit-superforms';
-  
+
   export let data;
-  
+
   const { form, enhance } = superForm(data.form);
   const { values, errors } = arrayProxy(form, 'items');
-  
+
   function addItem() {
     $values = [...$values, { name: '', value: '' }];
   }
-  
+
   function removeItem(index: number) {
     $values = $values.filter((_, i) => i !== index);
   }
@@ -598,7 +598,7 @@ export const actions: Actions = {
       <Button type="button" on:click={() => removeItem(i)}>Remove</Button>
     </div>
   {/each}
-  
+
   <Button type="button" on:click={addItem}>Add Item</Button>
   <Button type="submit">Save</Button>
 </form>
@@ -616,12 +616,12 @@ import { loadConfig } from '$lib/config';
 
 class ServerApiClient {
   private baseUrl: string;
-  
+
   constructor() {
     const config = loadConfig();
     this.baseUrl = config.api.internalUrl || config.api.baseUrl;
   }
-  
+
   async get(endpoint: string, options: RequestInit = {}) {
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method: 'GET',
@@ -631,14 +631,14 @@ class ServerApiClient {
       },
       ...options
     });
-    
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status}`);
     }
-    
+
     return response.json();
   }
-  
+
   async post(endpoint: string, data: any, options: RequestInit = {}) {
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method: 'POST',
@@ -649,11 +649,11 @@ class ServerApiClient {
       body: JSON.stringify(data),
       ...options
     });
-    
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status}`);
     }
-    
+
     return response.json();
   }
 }
@@ -679,7 +679,7 @@ export class ClientApiError extends Error {
 
 export async function apiCall(endpoint: string, options: RequestInit = {}) {
   const url = getApiUrl(endpoint);
-  
+
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -687,7 +687,7 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
     },
     ...options
   });
-  
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
     throw new ClientApiError(
@@ -696,29 +696,29 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
       error
     );
   }
-  
+
   return response.json();
 }
 
 // Utility functions
 export const api = {
-  get: (endpoint: string, options?: RequestInit) => 
+  get: (endpoint: string, options?: RequestInit) =>
     apiCall(endpoint, { method: 'GET', ...options }),
-    
+
   post: (endpoint: string, data?: any, options?: RequestInit) =>
     apiCall(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
       ...options
     }),
-    
+
   put: (endpoint: string, data?: any, options?: RequestInit) =>
     apiCall(endpoint, {
       method: 'PUT',
       body: data ? JSON.stringify(data) : undefined,
       ...options
     }),
-    
+
   delete: (endpoint: string, options?: RequestInit) =>
     apiCall(endpoint, { method: 'DELETE', ...options })
 };
@@ -741,7 +741,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
         headers: { Cookie: cookies.get('sessionid') || '' }
       })
     ]);
-    
+
     return {
       campaigns,
       agents
@@ -757,9 +757,9 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 <script lang="ts">
   import { api } from '$lib/client/api';
   import { invalidateAll } from '$app/navigation';
-  
+
   export let data;
-  
+
   async function refreshData() {
     try {
       await invalidateAll(); // Triggers server load function
@@ -767,7 +767,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
       console.error('Failed to refresh:', error);
     }
   }
-  
+
   async function updateCampaign(id: string, updates: any) {
     try {
       await api.put(`/api/v1/web/campaigns/${id}`, updates);
@@ -801,16 +801,16 @@ describe('CampaignCard', () => {
 
   it('renders campaign information', () => {
     render(CampaignCard, { props: { campaign: mockCampaign } });
-    
+
     expect(screen.getByText('Test Campaign')).toBeInTheDocument();
     expect(screen.getByText('active')).toBeInTheDocument();
   });
 
   it('shows actions when enabled', () => {
-    render(CampaignCard, { 
-      props: { campaign: mockCampaign, showActions: true } 
+    render(CampaignCard, {
+      props: { campaign: mockCampaign, showActions: true }
     });
-    
+
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 });
@@ -838,9 +838,9 @@ describe('Campaigns Page', () => {
         { id: '1', name: 'Campaign 1', status: 'active' }
       ]
     };
-    
+
     render(Page, { props: { data: mockData } });
-    
+
     expect(screen.getByText('Campaign 1')).toBeInTheDocument();
   });
 });
@@ -855,12 +855,12 @@ import { test, expect } from '@playwright/test';
 test.describe('Campaign Management', () => {
   test('creates new campaign', async ({ page }) => {
     await page.goto('/campaigns');
-    
+
     await page.click('text=New Campaign');
     await page.fill('[name="name"]', 'Test Campaign');
     await page.fill('[name="description"]', 'Test description');
     await page.click('button[type="submit"]');
-    
+
     await expect(page).toHaveURL(/\/campaigns\/\w+/);
     await expect(page.locator('h1')).toContainText('Test Campaign');
   });
@@ -909,8 +909,8 @@ CMD ["node", "build"]
 
 ```bash
 # Production environment variables
-VITE_API_BASE_URL=https://api.cipherswarm.com
-VITE_APP_NAME=CipherSwarm
+VITE_API_BASE_URL=https://api.ouroboros.com
+VITE_APP_NAME=Ouroboros
 VITE_ENVIRONMENT=production
 VITE_EXPERIMENTAL_FEATURES=false
 
@@ -956,10 +956,10 @@ SESSION_SECRET=production-secret-key
 <script lang="ts">
   import { page } from '$app/stores';
   import { api, ClientApiError } from '$lib/client/api';
-  
+
   let error: string | null = null;
   let loading = false;
-  
+
   async function handleAction() {
     try {
       loading = true;
@@ -1011,4 +1011,4 @@ if (browser && dev) {
 }
 ```
 
-This guide provides a comprehensive foundation for frontend development in CipherSwarm. For specific implementation details, refer to the existing codebase and component documentation.
+This guide provides a comprehensive foundation for frontend development in Ouroboros. For specific implementation details, refer to the existing codebase and component documentation.

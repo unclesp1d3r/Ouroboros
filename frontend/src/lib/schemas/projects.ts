@@ -1,5 +1,5 @@
 /**
- * Project schemas for CipherSwarm
+ * Project schemas for Ouroboros
  * Used by /api/v1/web/projects/* endpoints
  * Based on authoritative backend API schema
  */

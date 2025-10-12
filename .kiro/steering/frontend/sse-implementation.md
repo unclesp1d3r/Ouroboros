@@ -6,7 +6,7 @@
 
 ## Overview
 
-This rule documents patterns for implementing Server-Sent Events in CipherSwarm for real-time dashboard updates, based on successful SSE implementation and debugging.
+This rule documents patterns for implementing Server-Sent Events in Ouroboros for real-time dashboard updates, based on successful SSE implementation and debugging.
 
 ## Backend SSE Implementation
 
@@ -103,7 +103,7 @@ export class SSEService {
         } else {
             this.connectionStatus.connectedEndpoints.delete(endpoint);
         }
-        
+
         // Overall connection status based on any active connections
         this.connectionStatus.connected = this.connectionStatus.connectedEndpoints.size > 0;
     }
@@ -117,10 +117,10 @@ export class SSEService {
 <script lang="ts">
     import { sseService } from '$lib/services/sse';
     import { onMount } from 'svelte';
-    
+
     let campaigns = $state([]);
     let connectionStatus = $derived(sseService.connected);
-    
+
     onMount(() => {
         // Connect to SSE for real-time updates
         sseService.connect('/api/v1/web/live/campaigns', (event) => {
@@ -129,7 +129,7 @@ export class SSEService {
                 updateCampaignData(event);
             }
         });
-        
+
         return () => {
             sseService.disconnect('/api/v1/web/live/campaigns');
         };
@@ -142,7 +142,7 @@ export class SSEService {
     {:else}
         <div class="status-indicator disconnected">Real-time updates disconnected</div>
     {/if}
-    
+
     <!-- Dashboard content -->
 </div>
 ```
@@ -186,12 +186,12 @@ def test_sse_media_type():
 test('SSE service connects and receives events', async () => {
     const mockEventSource = vi.fn();
     global.EventSource = mockEventSource;
-    
+
     const service = new SSEService();
     const onMessage = vi.fn();
-    
+
     service.connect('/test-endpoint', onMessage);
-    
+
     expect(mockEventSource).toHaveBeenCalledWith('/test-endpoint', {
         withCredentials: true
     });
@@ -242,7 +242,7 @@ export class SSEService {
             this.updateConnectionStatus(endpoint, false);
         }
     }
-    
+
     disconnectAll(): void {
         for (const [endpoint] of this.connections) {
             this.disconnect(endpoint);
@@ -257,7 +257,7 @@ export class SSEService {
 // ✅ CORRECT - Exponential backoff for reconnection
 private scheduleReconnect(endpoint: string, onMessage: Function): void {
     const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
-    
+
     setTimeout(() => {
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;

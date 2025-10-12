@@ -36,8 +36,8 @@ SENSITIVE_FIELDS = {
 # Patterns for token-like values that should be redacted
 TOKEN_PATTERNS = [
     r"Bearer\s+[a-zA-Z0-9._-]+",  # Bearer tokens
-    r"csa_[a-zA-Z0-9._-]+",  # CipherSwarm agent tokens
-    r"cst_[a-zA-Z0-9._-]+",  # CipherSwarm TUI tokens
+    r"csa_[a-zA-Z0-9._-]+",  # Ouroboros agent tokens
+    r"cst_[a-zA-Z0-9._-]+",  # Ouroboros TUI tokens
     r"[a-zA-Z0-9]{32,}",  # Long alphanumeric strings (likely tokens)
 ]
 

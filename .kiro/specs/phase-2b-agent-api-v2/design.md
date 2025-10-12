@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Agent API v2 is a modernized RESTful API that enables secure communication between CipherSwarm agents and the central server. This API provides endpoints for agent registration, authentication, task management, and result reporting while maintaining backward compatibility with the existing v1 agent API.
+The Agent API v2 is a modernized RESTful API that enables secure communication between Ouroboros agents and the central server. This API provides endpoints for agent registration, authentication, task management, and result reporting while maintaining backward compatibility with the existing v1 agent API.
 
 The design follows FastAPI best practices with service layer architecture, comprehensive input validation, and proper error handling. The API supports both the new v2 endpoints and legacy v1 endpoints to ensure smooth migration for existing agent deployments.
 
@@ -218,7 +218,8 @@ class TaskProgressUpdateV2(BaseModel):
 
 ## Data Models
 
-> **Note**: The model examples below use SQLAlchemy Column definitions with proper types (Integer, JSON, DateTime(timezone=True), etc.) instead of Pydantic Field(...) syntax. This ensures the examples reflect valid SQLAlchemy model code with appropriate defaults, nullable attributes, and timezone-aware DateTime columns.
+> [!NOTE]
+> The model examples below use SQLAlchemy Column definitions with proper types (Integer, JSON, DateTime(timezone=True), etc.) instead of Pydantic Field(...) syntax. This ensures the examples reflect valid SQLAlchemy model code with appropriate defaults, nullable attributes, and timezone-aware DateTime columns.
 
 ### Agent Model Extensions
 
@@ -227,6 +228,7 @@ class TaskProgressUpdateV2(BaseModel):
 ```python
 from sqlalchemy import Column, Integer, JSON, DateTime, Boolean
 from sqlalchemy.sql import func
+
 
 class Agent(Base):
     # Existing fields...
@@ -243,16 +245,17 @@ class Agent(Base):
 ```python
 from sqlalchemy import Column, BigInteger, DateTime, Float, CheckConstraint
 
+
 class Task(Base):
     # Existing fields...
     keyspace_start = Column(BigInteger, nullable=False)
     keyspace_end = Column(BigInteger, nullable=False)
     estimated_completion = Column(DateTime(timezone=True), nullable=True)
     current_speed = Column(Float, nullable=True)
-    
+
     __table_args__ = (
-        CheckConstraint('keyspace_end >= keyspace_start', name='valid_keyspace_range'),
-        {'comment': 'Tasks with BigInteger keyspace support and range validation'}
+        CheckConstraint("keyspace_end >= keyspace_start", name="valid_keyspace_range"),
+        {"comment": "Tasks with BigInteger keyspace support and range validation"},
     )
 ```
 
@@ -264,11 +267,17 @@ class Task(Base):
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.sql import func
 
+
 class AgentToken(Base):
     id = Column(Integer, primary_key=True)
     agent_id = Column(Integer, ForeignKey("agents.id"), nullable=False)
     token_hash = Column(String, nullable=False)
-    created_at = Column(DateTime(timezone=True), nullable=False, default=func.now(), server_default=func.now())
+    created_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=func.now(),
+        server_default=func.now(),
+    )
     expires_at = Column(DateTime(timezone=True), nullable=True)
     last_used_at = Column(DateTime(timezone=True), nullable=True)
     is_active = Column(Boolean, nullable=False, default=True, server_default="true")

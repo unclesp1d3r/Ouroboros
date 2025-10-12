@@ -1,10 +1,10 @@
-# Gemini Code-Assist Agent Project Guidelines: CipherSwarm
+# Gemini Code-Assist Agent Project Guidelines: Ouroboros
 
 This document provides a comprehensive guide for the Gemini Code-Assist agent, outlining the project's architecture, coding conventions, and development workflows. Adherence to these guidelines is crucial for maintaining code quality, consistency, and project integrity.
 
 ## 1. Core Project Overview
 
-CipherSwarm is a distributed platform for password cracking, designed for high performance and scalability. It leverages a swarm of agents to collaboratively crack hashes, managed by a central server. The platform is built with a modern web interface for user interaction and a robust backend for processing and coordination.
+Ouroboros is a distributed platform for password cracking, designed for high performance and scalability. It leverages a swarm of agents to collaboratively crack hashes, managed by a central server. The platform is built with a modern web interface for user interaction and a robust backend for processing and coordination.
 
 - **Primary Goal**: To efficiently and effectively crack password hashes by distributing the workload across multiple agents.
 - **Key Features**:

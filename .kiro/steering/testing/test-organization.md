@@ -6,7 +6,7 @@
 
 ## Overview
 
-This rule consolidates cross-cutting test organization standards for CipherSwarm, covering directory structure, naming conventions, coverage requirements, CI integration, and test command patterns that apply across all testing layers.
+This rule consolidates cross-cutting test organization standards for Ouroboros, covering directory structure, naming conventions, coverage requirements, CI integration, and test command patterns that apply across all testing layers.
 
 ## Directory Structure Standards
 
@@ -79,8 +79,8 @@ frontend/
 ```typescript
 // ✅ CORRECT - Comprehensive test environment detection
 function isTestEnvironment(): boolean {
-    return process.env.NODE_ENV === 'test' || 
-           process.env.PLAYWRIGHT_TEST === 'true' || 
+    return process.env.NODE_ENV === 'test' ||
+           process.env.PLAYWRIGHT_TEST === 'true' ||
            process.env.CI === 'true';
 }
 
@@ -89,7 +89,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
     if (isTestEnvironment()) {
         return { mockData };
     }
-    
+
     // Real API calls for production
     return await fetchRealData(cookies);
 };

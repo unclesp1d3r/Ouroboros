@@ -1,5 +1,5 @@
 /**
- * Resource schemas for CipherSwarm
+ * Resource schemas for Ouroboros
  * Used by /api/v1/web/resources/* endpoints
  * Based on authoritative backend API schema
  */

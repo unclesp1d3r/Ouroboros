@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This specification defines the core infrastructure requirements for Phase 1 of the CipherSwarm v2 rewrite. The goal is to establish the foundational database models, authentication system, and basic API structure that will support the distributed password cracking management system. This phase focuses on creating a robust, scalable foundation using FastAPI, SQLAlchemy, and PostgreSQL.
+This specification defines the core infrastructure requirements for Phase 1 of the Ouroboros v2 rewrite. The goal is to establish the foundational database models, authentication system, and basic API structure that will support the distributed password cracking management system. This phase focuses on creating a robust, scalable foundation using FastAPI, SQLAlchemy, and PostgreSQL.
 
 ## Requirements
 

@@ -76,9 +76,9 @@
 <Sidebar.Root collapsible="icon">
     <Sidebar.Header>
         <div class="flex items-center gap-2 px-4 py-2">
-            <img src="/logo.svg" alt="CipherSwarm Logo" class="h-8 w-8 flex-shrink-0" />
+            <img src="/logo.svg" alt="Ouroboros Logo" class="h-8 w-8 flex-shrink-0" />
             <span class="text-lg font-semibold group-data-[collapsible=icon]:hidden"
-                >CipherSwarm</span>
+                >Ouroboros</span>
         </div>
     </Sidebar.Header>
 

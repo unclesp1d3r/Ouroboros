@@ -2,7 +2,7 @@
 
 ## inclusion: fileMatch fileMatchPattern: [app/api/\*\*/\*.py]
 
-# FastAPI Patterns and Best Practices for CipherSwarm
+# FastAPI Patterns and Best Practices for Ouroboros
 
 ## API Structure and Organization
 
@@ -24,7 +24,7 @@
 
 ### Pagination
 
-- All list endpoints MUST use `PaginatedResponse[T]` from [app/schemas/shared.py](mdc:CipherSwarm/app/schemas/shared.py)
+- All list endpoints MUST use `PaginatedResponse[T]` from [app/schemas/shared.py](mdc:Ouroboros/app/schemas/shared.py)
 - Standard pagination parameters: `page: int = 1`, `size: int = 20` (not skip/limit)
 - Example:
 

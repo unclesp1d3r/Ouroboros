@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Phase 6: Monitoring, Testing & Documentation design establishes comprehensive testing infrastructure, monitoring capabilities, documentation systems, and quality assurance processes for CipherSwarm. This design ensures the system is production-ready with robust testing coverage, comprehensive observability, thorough documentation, and reliable deployment processes.
+The Phase 6: Monitoring, Testing & Documentation design establishes comprehensive testing infrastructure, monitoring capabilities, documentation systems, and quality assurance processes for Ouroboros. This design ensures the system is production-ready with robust testing coverage, comprehensive observability, thorough documentation, and reliable deployment processes.
 
 ## Architecture
 
@@ -17,7 +17,7 @@ graph TB
         PerformanceTests[Performance Tests]
         SecurityTests[Security Tests]
     end
-    
+
     subgraph "Monitoring & Observability"
         Metrics[Metrics Collection]
         Logging[Structured Logging]
@@ -25,7 +25,7 @@ graph TB
         Alerting[Alerting System]
         Dashboards[Monitoring Dashboards]
     end
-    
+
     subgraph "Documentation System"
         APIDocs[API Documentation]
         ArchDocs[Architecture Docs]
@@ -33,31 +33,31 @@ graph TB
         DevDocs[Developer Docs]
         OpsDocs[Operations Docs]
     end
-    
+
     subgraph "Quality Assurance"
         CodeQuality[Code Quality Gates]
         CIPipeline[CI/CD Pipeline]
         Coverage[Coverage Reporting]
         SecurityScan[Security Scanning]
     end
-    
+
     subgraph "Data Management"
         SeedData[Seed Data Scripts]
         TestData[Test Data Factories]
         DemoData[Demo Data Sets]
         Migrations[Database Migrations]
     end
-    
+
     UnitTests --> CodeQuality
     IntegrationTests --> CIPipeline
     E2ETests --> Coverage
     PerformanceTests --> Metrics
     SecurityTests --> SecurityScan
-    
+
     Metrics --> Dashboards
     Logging --> Alerting
     Tracing --> Monitoring
-    
+
     APIDocs --> DevDocs
     ArchDocs --> UserGuides
     OpsDocs --> Documentation
@@ -74,7 +74,7 @@ graph TB
         Performance[Performance Tests]
         Security[Security Tests]
     end
-    
+
     subgraph "Test Infrastructure"
         Pytest[Pytest Framework]
         PostgresTest[pytest-postgresql]
@@ -82,20 +82,20 @@ graph TB
         Factories[Test Data Factories]
         Fixtures[Test Fixtures]
     end
-    
+
     subgraph "Test Execution"
         LocalRun[Local Test Execution]
         CIRun[CI Test Execution]
         Coverage[Coverage Collection]
         Reporting[Test Reporting]
     end
-    
+
     Unit --> Pytest
     Integration --> PostgresTest
     E2E --> HTTPXClient
     Performance --> Factories
     Security --> Fixtures
-    
+
     Pytest --> LocalRun
     PostgresTest --> CIRun
     HTTPXClient --> Coverage
@@ -112,26 +112,26 @@ graph TB
         BusinessMetrics[Business Metrics]
         LogData[Log Data]
     end
-    
+
     subgraph "Processing & Storage"
         Prometheus[Prometheus]
         LogAggregator[Log Aggregator]
         MetricsDB[Metrics Database]
         TimeSeriesDB[Time Series DB]
     end
-    
+
     subgraph "Visualization & Alerting"
         Grafana[Grafana Dashboards]
         AlertManager[Alert Manager]
         NotificationSystem[Notifications]
         HealthChecks[Health Checks]
     end
-    
+
     AppMetrics --> Prometheus
     SystemMetrics --> MetricsDB
     BusinessMetrics --> TimeSeriesDB
     LogData --> LogAggregator
-    
+
     Prometheus --> Grafana
     MetricsDB --> AlertManager
     TimeSeriesDB --> NotificationSystem
@@ -348,7 +348,7 @@ from typing import Dict, Any
 
 
 class StructuredLogger:
-    """Structured logging configuration for CipherSwarm."""
+    """Structured logging configuration for Ouroboros."""
 
     def __init__(self):
         self._configure_logger()
@@ -534,17 +534,17 @@ class APIDocumentationGenerator:
             return self.app.openapi_schema
 
         openapi_schema = get_openapi(
-            title="CipherSwarm API",
+            title="Ouroboros API",
             version="2.0.0",
             description=self._get_api_description(),
             routes=self.app.routes,
             servers=[
                 {
-                    "url": "https://api.cipherswarm.com",
+                    "url": "https://api.ouroboros.com",
                     "description": "Production server",
                 },
                 {
-                    "url": "https://staging-api.cipherswarm.com",
+                    "url": "https://staging-api.ouroboros.com",
                     "description": "Staging server",
                 },
                 {"url": "http://localhost:8000", "description": "Development server"},
@@ -552,7 +552,7 @@ class APIDocumentationGenerator:
         )
 
         # Add custom extensions
-        openapi_schema["info"]["x-logo"] = {"url": "https://cipherswarm.com/logo.png"}
+        openapi_schema["info"]["x-logo"] = {"url": "https://ouroboros.com/logo.png"}
 
         # Add authentication schemes
         openapi_schema["components"]["securitySchemes"] = {
@@ -570,28 +570,28 @@ class APIDocumentationGenerator:
     def _get_api_description(self) -> str:
         """Get comprehensive API description."""
         return """
-        CipherSwarm is a distributed password cracking management system that coordinates
+        Ouroboros is a distributed password cracking management system that coordinates
         multiple hashcat instances across different machines to efficiently crack password
         hashes using various attack strategies.
-        
+
         ## Authentication
-        
+
         The API uses different authentication methods for different interfaces:
-        
+
         - **Web UI API**: JWT tokens with refresh token support
         - **Agent API**: Bearer tokens specific to each agent
         - **Control API**: API keys for programmatic access
-        
+
         ## Rate Limiting
-        
+
         API endpoints are rate limited to prevent abuse:
-        
+
         - Web UI API: 1000 requests per hour per user
         - Agent API: 10000 requests per hour per agent
         - Control API: 5000 requests per hour per API key
-        
+
         ## Error Handling
-        
+
         All API endpoints return consistent error responses following RFC 7807
         Problem Details for HTTP APIs standard.
         """
@@ -620,13 +620,13 @@ def setup_api_docs(app: FastAPI):
 
 ```yaml
 # mkdocs.yml configuration
-site_name: CipherSwarm Documentation
+site_name: Ouroboros Documentation
 site_description: Distributed Password Cracking Management System
-site_author: CipherSwarm Team
-site_url: https://docs.cipherswarm.com
+site_author: Ouroboros Team
+site_url: https://docs.ouroboros.com
 
-repo_name: cipherswarm/cipherswarm
-repo_url: https://github.com/cipherswarm/cipherswarm
+repo_name: ouroboros/ouroboros
+repo_url: https://github.com/ouroboros/ouroboros
 
 theme:
   name: material
@@ -737,7 +737,7 @@ class SeedDataManager:
     async def seed_admin_user(self) -> User:
         """Create default admin user."""
         admin = await UserFactory.create_async(
-            email="admin@cipherswarm.local",
+            email="admin@ouroboros.local",
             username="admin",
             is_admin=True,
             is_active=True,
@@ -1149,7 +1149,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 class PerformanceTestSuite:
-    """Performance testing suite for CipherSwarm."""
+    """Performance testing suite for Ouroboros."""
 
     def __init__(self, base_url: str):
         self.base_url = base_url
@@ -1232,4 +1232,4 @@ class PerformanceTestSuite:
 - **Image Optimization**: Optimize images and diagrams for web delivery
 - **Lazy Loading**: Implement lazy loading for large documentation sections
 
-This comprehensive design provides the foundation for implementing robust testing, monitoring, and documentation systems that ensure CipherSwarm is production-ready with high quality, reliability, and maintainability.
+This comprehensive design provides the foundation for implementing robust testing, monitoring, and documentation systems that ensure Ouroboros is production-ready with high quality, reliability, and maintainability.

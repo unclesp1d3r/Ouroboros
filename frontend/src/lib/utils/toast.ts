@@ -57,7 +57,7 @@ export function showWarning(message: string, options?: ToastOptions) {
 }
 
 /**
- * Show a hash cracking notification (specialized for CipherSwarm)
+ * Show a hash cracking notification (specialized for Ouroboros)
  */
 export function showHashCracked(
     count: number,

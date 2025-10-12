@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Web UI API v1 (`/api/v1/web/*`) is a comprehensive REST API designed to power the SvelteKit-based dashboard for CipherSwarm. This API provides rich, user-friendly interfaces for managing distributed password cracking operations, including campaign orchestration, attack configuration, agent monitoring, and resource management.
+The Web UI API v1 (`/api/v1/web/*`) is a comprehensive REST API designed to power the SvelteKit-based dashboard for Ouroboros. This API provides rich, user-friendly interfaces for managing distributed password cracking operations, including campaign orchestration, attack configuration, agent monitoring, and resource management.
 
 The design follows FastAPI best practices with a service-layer architecture, comprehensive validation, real-time updates via Server-Sent Events (SSE), and project-based access control. The API is optimized for frontend consumption with features like pagination, filtering, caching, and structured error responses.
 

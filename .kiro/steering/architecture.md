@@ -2,11 +2,11 @@
 
 ## inclusion: always
 
-# CipherSwarm Architecture Guide
+# Ouroboros Architecture Guide
 
 ## Project Overview
 
-CipherSwarm is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
 ## Critical Requirements
 
@@ -345,7 +345,7 @@ alwaysApply: true
 - If writing file input/output logic, sanitize paths and limit file extensions.
 - Protect admin-only routes with dependency-based access rules.
 
-## Additional Security Best Practices for CipherSwarm (Trusted LAN, Internal Use)
+## Additional Security Best Practices for Ouroboros (Trusted LAN, Internal Use)
 
 ### FastAPI
 
@@ -381,7 +381,7 @@ alwaysApply: false
 
 ---
 
-# Service Layer Architecture Patterns for CipherSwarm
+# Service Layer Architecture Patterns for Ouroboros
 
 ## Service Layer Organization
 

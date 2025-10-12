@@ -6,7 +6,7 @@
 
 ## Overview
 
-This rule documents systematic debugging approaches for CipherSwarm development, based on successful resolution of complex issues like SSE connection problems and frontend/backend integration issues.
+This rule documents systematic debugging approaches for Ouroboros development, based on successful resolution of complex issues like SSE connection problems and frontend/backend integration issues.
 
 ## Development Environment Debugging
 
@@ -20,7 +20,7 @@ docker compose logs frontend --tail=20  # Check recent frontend logs
 
 # Look for service health indicators
 # - backend: "healthy" status
-# - frontend: "healthy" status  
+# - frontend: "healthy" status
 # - database: "healthy" status
 
 # Common service restart commands
@@ -125,7 +125,7 @@ logger.info(f"User authenticated: {user.id if user else 'None'}")
 // Load function debugging:
 export const load: PageServerLoad = async ({ cookies }) => {
     console.log('Load function called with cookies:', cookies.toString());
-    
+
     try {
         const response = await serverApi.get('/api/v1/web/campaigns/', {
             headers: { Cookie: cookies.toString() }
@@ -147,14 +147,14 @@ export const campaignsStore = {
     async loadCampaigns() {
         console.log('Store: Loading campaigns...');
         this.setLoading(true);
-        
+
         try {
             const response = await api.get('/api/v1/web/campaigns/');
             console.log('Store: API response received:', response.status);
-            
+
             const data = CampaignListResponseSchema.parse(response.data);
             console.log('Store: Data parsed successfully:', data.items.length, 'campaigns');
-            
+
             this.hydrate(data);
         } catch (error) {
             console.error('Store: Load campaigns error:', error);
@@ -173,20 +173,20 @@ export const campaignsStore = {
 test('dashboard loads with SSE connections', async ({ page }) => {
     // Enable console logging in tests
     page.on('console', msg => console.log('Browser:', msg.text()));
-    
+
     // Monitor network requests
     page.on('request', request => {
         if (request.url().includes('/api/')) {
             console.log('API Request:', request.method(), request.url());
         }
     });
-    
+
     page.on('response', response => {
         if (response.url().includes('/api/')) {
             console.log('API Response:', response.status(), response.url());
         }
     });
-    
+
     await page.goto('/');
     // ... rest of test
 });
@@ -206,7 +206,7 @@ test('dashboard with mocked API', async ({ page }) => {
             body: JSON.stringify({ items: mockCampaigns, total_count: 5 })
         });
     });
-    
+
     await page.goto('/');
     // Verify mock data is used
     await expect(page.locator('[data-testid="campaign-count"]')).toHaveText('5');
@@ -332,8 +332,8 @@ docker compose ps           # Verify service health
 ```typescript
 // ✅ CORRECT - Production monitoring patterns
 // Add structured logging for key operations
-logger.info("SSE connection established", { 
-    user_id: user.id, 
+logger.info("SSE connection established", {
+    user_id: user.id,
     endpoint: "/live/campaigns",
     timestamp: new Date().toISOString()
 });

@@ -1,6 +1,6 @@
 # API Error Response Reference
 
-This document provides comprehensive documentation for error responses across all CipherSwarm API interfaces, including status codes, response formats, and troubleshooting guidance.
+This document provides comprehensive documentation for error responses across all Ouroboros API interfaces, including status codes, response formats, and troubleshooting guidance.
 
 ## Error Response Formats
 
@@ -50,7 +50,7 @@ The Control API implements [RFC9457](https://datatracker.ietf.org/doc/html/rfc94
 
 ```json
 {
-  "type": "https://cipherswarm.example.com/problems/validation-error",
+  "type": "https://ouroboros.example.com/problems/validation-error",
   "title": "Validation Error",
   "status": 422,
   "detail": "The request contains invalid data",
@@ -111,7 +111,7 @@ The Control API implements [RFC9457](https://datatracker.ietf.org/doc/html/rfc94
 
 ```json
 {
-  "type": "https://cipherswarm.example.com/problems/bad-request",
+  "type": "https://ouroboros.example.com/problems/bad-request",
   "title": "Bad Request",
   "status": 400,
   "detail": "Request body contains malformed JSON",

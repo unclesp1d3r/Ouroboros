@@ -1,6 +1,6 @@
-# Contributing to CipherSwarm
+# Contributing to Ouroboros
 
-Thank you for your interest in contributing to CipherSwarm! We appreciate your efforts and value your time. This guide will help you understand how to contribute effectively to the project.
+Thank you for your interest in contributing to Ouroboros! We appreciate your efforts and value your time. This guide will help you understand how to contribute effectively to the project.
 
 ⚡ **Quick Start**: See [WARP.md](WARP.md) for comprehensive development rules and setup commands.
 
@@ -10,7 +10,7 @@ Thank you for your interest in contributing to CipherSwarm! We appreciate your e
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=3 --minlevel=1 -->
 
-- [Contributing to CipherSwarm](#contributing-to-cipherswarm)
+- [Contributing to Ouroboros](#contributing-to-ouroboros)
   - [Table of Contents](#table-of-contents)
   - [Getting Started](#getting-started)
     - [1. Setup Your Environment](#1-setup-your-environment)
@@ -45,17 +45,17 @@ Thank you for your interest in contributing to CipherSwarm! We appreciate your e
 
 ## Getting Started
 
-To get started contributing to CipherSwarm:
+To get started contributing to Ouroboros:
 
 ### 1. Setup Your Environment
 
-1. Fork the repository from [CipherSwarm](https://github.com/unclesp1d3r/CipherSwarm)
+1. Fork the repository from [Ouroboros](https://github.com/unclesp1d3r/Ouroboros)
 
 2. Clone your fork locally:
 
    ```bash
-   git clone https://github.com/your-username/CipherSwarm.git
-   cd CipherSwarm
+   git clone https://github.com/your-username/Ouroboros.git
+   cd Ouroboros
    ```
 
 3. Install dependencies and setup:
@@ -80,7 +80,7 @@ To get started contributing to CipherSwarm:
 
 ## Git Workflow - V2-Primary Development
 
-CipherSwarm uses a **streamlined workflow** focused on v2 development with v1 archived for reference:
+Ouroboros uses a **streamlined workflow** focused on v2 development with v1 archived for reference:
 
 ### Branch Structure
 
@@ -215,14 +215,14 @@ type(scope): description
 
 ```bash
 feat(api): add RFC9457 error handler
-fix(frontend): correct SSR auth redirect  
+fix(frontend): correct SSR auth redirect
 docs(readme): update installation instructions
 feat(api)!: remove deprecated endpoints  # Breaking change
 ```
 
 ## Testing Strategy
 
-CipherSwarm uses a **three-tier testing architecture**. Choose the **smallest tier** that covers your changes:
+Ouroboros uses a **three-tier testing architecture**. Choose the **smallest tier** that covers your changes:
 
 ### Tier 1: Backend Tests
 
@@ -350,4 +350,4 @@ just ci-check  # Only when PR-ready
 
 Please note that we have a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
-Thank you for contributing to CipherSwarm! We look forward to your pull requests.
+Thank you for contributing to Ouroboros! We look forward to your pull requests.

@@ -15,7 +15,7 @@
 - If writing file input/output logic, sanitize paths and limit file extensions.
 - Protect admin-only routes with dependency-based access rules.
 
-## Additional Security Best Practices for CipherSwarm (Trusted LAN, Internal Use)
+## Additional Security Best Practices for Ouroboros (Trusted LAN, Internal Use)
 
 ### FastAPI
 

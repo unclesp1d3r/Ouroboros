@@ -306,7 +306,7 @@ test('campaign creation workflow', async ({ page }) => {
 
 ## File References
 
-- Test configuration: [playwright.config.ts](mdc:CipherSwarm/frontend/playwright.config.ts)
-- Component tests: [CampaignProgress.spec.ts](mdc:CipherSwarm/frontend/src/lib/components/campaigns/CampaignProgress.spec.ts)
-- E2E tests: [campaigns-list.test.ts](mdc:CipherSwarm/frontend/e2e/campaigns-list.test.ts)
-- Store mocking: [campaigns.svelte.ts](mdc:CipherSwarm/frontend/src/lib/stores/campaigns.svelte.ts)
+- Test configuration: [playwright.config.ts](mdc:Ouroboros/frontend/playwright.config.ts)
+- Component tests: [CampaignProgress.spec.ts](mdc:Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.spec.ts)
+- E2E tests: [campaigns-list.test.ts](mdc:Ouroboros/frontend/e2e/campaigns-list.test.ts)
+- Store mocking: [campaigns.svelte.ts](mdc:Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)

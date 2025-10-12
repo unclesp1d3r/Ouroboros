@@ -1,4 +1,4 @@
-# CipherSwarm v2 Dashboard UX Design
+# Ouroboros v2 Dashboard UX Design
 
 ## Last Updated
 
@@ -10,7 +10,7 @@
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=2 --minlevel=1 -->
 
-- [CipherSwarm v2 Dashboard UX Design](#cipherswarm-v2-dashboard-ux-design)
+- [Ouroboros v2 Dashboard UX Design](#ouroboros-v2-dashboard-ux-design)
   - [Last Updated](#last-updated)
   - [Table of Contents](#table-of-contents)
   - [Purpose](#purpose)
@@ -33,7 +33,7 @@
 
 ## Purpose
 
-The CipherSwarm v2 Dashboard is the landing view for authenticated users and the operational command center for real-time campaign oversight. It prioritizes clarity, quick insight, and control access according to role. This is not a traditional analytics dashboard but a tactical interface focused on live campaigns, attacks, and agents.
+The Ouroboros v2 Dashboard is the landing view for authenticated users and the operational command center for real-time campaign oversight. It prioritizes clarity, quick insight, and control access according to role. This is not a traditional analytics dashboard but a tactical interface focused on live campaigns, attacks, and agents.
 
 ## Layout Overview
 
@@ -194,7 +194,7 @@ The dashboard is a real-time operational overview — it prioritizes clarity, sy
 - Avoid clutter — present only **current**, **actionable**, and **relevant** information
 - **Defer deep interaction** (edits, config, history views) to dedicated detail pages
 
-This aligns with CipherSwarm v2's broader mission to evolve from "a tool" into "a platform" — shifting toward guided workflows, real-time observability, and a smarter cracking interface.
+This aligns with Ouroboros v2's broader mission to evolve from "a tool" into "a platform" — shifting toward guided workflows, real-time observability, and a smarter cracking interface.
 
 ## Layout Grid and Visual Rhythm
 

@@ -6,7 +6,7 @@
 
 ## Overview
 
-This rule documents the authentication implementation requirements for CipherSwarm's SSR migration. The current blocker is that SSR pages attempt authenticated API calls but no SSR authentication flow exists.
+This rule documents the authentication implementation requirements for Ouroboros's SSR migration. The current blocker is that SSR pages attempt authenticated API calls but no SSR authentication flow exists.
 
 ## Current State Analysis
 
@@ -56,14 +56,14 @@ export async function handle({
 export const load: PageServerLoad = async ({ cookies, locals }) => {
     // Use session from hooks.server.js
     const sessionCookie = cookies.get('sessionid') || locals.session;
-    
+
     if (!sessionCookie) {
         throw redirect(302, '/login');
     }
-    
+
     try {
         const response = await serverApi.get('/api/v1/web/campaigns/', {
-            headers: { 
+            headers: {
                 'Cookie': `sessionid=${sessionCookie}`,
                 'X-Requested-With': 'XMLHttpRequest'
             }
@@ -80,29 +80,29 @@ export const load: PageServerLoad = async ({ cookies, locals }) => {
 
 ### 2. Authentication State Management
 
-**Server-Side API Client** ([lib/server/api.js](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/server/api.js)):
+**Server-Side API Client** ([lib/server/api.js](mdc:Ouroboros/Ouroboros/frontend/src/lib/server/api.js)):
 
 ```typescript
 import type { Cookies } from '@sveltejs/kit';
 
 export class ServerApiClient {
     private baseURL: string;
-    
+
     constructor(baseURL: string) {
         this.baseURL = baseURL;
     }
-    
+
     async authenticatedRequest(
-        endpoint: string, 
+        endpoint: string,
         options: RequestInit,
         cookies: Cookies
     ) {
         const sessionCookie = cookies.get('sessionid');
-        
+
         if (!sessionCookie) {
             throw new Error('No session cookie found');
         }
-        
+
         return fetch(`${this.baseURL}${endpoint}`, {
             ...options,
             headers: {
@@ -123,11 +123,11 @@ export class ServerApiClient {
 export const actions: Actions = {
     default: async ({ request, cookies }) => {
         const form = await superValidate(request, zod(loginSchema));
-        
+
         if (!form.valid) {
             return fail(400, { form });
         }
-        
+
         try {
             // Authenticate with FastAPI
             const response = await fetch(`${API_BASE_URL}/api/v1/web/auth/login`, {
@@ -135,15 +135,15 @@ export const actions: Actions = {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form.data)
             });
-            
+
             if (!response.ok) {
                 return fail(401, { form, message: 'Invalid credentials' });
             }
-            
+
             // Extract session cookie from response
             const setCookieHeader = response.headers.get('set-cookie');
             const sessionMatch = setCookieHeader?.match(/sessionid=([^;]+)/);
-            
+
             if (sessionMatch) {
                 cookies.set('sessionid', sessionMatch[1], {
                     httpOnly: true,
@@ -152,7 +152,7 @@ export const actions: Actions = {
                     maxAge: 60 * 60 * 24 * 7 // 7 days
                 });
             }
-            
+
             throw redirect(303, '/');
         } catch (error) {
             return fail(500, { form, message: 'Login failed' });
@@ -169,15 +169,15 @@ export const actions: Actions = {
 // In SSR load functions
 export const load: PageServerLoad = async ({ cookies }) => {
     // Bypass authentication in test environments
-    if (process.env.NODE_ENV === 'test' || 
-        process.env.PLAYWRIGHT_TEST || 
+    if (process.env.NODE_ENV === 'test' ||
+        process.env.PLAYWRIGHT_TEST ||
         process.env.CI) {
         return {
             campaigns: mockCampaignData,
             user: mockUserData
         };
     }
-    
+
     // Normal authentication flow
     return authenticatedLoad(cookies);
 };
@@ -241,11 +241,11 @@ async def login(credentials: LoginRequest, response: Response):
 
 ## File References
 
-- Session handling: [hooks.server.js](mdc:CipherSwarm/CipherSwarm/frontend/src/hooks.server.js) (to be created)
-- Server API client: [lib/server/api.js](mdc:CipherSwarm/CipherSwarm/frontend/src/lib/server/api.js) (to be updated)
-- Login routes: [routes/login/+page.server.ts](mdc:CipherSwarm/CipherSwarm/frontend/src/routes/login/+page.server.ts) (to be created)
-- E2E setup: [tests/global-setup.e2e.ts](mdc:CipherSwarm/CipherSwarm/frontend/tests/global-setup.e2e.ts)
-- Migration plan: [spa_to_ssr.md](mdc:CipherSwarm/CipherSwarm/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md)
+- Session handling: [hooks.server.js](mdc:Ouroboros/Ouroboros/frontend/src/hooks.server.js) (to be created)
+- Server API client: [lib/server/api.js](mdc:Ouroboros/Ouroboros/frontend/src/lib/server/api.js) (to be updated)
+- Login routes: [routes/login/+page.server.ts](mdc:Ouroboros/Ouroboros/frontend/src/routes/login/+page.server.ts) (to be created)
+- E2E setup: [tests/global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
+- Migration plan: [spa_to_ssr.md](mdc:Ouroboros/Ouroboros/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md)
 
 ## Success Criteria
 

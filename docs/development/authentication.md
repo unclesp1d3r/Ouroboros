@@ -1,10 +1,10 @@
 # Authentication Guide
 
-This guide covers the authentication mechanisms used in CipherSwarm.
+This guide covers the authentication mechanisms used in Ouroboros.
 
 ## Authentication Types
 
-CipherSwarm implements three distinct authentication mechanisms:
+Ouroboros implements three distinct authentication mechanisms:
 
 1. **Bearer Token Authentication** (Agent API)
 
@@ -395,7 +395,7 @@ async def setup_2fa(user_id: str) -> TwoFactorSetup:
 
     # Generate QR code
     totp = pyotp.TOTP(secret)
-    qr_code = totp.provisioning_uri(name=user.email, issuer_name="CipherSwarm")
+    qr_code = totp.provisioning_uri(name=user.email, issuer_name="Ouroboros")
 
     # Generate backup codes
     backup_codes = [token_urlsafe(12) for _ in range(10)]
@@ -435,7 +435,7 @@ app.add_middleware(
 
 ## What is Casbin?
 
-[Casbin](https://casbin.org/) is a powerful, flexible access control library supporting role-based access control (RBAC), attribute-based access control (ABAC), and more. CipherSwarm uses Casbin for all user/project/role authorization logic.
+[Casbin](https://casbin.org/) is a powerful, flexible access control library supporting role-based access control (RBAC), attribute-based access control (ABAC), and more. Ouroboros uses Casbin for all user/project/role authorization logic.
 
 ## Where Do Policies Live?
 

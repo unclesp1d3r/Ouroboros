@@ -1,6 +1,6 @@
 # Resource Management Guide
 
-This guide covers the management of attack resources in CipherSwarm v2, including wordlists, rule files, mask patterns, and custom charsets.
+This guide covers the management of attack resources in Ouroboros v2, including wordlists, rule files, mask patterns, and custom charsets.
 
 ---
 
@@ -29,7 +29,7 @@ This guide covers the management of attack resources in CipherSwarm v2, includin
 
 ## Resource Types Overview
 
-CipherSwarm v2 supports multiple resource types with enhanced management capabilities:
+Ouroboros v2 supports multiple resource types with enhanced management capabilities:
 
 ### 1. Resource Categories
 
@@ -163,7 +163,7 @@ Resources can be scoped to projects:
 
 ### 1. Inline Editor
 
-For smaller resources (under configured limits), CipherSwarm v2 provides inline editing:
+For smaller resources (under configured limits), Ouroboros v2 provides inline editing:
 
 ```html
 <div class="line-editor">
@@ -230,7 +230,7 @@ Error: Invalid character class '?x'
 
 ### 1. Attack-Local Resources
 
-CipherSwarm v2 supports ephemeral resources created within attacks:
+Ouroboros v2 supports ephemeral resources created within attacks:
 
 - **Lifecycle**: Created with attack, deleted when attack is removed
 - **Storage**: Stored in database, not in MinIO
@@ -308,7 +308,7 @@ CipherSwarm v2 supports ephemeral resources created within attacks:
 
 ### 1. Previous Passwords
 
-CipherSwarm v2 automatically generates dynamic wordlists from cracked passwords:
+Ouroboros v2 automatically generates dynamic wordlists from cracked passwords:
 
 - **Source**: Previously cracked passwords within the project
 - **Updates**: Automatically updated as new passwords are cracked
@@ -335,7 +335,7 @@ attack_config:
 
 ### 1. MinIO Integration
 
-CipherSwarm v2 uses MinIO for scalable resource storage:
+Ouroboros v2 uses MinIO for scalable resource storage:
 
 #### Storage Structure
 
@@ -387,7 +387,7 @@ buckets/
 
 ### 1. Tracked Information
 
-CipherSwarm tracks comprehensive metadata for each resource:
+Ouroboros tracks comprehensive metadata for each resource:
 
 ```yaml
 resource_metadata:
@@ -481,7 +481,7 @@ ls -lh wordlist.txt
 file wordlist.txt
 
 # Verify network connectivity
-curl -I https://cipherswarm.example.com/api/v1/web/resources/
+curl -I https://ouroboros.example.com/api/v1/web/resources/
 
 # Check browser console for errors
 ```
@@ -518,7 +518,7 @@ curl -I https://cipherswarm.example.com/api/v1/web/resources/
 curl -w "@curl-format.txt" -o /dev/null -s "https://resource-url"
 
 # Check agent cache
-cipherswarm-agent cache status
+ouroboros-agent cache status
 ```
 
 **Solution**:

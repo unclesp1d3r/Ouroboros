@@ -159,7 +159,7 @@ export const actions: Actions = {
         }
 
         try {
-            // Convert Superforms data → CipherSwarm API format
+            // Convert Superforms data → Ouroboros API format
             const apiPayload = convertAttackDataToApi(form.data);
 
             // Call backend API for update

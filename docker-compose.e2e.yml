@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_DB: cipherswarm_e2e
+      POSTGRES_DB: ouroboros_e2e
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
@@ -56,12 +56,12 @@ services:
     ports:
       - "8001:8000" # Different port to avoid conflicts
     environment:
-      - DATABASE_URL=postgresql+psycopg://postgres:postgres@postgres:5432/cipherswarm_e2e
+      - DATABASE_URL=postgresql+psycopg://postgres:postgres@postgres:5432/ouroboros_e2e
       - ENVIRONMENT=development
       - POSTGRES_SERVER=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=cipherswarm_e2e
+      - POSTGRES_DB=ouroboros_e2e
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0

@@ -1,4 +1,4 @@
-# CipherSwarm Phase 5: Master Summary
+# Ouroboros Phase 5: Master Summary
 
 ---
 
@@ -6,7 +6,7 @@
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=3 --minlevel=1 -->
 
-- [CipherSwarm Phase 5: Master Summary](#cipherswarm-phase-5-master-summary)
+- [Ouroboros Phase 5: Master Summary](#ouroboros-phase-5-master-summary)
   - [Table of Contents](#table-of-contents)
   - [Mission](#mission)
   - [DAG-based Cracking Campaigns](#dag-based-cracking-campaigns)
@@ -30,13 +30,13 @@
 
 ## Mission
 
-Phase 5 transforms CipherSwarm from a high-performance orchestrator into an **adaptive, feedback-driven cracking intelligence system**, with smarter agents, real-time scheduling, dynamic planning, and strategic attack optimization.
+Phase 5 transforms Ouroboros from a high-performance orchestrator into an **adaptive, feedback-driven cracking intelligence system**, with smarter agents, real-time scheduling, dynamic planning, and strategic attack optimization.
 
 ---
 
 ## DAG-based Cracking Campaigns
 
-This is the CipherSwarm's effort to implement Directed Acyclic Graph (DAG) based cracking campaigns. In CipherSwarm’s context, a DAG is used to model the flow of attack phases — where each node represents a cracking strategy (e.g., dictionary+rule, mask, brute-force), and arrows show which phases logically follow others.
+This is the Ouroboros's effort to implement Directed Acyclic Graph (DAG) based cracking campaigns. In Ouroboros’s context, a DAG is used to model the flow of attack phases — where each node represents a cracking strategy (e.g., dictionary+rule, mask, brute-force), and arrows show which phases logically follow others.
 
 ### Why a DAG?
 

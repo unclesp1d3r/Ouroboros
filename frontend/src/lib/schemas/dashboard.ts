@@ -1,5 +1,5 @@
 /**
- * Dashboard schemas for CipherSwarm
+ * Dashboard schemas for Ouroboros
  * Used by /api/v1/web/dashboard/* endpoints
  * Based on authoritative backend API schema
  */

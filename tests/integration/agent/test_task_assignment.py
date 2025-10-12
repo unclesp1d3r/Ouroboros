@@ -206,7 +206,7 @@ async def test_task_progress_update_success(
         )
         headers = {
             "Authorization": f"Bearer {agent_with_bench_fresh.token}",
-            "User-Agent": "CipherSwarm-Agent/1.0.0",
+            "User-Agent": "Ouroboros-Agent/1.0.0",
         }
         payload = {
             "progress_percent": EXPECTED_PROGRESS,
@@ -234,7 +234,7 @@ async def test_task_progress_update_invalid_token(
 ) -> None:
     headers = {
         "Authorization": "Bearer invalidtoken",
-        "User-Agent": "CipherSwarm-Agent/1.0.0",
+        "User-Agent": "Ouroboros-Agent/1.0.0",
     }
     payload = {"progress_percent": 10.0, "keyspace_processed": 100}
     resp = await async_client.post(
@@ -311,7 +311,7 @@ async def test_task_progress_update_agent_not_assigned(
         )
         headers = {
             "Authorization": f"Bearer {agent_with_bench_fresh.token}",
-            "User-Agent": "CipherSwarm-Agent/1.0.0",
+            "User-Agent": "Ouroboros-Agent/1.0.0",
         }
         payload = {"progress_percent": 10.0, "keyspace_processed": 100}
         resp = await async_client.post(
@@ -389,7 +389,7 @@ async def test_task_progress_update_task_not_running(
         )
         headers = {
             "Authorization": f"Bearer {agent_with_bench_fresh.token}",
-            "User-Agent": "CipherSwarm-Agent/1.0.0",
+            "User-Agent": "Ouroboros-Agent/1.0.0",
         }
         payload = {"progress_percent": 10.0, "keyspace_processed": 100}
         resp = await async_client.post(

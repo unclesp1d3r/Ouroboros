@@ -1,106 +1,106 @@
-site_name: CipherSwarm Documentation
-site_description: Documentation for the CipherSwarm distributed password cracking management system
-repo_url: https://github.com/unclesp1d3r/cipherswarm
+site_name: Ouroboros Documentation
+site_description: Documentation for Ouroboros, the FastAPI + SvelteKit rewrite of CipherSwarm
+repo_url: https://github.com/unclesp1d3r/Ouroboros
 site_url: http://127.0.0.1:9090/
-repo_name: CipherSwarm
+repo_name: Ouroboros
 
 theme:
-      name: material
-      features:
-            - navigation.tabs
-            - navigation.sections
-            - navigation.top
-            - search.suggest
-            - search.highlight
-            - content.tabs.link
-            - content.code.annotation
-            - content.code.copy
-      language: en
-      palette:
-            - scheme: default
-              toggle:
-                    icon: material/brightness-7
-                    name: Switch to dark mode
-              primary: custom
-              accent: custom
-            - scheme: slate
-              toggle:
-                    icon: material/brightness-4
-                    name: Switch to light mode
-              primary: custom
-              accent: custom
+    name: material
+    features:
+        - navigation.tabs
+        - navigation.sections
+        - navigation.top
+        - search.suggest
+        - search.highlight
+        - content.tabs.link
+        - content.code.annotation
+        - content.code.copy
+    language: en
+    palette:
+        - scheme: default
+          toggle:
+              icon: material/brightness-7
+              name: Switch to dark mode
+          primary: custom
+          accent: custom
+        - scheme: slate
+          toggle:
+              icon: material/brightness-4
+              name: Switch to light mode
+          primary: custom
+          accent: custom
 extra_css:
-      - stylesheets/extra.css
+    - stylesheets/extra.css
 
 plugins:
-      - search
-      - mkdocstrings:
-              handlers:
-                    python:
-                          options:
-                                docstring_style: google
-                                show_source: true
-                                show_root_heading: true
-      - autorefs
-      - offline
+    - search
+    - mkdocstrings:
+          handlers:
+              python:
+                  options:
+                      docstring_style: google
+                      show_source: true
+                      show_root_heading: true
+    - autorefs
+    - offline
 
 markdown_extensions:
-      - pymdownx.highlight:
-              anchor_linenums: true
-      - pymdownx.inlinehilite
-      - pymdownx.snippets
-      - pymdownx.superfences:
-              custom_fences:
-                    - name: mermaid
-                      class: mermaid
-      - pymdownx.tabbed:
-              alternate_style: true
-      - pymdownx.tasklist:
-              custom_checkbox: true
-      - admonition
-      - footnotes
-      - pymdownx.details
-      - toc:
-              permalink: true
-      - attr_list
-      - def_list
-      - tables
+    - pymdownx.highlight:
+          anchor_linenums: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences:
+          custom_fences:
+              - name: mermaid
+                class: mermaid
+    - pymdownx.tabbed:
+          alternate_style: true
+    - pymdownx.tasklist:
+          custom_checkbox: true
+    - admonition
+    - footnotes
+    - pymdownx.details
+    - toc:
+          permalink: true
+    - attr_list
+    - def_list
+    - tables
 
 nav:
-      - Home: index.md
-      - Getting Started:
-              - Installation: getting-started/installation.md
-              - Configuration: getting-started/configuration.md
-              - Quick Start: getting-started/quick-start.md
-      - Architecture:
-              - Overview: architecture/overview.md
-              - Components: architecture/components.md
-              - API: architecture/api.md
-      - User Guide:
-              - Web Interface: user-guide/web-interface.md
-              - Agent Setup: user-guide/agent-setup.md
-              - Attack Configuration: user-guide/attack-configuration.md
-      - Development:
-              - Developer Guide: development/developer_guide.md
-              - Setup: development/setup.md
-              - Testing Guide: development/testing.md
-              - Testing Status: development/testing-status.md
-              - Analysis Notes: development/analysis_notes.md
-              - API Reference: development/api-reference.md
-              - Authentication: development/authentication.md
-              - Security: development/security.md
-              - Style Guide: development/style-guide.md
-              - Implementation Plan: v2_rewrite_implementation_plan/implementation_plan.md
-      - Deployment:
-              - Production Setup: deployment/production.md
-              - Docker: deployment/docker.md
-              - Monitoring: deployment/monitoring.md
-              - Backup: deployment/backup.md
-      - API:
-              - Overview: api/overview.md
-              - Agent API: api/agent.md
-              - Web UI API: api/web.md
-              - Control API: api/control.md
-              - Integration Guides: api/integration-guides.md
-              - Workflow Examples: api/workflow-examples.md
-              - Error Responses: api/error-responses.md
+    - Home: index.md
+    - Getting Started:
+          - Installation: getting-started/installation.md
+          - Configuration: getting-started/configuration.md
+          - Quick Start: getting-started/quick-start.md
+    - Architecture:
+          - Overview: architecture/overview.md
+          - Components: architecture/components.md
+          - API: architecture/api.md
+    - User Guide:
+          - Web Interface: user-guide/web-interface.md
+          - Agent Setup: user-guide/agent-setup.md
+          - Attack Configuration: user-guide/attack-configuration.md
+    - Development:
+          - Developer Guide: development/developer_guide.md
+          - Setup: development/setup.md
+          - Testing Guide: development/testing.md
+          - Testing Status: development/testing-status.md
+          - Analysis Notes: development/analysis_notes.md
+          - API Reference: development/api-reference.md
+          - Authentication: development/authentication.md
+          - Security: development/security.md
+          - Style Guide: development/style-guide.md
+          - Implementation Plan: v2_rewrite_implementation_plan/implementation_plan.md
+    - Deployment:
+          - Production Setup: deployment/production.md
+          - Docker: deployment/docker.md
+          - Monitoring: deployment/monitoring.md
+          - Backup: deployment/backup.md
+    - API:
+          - Overview: api/overview.md
+          - Agent API: api/agent.md
+          - Web UI API: api/web.md
+          - Control API: api/control.md
+          - Integration Guides: api/integration-guides.md
+          - Workflow Examples: api/workflow-examples.md
+          - Error Responses: api/error-responses.md

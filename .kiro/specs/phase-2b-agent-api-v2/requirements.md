@@ -2,15 +2,15 @@
 
 ## Introduction
 
-The Agent API v2 is a modernized version of the CipherSwarm agent communication interface that enables distributed password cracking agents to register, authenticate, receive task assignments, and report results. This API replaces the legacy v1 agent API with improved authentication, better state management, and enhanced task distribution capabilities while maintaining backward compatibility.
+The Agent API v2 is a modernized version of the Ouroboros agent communication interface that enables distributed password cracking agents to register, authenticate, receive task assignments, and report results. This API replaces the legacy v1 agent API with improved authentication, better state management, and enhanced task distribution capabilities while maintaining backward compatibility.
 
-The Agent API v2 serves as the primary communication channel between CipherSwarm agents (distributed hashcat instances) and the central server, enabling efficient coordination of password cracking operations across multiple machines in a network.
+The Agent API v2 serves as the primary communication channel between Ouroboros agents (distributed hashcat instances) and the central server, enabling efficient coordination of password cracking operations across multiple machines in a network.
 
 ## Requirements
 
 ### Requirement 1
 
-**User Story:** As a CipherSwarm agent, I want to register with the server and receive authentication credentials, so that I can securely communicate with the server for task assignments.
+**User Story:** As a Ouroboros agent, I want to register with the server and receive authentication credentials, so that I can securely communicate with the server for task assignments.
 
 #### Acceptance Criteria
 
@@ -21,7 +21,7 @@ The Agent API v2 serves as the primary communication channel between CipherSwarm
 
 ### Requirement 2
 
-**User Story:** As a CipherSwarm agent, I want to send periodic heartbeats to the server, so that the server knows I am online and available for task assignments.
+**User Story:** As a Ouroboros agent, I want to send periodic heartbeats to the server, so that the server knows I am online and available for task assignments.
 
 #### Acceptance Criteria
 
@@ -33,7 +33,7 @@ The Agent API v2 serves as the primary communication channel between CipherSwarm
 
 ### Requirement 3
 
-**User Story:** As a CipherSwarm agent, I want to receive attack configurations from the server, so that I can execute password cracking tasks with the correct parameters.
+**User Story:** As a Ouroboros agent, I want to receive attack configurations from the server, so that I can execute password cracking tasks with the correct parameters.
 
 #### Acceptance Criteria
 
@@ -45,7 +45,7 @@ The Agent API v2 serves as the primary communication channel between CipherSwarm
 
 ### Requirement 4
 
-**User Story:** As a CipherSwarm agent, I want to receive task assignments with specific keyspace chunks, so that I can work on a portion of the overall cracking operation in parallel with other agents.
+**User Story:** As a Ouroboros agent, I want to receive task assignments with specific keyspace chunks, so that I can work on a portion of the overall cracking operation in parallel with other agents.
 
 #### Acceptance Criteria
 
@@ -57,7 +57,7 @@ The Agent API v2 serves as the primary communication channel between CipherSwarm
 
 ### Requirement 5
 
-**User Story:** As a CipherSwarm agent, I want to report progress updates during task execution, so that the server can track the status of cracking operations.
+**User Story:** As a Ouroboros agent, I want to report progress updates during task execution, so that the server can track the status of cracking operations.
 
 #### Acceptance Criteria
 
@@ -69,7 +69,7 @@ The Agent API v2 serves as the primary communication channel between CipherSwarm
 
 ### Requirement 6
 
-**User Story:** As a CipherSwarm agent, I want to submit cracking results when I successfully crack hashes, so that the results can be stored and made available to users.
+**User Story:** As a Ouroboros agent, I want to submit cracking results when I successfully crack hashes, so that the results can be stored and made available to users.
 
 #### Acceptance Criteria
 
@@ -81,7 +81,7 @@ The Agent API v2 serves as the primary communication channel between CipherSwarm
 
 ### Requirement 7
 
-**User Story:** As a CipherSwarm agent, I want to access presigned URLs for downloading attack resources, so that I can obtain wordlists, rules, and other files needed for cracking operations.
+**User Story:** As a Ouroboros agent, I want to access presigned URLs for downloading attack resources, so that I can obtain wordlists, rules, and other files needed for cracking operations.
 
 #### Acceptance Criteria
 
@@ -93,7 +93,7 @@ The Agent API v2 serves as the primary communication channel between CipherSwarm
 
 ### Requirement 8
 
-**User Story:** As a legacy CipherSwarm agent using v1 API, I want my existing integration to continue working, so that I don't need to immediately upgrade to v2.
+**User Story:** As a legacy Ouroboros agent using v1 API, I want my existing integration to continue working, so that I don't need to immediately upgrade to v2.
 
 #### Acceptance Criteria
 

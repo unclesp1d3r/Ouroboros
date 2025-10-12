@@ -16,9 +16,9 @@ jobs:
             postgres:
                 image: postgres:16
                 env:
-                    POSTGRES_USER: cipherswarm
-                    POSTGRES_PASSWORD: cipherswarm
-                    POSTGRES_DB: cipherswarm
+                    POSTGRES_USER: ouroboros
+                    POSTGRES_PASSWORD: ouroboros
+                    POSTGRES_DB: ouroboros
                 ports:
                     - 5432:5432
                 options: >-
@@ -73,17 +73,17 @@ jobs:
 
             - name: Run CI checks
               env:
-                  DATABASE_URL: postgresql://cipherswarm:cipherswarm@localhost:5432/cipherswarm
+                  DATABASE_URL: postgresql://ouroboros:ouroboros@localhost:5432/ouroboros
                   POSTGRES_HOST: localhost
                   POSTGRES_PORT: 5432
-                  POSTGRES_USER: cipherswarm
-                  POSTGRES_PASSWORD: cipherswarm
-                  POSTGRES_DB: cipherswarm
+                  POSTGRES_USER: ouroboros
+                  POSTGRES_PASSWORD: ouroboros
+                  POSTGRES_DB: ouroboros
                   # Legacy environment variables that might be used
                   POSTGRES_SERVER: localhost
-                  DB_USER: cipherswarm
-                  DB_PASSWORD: cipherswarm
-                  DB_NAME: cipherswarm
+                  DB_USER: ouroboros
+                  DB_PASSWORD: ouroboros
+                  DB_NAME: ouroboros
                   DB_HOST: localhost
                   DB_PORT: 5432
               run: uv run just ci-check

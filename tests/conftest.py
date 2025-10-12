@@ -348,7 +348,7 @@ def minio_container() -> Generator[MinioContainer]:
         core_config.settings.MINIO_ACCESS_KEY = access_key
         core_config.settings.MINIO_SECRET_KEY = secret_key
         # Use a test bucket name to avoid collisions
-        core_config.settings.MINIO_BUCKET = "cipherswarm-test-resources"
+        core_config.settings.MINIO_BUCKET = "ouroboros-test-resources"
 
         client = minio.get_client()
         # Create all required buckets

@@ -113,7 +113,7 @@ test.describe('Resources List Page', () => {
         await page.goto('/resources');
 
         // Check page title and header
-        await expect(page).toHaveTitle('Resources - CipherSwarm');
+        await expect(page).toHaveTitle('Resources - Ouroboros');
         await expect(page.getByRole('heading', { name: 'Resources' })).toBeVisible();
         await expect(
             page.getByText('Manage wordlists, rule lists, masks, and charsets')

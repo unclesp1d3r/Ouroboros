@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-This guide covers common issues and solutions for CipherSwarm v2.
+This guide covers common issues and solutions for Ouroboros v2.
 
 ---
 
@@ -62,11 +62,11 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Test HTTPS connectivity
-   curl -I https://cipherswarm.example.com/api/v1/web/auth/me
+   curl -I https://ouroboros.example.com/api/v1/web/auth/me
 
    # Check for proxy/firewall issues
    # Verify DNS resolution
-   nslookup cipherswarm.example.com
+   nslookup ouroboros.example.com
    ```
 
 #### JWT Token Issues
@@ -120,7 +120,7 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    # Test token validity
    curl -H "Authorization: Bearer $CIPHERSWARM_TOKEN" \
-       https://cipherswarm.example.com/api/v1/client/configuration
+       https://ouroboros.example.com/api/v1/client/configuration
    ```
 
 2. **Token Regeneration**
@@ -133,7 +133,7 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Test HTTPS connectivity
-   curl -v https://cipherswarm.example.com/api/v1/client/configuration
+   curl -v https://ouroboros.example.com/api/v1/client/configuration
 
    # Check firewall rules
    # Verify outbound HTTPS (port 443) is allowed
@@ -204,23 +204,23 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Verify agent is running
-   systemctl status cipherswarm-agent
+   systemctl status ouroboros-agent
 
    # Check agent logs
-   journalctl -u cipherswarm-agent -f
+   journalctl -u ouroboros-agent -f
 
    # Test agent connectivity
-   cipherswarm-agent test connection
+   ouroboros-agent test connection
    ```
 
 2. **Network Connectivity**
 
    ```bash
    # Test server reachability
-   ping cipherswarm.example.com
+   ping ouroboros.example.com
 
    # Test HTTPS connectivity
-   curl -I https://cipherswarm.example.com
+   curl -I https://ouroboros.example.com
 
    # Check for proxy/firewall blocking
    ```
@@ -229,13 +229,13 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Verify configuration
-   cipherswarm-agent config show
+   ouroboros-agent config show
 
    # Test authentication
-   cipherswarm-agent test auth
+   ouroboros-agent test auth
 
    # Check token validity
-   cipherswarm-agent verify token
+   ouroboros-agent verify token
    ```
 
 ### 2. Agent Performance Issues
@@ -303,10 +303,10 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # View recent errors
-   journalctl -u cipherswarm-agent --since "1 hour ago"
+   journalctl -u ouroboros-agent --since "1 hour ago"
 
    # Check for specific error patterns
-   grep -i error /var/log/cipherswarm/agent.log
+   grep -i error /var/log/ouroboros/agent.log
    ```
 
 2. **Hashcat Issues**
@@ -332,7 +332,7 @@ This guide covers common issues and solutions for CipherSwarm v2.
    df -h
 
    # Check for file permission issues
-   ls -la /var/cache/cipherswarm/
+   ls -la /var/cache/ouroboros/
    ```
 
 ## Campaign and Attack Issues
@@ -379,7 +379,7 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Check agent capabilities
-   cipherswarm-agent capabilities
+   ouroboros-agent capabilities
 
    # Verify GPU memory requirements
    # Check hash type support
@@ -462,7 +462,7 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Test upload connectivity
-   curl -I https://cipherswarm.example.com/api/v1/web/resources/
+   curl -I https://ouroboros.example.com/api/v1/web/resources/
 
    # Check for timeout issues
    # Verify stable internet connection
@@ -555,7 +555,7 @@ This guide covers common issues and solutions for CipherSwarm v2.
    # Test SSE endpoint
    curl -H "Accept: text/event-stream" \
        -H "Authorization: Bearer $TOKEN" \
-       https://cipherswarm.example.com/api/v1/web/live/campaigns
+       https://ouroboros.example.com/api/v1/web/live/campaigns
    ```
 
 3. **Proxy/Firewall Issues**
@@ -578,10 +578,10 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Test connection stability
-   ping -c 100 cipherswarm.example.com
+   ping -c 100 ouroboros.example.com
 
    # Check for packet loss
-   mtr cipherswarm.example.com
+   mtr ouroboros.example.com
    ```
 
 2. **Browser Settings**
@@ -619,13 +619,13 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Test latency to server
-   ping cipherswarm.example.com
+   ping ouroboros.example.com
 
    # Check bandwidth
    speedtest-cli
 
    # Test API response times
-   curl -w "@curl-format.txt" https://cipherswarm.example.com/api/v1/web/dashboard/summary
+   curl -w "@curl-format.txt" https://ouroboros.example.com/api/v1/web/dashboard/summary
    ```
 
 3. **Server Load**
@@ -738,7 +738,7 @@ This guide covers common issues and solutions for CipherSwarm v2.
 
    ```bash
    # Database connectivity
-   curl https://cipherswarm.example.com/api/v1/web/health/components
+   curl https://ouroboros.example.com/api/v1/web/health/components
 
    # Individual service health
    # Check system logs
@@ -784,7 +784,7 @@ When reporting issues, collect relevant logs:
 # Network tab for failed requests
 
 # Agent issues
-journalctl -u cipherswarm-agent --since "1 hour ago" > agent.log
+journalctl -u ouroboros-agent --since "1 hour ago" > agent.log
 
 # System issues
 # Server logs (admin access required)
@@ -798,7 +798,7 @@ When contacting support:
 
 1. **Environment Details**
 
-   - CipherSwarm version
+   - Ouroboros version
    - Browser type and version (for web issues)
    - Operating system
    - Agent configuration (for agent issues)

@@ -1,6 +1,6 @@
 # Web Interface Guide
 
-The CipherSwarm v2 web interface provides a modern, responsive dashboard for managing your password cracking operations with real-time updates and project-based organization.
+The Ouroboros v2 web interface provides a modern, responsive dashboard for managing your password cracking operations with real-time updates and project-based organization.
 
 ---
 
@@ -31,14 +31,14 @@ The CipherSwarm v2 web interface provides a modern, responsive dashboard for man
 
 ### Login Process
 
-1. Navigate to the CipherSwarm web interface
+1. Navigate to the Ouroboros web interface
 2. Enter your email and password
 3. Click "Sign In"
 4. If you have access to multiple projects, select your active project from the project selector
 
 ### Project Context
 
-CipherSwarm v2 introduces project-based organization:
+Ouroboros v2 introduces project-based organization:
 
 - **Project Selector**: Located in the header, allows switching between projects you have access to
 - **Project Scoping**: All campaigns, hash lists, and resources are scoped to the selected project
@@ -165,7 +165,7 @@ Campaigns have the following states:
 
 ### Attack Types
 
-CipherSwarm v2 supports multiple attack types with enhanced configuration:
+Ouroboros v2 supports multiple attack types with enhanced configuration:
 
 #### Dictionary Attacks
 
@@ -302,7 +302,7 @@ New streamlined workflow for non-technical users:
 
 ### Resource Types
 
-CipherSwarm manages several resource types:
+Ouroboros manages several resource types:
 
 - **Wordlists**: Dictionary files for attacks
 - **Rule Lists**: Hashcat rule files
@@ -387,7 +387,7 @@ Administrators can register new agents:
 
 ### Server-Sent Events (SSE)
 
-CipherSwarm v2 uses SSE for real-time updates:
+Ouroboros v2 uses SSE for real-time updates:
 
 - **Campaign Feed**: Attack progress and state changes
 - **Agent Feed**: Agent status and performance updates
@@ -450,7 +450,7 @@ allowed_extensions: [.txt, .zip, .pdf]
 
 ## Dark Mode & Theming
 
-CipherSwarm v2 includes comprehensive dark mode support:
+Ouroboros v2 includes comprehensive dark mode support:
 
 - **Auto-detection**: Respects system preferences
 - **Manual Toggle**: Theme switcher in navigation

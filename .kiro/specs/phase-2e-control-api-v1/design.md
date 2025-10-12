@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Control API v1 is a machine-readable REST API that provides programmatic access to all CipherSwarm functionality. It serves as the backend for the `csadmin` command-line tool and enables automation scripts, third-party integrations, and monitoring systems to interact with CipherSwarm programmatically.
+The Control API v1 is a machine-readable REST API that provides programmatic access to all Ouroboros functionality. It serves as the backend for the `csadmin` command-line tool and enables automation scripts, third-party integrations, and monitoring systems to interact with Ouroboros programmatically.
 
 The design philosophy emphasizes maximum reuse of existing service layer functions, consistent behavior with the Web UI API, and machine-optimized response formats. The API uses API key authentication, RFC9457-compliant error handling, and offset-based pagination suitable for programmatic consumption.
 

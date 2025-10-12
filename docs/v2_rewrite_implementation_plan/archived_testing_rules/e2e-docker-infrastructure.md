@@ -2,7 +2,7 @@
 
 ## Overview
 
-This rule documents the successful implementation of the three-tier testing architecture for CipherSwarm, including Docker infrastructure, data seeding, and Playwright E2E testing against real backend services.
+This rule documents the successful implementation of the three-tier testing architecture for Ouroboros, including Docker infrastructure, data seeding, and Playwright E2E testing against real backend services.
 
 ## Three-Tier Testing Architecture
 
@@ -31,7 +31,7 @@ This rule documents the successful implementation of the three-tier testing arch
 
 ### E2E Docker Compose Configuration
 
-**File**: [docker-compose.e2e.yml](mdc:CipherSwarm/docker-compose.e2e.yml)
+**File**: [docker-compose.e2e.yml](mdc:Ouroboros/docker-compose.e2e.yml)
 
 **Key Configuration Decisions**:
 
@@ -46,7 +46,7 @@ backend:
   volumes:
     - ./logs:/app/logs
 
-# Use development frontend with hot reload capabilities  
+# Use development frontend with hot reload capabilities
 frontend:
   build:
     context: ./frontend
@@ -88,7 +88,7 @@ healthcheck:
 
 ### Service Layer Data Seeding
 
-**File**: [scripts/seed_e2e_data.py](mdc:CipherSwarm/scripts/seed_e2e_data.py)
+**File**: [scripts/seed_e2e_data.py](mdc:Ouroboros/scripts/seed_e2e_data.py)
 
 **Architecture Pattern**:
 
@@ -135,7 +135,7 @@ async def seed_test_data():
 
 ### Global Setup Implementation
 
-**File**: [frontend/tests/global-setup.e2e.ts](mdc:CipherSwarm/frontend/tests/global-setup.e2e.ts)
+**File**: [frontend/tests/global-setup.e2e.ts](mdc:Ouroboros/frontend/tests/global-setup.e2e.ts)
 
 **Key Functions**:
 
@@ -152,16 +152,16 @@ export default async function globalSetup() {
     try {
         // Start Docker stack (relative path fixed)
         execSync('docker compose -f ../docker-compose.e2e.yml up -d --build');
-        
+
         // Wait for services
         await waitForServices();
-        
+
         // Seed test data
         execSync('docker compose -f ../docker-compose.e2e.yml exec -T backend python scripts/seed_e2e_data.py');
-        
+
         // Validate frontend
         await validateFrontend();
-        
+
     } catch (error) {
         // Cleanup on failure
         execSync('docker compose -f ../docker-compose.e2e.yml down -v');
@@ -172,7 +172,7 @@ export default async function globalSetup() {
 
 ### Global Teardown Implementation
 
-**File**: [frontend/tests/global-teardown.e2e.ts](mdc:CipherSwarm/frontend/tests/global-teardown.e2e.ts)
+**File**: [frontend/tests/global-teardown.e2e.ts](mdc:Ouroboros/frontend/tests/global-teardown.e2e.ts)
 
 **Key Functions**:
 
@@ -184,26 +184,26 @@ export default async function globalSetup() {
 
 ### E2E-Specific Configuration
 
-**File**: [frontend/playwright.config.e2e.ts](mdc:CipherSwarm/frontend/playwright.config.e2e.ts)
+**File**: [frontend/playwright.config.e2e.ts](mdc:Ouroboros/frontend/playwright.config.e2e.ts)
 
 **Key Settings**:
 
 ```typescript
 export default defineConfig({
     testDir: './tests/e2e',
-    
+
     // Serial execution for database consistency
     workers: 1,
-    
+
     // Point to Docker frontend service
     use: {
         baseURL: 'http://localhost:3005',
     },
-    
+
     // Global lifecycle management
     globalSetup: './tests/global-setup.e2e.ts',
     globalTeardown: './tests/global-teardown.e2e.ts',
-    
+
     // Comprehensive browser coverage
     projects: [
         { name: 'chromium', use: devices['Desktop Chrome'] },
@@ -215,8 +215,8 @@ export default defineConfig({
 
 ### Sample E2E Tests
 
-**Authentication Flow**: [frontend/tests/e2e/auth.e2e.test.ts](mdc:CipherSwarm/frontend/tests/e2e/auth.e2e.test.ts)
-**Project Management**: [frontend/tests/e2e/projects.e2e.test.ts](mdc:CipherSwarm/frontend/tests/e2e/projects.e2e.test.ts)
+**Authentication Flow**: [frontend/tests/e2e/auth.e2e.test.ts](mdc:Ouroboros/frontend/tests/e2e/auth.e2e.test.ts)
+**Project Management**: [frontend/tests/e2e/projects.e2e.test.ts](mdc:Ouroboros/frontend/tests/e2e/projects.e2e.test.ts)
 
 **Test Pattern**:
 
@@ -234,7 +234,7 @@ test('admin can log in and access dashboard', async ({ page }) => {
     await page.fill('input[type="email"]', TEST_USERS.admin.email);
     await page.fill('input[type="password"]', TEST_USERS.admin.password);
     await page.click('button[type="submit"]');
-    
+
     await expect(page).toHaveURL('/');
 });
 ```
@@ -243,7 +243,7 @@ test('admin can log in and access dashboard', async ({ page }) => {
 
 ### Updated Test Commands
 
-**File**: [justfile](mdc:CipherSwarm/justfile)
+**File**: [justfile](mdc:Ouroboros/justfile)
 
 ```bash
 # Three-tier testing architecture
@@ -303,7 +303,7 @@ just test-e2e
 
 ### Next Implementation Steps
 
-1. **Implement SSR authentication flow** (see [ssr-authentication.mdc](mdc:CipherSwarm/.cursor/rules/CipherSwarm/frontend/ssr-authentication.mdc))
+1. **Implement SSR authentication flow** (see [ssr-authentication.mdc](mdc:Ouroboros/.cursor/rules/Ouroboros/frontend/ssr-authentication.mdc))
 2. **Add authentication to E2E tests**
 3. **Complete full E2E test suite**
 

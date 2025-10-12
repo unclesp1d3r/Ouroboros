@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Control API v1 (`/api/v1/control/*`) provides programmatic access to all major CipherSwarm backend operations for command-line tools, automation scripts, and third-party integrations. This API powers the `csadmin` command-line interface and enables machine-readable workflows for campaigns, attacks, agents, hash lists, tasks, and system statistics. Unlike the Web UI API which is designed for human interaction, the Control API is optimized for structured, automated workflows with consistent JSON responses and RFC9457-compliant error handling.
+The Control API v1 (`/api/v1/control/*`) provides programmatic access to all major Ouroboros backend operations for command-line tools, automation scripts, and third-party integrations. This API powers the `csadmin` command-line interface and enables machine-readable workflows for campaigns, attacks, agents, hash lists, tasks, and system statistics. Unlike the Web UI API which is designed for human interaction, the Control API is optimized for structured, automated workflows with consistent JSON responses and RFC9457-compliant error handling.
 
 The Control API serves as a thin wrapper around existing service layer functions, maximizing code reuse while providing API key-based authentication, project scoping, and offset-based pagination suitable for programmatic access. All endpoints enforce the same business logic and security constraints as the Web UI API, ensuring consistent behavior across interfaces.
 
@@ -10,7 +10,7 @@ The Control API serves as a thin wrapper around existing service layer functions
 
 ### Requirement 1: API Key Authentication and Authorization
 
-**User Story:** As a system administrator, I want secure API key-based authentication for programmatic access, so that automated tools can access CipherSwarm without interactive login sessions.
+**User Story:** As a system administrator, I want secure API key-based authentication for programmatic access, so that automated tools can access Ouroboros without interactive login sessions.
 
 #### Acceptance Criteria
 
@@ -24,7 +24,7 @@ The Control API serves as a thin wrapper around existing service layer functions
 
 ### Requirement 2: RFC9457-Compliant Error Handling
 
-**User Story:** As a developer integrating with CipherSwarm, I want standardized, machine-parseable error responses, so that I can programmatically handle different error conditions.
+**User Story:** As a developer integrating with Ouroboros, I want standardized, machine-parseable error responses, so that I can programmatically handle different error conditions.
 
 #### Acceptance Criteria
 
@@ -66,7 +66,7 @@ The Control API serves as a thin wrapper around existing service layer functions
 
 ### Requirement 5: System Health and Statistics Monitoring
 
-**User Story:** As a system administrator, I want programmatic access to system health and statistics, so that I can monitor CipherSwarm status and performance through automated tools.
+**User Story:** As a system administrator, I want programmatic access to system health and statistics, so that I can monitor Ouroboros status and performance through automated tools.
 
 #### Acceptance Criteria
 
@@ -234,7 +234,7 @@ The Control API serves as a thin wrapper around existing service layer functions
 
 ### Requirement 17: Service Layer Reuse and Consistency
 
-**User Story:** As a developer maintaining CipherSwarm, I want the Control API to maximize reuse of existing service layer functions, so that business logic remains consistent across all interfaces.
+**User Story:** As a developer maintaining Ouroboros, I want the Control API to maximize reuse of existing service layer functions, so that business logic remains consistent across all interfaces.
 
 #### Acceptance Criteria
 

@@ -85,7 +85,7 @@ describe('Toast Utilities', () => {
         });
     });
 
-    describe('CipherSwarm-specific toast functions', () => {
+    describe('Ouroboros-specific toast functions', () => {
         it('showHashCracked handles single hash', () => {
             showHashCracked(1, 'test-hashlist', 'dictionary-attack');
 

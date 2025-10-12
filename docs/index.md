@@ -1,6 +1,6 @@
-# Welcome to CipherSwarm
+# Welcome to Ouroboros
 
-CipherSwarm is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It's a complete rewrite of Ouroboros, preserving backward compatibility while modernizing the architecture. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
 ## Features
 
@@ -23,7 +23,7 @@ CipherSwarm is a distributed password cracking management system built with Fast
 
 ## Project Status
 
-CipherSwarm is under active development. The core features are stable and the API specification is fixed, but we're continuously adding new features and improvements.
+Ouroboros is under active development as an experimental rewrite of Ouroboros. The core features are stable and the Agent API v1 specification is fixed for backward compatibility, but we're continuously adding new features and improvements.
 
 ## Support
 
@@ -35,4 +35,4 @@ If you need help or want to contribute:
 
 ## License
 
-CipherSwarm is open source software licensed under the MPL-2.0 license.
+Ouroboros is open source software licensed under the MPL-2.0 license.

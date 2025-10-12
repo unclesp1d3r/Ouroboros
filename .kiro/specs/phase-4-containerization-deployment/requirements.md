@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This specification defines the requirements for Phase 4 of the CipherSwarm v2 rewrite: Containerization and Deployment. The goal is to enable reproducible, secure, and efficient deployment of CipherSwarm using Docker containers and Docker Compose, following FastAPI Docker best practices and CipherSwarm's Docker standards.
+This specification defines the requirements for Phase 4 of the Ouroboros v2 rewrite: Containerization and Deployment. The goal is to enable reproducible, secure, and efficient deployment of Ouroboros using Docker containers and Docker Compose, following FastAPI Docker best practices and Ouroboros's Docker standards.
 
 The scope includes containerizing the FastAPI application, PostgreSQL database, MinIO object storage, optional Redis cache, and Nginx reverse proxy for production deployments. The solution must support both development and production environments with single-command deployment capabilities.
 

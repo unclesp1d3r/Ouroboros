@@ -336,7 +336,7 @@
 </script>
 
 <svelte:head>
-    <title>Campaigns - CipherSwarm</title>
+    <title>Campaigns - Ouroboros</title>
 </svelte:head>
 
 <Card>

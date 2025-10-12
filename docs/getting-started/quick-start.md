@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-This guide will walk you through your first steps with CipherSwarm after installation. You'll create a project, register an agent, upload resources, and run your first password cracking campaign.
+This guide will walk you through your first steps with Ouroboros after installation. You'll create a project, register an agent, upload resources, and run your first password cracking campaign.
 
 > **Prerequisites**: Complete the [Installation Guide](installation.md) before proceeding.
 
@@ -34,7 +34,7 @@ This guide will walk you through your first steps with CipherSwarm after install
 
 ### 1. Access the Web Interface
 
-Open your web browser and navigate to your CipherSwarm installation:
+Open your web browser and navigate to your Ouroboros installation:
 
 - Direct access: `http://your-server:8000`
 - Through reverse proxy: `http://your-domain.com`
@@ -57,7 +57,7 @@ For security, immediately change your admin password:
 
 ## Create Your First Project
 
-Projects provide multi-tenant isolation in CipherSwarm. Each project has its own campaigns, hash lists, and resources.
+Projects provide multi-tenant isolation in Ouroboros. Each project has its own campaigns, hash lists, and resources.
 
 ### 1. Navigate to Projects
 
@@ -101,7 +101,7 @@ After creation, **immediately copy the agent token** - it will only be shown onc
 
 On your cracking machine (the one with hashcat installed):
 
-1. Download the CipherSwarm agent from the releases page
+1. Download the Ouroboros agent from the releases page
 2. Configure the agent with your server URL and token
 3. Start the agent service
 
@@ -159,7 +159,7 @@ Create a hash list file with one hash per line. Supported formats include:
 2. Click "Create Hash List"
 3. **Name**: Give your hash list a descriptive name
 4. **Upload**: Upload your hash file or paste hashes directly
-5. **Hash Type**: CipherSwarm will attempt to detect the hash type automatically
+5. **Hash Type**: Ouroboros will attempt to detect the hash type automatically
 
 ### 3. Create Campaign
 
@@ -330,7 +330,7 @@ Configure agent settings:
 
 ## Next Steps
 
-Now that you have CipherSwarm running:
+Now that you have Ouroboros running:
 
 1. **Scale Up**: Add more agents to increase cracking power
 2. **Optimize**: Fine-tune attack strategies based on your results
@@ -350,5 +350,5 @@ If you need help:
 
 1. Check the [Troubleshooting Guide](../user-guide/troubleshooting.md)
 2. Review the logs for error messages
-3. Search [GitHub Issues](https://github.com/unclesp1d3r/CipherSwarm/issues)
+3. Search [GitHub Issues](https://github.com/unclesp1d3r/Ouroboros/issues)
 4. Create a new issue with detailed information about your problem

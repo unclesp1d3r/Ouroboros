@@ -38,7 +38,7 @@
 
 ## Overview
 
-This document outlines the complete migration plan for transitioning CipherSwarm from a static SvelteKit SPA served by FastAPI to a fully decoupled, dynamic SvelteKit application with SSR capabilities.
+This document outlines the complete migration plan for transitioning Ouroboros from a static SvelteKit SPA served by FastAPI to a fully decoupled, dynamic SvelteKit application with SSR capabilities.
 
 When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_implementation_plan/notes` directory, as well as the `docs/development/user_journey_flowchart.mmd` file.
 
@@ -64,7 +64,7 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
 
 1. ✅ **Forms use standard SvelteKit form actions** (POST to same route)
 2. ✅ **Superforms handles validation & progressive enhancement** (out-of-the-box)
-3. ✅ **Server-side conversion** of validated data to CipherSwarm API format
+3. ✅ **Server-side conversion** of validated data to Ouroboros API format
 4. ✅ **Components stay close to stock Shadcn-Svelte** patterns for maintainability
 
 **Benefits:**
@@ -552,7 +552,7 @@ export const actions: Actions = {
   }
 
   try {
-   // Convert Superforms data → CipherSwarm API format
+   // Convert Superforms data → Ouroboros API format
    const apiPayload = convertCampaignData(form.data);
 
    // Call backend API

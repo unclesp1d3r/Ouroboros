@@ -35,7 +35,7 @@ class Settings(BaseSettings):
         MINIO_ENDPOINT: str = "minio:9000"
         MINIO_ACCESS_KEY: str = "minioadmin"
         MINIO_SECRET_KEY: str = "minioadmin"
-        MINIO_BUCKET: str = "cipherswarm-resources"
+        MINIO_BUCKET: str = "ouroboros-resources"
         MINIO_SECURE: bool = False
         MINIO_REGION: str | None = None
         JWT_SECRET_KEY: str = "a_very_secret_key"
@@ -44,7 +44,7 @@ class Settings(BaseSettings):
         UPLOAD_MAX_SIZE: int = 100 * 1024 * 1024  # 100MB
     """
 
-    PROJECT_NAME: str = "CipherSwarm"
+    PROJECT_NAME: str = "Ouroboros"
     VERSION: str = "0.1.0"
     BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = Field(
         default_factory=list,
@@ -73,25 +73,25 @@ class Settings(BaseSettings):
         description="PostgreSQL server hostname",
     )
     POSTGRES_USER: str = Field(
-        default="cipherswarm",
+        default="ouroboros",
         description="PostgreSQL username",
     )
     POSTGRES_PASSWORD: str = Field(
-        default="cipherswarm",
+        default="ouroboros",
         description="PostgreSQL password",
     )
     POSTGRES_DB: str = Field(
-        default="cipherswarm",
+        default="ouroboros",
         description="PostgreSQL database name",
     )
 
     # Users
     FIRST_SUPERUSER: str = Field(
-        default="admin@cipherswarm.org",
+        default="admin@ouroboros.local",
         description="First superuser email",
     )
     FIRST_SUPERUSER_PASSWORD: str = Field(
-        default="cipherswarm",
+        default="ouroboros",
         description="First superuser password",
     )
 
@@ -134,7 +134,8 @@ class Settings(BaseSettings):
     log_to_file: bool = Field(default=False, description="Enable file logging")
     log_file_path: str = Field(default="logs/app.log", description="Path to log file")
     log_retention: str = Field(
-        default="10 days", description="Log file retention policy"
+        default="10 days",
+        description="Log file retention policy",
     )
     log_rotation: str = Field(default="10 MB", description="Log file rotation policy")
 
@@ -174,7 +175,7 @@ class Settings(BaseSettings):
         description="MinIO secret key",
     )
     MINIO_BUCKET: str = Field(
-        default="cipherswarm-resources",
+        default="ouroboros-resources",
         description="MinIO bucket name",
     )
     MINIO_SECURE: bool = Field(

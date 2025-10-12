@@ -1,19 +1,21 @@
 ---
-description: 
+description:
 globs: app/schemas/**/*.py
 alwaysApply: false
 ---
-# Pydantic Schema Patterns for CipherSwarm
+# Pydantic Schema Patterns for Ouroboros
 
 ## Schema Organization and Structure
 
 ### File Organization
+
 - Store schemas in `app/schemas/{resource}.py` (e.g., `hash_list.py`, `campaign.py`)
 - One schema file per domain/resource
 - Import shared schemas from `app/schemas/shared.py`
 - Group related schemas in the same file
 
 ### Schema Naming Conventions
+
 - Input schemas: `{Resource}Create`, `{Resource}Update`
 - Output schemas: `{Resource}Out`, `{Resource}Response`
 - Internal schemas: `{Resource}UpdateData` (for service layer)
@@ -22,6 +24,7 @@ alwaysApply: false
 ## Input Schema Patterns
 
 ### Create Schemas
+
 - Include all required fields for resource creation
 - Use validation constraints with `Field()`
 - Exclude auto-generated fields (id, timestamps)
@@ -36,6 +39,7 @@ class HashListCreate(BaseModel):
 ```
 
 ### Update Schemas
+
 - Make all fields optional for PATCH operations
 - Use same validation constraints as create schemas
 - Consider separate schemas for different update scenarios
@@ -48,6 +52,7 @@ class HashListUpdate(BaseModel):
 ```
 
 ### Service Layer Update Schemas
+
 - Use for internal service operations
 - May have different validation rules than API schemas
 - Often used for partial updates
@@ -57,7 +62,7 @@ class HashListUpdateData(BaseModel):
     name: str | None = None
     description: str | None = None
     is_unavailable: bool | None = None
-    
+
     class Config:
         extra = "forbid"  # Prevent unexpected fields
 ```
@@ -65,6 +70,7 @@ class HashListUpdateData(BaseModel):
 ## Output Schema Patterns
 
 ### Response Schemas
+
 - Include all fields that should be exposed to clients
 - Use `from_attributes = True` for SQLAlchemy model conversion
 - Include computed fields when needed
@@ -79,12 +85,13 @@ class HashListOut(BaseModel):
     is_unavailable: bool
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True
 ```
 
 ### Pagination Responses
+
 - Always use `PaginatedResponse[T]` for list endpoints
 - Don't create custom pagination schemas
 
@@ -106,6 +113,7 @@ async def list_hash_lists() -> PaginatedResponse[HashListOut]:
 ## Validation Patterns
 
 ### Field Validation
+
 - Use `Field()` for constraints and documentation
 - Prefer built-in validators over custom ones when possible
 - Use descriptive error messages
@@ -113,21 +121,22 @@ async def list_hash_lists() -> PaginatedResponse[HashListOut]:
 ```python
 class CampaignCreate(BaseModel):
     name: str = Field(
-        ..., 
-        min_length=1, 
+        ...,
+        min_length=1,
         max_length=255,
         description="Campaign name",
         examples=["Password Audit 2024"]
     )
     priority: int = Field(
-        1, 
-        ge=1, 
+        1,
+        ge=1,
         le=10,
         description="Campaign priority (1-10, higher is more important)"
     )
 ```
 
 ### Custom Validators
+
 - Use `@field_validator` for complex validation
 - Use `@model_validator` for cross-field validation
 - Keep validation logic simple and focused
@@ -137,18 +146,18 @@ class AttackCreate(BaseModel):
     attack_mode: AttackMode
     mask: str | None = None
     wordlist_id: int | None = None
-    
+
     @field_validator('mask')
     @classmethod
     def validate_mask_syntax(cls, v: str | None, info: ValidationInfo) -> str | None:
         if v is None:
             return v
-        
+
         # Validate hashcat mask syntax
         if not re.match(r'^[\?a-zA-Z0-9\[\]]+$', v):
             raise ValueError('Invalid mask syntax')
         return v
-    
+
     @model_validator(mode='after')
     def validate_attack_requirements(self) -> 'AttackCreate':
         if self.attack_mode == AttackMode.MASK and not self.mask:
@@ -161,11 +170,13 @@ class AttackCreate(BaseModel):
 ## Type Hints and Annotations
 
 ### Modern Python Syntax
+
 - Use `str | None` instead of `Optional[str]` (Python 3.10+)
 - Use `list[T]` instead of `List[T]`
 - Use `dict[K, V]` instead of `Dict[K, V]`
 
 ### Annotated Types
+
 - Use `Annotated` for dependency injection
 - Combine with `Field()` for validation and documentation
 
@@ -181,6 +192,7 @@ class ResourceCreate(BaseModel):
 ## Configuration and Settings
 
 ### Model Configuration
+
 - Use `from_attributes = True` for SQLAlchemy integration
 - Set `extra = "forbid"` to prevent unexpected fields
 - Use `str_strip_whitespace = True` for string fields
@@ -189,7 +201,7 @@ class ResourceCreate(BaseModel):
 class HashListCreate(BaseModel):
     name: str
     description: str | None = None
-    
+
     class Config:
         from_attributes = True
         extra = "forbid"
@@ -197,6 +209,7 @@ class HashListCreate(BaseModel):
 ```
 
 ### Pydantic v2 Configuration
+
 - Use `model_config` for Pydantic v2 style
 - Prefer explicit configuration over defaults
 
@@ -207,7 +220,7 @@ class HashListOut(BaseModel):
         extra="forbid",
         str_strip_whitespace=True,
     )
-    
+
     id: int
     name: str
     # ... other fields
@@ -216,6 +229,7 @@ class HashListOut(BaseModel):
 ## Enum Integration
 
 ### Using Enums in Schemas
+
 - Define enums in separate files or model files
 - Use string enums for API compatibility
 - Provide clear enum values
@@ -237,11 +251,13 @@ class AttackCreate(BaseModel):
 ## Error Handling and Validation
 
 ### Validation Error Responses
+
 - Let FastAPI handle Pydantic validation errors automatically
 - Use structured error responses for complex validation
 - Provide helpful error messages
 
 ### Custom Error Models
+
 - Define error schemas for consistent error responses
 - Use for business logic validation errors
 
@@ -259,6 +275,7 @@ class ValidationErrorResponse(BaseModel):
 ## Documentation and Examples
 
 ### Field Documentation
+
 - Always provide `description` for public API fields
 - Include `examples` for complex fields
 - Use clear, concise descriptions
@@ -278,6 +295,7 @@ class CampaignCreate(BaseModel):
 ```
 
 ### Schema Examples
+
 - Provide complete examples in docstrings
 - Include both valid and invalid examples
 - Document expected behavior
@@ -285,7 +303,7 @@ class CampaignCreate(BaseModel):
 ```python
 class AttackEstimateRequest(BaseModel):
     """Request schema for attack keyspace estimation.
-    
+
     Example:
         {
             "attack_mode": "mask",
@@ -301,11 +319,13 @@ class AttackEstimateRequest(BaseModel):
 ## Performance Considerations
 
 ### Lazy Loading
+
 - Use `Field(exclude=True)` for expensive computed fields
 - Consider separate schemas for different use cases
 - Avoid deep nesting in response schemas
 
 ### Serialization Optimization
+
 - Use `alias` for field name mapping
 - Consider `by_alias=True` for consistent output
 - Use `exclude_none=True` to reduce response size
@@ -315,7 +335,7 @@ class HashListOut(BaseModel):
     id: int
     name: str
     item_count: int | None = Field(None, exclude=True)  # Expensive to compute
-    
+
     class Config:
         from_attributes = True
         exclude_none = True
@@ -324,6 +344,7 @@ class HashListOut(BaseModel):
 ## Testing Schema Validation
 
 ### Unit Testing Schemas
+
 - Test validation rules with valid and invalid data
 - Test edge cases and boundary conditions
 - Verify error messages are helpful
@@ -338,12 +359,11 @@ def test_hash_list_create_validation():
     }
     schema = HashListCreate(**valid_data)
     assert schema.name == "Test Hash List"
-    
+
     # Invalid data
     with pytest.raises(ValidationError) as exc_info:
         HashListCreate(name="", project_id=1, hash_type_id=0)
-    
+
     errors = exc_info.value.errors()
     assert any(error["type"] == "string_too_short" for error in errors)
 ```
-

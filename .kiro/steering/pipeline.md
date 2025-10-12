@@ -2,7 +2,7 @@
 
 ## inclusion: always
 
-# CipherSwarm Development Pipeline Standards
+# Ouroboros Development Pipeline Standards
 
 ## Core Principles
 
@@ -187,7 +187,7 @@ Projects requiring deviations must document exceptions in `README.md`:
 -   **Compensating Controls:** Alternative measures
 ```
 
-## CipherSwarm-Specific Requirements
+## Ouroboros-Specific Requirements
 
 ### Python Stack Compliance
 

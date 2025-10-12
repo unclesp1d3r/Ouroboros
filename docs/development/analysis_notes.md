@@ -2,7 +2,7 @@
 
 ## Overview
 
-CipherSwarm tracks agent device performance (guesses/sec) over time for each device attached to an agent. This data is used for real-time dashboard charts, historical analysis, and performance tuning.
+Ouroboros tracks agent device performance (guesses/sec) over time for each device attached to an agent. This data is used for real-time dashboard charts, historical analysis, and performance tuning.
 
 ## Data Model
 

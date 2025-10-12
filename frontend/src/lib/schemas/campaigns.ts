@@ -1,5 +1,5 @@
 /**
- * Campaign schemas for CipherSwarm
+ * Campaign schemas for Ouroboros
  * Used by /api/v1/web/campaigns/* endpoints
  */
 

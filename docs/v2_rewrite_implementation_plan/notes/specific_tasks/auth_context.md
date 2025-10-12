@@ -12,7 +12,7 @@
 
 ### 🧭 Purpose
 
-CipherSwarm supports strict project-based isolation. Users can belong to multiple projects (especially admins, analysts, and consultants). These endpoints allow the Web UI to:
+Ouroboros supports strict project-based isolation. Users can belong to multiple projects (especially admins, analysts, and consultants). These endpoints allow the Web UI to:
 
 - **Retrieve** the current user's active project and list of accessible projects
 - **Switch** the active project for all future interactions

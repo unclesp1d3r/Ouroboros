@@ -139,7 +139,7 @@
 </script>
 
 <svelte:head>
-    <title>Resources - CipherSwarm</title>
+    <title>Resources - Ouroboros</title>
 </svelte:head>
 
 <div class="container mx-auto space-y-6 p-6">

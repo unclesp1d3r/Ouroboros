@@ -1,6 +1,6 @@
 # Frequently Asked Questions (FAQ)
 
-This FAQ covers common questions about CipherSwarm v2.
+This FAQ covers common questions about Ouroboros v2.
 
 ---
 
@@ -29,9 +29,9 @@ This FAQ covers common questions about CipherSwarm v2.
 
 ## General Questions
 
-### What's new in CipherSwarm v2?
+### What's new in Ouroboros v2?
 
-CipherSwarm v2 introduces several major improvements:
+Ouroboros v2 introduces several major improvements:
 
 - **Project-based Organization**: Multi-tenant architecture with project isolation
 - **Enhanced Authentication**: JWT-based authentication with role-based access control
@@ -42,11 +42,11 @@ CipherSwarm v2 introduces several major improvements:
 - **Hash List Management**: Improved hash management with crackable uploads
 - **Agent Enhancements**: Better hardware management and performance monitoring
 
-### Is CipherSwarm v2 compatible with v1 agents?
+### Is Ouroboros v2 compatible with v1 agents?
 
-Yes, CipherSwarm v2 maintains backward compatibility with v1 agents through the Agent API v1. However, some new features (like enhanced hardware management) require agent updates.
+Yes, Ouroboros v2 maintains backward compatibility with v1 agents through the Agent API v1. However, some new features (like enhanced hardware management) require agent updates.
 
-### How do I migrate from CipherSwarm v1?
+### How do I migrate from Ouroboros v1?
 
 Migration involves:
 
@@ -59,16 +59,16 @@ Contact your administrator for migration assistance.
 
 ## Authentication and Access
 
-### How do I log into CipherSwarm v2?
+### How do I log into Ouroboros v2?
 
-1. Navigate to the CipherSwarm web interface
+1. Navigate to the Ouroboros web interface
 2. Enter your username and password
 3. Select your active project (if assigned to multiple projects)
 4. Access the dashboard and features
 
 ### What are the different user roles?
 
-CipherSwarm v2 has three user roles:
+Ouroboros v2 has three user roles:
 
 - **User**: Basic access, can view campaigns and results
 - **Power User**: Can create and manage campaigns, attacks, and resources
@@ -119,7 +119,7 @@ Common causes:
 
 ### How do I manage agent hardware settings?
 
-CipherSwarm v2 provides enhanced hardware management:
+Ouroboros v2 provides enhanced hardware management:
 
 1. **Device Toggles**: Enable/disable individual GPUs and CPUs
 2. **Backend Selection**: Choose CUDA, OpenCL, HIP, or Metal backends
@@ -142,7 +142,7 @@ Yes, agents can be assigned to multiple projects and will receive tasks from any
 
 ### What attack types are available?
 
-CipherSwarm v2 supports:
+Ouroboros v2 supports:
 
 - **Dictionary Attacks**: Wordlist-based attacks with optional rules
 - **Mask Attacks**: Pattern-based attacks using character masks
@@ -169,7 +169,7 @@ Ephemeral resources are temporary resources created within attacks:
 
 ### How do I use previous passwords in attacks?
 
-CipherSwarm v2 can automatically generate wordlists from previously cracked passwords:
+Ouroboros v2 can automatically generate wordlists from previously cracked passwords:
 
 1. **Dictionary Attack**: Select "Use Previous Passwords" option
 2. **Automatic Generation**: System creates wordlist from project's cracked passwords
@@ -229,7 +229,7 @@ Resources can be:
 
 ### How do live updates work?
 
-CipherSwarm v2 uses Server-Sent Events (SSE) for real-time updates:
+Ouroboros v2 uses Server-Sent Events (SSE) for real-time updates:
 
 - **Automatic Updates**: Dashboard and campaign views update automatically
 - **No Refresh Needed**: Changes appear without page reloads
@@ -273,7 +273,7 @@ Crackable uploads automate hash extraction and campaign creation:
 
 ### How does hash type detection work?
 
-CipherSwarm v2 includes intelligent hash type detection:
+Ouroboros v2 includes intelligent hash type detection:
 
 - **Pattern Matching**: Analyzes hash format and length
 - **Confidence Scoring**: Provides confidence levels for detected types
@@ -322,7 +322,7 @@ Common causes:
 
 ### How do I monitor system performance?
 
-CipherSwarm v2 provides comprehensive monitoring:
+Ouroboros v2 provides comprehensive monitoring:
 
 - **Dashboard Metrics**: Real-time system overview
 - **Agent Performance**: Individual agent performance charts
@@ -331,9 +331,9 @@ CipherSwarm v2 provides comprehensive monitoring:
 
 ## Security and Best Practices
 
-### How secure is CipherSwarm v2?
+### How secure is Ouroboros v2?
 
-CipherSwarm v2 includes multiple security features:
+Ouroboros v2 includes multiple security features:
 
 - **HTTPS Only**: All communication encrypted in transit
 - **JWT Authentication**: Secure token-based authentication
@@ -373,7 +373,7 @@ Best practices for project organization:
 Log locations vary by component:
 
 - **Web Interface**: Browser developer console
-- **Agent Logs**: `journalctl -u cipherswarm-agent` or `/var/log/cipherswarm/`
+- **Agent Logs**: `journalctl -u ouroboros-agent` or `/var/log/ouroboros/`
 - **Server Logs**: Contact administrator for access
 - **Application Logs**: Available through admin interface
 
@@ -388,7 +388,7 @@ Log locations vary by component:
 
 Essential information:
 
-- **CipherSwarm Version**: System version and build information
+- **Ouroboros Version**: System version and build information
 - **Environment**: Browser, OS, agent configuration
 - **Error Messages**: Exact error text and codes
 - **Reproduction Steps**: How to reproduce the issue
@@ -397,16 +397,16 @@ Essential information:
 
 ## Integration and API
 
-### Does CipherSwarm v2 have an API?
+### Does Ouroboros v2 have an API?
 
-Yes, CipherSwarm v2 provides multiple APIs:
+Yes, Ouroboros v2 provides multiple APIs:
 
-- **Agent API v1**: For CipherSwarm agents (backward compatible)
+- **Agent API v1**: For Ouroboros agents (backward compatible)
 - **Web API v1**: For web interface functionality
 - **Control API v1**: For command-line tools and automation (partially implemented)
 - **Future APIs**: Agent API v2 planned for enhanced features
 
-### Can I automate CipherSwarm operations?
+### Can I automate Ouroboros operations?
 
 Yes, through various methods:
 
@@ -448,7 +448,7 @@ The Control API is partially implemented with:
 
 Support channels depend on your deployment:
 
-- **Administrator**: Contact your local CipherSwarm administrator
+- **Administrator**: Contact your local Ouroboros administrator
 - **Documentation**: Check user guides and troubleshooting
 - **Community**: Participate in user forums or communities
 - **Professional Support**: Contact vendor for commercial support

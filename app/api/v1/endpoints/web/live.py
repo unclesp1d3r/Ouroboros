@@ -1,5 +1,5 @@
 """
-🧭 JSON API Refactor - CipherSwarm Web UI
+🧭 JSON API Refactor - Ouroboros Web UI
 
 Follow these rules for all endpoints in this file:
 1. Must return Pydantic models as JSON (no TemplateResponse or render()).

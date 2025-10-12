@@ -1,12 +1,12 @@
 ---
-description: 
+description:
 globs: app/**/*.py
 alwaysApply: false
 ---
 
 ## State Machine Philosophy
 
-CipherSwarm uses finite state machines (FSMs) to manage the lifecycle of distributed cracking operations.
+Ouroboros uses finite state machines (FSMs) to manage the lifecycle of distributed cracking operations.
 
 Each entity has well-defined transitions:
 
@@ -28,7 +28,6 @@ Each entity has well-defined transitions:
 - Prefer enums + transitions over booleans or status strings.
 - Use clearly named service methods for transitions (e.g., `advance_session()`, `expire_task()`).
 - Tests must validate illegal transitions are blocked.
-
 
 ### Additional Guidelines for Cursor
 

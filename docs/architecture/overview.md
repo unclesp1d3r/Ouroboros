@@ -1,6 +1,6 @@
 # Architecture Overview
 
-CipherSwarm is designed as a distributed system that coordinates password cracking tasks across multiple agents. This document provides a high-level overview of the system architecture and its key components.
+Ouroboros is designed as a distributed system that coordinates password cracking tasks across multiple agents. This document provides a high-level overview of the system architecture and its key components.
 
 ## System Architecture
 
@@ -95,7 +95,7 @@ The API layer consists of four distinct interfaces, each serving different clien
 
 - **Specification**: OpenAPI 3.0.1 (locked to `contracts/v1_api_swagger.json`)
 - **Authentication**: Bearer token authentication
-- **Purpose**: Used by distributed CipherSwarm agents
+- **Purpose**: Used by distributed Ouroboros agents
 - **Endpoints**:
   - `/api/v1/client/agents/*` - Agent lifecycle management
   - `/api/v1/client/attacks/*` - Attack configuration retrieval
@@ -319,7 +319,7 @@ sequenceDiagram
 
 ### Server-Sent Events (SSE)
 
-CipherSwarm uses SSE for real-time updates instead of WebSockets:
+Ouroboros uses SSE for real-time updates instead of WebSockets:
 
 **Event Streams:**
 

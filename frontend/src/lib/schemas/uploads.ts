@@ -1,5 +1,5 @@
 /**
- * Upload schemas for CipherSwarm
+ * Upload schemas for Ouroboros
  * Used by /api/v1/web/uploads/* endpoints
  * Based on authoritative backend API schema
  */

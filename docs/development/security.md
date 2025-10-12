@@ -1,12 +1,12 @@
 # Security Guide
 
-This guide covers security best practices and implementation details for CipherSwarm.
+This guide covers security best practices and implementation details for Ouroboros.
 
 ## Security Architecture
 
 ### Overview
 
-CipherSwarm implements a defense-in-depth security strategy:
+Ouroboros implements a defense-in-depth security strategy:
 
 1. **Network Security**
 
@@ -48,9 +48,9 @@ app = FastAPI()
 app.add_middleware(HTTPSRedirectMiddleware)
 
 ssl_context = {
-    "cert_file": "/etc/cipherswarm/cert.pem",
-    "key_file": "/etc/cipherswarm/key.pem",
-    "ca_file": "/etc/cipherswarm/ca.pem",
+    "cert_file": "/etc/ouroboros/cert.pem",
+    "key_file": "/etc/ouroboros/key.pem",
+    "ca_file": "/etc/ouroboros/ca.pem",
     "ciphers": "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384",
     "protocols": ["TLSv1.2", "TLSv1.3"],
 }
@@ -272,8 +272,8 @@ class SecureStorage:
 FROM python:3.13-slim
 
 # Run as non-root user
-RUN useradd -r -s /bin/false cipherswarm
-USER cipherswarm
+RUN useradd -r -s /bin/false ouroboros
+USER ouroboros
 
 # Set security options
 LABEL security.capabilities="cap_net_bind_service"

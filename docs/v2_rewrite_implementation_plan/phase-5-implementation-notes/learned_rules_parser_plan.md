@@ -1,4 +1,4 @@
-# CipherSwarm Phase 5 - Learned Rules from Debug Mode
+# Ouroboros Phase 5 - Learned Rules from Debug Mode
 
 ---
 
@@ -6,7 +6,7 @@
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=2 --minlevel=1 -->
 
-- [CipherSwarm Phase 5 - Learned Rules from Debug Mode](#cipherswarm-phase-5---learned-rules-from-debug-mode)
+- [Ouroboros Phase 5 - Learned Rules from Debug Mode](#ouroboros-phase-5---learned-rules-from-debug-mode)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Key Concepts](#key-concepts)
@@ -21,7 +21,7 @@
 
 ## Overview
 
-This document defines how CipherSwarm will extract, score, and promote Hashcat rules from `--debug-mode=3` output during rule-based attacks. The goal is to create a `learned.rules` set for each project that reflects the most successful transformation patterns used in cracking real-world passwords.
+This document defines how Ouroboros will extract, score, and promote Hashcat rules from `--debug-mode=3` output during rule-based attacks. The goal is to create a `learned.rules` set for each project that reflects the most successful transformation patterns used in cracking real-world passwords.
 
 All operations are async and non-blocking. Agents offload debug artifacts to storage and immediately return to cracking. Server-side background jobs handle parsing and promotion.
 
@@ -133,7 +133,7 @@ Stores promoted rules ready for attack use.
 
 ## Promotion Heuristics
 
-CipherSwarm will promote rules into `learned.rules` based on observed cracking success, recency, and project relevance. The promotion logic is run by background tasks and incorporates rule aging, scoring, and deduplication.
+Ouroboros will promote rules into `learned.rules` based on observed cracking success, recency, and project relevance. The promotion logic is run by background tasks and incorporates rule aging, scoring, and deduplication.
 
 ### 🎯 Promotion Criteria
 

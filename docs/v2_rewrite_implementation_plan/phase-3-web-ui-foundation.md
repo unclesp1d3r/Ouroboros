@@ -1,6 +1,6 @@
 # Phase 3: Web UI Foundation (Rewritten for SvelteKit)
 
-This phase finalizes the web-based UI for CipherSwarm using a modern JSON API architecture and a SvelteKit frontend. During Phase 2, many backend endpoints were completed. Phase 3 ensures the SvelteKit frontend is integrated cleanly, consumes JSON from `/api/v1/web/*`, and is styled with **Shadcn-Svelte** (not Flowbite). All user-visible routes must include proper Playwright E2E tests.
+This phase finalizes the web-based UI for Ouroboros using a modern JSON API architecture and a SvelteKit frontend. During Phase 2, many backend endpoints were completed. Phase 3 ensures the SvelteKit frontend is integrated cleanly, consumes JSON from `/api/v1/web/*`, and is styled with **Shadcn-Svelte** (not Flowbite). All user-visible routes must include proper Playwright E2E tests.
 
 ---
 
@@ -135,7 +135,7 @@ A new test-seeding endpoint needs to be created in the backend to seed the datab
 - **✅ COMPLETED**: Leveraged Superforms' built-in SvelteKit integration instead of custom API clients
 - **✅ COMPLETED**: Standard SvelteKit form actions (POST to same route) for all forms
 - **✅ COMPLETED**: Superforms handles validation & progressive enhancement out-of-the-box
-- **✅ COMPLETED**: Server-side conversion of validated data to CipherSwarm API format
+- **✅ COMPLETED**: Server-side conversion of validated data to Ouroboros API format
 - **✅ COMPLETED**: Components stay close to stock Shadcn-Svelte patterns for maintainability
 
 #### SSR Route Migration Complete
@@ -387,7 +387,7 @@ A new test-seeding endpoint needs to be created in the backend to seed the datab
 ### Toasts and Notifications
 
 - [x] **COMPLETED**: Global toast system using **svelte-sonner** (not Flowbite)
-- [x] **COMPLETED**: Specialized toast functions for CipherSwarm events:
+- [x] **COMPLETED**: Specialized toast functions for Ouroboros events:
   - Hash cracking notifications
   - Agent status updates
   - Campaign status changes
@@ -420,7 +420,7 @@ A new test-seeding endpoint needs to be created in the backend to seed the datab
 
 ## Design Goals & User Experience Intent
 
-This section captures the comprehensive UX design goals and interface patterns derived from the API implementation planning. These goals guide the frontend implementation to ensure a cohesive, user-friendly experience across all CipherSwarm features.
+This section captures the comprehensive UX design goals and interface patterns derived from the API implementation planning. These goals guide the frontend implementation to ensure a cohesive, user-friendly experience across all Ouroboros features.
 
 ### Authentication & User Management UX
 

@@ -1,4 +1,4 @@
-"""CipherSwarm FastAPI Application."""
+"""Ouroboros FastAPI Application."""
 
 import logging
 import time
@@ -44,7 +44,8 @@ class InterceptHandler(logging.Handler):
             frame = frame.f_back  # type: ignore[assignment]
             depth += 1
         logger.opt(depth=depth, exception=record.exc_info).log(
-            level, record.getMessage()
+            level,
+            record.getMessage(),
         )
 
 
@@ -73,11 +74,11 @@ app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
     description="""
-CipherSwarm is a distributed password cracking management system that coordinates multiple hashcat instances across different machines to efficiently crack password hashes using various attack strategies.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It's a complete rewrite of CipherSwarm that coordinates multiple hashcat instances across different machines to efficiently crack password hashes using various attack strategies.
 
 ## API Interfaces
 
-CipherSwarm provides three distinct API interfaces:
+Ouroboros provides three distinct API interfaces:
 
 ### Agent API (`/api/v1/client/*`)
 - **Purpose**: Legacy compatibility for existing hashcat agents
@@ -128,14 +129,14 @@ The Web UI API provides Server-Sent Events (SSE) for real-time notifications:
 
 ## Multi-Tenancy
 
-CipherSwarm implements project-based multi-tenancy where all resources are scoped to projects and users can be members of multiple projects.
+Ouroboros implements project-based multi-tenancy where all resources are scoped to projects and users can be members of multiple projects.
 """,
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
     contact={
-        "name": "CipherSwarm Project",
-        "url": "https://github.com/unclesp1d3r/CipherSwarm",
+        "name": "Ouroboros Project",
+        "url": "https://github.com/unclesp1d3r/Ouroboros",
     },
     license_info={
         "name": "Mozilla Public License 2.0",
@@ -147,7 +148,7 @@ CipherSwarm implements project-based multi-tenancy where all resources are scope
             "description": "Development server",
         },
         {
-            "url": "https://api.cipherswarm.example.com",
+            "url": "https://api.ouroboros.example.com",
             "description": "Production server",
         },
     ],
@@ -189,7 +190,8 @@ app.add_middleware(CacheRequestControlMiddleware)
 cache.setup(settings.CACHE_CONNECT_STRING)
 
 app.add_middleware(
-    GZipMiddleware, minimum_size=1000
+    GZipMiddleware,
+    minimum_size=1000,
 )  # Compress responses larger than 1000 bytes
 
 
@@ -203,7 +205,8 @@ app.add_exception_handler(HTTPException, v1_http_exception_handler)
 # Logging middleware
 @app.middleware("http")
 async def log_requests(
-    request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]],
 ) -> Response:
     start_time = time.time()
     request_id = request.headers.get("x-request-id")
@@ -233,7 +236,8 @@ async def log_requests(
 # Middleware to set cookies from request.state.set_cookie (for FastHX endpoints)
 @app.middleware("http")
 async def set_cookie_from_state_middleware(
-    request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]],
 ) -> Response:
     response = await call_next(request)
     set_cookie = getattr(request.state, "set_cookie", None)
@@ -268,7 +272,8 @@ async def health_check() -> dict[str, str]:
 
 @app.exception_handler(InvalidAgentTokenError)
 async def invalid_agent_token_handler(
-    _request: Request, exc: InvalidAgentTokenError
+    _request: Request,
+    exc: InvalidAgentTokenError,
 ) -> JSONResponse:
     return JSONResponse(status_code=401, content={"detail": str(exc)})
 
