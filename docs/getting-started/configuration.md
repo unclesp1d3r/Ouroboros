@@ -77,8 +77,7 @@ POSTGRES_PASSWORD=your_secure_database_password
 POSTGRES_DB=ouroboros
 ```
 
-The application automatically constructs the database URI as:
-`postgresql+psycopg://POSTGRES_USER:POSTGRES_PASSWORD@POSTGRES_SERVER/POSTGRES_DB`
+The application automatically constructs the database URI as: `postgresql+psycopg://POSTGRES_USER:POSTGRES_PASSWORD@POSTGRES_SERVER/POSTGRES_DB`
 
 ### Initial Admin User
 

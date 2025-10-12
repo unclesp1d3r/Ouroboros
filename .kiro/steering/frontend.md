@@ -1,6 +1,12 @@
 ---
+inclusion: fileMatch
+fileMatchPattern:
+  - frontend/**/*.ts
+  - frontend/**/*.svelte
+  - frontend/**/*.js
+---
 
-## inclusion: fileMatch fileMatchPattern: \[frontend/**/\*.ts, frontend/**/*.svelte, frontend/\*\*/*.js\]
+# Ouroboros Frontend Development Guide
 
 # Ouroboros Frontend Development Guide
 

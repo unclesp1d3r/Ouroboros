@@ -176,8 +176,7 @@ This data is hidden for standard users to reduce clutter and limit sensitive sys
 
 ## Data Collection Strategy
 
-> ⚠️ Implementation Note:
-> All system metrics should be gathered **from in-process Python code** using libraries or internal APIs.
+> ⚠️ Implementation Note: All system metrics should be gathered **from in-process Python code** using libraries or internal APIs.
 >
 > Do **not** shell out to external binaries or system commands to collect data in production.
 

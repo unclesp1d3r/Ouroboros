@@ -234,71 +234,35 @@ Download cracker binary by ID.
 
 ### Agent Schemas
 
-::: app.schemas.agent.AdvancedAgentConfiguration
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AdvancedAgentConfiguration options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentBenchmark
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentBenchmark options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentErrorV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentErrorV1 options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentResponseV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentResponseV1 options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentUpdateV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentUpdateV1 options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentHeartbeatRequest
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentHeartbeatRequest options: show_root_heading: true show_source: false
 
 ### Task Schemas
 
-::: app.schemas.task.HashcatResult
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.task.HashcatResult options: show_root_heading: true show_source: false
 
-::: app.schemas.task.TaskOutV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.task.TaskOutV1 options: show_root_heading: true show_source: false
 
-::: app.schemas.task.TaskProgressUpdate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.task.TaskProgressUpdate options: show_root_heading: true show_source: false
 
-::: app.schemas.task.TaskStatusUpdate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.task.TaskStatusUpdate options: show_root_heading: true show_source: false
 
 ### Attack Schemas
 
-::: app.schemas.attack.AttackOutV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.attack.AttackOutV1 options: show_root_heading: true show_source: false
 
 ### Error Schemas
 
-::: app.schemas.error.ErrorObject
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.error.ErrorObject options: show_root_heading: true show_source: false
 
 ## Error Handling
 

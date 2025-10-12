@@ -891,5 +891,4 @@ With the many changes to the API, we need to update the documentation to reflect
 ### Additional Tasks
 
 - [x] Add robust unit tests for KeyspaceEstimator covering all attack modes and edge cases
-- [x] Ensure all estimation logic (AttackEstimationService, endpoints, tests) uses strong typing (Pydantic models, enums) instead of dicts/Any for attack/resource parameters
-  ms) instead of dicts/Any for
+- [x] Ensure all estimation logic (AttackEstimationService, endpoints, tests) uses strong typing (Pydantic models, enums) instead of dicts/Any for attack/resource parameters ms) instead of dicts/Any for

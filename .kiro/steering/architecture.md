@@ -326,9 +326,7 @@ All tokens require HTTPS, automatic expiration, and audit logging.
 
 ## By following these guidelines, you can create efficient, maintainable, and secure Docker-based applications
 
-description:
-globs:
-alwaysApply: true
+description: globs: alwaysApply: true
 
 ---
 
@@ -375,9 +373,7 @@ alwaysApply: true
 
 ---
 
-description:
-globs: app/core/services/\*_/_.py
-alwaysApply: false
+description: globs: app/core/services/\*_/_.py alwaysApply: false
 
 ---
 
@@ -728,9 +724,7 @@ async def test_create_hash_list_service_success(db_session):
 
 ---
 
-description:
-globs: app/core/**/\*.py,app/api/**/_.py,app/api/v1/endpoints/\*\*/_.py
-alwaysApply: false
+description: globs: app/core/**/\*.py,app/api/**/_.py,app/api/v1/endpoints/\*\*/_.py alwaysApply: false
 
 ---
 

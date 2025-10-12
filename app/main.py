@@ -249,8 +249,12 @@ async def set_cookie_from_state_middleware(
     return response
 
 
-# v1 API router registration
+# API router registration
 app.include_router(api_v1_router, prefix="/api/v1")
+
+# TODO: Enable v2 API when implementation is complete
+# from app.api.v2.router import api_router as api_v2_router
+# app.include_router(api_v2_router, prefix="/api/v2")
 
 
 @app.get("/api-info")

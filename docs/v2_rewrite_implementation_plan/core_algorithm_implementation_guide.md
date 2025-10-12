@@ -342,4 +342,3 @@ class AttackResources:
 ---
 
 This guide is intended to serve as a reference and contract for implementing Ouroboros's orchestration logic in a stateless API model using FastAPI and SQLAlchemy.
-rSwarm's orchestration logic in a stateless API model using FastAPI and SQLAlchemy.

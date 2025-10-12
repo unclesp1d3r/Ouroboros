@@ -35,8 +35,7 @@ All Web UI API endpoints are prefixed with `/api/v1/web/`.
 
 Authenticate user and receive JWT tokens.
 
-**Request Body:** `LoginRequest`
-**Response:** `LoginResponse` with access and refresh tokens
+**Request Body:** `LoginRequest` **Response:** `LoginResponse` with access and refresh tokens
 
 #### `POST /api/v1/web/auth/logout`
 
@@ -48,8 +47,7 @@ Logout user and invalidate tokens.
 
 Refresh JWT access token.
 
-**Request Body:** `RefreshRequest`
-**Response:** `RefreshResponse` with new access token
+**Request Body:** `RefreshRequest` **Response:** `RefreshResponse` with new access token
 
 #### `GET /api/v1/web/auth/me`
 
@@ -61,15 +59,13 @@ Get current user profile details.
 
 Update current user's name and email.
 
-**Request Body:** `UserProfileUpdate`
-**Response:** `UserProfile`
+**Request Body:** `UserProfileUpdate` **Response:** `UserProfile`
 
 #### `POST /api/v1/web/auth/change_password`
 
 Change current user's password.
 
-**Request Body:** `ChangePasswordRequest`
-**Response:** `204 No Content`
+**Request Body:** `ChangePasswordRequest` **Response:** `204 No Content`
 
 #### `GET /api/v1/web/auth/context`
 
@@ -81,8 +77,7 @@ Get current user and project context.
 
 Switch active project context.
 
-**Request Body:** `ProjectContextRequest`
-**Response:** `AuthContext`
+**Request Body:** `ProjectContextRequest` **Response:** `AuthContext`
 
 ### User Administration (Admin Only)
 
@@ -102,8 +97,7 @@ List all users (paginated, filterable).
 
 Create new user.
 
-**Request Body:** `UserCreateRequest`
-**Response:** `UserResponse`
+**Request Body:** `UserCreateRequest` **Response:** `UserResponse`
 
 #### `GET /api/v1/web/users/{id}`
 
@@ -115,8 +109,7 @@ Get user details by ID.
 
 Update user information or role.
 
-**Request Body:** `UserUpdateRequest`
-**Response:** `UserResponse`
+**Request Body:** `UserUpdateRequest` **Response:** `UserResponse`
 
 #### `DELETE /api/v1/web/users/{id}`
 
@@ -136,8 +129,7 @@ List all projects.
 
 Create new project.
 
-**Request Body:** `ProjectCreateRequest`
-**Response:** `ProjectResponse`
+**Request Body:** `ProjectCreateRequest` **Response:** `ProjectResponse`
 
 #### `GET /api/v1/web/projects/{id}`
 
@@ -149,8 +141,7 @@ Get project details.
 
 Update project information and user assignments.
 
-**Request Body:** `ProjectUpdateRequest`
-**Response:** `ProjectResponse`
+**Request Body:** `ProjectUpdateRequest` **Response:** `ProjectResponse`
 
 #### `DELETE /api/v1/web/projects/{id}`
 
@@ -177,8 +168,7 @@ List campaigns (paginated, filterable).
 
 Create new campaign.
 
-**Request Body:** `CampaignCreateRequest`
-**Response:** `CampaignResponse`
+**Request Body:** `CampaignCreateRequest` **Response:** `CampaignResponse`
 
 #### `GET /api/v1/web/campaigns/{id}`
 
@@ -190,8 +180,7 @@ Get campaign details with attacks and tasks.
 
 Update campaign information.
 
-**Request Body:** `CampaignUpdateRequest`
-**Response:** `CampaignResponse`
+**Request Body:** `CampaignUpdateRequest` **Response:** `CampaignResponse`
 
 #### `DELETE /api/v1/web/campaigns/{id}`
 
@@ -203,8 +192,7 @@ Archive/delete campaign.
 
 Add attack to campaign.
 
-**Request Body:** `AttackCreateRequest`
-**Response:** `AttackResponse`
+**Request Body:** `AttackCreateRequest` **Response:** `AttackResponse`
 
 #### `POST /api/v1/web/campaigns/{id}/start`
 
@@ -222,8 +210,7 @@ Stop campaign execution.
 
 Reorder attacks within campaign.
 
-**Request Body:** `AttackReorderRequest`
-**Response:** `204 No Content`
+**Request Body:** `AttackReorderRequest` **Response:** `204 No Content`
 
 #### `GET /api/v1/web/campaigns/{id}/progress`
 
@@ -261,8 +248,7 @@ List attacks (paginated, searchable).
 
 Create attack with configuration validation.
 
-**Request Body:** `AttackCreateRequest`
-**Response:** `AttackResponse`
+**Request Body:** `AttackCreateRequest` **Response:** `AttackResponse`
 
 #### `GET /api/v1/web/attacks/{id}`
 
@@ -274,8 +260,7 @@ View attack configuration and performance.
 
 Edit attack configuration.
 
-**Request Body:** `AttackUpdateRequest`
-**Response:** `AttackResponse`
+**Request Body:** `AttackUpdateRequest` **Response:** `AttackResponse`
 
 #### `DELETE /api/v1/web/attacks/{id}`
 
@@ -287,22 +272,19 @@ Delete attack.
 
 Validate attack configuration and estimate keyspace.
 
-**Request Body:** `AttackValidationRequest`
-**Response:** `AttackValidationResponse`
+**Request Body:** `AttackValidationRequest` **Response:** `AttackValidationResponse`
 
 #### `POST /api/v1/web/attacks/estimate`
 
 Estimate keyspace and complexity for unsaved attack.
 
-**Request Body:** `AttackEstimationRequest`
-**Response:** `AttackEstimationResponse`
+**Request Body:** `AttackEstimationRequest` **Response:** `AttackEstimationResponse`
 
 #### `POST /api/v1/web/attacks/{id}/move`
 
 Move attack position within campaign.
 
-**Request Body:** `AttackMoveRequest`
-**Response:** `204 No Content`
+**Request Body:** `AttackMoveRequest` **Response:** `204 No Content`
 
 #### `POST /api/v1/web/attacks/{id}/duplicate`
 
@@ -314,8 +296,7 @@ Duplicate attack within campaign.
 
 Delete multiple attacks by ID.
 
-**Request Body:** `BulkDeleteRequest`
-**Response:** `204 No Content`
+**Request Body:** `BulkDeleteRequest` **Response:** `204 No Content`
 
 #### `GET /api/v1/web/attacks/{id}/performance`
 
@@ -342,8 +323,7 @@ List and filter agents.
 
 Register new agent and return token.
 
-**Request Body:** `AgentCreateRequest`
-**Response:** `AgentCreateResponse` with token
+**Request Body:** `AgentCreateRequest` **Response:** `AgentCreateResponse` with token
 
 #### `GET /api/v1/web/agents/{id}`
 
@@ -355,22 +335,19 @@ Get agent detail view.
 
 Toggle agent enable/disable state.
 
-**Request Body:** `AgentStateUpdateRequest`
-**Response:** `AgentResponse`
+**Request Body:** `AgentStateUpdateRequest` **Response:** `AgentResponse`
 
 #### `PATCH /api/v1/web/agents/{id}/config`
 
 Update agent configuration toggles.
 
-**Request Body:** `AgentConfigUpdateRequest`
-**Response:** `204 No Content`
+**Request Body:** `AgentConfigUpdateRequest` **Response:** `204 No Content`
 
 #### `PATCH /api/v1/web/agents/{id}/devices`
 
 Toggle individual backend devices.
 
-**Request Body:** `AgentDeviceUpdateRequest`
-**Response:** `204 No Content`
+**Request Body:** `AgentDeviceUpdateRequest` **Response:** `204 No Content`
 
 #### `POST /api/v1/web/agents/{id}/benchmark`
 
@@ -406,8 +383,7 @@ Get agent hardware details.
 
 Update hardware limits and platform toggles.
 
-**Request Body:** `AgentHardwareUpdateRequest`
-**Response:** `204 No Content`
+**Request Body:** `AgentHardwareUpdateRequest` **Response:** `204 No Content`
 
 #### `GET /api/v1/web/agents/{id}/capabilities`
 
@@ -419,8 +395,7 @@ Show agent benchmark results and capabilities.
 
 Validate presigned URL access for agent.
 
-**Request Body:** `PresignedUrlTestRequest`
-**Response:** `PresignedUrlTestResponse`
+**Request Body:** `PresignedUrlTestRequest` **Response:** `PresignedUrlTestResponse`
 
 ### Resource Management
 
@@ -441,8 +416,7 @@ List all attack resources (filterable by type).
 
 Upload new resource with metadata.
 
-**Request Body:** `ResourceUploadRequest`
-**Response:** `ResourceUploadResponse` with presigned URL
+**Request Body:** `ResourceUploadRequest` **Response:** `ResourceUploadResponse` with presigned URL
 
 #### `GET /api/v1/web/resources/{id}`
 
@@ -454,8 +428,7 @@ Get resource metadata and linking information.
 
 Update resource metadata.
 
-**Request Body:** `ResourceUpdateRequest`
-**Response:** `ResourceResponse`
+**Request Body:** `ResourceUpdateRequest` **Response:** `ResourceResponse`
 
 #### `DELETE /api/v1/web/resources/{id}`
 
@@ -479,8 +452,7 @@ Get raw editable text content.
 
 Save updated resource content.
 
-**Request Body:** `ResourceContentUpdateRequest`
-**Response:** `204 No Content`
+**Request Body:** `ResourceContentUpdateRequest` **Response:** `204 No Content`
 
 #### `POST /api/v1/web/resources/{id}/refresh_metadata`
 
@@ -506,15 +478,13 @@ Get paginated list of resource lines.
 
 Add new line to resource.
 
-**Request Body:** `ResourceLineCreateRequest`
-**Response:** `ResourceLineResponse`
+**Request Body:** `ResourceLineCreateRequest` **Response:** `ResourceLineResponse`
 
 #### `PATCH /api/v1/web/resources/{id}/lines/{line_id}`
 
 Update existing resource line.
 
-**Request Body:** `ResourceLineUpdateRequest`
-**Response:** `ResourceLineResponse`
+**Request Body:** `ResourceLineUpdateRequest` **Response:** `ResourceLineResponse`
 
 #### `DELETE /api/v1/web/resources/{id}/lines/{line_id}`
 
@@ -540,8 +510,7 @@ List hash lists (paginated, searchable).
 
 Create new hash list.
 
-**Request Body:** `HashListCreateRequest`
-**Response:** `HashListResponse`
+**Request Body:** `HashListCreateRequest` **Response:** `HashListResponse`
 
 #### `GET /api/v1/web/hash_lists/{id}`
 
@@ -553,8 +522,7 @@ View hash list details.
 
 Update hash list information.
 
-**Request Body:** `HashListUpdateRequest`
-**Response:** `HashListResponse`
+**Request Body:** `HashListUpdateRequest` **Response:** `HashListResponse`
 
 #### `DELETE /api/v1/web/hash_lists/{id}`
 
@@ -581,8 +549,7 @@ List hash items in hash list.
 
 Upload file or paste hash blob for processing.
 
-**Request Body:** `UploadRequest` (multipart or JSON)
-**Response:** `UploadResponse` with upload ID and task ID
+**Request Body:** `UploadRequest` (multipart or JSON) **Response:** `UploadResponse` with upload ID and task ID
 
 #### `GET /api/v1/web/uploads/{id}/status`
 
@@ -594,8 +561,7 @@ Get upload analysis status and results.
 
 Generate resources and create campaign from upload.
 
-**Request Body:** `LaunchCampaignRequest`
-**Response:** `CampaignResponse`
+**Request Body:** `LaunchCampaignRequest` **Response:** `CampaignResponse`
 
 #### `GET /api/v1/web/uploads/{id}/errors`
 
@@ -615,8 +581,7 @@ Remove discarded or invalid upload.
 
 Analyze and guess hash types from input.
 
-**Request Body:** `HashGuessRequest`
-**Response:** `HashGuessResponse`
+**Request Body:** `HashGuessRequest` **Response:** `HashGuessResponse`
 
 ### Live Event Feeds (Server-Sent Events)
 
@@ -702,8 +667,7 @@ List attack/campaign templates.
 
 Create new template.
 
-**Request Body:** `TemplateCreateRequest`
-**Response:** `TemplateResponse`
+**Request Body:** `TemplateCreateRequest` **Response:** `TemplateResponse`
 
 #### `GET /api/v1/web/templates/{id}`
 
@@ -715,8 +679,7 @@ Get template details.
 
 Update template.
 
-**Request Body:** `TemplateUpdateRequest`
-**Response:** `TemplateResponse`
+**Request Body:** `TemplateUpdateRequest` **Response:** `TemplateResponse`
 
 #### `DELETE /api/v1/web/templates/{id}`
 
@@ -730,218 +693,101 @@ Delete template.
 
 ### Authentication Schemas
 
-::: app.schemas.user.LoginRequest
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.user.LoginRequest options: show_root_heading: true show_source: false
 
-::: app.schemas.auth.LoginResult
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.auth.LoginResult options: show_root_heading: true show_source: false
 
-::: app.schemas.auth.ContextResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.auth.ContextResponse options: show_root_heading: true show_source: false
 
-::: app.schemas.auth.SetContextRequest
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.auth.SetContextRequest options: show_root_heading: true show_source: false
 
 ### User Schemas
 
-::: app.schemas.user.UserRead
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.user.UserRead options: show_root_heading: true show_source: false
 
-::: app.schemas.user.UserCreate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.user.UserCreate options: show_root_heading: true show_source: false
 
-::: app.schemas.user.UserUpdate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.user.UserUpdate options: show_root_heading: true show_source: false
 
 ### Project Schemas
 
-::: app.schemas.project.ProjectRead
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.project.ProjectRead options: show_root_heading: true show_source: false
 
-::: app.schemas.project.ProjectCreate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.project.ProjectCreate options: show_root_heading: true show_source: false
 
-::: app.schemas.project.ProjectUpdate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.project.ProjectUpdate options: show_root_heading: true show_source: false
 
 ### Campaign Schemas
 
-::: app.schemas.campaign.CampaignRead
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.campaign.CampaignRead options: show_root_heading: true show_source: false
 
-::: app.schemas.campaign.CampaignCreate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.campaign.CampaignCreate options: show_root_heading: true show_source: false
 
-::: app.schemas.campaign.CampaignUpdate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.campaign.CampaignUpdate options: show_root_heading: true show_source: false
 
-::: app.schemas.campaign.CampaignDetailResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.campaign.CampaignDetailResponse options: show_root_heading: true show_source: false
 
-::: app.schemas.campaign.CampaignListResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.campaign.CampaignListResponse options: show_root_heading: true show_source: false
 
-::: app.schemas.campaign.CampaignProgress
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.campaign.CampaignProgress options: show_root_heading: true show_source: false
 
-::: app.schemas.campaign.CampaignMetrics
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.campaign.CampaignMetrics options: show_root_heading: true show_source: false
 
 ### Attack Schemas
 
-::: app.schemas.attack.AttackOut
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.attack.AttackOut options: show_root_heading: true show_source: false
 
-::: app.schemas.attack.AttackCreate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.attack.AttackCreate options: show_root_heading: true show_source: false
 
-::: app.schemas.attack.AttackUpdate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.attack.AttackUpdate options: show_root_heading: true show_source: false
 
-::: app.schemas.attack.EstimateAttackResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.attack.EstimateAttackResponse options: show_root_heading: true show_source: false
 
-::: app.schemas.attack.EstimateAttackRequest
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.attack.EstimateAttackRequest options: show_root_heading: true show_source: false
 
 ### Agent Schemas
 
-::: app.schemas.agent.AgentOut
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentOut options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentRegisterRequest
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentRegisterRequest options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentRegisterResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentRegisterResponse options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentResponse options: show_root_heading: true show_source: false
 
 ### Resource Schemas
 
-::: app.schemas.resource.ResourceBase
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.resource.ResourceBase options: show_root_heading: true show_source: false
 
-::: app.schemas.resource.ResourceUploadResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.resource.ResourceUploadResponse options: show_root_heading: true show_source: false
 
-::: app.schemas.resource.ResourceUpdateRequest
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.resource.ResourceUpdateRequest options: show_root_heading: true show_source: false
 
-::: app.schemas.resource.ResourceLinesResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.resource.ResourceLinesResponse options: show_root_heading: true show_source: false
 
-::: app.schemas.resource.ResourceDetailResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.resource.ResourceDetailResponse options: show_root_heading: true show_source: false
 
-::: app.schemas.resource.ResourceListResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.resource.ResourceListResponse options: show_root_heading: true show_source: false
 
 ### Hash List Schemas
 
-::: app.schemas.hash_list.HashListOut
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.hash_list.HashListOut options: show_root_heading: true show_source: false
 
-::: app.schemas.hash_list.HashListCreate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.hash_list.HashListCreate options: show_root_heading: true show_source: false
 
-::: app.schemas.hash_item.HashItemOut
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.hash_item.HashItemOut options: show_root_heading: true show_source: false
 
 ### Health Schemas
 
-::: app.schemas.health.SystemHealthOverview
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.health.SystemHealthOverview options: show_root_heading: true show_source: false
 
-::: app.schemas.health.SystemHealthComponents
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.health.SystemHealthComponents options: show_root_heading: true show_source: false
 
-::: app.schemas.health.AgentHealthSummary
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.health.AgentHealthSummary options: show_root_heading: true show_source: false
 
 ### Shared Schemas
 
-::: app.schemas.shared.PaginatedResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.shared.PaginatedResponse options: show_root_heading: true show_source: false
 
 ---
 

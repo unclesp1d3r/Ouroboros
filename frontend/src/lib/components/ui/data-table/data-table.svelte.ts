@@ -58,7 +58,7 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onStateChange: (updater: any) => {
-                    if (updater instanceof Function) state = updater(state);
+                    if (typeof updater === 'function') state = updater(state);
                     else state = mergeObjects(state, updater);
 
                     options.onStateChange?.(updater);
@@ -81,6 +81,10 @@ type Intersection<T extends readonly unknown[]> = (T extends [infer H, ...infer 
     ? H & Intersection<R>
     : unknown) & {};
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const __resolveThunk = <T extends object>(src: MaybeThunk<T>): T | undefined =>
+    typeof src === 'function' ? (src() ?? undefined) : src;
+
 /**
  * Lazily merges several objects (or thunks) while preserving
  * getter semantics from every source.
@@ -91,12 +95,9 @@ type Intersection<T extends readonly unknown[]> = (T extends [infer H, ...infer 
 export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(
     ...sources: Sources
 ): Intersection<{ [K in keyof Sources]: Sources[K] }> {
-    const resolve = <T extends object>(src: MaybeThunk<T>): T | undefined =>
-        typeof src === 'function' ? (src() ?? undefined) : src;
-
     const findSourceWithKey = (key: PropertyKey) => {
         for (let i = sources.length - 1; i >= 0; i--) {
-            const obj = resolve(sources[i]);
+            const obj = __resolveThunk(sources[i]);
             if (obj && key in obj) return obj;
         }
         return undefined;
@@ -116,7 +117,7 @@ export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(
         ownKeys(): (string | symbol)[] {
             const all = new Set<string | symbol>();
             for (const s of sources) {
-                const obj = resolve(s);
+                const obj = __resolveThunk(s);
                 if (obj) {
                     for (const k of Reflect.ownKeys(obj) as (string | symbol)[]) {
                         all.add(k);
