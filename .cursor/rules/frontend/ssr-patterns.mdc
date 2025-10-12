@@ -525,6 +525,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ## File References
 
 - Load function examples: [+page.server.ts](mdc:Ouroboros/frontend/src/routes/campaigns/+page.server.ts)
-- Component usage: [+page.svelte](mdc:Ouroboros/frontend/src/routes/campaigns/+page.svelte)
-- Error handling: [+error.svelte](mdc:Ouroboros/frontend/src/routes/+error.svelte)
-- Schema integration: [campaigns.ts](mdc:Ouroboros/frontend/src/lib/schemas/campaigns.ts)
+* Component usage: [+page.svelte](mdc:Ouroboros/frontend/src/routes/campaigns/+page.svelte)
+* Error handling: [+error.svelte](mdc:Ouroboros/frontend/src/routes/+error.svelte)
+* Schema integration: [campaigns.ts](mdc:Ouroboros/frontend/src/lib/schemas/campaigns.ts)

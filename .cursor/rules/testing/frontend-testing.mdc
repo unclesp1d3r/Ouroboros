@@ -500,12 +500,12 @@ test('loads data asynchronously', async () => {
 ### Unit Test Coverage
 
 - **Target Coverage**: 80%+ for all critical components
-- **Focus Areas**:
-  - Component rendering with various props
-  - Event handling and user interactions
-  - Store integration and state management
-  - Form validation and submission
-  - Error states and edge cases
+* **Focus Areas**:
+  * Component rendering with various props
+  * Event handling and user interactions
+  * Store integration and state management
+  * Form validation and submission
+  * Error states and edge cases
 
 ### Test Quality Standards
 

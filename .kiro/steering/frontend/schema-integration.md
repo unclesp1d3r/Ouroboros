@@ -1,8 +1,8 @@
 ---
 inclusion: fileMatch
 fileMatchPattern:
-  - "frontend/**/*.ts"
-  - "docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*.md"
+  - frontend/**/*.ts
+  - docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*.md
 ---
 
 # Schema Integration and Type Safety Patterns

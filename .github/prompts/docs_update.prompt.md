@@ -2,7 +2,7 @@
 mode: agent
 ---
 
-Source files have been modified in the CipherSwarm project. Please review the changes and update the documentation accordingly:
+Source files have been modified in the Ouroboros project. Please review the changes and update the documentation accordingly:
 
 **STRICT EDIT RESTRICTIONS (MANDATORY ENFORCEMENT):**
 
@@ -24,7 +24,7 @@ Source files have been modified in the CipherSwarm project. Please review the ch
    - Updates to configuration or deployment procedures
    - New features or functionality
    - Changes to the data model or architecture
-3. The contents of the `/docs` directory represent the user manual for the CipherSwarm platform and should be written with that focus.
+3. The contents of the `/docs` directory represent the user manual for the Ouroboros platform and should be written with that focus.
 
 **VALIDATION REQUIREMENTS:**
 
