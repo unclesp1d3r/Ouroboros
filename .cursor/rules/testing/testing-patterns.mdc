@@ -257,10 +257,10 @@ await waitFor(() => {
 
 When deleting test files, ensure functionality is tested elsewhere:
 
-- [ ] **Store functionality** tested through component tests
-- [ ] **Form submission** tested through E2E tests
-- [ ] **Error handling** tested through integration tests
-- [ ] **User interactions** tested through E2E user journeys
+* [ ] **Store functionality** tested through component tests
+* [ ] **Form submission** tested through E2E tests
+* [ ] **Error handling** tested through integration tests
+* [ ] **User interactions** tested through E2E user journeys
 
 ### Test File Organization
 
@@ -312,6 +312,6 @@ test('campaign creation workflow', async ({ page }) => {
 ## File References
 
 - Test configuration: [playwright.config.ts](mdc:Ouroboros/Ouroboros/frontend/playwright.config.ts)
-- Component tests: [CampaignProgress.spec.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.spec.ts)
-- E2E tests: [campaigns-list.test.ts](mdc:Ouroboros/Ouroboros/frontend/e2e/campaigns-list.test.ts)
-- Store mocking: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
+* Component tests: [CampaignProgress.spec.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.spec.ts)
+* E2E tests: [campaigns-list.test.ts](mdc:Ouroboros/Ouroboros/frontend/e2e/campaigns-list.test.ts)
+* Store mocking: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)

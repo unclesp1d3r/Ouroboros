@@ -2,7 +2,7 @@
 
 ## Overview
 
-Agent API v2 is the modernized interface for CipherSwarm agents, providing enhanced features, improved security, and better error handling compared to the legacy v1 API. This API is designed to be forward-compatible and includes significant improvements in authentication, state management, and resource handling.
+Agent API v2 is the modernized interface for Ouroboros agents, providing enhanced features, improved security, and better error handling compared to the legacy v1 API. This API is designed to be forward-compatible and includes significant improvements in authentication, state management, and resource handling.
 
 ## Version Information
 
@@ -413,9 +413,9 @@ Retry-After: 15
 
 For questions, issues, or feedback regarding Agent API v2:
 
-- **GitHub Issues**: [CipherSwarm Issues](https://github.com/unclesp1d3r/CipherSwarm/issues)
+- **GitHub Issues**: [Ouroboros Issues](https://github.com/unclesp1d3r/Ouroboros/issues)
 - **Documentation**: [API Documentation](http://localhost:8000/docs)
-- **Community**: [Discussions](https://github.com/unclesp1d3r/CipherSwarm/discussions)
+- **Community**: [Discussions](https://github.com/unclesp1d3r/Ouroboros/discussions)
 
 ## Changelog
 

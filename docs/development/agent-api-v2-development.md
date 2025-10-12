@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide covers the development of Agent API v2, the modernized interface for CipherSwarm agents. The v2 API provides enhanced features, improved security, and better error handling while maintaining backward compatibility with existing v1 agents.
+This guide covers the development of Agent API v2, the modernized interface for Ouroboros agents. The v2 API provides enhanced features, improved security, and better error handling while maintaining backward compatibility with existing v1 agents.
 
 ## Project Structure
 
@@ -492,4 +492,4 @@ async def register_agent_v2_service(
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [Pydantic v2 Documentation](https://docs.pydantic.dev/latest/)
 - [SQLAlchemy 2.0 Documentation](https://docs.sqlalchemy.org/en/20/)
-- [CipherSwarm Architecture Overview](../architecture/overview.md)
+- [Ouroboros Architecture Overview](../architecture/overview.md)

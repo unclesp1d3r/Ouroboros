@@ -14,12 +14,12 @@ This rule defines idiomatic patterns for implementing stores in SvelteKit 5 usin
 ### Store File Extensions
 
 - **MUST use `.svelte.ts` extension** for all store files that use runes
-- **CANNOT use regular `.ts` files** with runes - causes build errors
-- Examples: `campaigns.svelte.ts`, `auth.svelte.ts`, `projects.svelte.ts`
+* **CANNOT use regular `.ts` files** with runes - causes build errors
+* Examples: `campaigns.svelte.ts`, `auth.svelte.ts`, `projects.svelte.ts`
 
 ### Store Organization
 
-```text
+```
 src/lib/stores/
 ├── auth.svelte.ts          # Authentication state
 ├── campaigns.svelte.ts     # Campaign management
@@ -398,6 +398,6 @@ const expensiveComputation = $derived(() => {
 ## File References
 
 - Store implementations: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
-- Authentication store: [auth.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/auth.svelte.ts)
-- Schema integration: [campaigns.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/schemas/campaigns.ts)
-- Component usage: [CampaignProgress.svelte](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.svelte)
+* Authentication store: [auth.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/auth.svelte.ts)
+* Schema integration: [campaigns.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/schemas/campaigns.ts)
+* Component usage: [CampaignProgress.svelte](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.svelte)

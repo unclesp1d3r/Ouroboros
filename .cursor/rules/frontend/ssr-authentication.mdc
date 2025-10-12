@@ -14,16 +14,16 @@ This rule documents the authentication implementation requirements for Ouroboros
 ### Problem Identification
 
 - **Issue**: SSR load functions make authenticated API calls to FastAPI backend but no session handling exists
-- **Symptom**: E2E tests fail because frontend service health check fails (401 responses)
-- **Root Cause**: Migration from SPA to SSR completed without implementing server-side authentication
+* **Symptom**: E2E tests fail because frontend service health check fails (401 responses)
+* **Root Cause**: Migration from SPA to SSR completed without implementing server-side authentication
 
 ### Working Components
 
 - ✅ Three-tier testing architecture with Docker infrastructure
-- ✅ E2E data seeding with service layer delegation
-- ✅ Frontend and backend containers build successfully
-- ✅ SSR routes and form actions implemented
-- ❌ **Missing**: Session-based authentication for SSR load functions
+* ✅ E2E data seeding with service layer delegation
+* ✅ Frontend and backend containers build successfully
+* ✅ SSR routes and form actions implemented
+* ❌ **Missing**: Session-based authentication for SSR load functions
 
 ## Required Authentication Implementation
 
@@ -209,11 +209,10 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ### Session Endpoint Compatibility
 
 Ensure FastAPI backend supports:
-
-- Session-based authentication (not just JWT)
-- Cookie-based session management
-- Proper CORS configuration for SvelteKit frontend
-- Health check endpoints that work without authentication
+* Session-based authentication (not just JWT)
+* Cookie-based session management
+* Proper CORS configuration for SvelteKit frontend
+* Health check endpoints that work without authentication
 
 ### Required Backend Updates
 
@@ -244,16 +243,16 @@ async def login(credentials: LoginRequest, response: Response):
 ## File References
 
 - Session handling: [hooks.server.js](mdc:Ouroboros/Ouroboros/frontend/src/hooks.server.js) (to be created)
-- Server API client: [lib/server/api.js](mdc:Ouroboros/Ouroboros/frontend/src/lib/server/api.js) (to be updated)
-- Login routes: [routes/login/+page.server.ts](mdc:Ouroboros/Ouroboros/frontend/src/routes/login/+page.server.ts) (to be created)
-- E2E setup: [tests/global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
-- Migration plan: [spa_to_ssr.md](mdc:Ouroboros/Ouroboros/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md)
+* Server API client: [lib/server/api.js](mdc:Ouroboros/Ouroboros/frontend/src/lib/server/api.js) (to be updated)
+* Login routes: [routes/login/+page.server.ts](mdc:Ouroboros/Ouroboros/frontend/src/routes/login/+page.server.ts) (to be created)
+* E2E setup: [tests/global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
+* Migration plan: [spa_to_ssr.md](mdc:Ouroboros/Ouroboros/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md)
 
 ## Success Criteria
 
 - [ ] All SSR load functions can make authenticated API calls
-- [ ] E2E tests pass with Docker backend authentication
-- [ ] Session persistence works across page navigation
-- [ ] Proper login/logout flow implemented
-- [ ] Test environment detection bypasses authentication
-- [ ] Health checks work without breaking Docker startup
+* [ ] E2E tests pass with Docker backend authentication
+* [ ] Session persistence works across page navigation
+* [ ] Proper login/logout flow implemented
+* [ ] Test environment detection bypasses authentication
+* [ ] Health checks work without breaking Docker startup

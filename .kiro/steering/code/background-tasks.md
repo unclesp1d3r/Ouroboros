@@ -1,8 +1,8 @@
 ---
 inclusion: fileMatch
 fileMatchPattern:
-  - "app/core/tasks/**/*.py"
-  - "app/core/jobs/**/*.py"
+  - app/core/tasks/**/*.py
+  - app/core/jobs/**/*.py
 ---
 
 ## Background Task Handling

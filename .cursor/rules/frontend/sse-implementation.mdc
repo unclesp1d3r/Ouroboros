@@ -225,9 +225,9 @@ export default defineConfig({
 ### Browser DevTools Debugging
 
 - Check Network tab for SSE connections (should show as "eventsource" type)
-- Look for proper `text/event-stream` content-type in response headers
-- Monitor console for EventSource errors and reconnection attempts
-- Verify authentication cookies are being sent with requests
+* Look for proper `text/event-stream` content-type in response headers
+* Monitor console for EventSource errors and reconnection attempts
+* Verify authentication cookies are being sent with requests
 
 ## Performance Considerations
 
@@ -282,9 +282,9 @@ private scheduleReconnect(endpoint: string, onMessage: Function): void {
 
 ## Anti-Patterns to Avoid
 
-- Using `text/plain` instead of `text/event-stream`
-- Treating all `onerror` events as connection failures
-- Not implementing proper authentication for SSE endpoints
-- Forgetting to clean up EventSource connections
-- Not handling keep-alive ping messages
-- Hardcoding connection endpoints without environment detection
+* Using `text/plain` instead of `text/event-stream`
+* Treating all `onerror` events as connection failures
+* Not implementing proper authentication for SSE endpoints
+* Forgetting to clean up EventSource connections
+* Not handling keep-alive ping messages
+* Hardcoding connection endpoints without environment detection

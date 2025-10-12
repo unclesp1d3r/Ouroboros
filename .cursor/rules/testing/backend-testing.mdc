@@ -14,61 +14,61 @@ This rule consolidates all backend testing patterns for Ouroboros, covering pyte
 ### Testcontainers & PostgreSQL Setup
 
 - All tests now expect Docker to be available and running on the host system
-- PostgreSQL is provided for tests by [`testcontainers.postgres.PostgresContainer`](mdc:Ouroboros/https:/testcontainers-python.readthedocs.io/en/latest/modules/postgres.html)
-- Database schema is bootstrapped for each test run using Alembic migrations (no hand-written SQL schemas)
-- The preferred SQLAlchemy dialect is `postgresql+psycopg` (async driver)
-- We have fully removed `asyncpg` and `psycopg2-binary` and they must not be used or referenced
-- Do not use SQLite or in-memory DBs for integration tests unless explicitly required
-- All test DB operations must use async SQLAlchemy sessions/engines compatible with `psycopg` v3
-- All test containers must be managed using `testcontainers-python` and properly cleaned up after tests
+* PostgreSQL is provided for tests by [`testcontainers.postgres.PostgresContainer`](mdc:Ouroboros/https:/testcontainers-python.readthedocs.io/en/latest/modules/postgres.html)
+* Database schema is bootstrapped for each test run using Alembic migrations (no hand-written SQL schemas)
+* The preferred SQLAlchemy dialect is `postgresql+psycopg` (async driver)
+* We have fully removed `asyncpg` and `psycopg2-binary` and they must not be used or referenced
+* Do not use SQLite or in-memory DBs for integration tests unless explicitly required
+* All test DB operations must use async SQLAlchemy sessions/engines compatible with `psycopg` v3
+* All test containers must be managed using `testcontainers-python` and properly cleaned up after tests
 
 ### Testcontainers & Psycopg v3 Best Practices
 
 - Use `testcontainers.postgres.PostgresContainer` to spin up a real PostgreSQL instance for each test session or module
-- Apply Alembic migrations to the test database after container startup and before running tests
-- Use async SQLAlchemy engines and sessions with the `postgresql+psycopg` driver for all DB operations
-- Provide a fixture (e.g., `async_session`) that yields an async SQLAlchemy session bound to the test DB
-- Ensure all test data is created and persisted using async session methods
-- Clean up containers and sessions after tests to avoid resource leaks
+* Apply Alembic migrations to the test database after container startup and before running tests
+* Use async SQLAlchemy engines and sessions with the `postgresql+psycopg` driver for all DB operations
+* Provide a fixture (e.g., `async_session`) that yields an async SQLAlchemy session bound to the test DB
+* Ensure all test data is created and persisted using async session methods
+* Clean up containers and sessions after tests to avoid resource leaks
 
 ## Testing Principles and Standards
 
 ### Core Principles
 
 - Use `pytest` only, no unittest or nose
-- Prefer fixtures over mocks when integrating components
-- All test DB operations must use the `__async_session__` fixture to ensure compatibility with SQLAlchemy 2.0 async ORM
-- All new service logic must have corresponding tests in `tests/services/`
-- Avoid integration tests in unit test directories
-- Use descriptive function names (`test_assign_agent_to_session_succeeds()`)
-- Group related tests into modules that mirror `app/` structure
-- Use `async def` with `pytest-asyncio`. Decorators are not needed unless switching to non-default modes
-- Only import `from app.services.X` or `from app.models.X` — don't use relative imports
+* Prefer fixtures over mocks when integrating components
+* All test DB operations must use the `__async_session__` fixture to ensure compatibility with SQLAlchemy 2.0 async ORM
+* All new service logic must have corresponding tests in `tests/services/`
+* Avoid integration tests in unit test directories
+* Use descriptive function names (`test_assign_agent_to_session_succeeds()`)
+* Group related tests into modules that mirror `app/` structure
+* Use `async def` with `pytest-asyncio`. Decorators are not needed unless switching to non-default modes
+* Only import `from app.services.X` or `from app.models.X` — don't use relative imports
 
 ### Coverage Requirements
 
 - Minimum required test coverage: **80%**
-- Use `pytest --cov=app --cov-report=term-missing` in all coverage reports
-- Report coverage deltas in CI (or log locally if airgapped)
+* Use `pytest --cov=app --cov-report=term-missing` in all coverage reports
+* Report coverage deltas in CI (or log locally if airgapped)
 
 ## Factory Patterns and Best Practices
 
 ### Polyfactory Configuration
 
 - ✅ Use `polyfactory` for generating test data in service, model, and route tests. See [Polyfactory Documentation](mdc:Ouroboros/https:/polyfactory.litestar.dev/latest)
-- Use `polyfactory.create_async()` only. Do not use `.build()`, `SubFactory`, or `sync` methods. All test data must be persisted using an active async SQLAlchemy session
-- Define all factories in `tests/factories/`
-- Reuse shared factories across test files
-- Avoid manually constructing ORM or Pydantic objects in tests unless necessary
-- Keep factory defaults minimal — override fields in tests as needed
+* Use `polyfactory.create_async()` only. Do not use `.build()`, `SubFactory`, or `sync` methods. All test data must be persisted using an active async SQLAlchemy session
+* Define all factories in `tests/factories/`
+* Reuse shared factories across test files
+* Avoid manually constructing ORM or Pydantic objects in tests unless necessary
+* Keep factory defaults minimal — override fields in tests as needed
 
 ### Factory Configuration Best Practices
 
 - Use valid foreign key defaults that reference pre-seeded data
-- **Never** use random foreign keys - they cause violations across the test suite
-- Use pre-seeded data references (e.g., `hash_type_id = 0` for MD5) for `HashTypes`
-- For dynamic foreign keys (like `project_id`), set to `None` and require explicit setting
-- Use `get_or_create_hash_type()` utility when you must create hash types
+* **Never** use random foreign keys - they cause violations across the test suite
+* Use pre-seeded data references (e.g., `hash_type_id = 0` for MD5) for `HashTypes`
+* For dynamic foreign keys (like `project_id`), set to `None` and require explicit setting
+* Use `get_or_create_hash_type()` utility when you must create hash types
 
 ### Factory Example Pattern
 
@@ -101,7 +101,7 @@ hash_list = await HashListFactory.create_async(
 ### Test Client Fixtures
 
 - `authenticated_async_client`: Basic authenticated user (no project associations)
-- `authenticated_user_client`: User with project associations (preferred for project-scoped tests)
+* `authenticated_user_client`: User with project associations (preferred for project-scoped tests)
 
 ### Project-Scoped Testing
 
@@ -126,22 +126,22 @@ async def test_project_scoped_endpoint(authenticated_user_client, db_session):
 ### Authentication Headers
 
 - Tests automatically handle JWT tokens through fixtures
-- Don't manually set Authorization headers unless testing auth failures
+* Don't manually set Authorization headers unless testing auth failures
 
 ## API Testing Patterns
 
 ### HTTP Client Configuration
 
 - ✅ Use `httpx.AsyncClient` for testing FastAPI endpoints
-- Instantiate as: `httpx.AsyncClient(app=app, base_url="http://test")`
-- Do not use Starlette's test client or custom wrappers
-- Place route integration tests under `tests/integration/` grouped by functional area
+* Instantiate as: `httpx.AsyncClient(app=app, base_url="http://test")`
+* Do not use Starlette's test client or custom wrappers
+* Place route integration tests under `tests/integration/` grouped by functional area
 
 ### Request Testing Patterns
 
 - Test both success and failure cases
-- Verify status codes, response structure, and data accuracy
-- Example:
+* Verify status codes, response structure, and data accuracy
+* Example:
 
 ```python
 @pytest.mark.asyncio
@@ -158,75 +158,75 @@ async def test_create_resource_success(authenticated_user_client):
 ### Pagination Testing
 
 - Test pagination parameters: `page`, `size` (not `skip`, `limit`)
-- Verify response structure matches `PaginatedResponse`
-- Test edge cases: empty results, large page numbers
+* Verify response structure matches `PaginatedResponse`
+* Test edge cases: empty results, large page numbers
 
 ### Error Testing
 
 - Test validation errors (422 status)
-- Test authorization failures (403 status)
-- Test not found errors (404 status)
-- Verify error message structure
+* Test authorization failures (403 status)
+* Test not found errors (404 status)
+* Verify error message structure
 
 ## Service Layer Testing
 
 ### Unit Test Structure
 
 - Test each service function independently
-- Mock external dependencies when necessary
-- Test both success and error paths
+* Mock external dependencies when necessary
+* Test both success and error paths
 
 ### Database Testing
 
 - Use real database operations (not mocks) for integration-style unit tests
-- Test database constraints and relationships
-- Verify data persistence and retrieval
+* Test database constraints and relationships
+* Verify data persistence and retrieval
 
 ### Error Handling Testing
 
 - Test custom exceptions are raised correctly
-- Verify error messages are meaningful
-- Test edge cases and boundary conditions
+* Verify error messages are meaningful
+* Test edge cases and boundary conditions
 
 ## Test Data Management
 
 ### Database State
 
 - Each test gets a clean database state via fixtures
-- Use `db_session` fixture for database operations
-- Always commit changes: `await db_session.commit()`
+* Use `db_session` fixture for database operations
+* Always commit changes: `await db_session.commit()`
 
 ### Pre-seeded Data
 
 - Hash types are pre-seeded (use `hash_type_id = 0` for MD5)
-- Don't create hash types unless absolutely necessary
-- Use `get_or_create_hash_type()` utility when needed
+* Don't create hash types unless absolutely necessary
+* Use `get_or_create_hash_type()` utility when needed
 
 ## Test Directory Structure
 
 ### Backend Test Organization
 
 - Unit tests go under `tests/unit/`, mirroring the `app/` structure
-  - e.g., `tests/unit/services/`, `tests/unit/models/`, `tests/unit/core/`
-- Integration tests go under `tests/integration/`
-  - Group by API type and then by feature
-  - e.g., `tests/integration/web/test_web_resources.py`, `tests/integration/agent/test_agent_general_endpoints.py`
-- **Do not mix unit and integration tests**
+  * e.g., `tests/unit/services/`, `tests/unit/models/`, `tests/unit/core/`
+* Integration tests go under `tests/integration/`
+  * Group by API type and then by feature
+  * e.g., `tests/integration/web/test_web_resources.py`, `tests/integration/agent/test_agent_general_endpoints.py`
+* **Do not mix unit and integration tests**
 
 ### Test File Naming
 
 - Service tests: `test_{resource}_service.py` (e.g., `test_hash_list_service.py`)
-- API tests: `test_{resource}.py` (e.g., `test_hash_lists.py`)
-- Factory files: `{model_name}_factory.py` (e.g., `hash_list_factory.py`)
+* API tests: `test_{resource}.py` (e.g., `test_hash_lists.py`)
+* Factory files: `{model_name}_factory.py` (e.g., `hash_list_factory.py`)
 
 ## Pydantic v2 Compatibility
 
 ### Schema Testing Patterns
 
 - All Pydantic schemas must use **v2 idioms**:
-  - `model_dump()` replaces `.dict()`
-  - `model_validate()` replaces `.parse_obj()`
-- Avoid using deprecated v1-style config like `orm_mode = True` — instead, use the new `ConfigDict` syntax:
+  * `model_dump()` replaces `.dict()`
+  * `model_validate()` replaces `.parse_obj()`
+* Avoid using deprecated v1-style config like `orm_mode = True` — instead, use the new `ConfigDict` syntax:
 
 ```python
 class MySchema(BaseModel):
@@ -237,110 +237,110 @@ class MySchema(BaseModel):
 ### Test Validation Patterns
 
 - Validate input using `model_validate()` to simulate deserialization
-- Validate output using `model_dump()` with `mode="json"` or `mode="python"` as needed
-- Ensure all schemas round-trip without loss (input → model → output)
-- If you're asserting schema output in tests, always use `model_dump(mode="json")` for consistency with API responses
+* Validate output using `model_dump()` with `mode="json"` or `mode="python"` as needed
+* Ensure all schemas round-trip without loss (input → model → output)
+* If you're asserting schema output in tests, always use `model_dump(mode="json")` for consistency with API responses
 
 ## Coverage Expectations
 
 ### Endpoint Coverage
 
 - All HTTP endpoints must have corresponding integration tests using `httpx.AsyncClient`
-- All business logic — especially services, validators, and helpers — must be covered with unit tests
-- Include tests for:
-  - Non-happy paths (e.g., validation failures, auth failures)
-  - State transitions (e.g., cracking lifecycle)
-  - Expected side effects (e.g., DB writes, notifications)
-- Tests should validate real-world workflows where possible, not just inputs/outputs
+* All business logic — especially services, validators, and helpers — must be covered with unit tests
+* Include tests for:
+  * Non-happy paths (e.g., validation failures, auth failures)
+  * State transitions (e.g., cracking lifecycle)
+  * Expected side effects (e.g., DB writes, notifications)
+* Tests should validate real-world workflows where possible, not just inputs/outputs
 
 ### Advanced Coverage Considerations
 
 - 🌀 **Asynchronous Side Effects**: If a route or service spawns background tasks (e.g., via `asyncio.create_task` or Celery), write tests to confirm those tasks are queued, invoked, or cause expected state changes
-- ⚔️ **Concurrency & Race Conditions**: Simulate concurrent execution of relevant endpoints (e.g., task acquisition, job tracking) using `pytest-asyncio` with `asyncio.gather()` or `trio`. Verify consistent outcomes
-- 📦 **Schema Drift & API Contracts**: Where endpoints return structured responses (e.g., JSON), add explicit schema validation using Pydantic models or response matchers to catch unintentional output changes
-- 🔐 **RBAC & Permission Boundaries**: For protected routes or admin-only actions, include both authorized and unauthorized test cases. Validate HTTP 403 behavior and prevent privilege escalation
-- 🔁 **Startup/Shutdown Events**: If your application registers services, event handlers, or startup hooks, write integration tests that validate those hooks fire and function as expected
-- 🔄 **Migration Coverage**: Include at least one test that validates all Alembic migrations apply cleanly (alembic upgrade head) in CI against a fresh DB
+* ⚔️ **Concurrency & Race Conditions**: Simulate concurrent execution of relevant endpoints (e.g., task acquisition, job tracking) using `pytest-asyncio` with `asyncio.gather()` or `trio`. Verify consistent outcomes
+* 📦 **Schema Drift & API Contracts**: Where endpoints return structured responses (e.g., JSON), add explicit schema validation using Pydantic models or response matchers to catch unintentional output changes
+* 🔐 **RBAC & Permission Boundaries**: For protected routes or admin-only actions, include both authorized and unauthorized test cases. Validate HTTP 403 behavior and prevent privilege escalation
+* 🔁 **Startup/Shutdown Events**: If your application registers services, event handlers, or startup hooks, write integration tests that validate those hooks fire and function as expected
+* 🔄 **Migration Coverage**: Include at least one test that validates all Alembic migrations apply cleanly (alembic upgrade head) in CI against a fresh DB
 
 ## Test Utilities and Common Patterns
 
 ### Assertion Patterns
 
 - Use specific assertions: `assert response.status_code == 201`
-- Verify response structure: `assert "items" in response.json()`
-- Check data accuracy: `assert data["name"] == expected_name`
+* Verify response structure: `assert "items" in response.json()`
+* Check data accuracy: `assert data["name"] == expected_name`
 
 ### Test Data Creation
 
 - Create minimal test data needed for each test
-- Use factories for complex object creation
-- Clean up test data through fixtures (automatic with test database)
+* Use factories for complex object creation
+* Clean up test data through fixtures (automatic with test database)
 
 ### Common Test Patterns
 
 - Use `pytest.mark.asyncio` for async tests
-- Use `pytest.mark.parametrize` for testing multiple scenarios
-- Group related tests in classes when beneficial
+* Use `pytest.mark.parametrize` for testing multiple scenarios
+* Group related tests in classes when beneficial
 
 ## Linter & Static Analysis Guidelines
 
 ### Test Code Quality
 
 - You should attempt to satisfy all linter and static analysis rules in the `/tests` directory
-- Do **not** waste time chasing every false-positive caused by test-specific code structures (e.g., dynamically generated test IDs, parametrization, context-dependent mocks)
-- If a linter rule fails for a **legitimate test use case**:
-  - ✅ First, try to restructure the code to avoid the warning
-  - ✅ If that's not possible, **ask permission** before adding a `# noqa` or updating `pyproject.toml` to silence the warning globally or selectively
-  - ❌ Never disable test directory linting wholesale
+* Do **not** waste time chasing every false-positive caused by test-specific code structures (e.g., dynamically generated test IDs, parametrization, context-dependent mocks)
+* If a linter rule fails for a **legitimate test use case**:
+  * ✅ First, try to restructure the code to avoid the warning
+  * ✅ If that's not possible, **ask permission** before adding a `# noqa` or updating `pyproject.toml` to silence the warning globally or selectively
+  * ❌ Never disable test directory linting wholesale
 
 ### Test Quality Standards
 
 - Linter errors in tests should be treated as **soft failures** unless they indicate real issues (e.g., unimported fixtures, unreachable code, broken decorators)
-- Prioritize clarity and functionality over silence
-- Do not use `print()` or `pdb` in committed tests
-- Disable logging assertions unless specifically testing logging behavior
+* Prioritize clarity and functionality over silence
+* Do not use `print()` or `pdb` in committed tests
+* Disable logging assertions unless specifically testing logging behavior
 
 ## Common Pitfalls and Solutions
 
 ### Factory Issues
 
 - **Problem**: Random foreign keys causing violations
-- **Solution**: Use pre-seeded data or explicit foreign keys
+* **Solution**: Use pre-seeded data or explicit foreign keys
 
 ### Authentication Issues
 
 - **Problem**: 403 errors in project-scoped tests
-- **Solution**: Create `ProjectUserAssociation` records
+* **Solution**: Create `ProjectUserAssociation` records
 
 ### Pagination Issues
 
 - **Problem**: Using `skip`/`limit` instead of `page`/`size`
-- **Solution**: Use correct pagination parameters for endpoints
+* **Solution**: Use correct pagination parameters for endpoints
 
 ### Import Issues
 
 - **Problem**: Missing imports for models or utilities
-- **Solution**: Follow standard import patterns and check existing tests
+* **Solution**: Follow standard import patterns and check existing tests
 
 ## CI Integration
 
 ### Test Execution
 
 - `just ci-check` must run all tests, linting, and formatting checks
-- Integration tests should use a throwaway database with schema bootstrapped from Alembic
-- Cache invalidation must be validated where applicable
+* Integration tests should use a throwaway database with schema bootstrapped from Alembic
+* Cache invalidation must be validated where applicable
 
 ### Performance and Reliability
 
 - Use `just test-fast` for quick feedback during development
-- Run full test suite (`just ci-check`) before committing
-- Keep tests focused and fast
-- Avoid flaky tests by using deterministic data
-- Don't rely on timing or external services
-- Use proper async/await patterns
+* Run full test suite (`just ci-check`) before committing
+* Keep tests focused and fast
+* Avoid flaky tests by using deterministic data
+* Don't rely on timing or external services
+* Use proper async/await patterns
 
 ### Test Isolation
 
 - Each test should be independent
-- Don't rely on test execution order
-- Clean state between tests (handled by fixtures)
+* Don't rely on test execution order
+* Clean state between tests (handled by fixtures)

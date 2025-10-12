@@ -183,7 +183,7 @@ uv run alembic upgrade head
 
 ### 4. Interface Selection
 
-CipherSwarm offers two web interface options. Choose the one that best fits your deployment needs:
+Ouroboros offers two web interface options. Choose the one that best fits your deployment needs:
 
 #### Option A: SvelteKit Frontend (Default)
 

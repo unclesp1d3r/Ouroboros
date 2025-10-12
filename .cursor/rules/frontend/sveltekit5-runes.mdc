@@ -14,8 +14,8 @@ This rule provides comprehensive guidelines for implementing SvelteKit 5 runes c
 ### File Extensions for Runes
 
 - **MUST use `.svelte.ts` files** for stores that use runes (`$state`, `$derived`, `$effect`)
-- **CANNOT use regular `.ts` files** with runes - they will cause build errors
-- **Example:** `campaigns.svelte.ts`, `attacks.svelte.ts`, `resources.svelte.ts`
+* **CANNOT use regular `.ts` files** with runes - they will cause build errors
+* **Example:** `campaigns.svelte.ts`, `attacks.svelte.ts`, `resources.svelte.ts`
 
 ### Export Patterns
 
@@ -155,8 +155,8 @@ vi.mock('$lib/stores/campaigns.svelte', () => ({
 ### Test File Constraints
 
 - **Cannot test runes in regular `.ts` test files**
-- **Delete test files that directly test rune functionality**
-- **Test runes through component tests instead**
+* **Delete test files that directly test rune functionality**
+* **Test runes through component tests instead**
 
 ## Migration Patterns
 
@@ -199,17 +199,17 @@ export const campaignsStore = {
 ### Runtime Errors
 
 - **Issue:** Exporting `$derived` directly causes "Cannot export reactive state" errors
-- **Fix:** Use getter functions or store object pattern
+* **Fix:** Use getter functions or store object pattern
 
 ### Build Errors
 
 - **Issue:** Using runes in `.ts` files causes TypeScript errors
-- **Fix:** Rename to `.svelte.ts` and update all imports
+* **Fix:** Rename to `.svelte.ts` and update all imports
 
 ### Test Failures
 
 - **Issue:** Tests fail because they can't import runes from `.ts` files
-- **Fix:** Update test imports to use `.svelte.ts` paths and test through components
+* **Fix:** Update test imports to use `.svelte.ts` paths and test through components
 
 ## Best Practices
 
@@ -223,5 +223,5 @@ export const campaignsStore = {
 ## File References
 
 - Store examples: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
-- Component usage: [CampaignProgress.svelte](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.svelte)
-- SSR integration: [+page.svelte](mdc:Ouroboros/Ouroboros/frontend/src/routes/campaigns/+page.svelte)
+* Component usage: [CampaignProgress.svelte](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.svelte)
+* SSR integration: [+page.svelte](mdc:Ouroboros/Ouroboros/frontend/src/routes/campaigns/+page.svelte)

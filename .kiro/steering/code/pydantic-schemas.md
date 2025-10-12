@@ -1,6 +1,6 @@
 ---
 inclusion: fileMatch
-fileMatchPattern: "app/schemas/**/*.py"
+fileMatchPattern: app/schemas/**/*.py
 ---
 
 # Pydantic Schema Patterns for Ouroboros

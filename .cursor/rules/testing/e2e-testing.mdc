@@ -14,20 +14,20 @@ This rule consolidates end-to-end testing infrastructure for Ouroboros, covering
 ### Layer 1: Backend Tests (`just test-backend`)
 
 - **Technology**: Python + pytest + testcontainers
-- **Scope**: Backend API endpoints, services, database operations
-- **Command**: `just test-backend`
+* **Scope**: Backend API endpoints, services, database operations
+* **Command**: `just test-backend`
 
 ### Layer 2: Frontend Mocked Tests (`just test-frontend`)
 
 - **Technology**: Vitest (unit) + Playwright (E2E with mocks)
-- **Scope**: Frontend components and interactions with mocked APIs
-- **Command**: `just test-frontend`
+* **Scope**: Frontend components and interactions with mocked APIs
+* **Command**: `just test-frontend`
 
 ### Layer 3: Full E2E Tests (`just test-e2e`)
 
 - **Technology**: Playwright against real Docker backend stack
-- **Scope**: Complete user workflows with real database and API
-- **Command**: `just test-e2e`
+* **Scope**: Complete user workflows with real database and API
+* **Command**: `just test-e2e`
 
 ## Docker Infrastructure Implementation
 
@@ -93,11 +93,10 @@ healthcheck:
 **File**: [scripts/seed_e2e_data.py](mdc:Ouroboros/Ouroboros/scripts/seed_e2e_data.py)
 
 **Architecture Pattern**:
-
-- ✅ **Service layer delegation** for all data persistence
-- ✅ **Pydantic validation** for all created objects
-- ✅ **Async/await patterns** throughout
-- ✅ **Graceful error handling** with table truncation
+* ✅ **Service layer delegation** for all data persistence
+* ✅ **Pydantic validation** for all created objects
+* ✅ **Async/await patterns** throughout
+* ✅ **Graceful error handling** with table truncation
 
 **Example Pattern**:
 
@@ -128,11 +127,10 @@ async def seed_test_data():
 ```
 
 **Test Data Created**:
-
-- **Users**: Admin and regular user with known credentials
-- **Projects**: "E2E Test Project Alpha" and "E2E Test Project Beta"
-- **Campaigns**: Sample campaign with hash list
-- **Agents**: Test agent configurations
+* **Users**: Admin and regular user with known credentials
+* **Projects**: "E2E Test Project Alpha" and "E2E Test Project Beta"
+* **Campaigns**: Sample campaign with hash list
+* **Agents**: Test agent configurations
 
 ## Playwright Global Setup/Teardown
 
@@ -518,12 +516,12 @@ just ci-check              # Complete CI pipeline
 ### Benefits of Universal Timeout Approach
 
 - **Consistency**: All tests use the same timeout values for similar operations
-- **Maintainability**: Single place to update timeout values if animation durations change
-- **Reliability**: Tests are more robust against timing issues with animated UIs
-- **Documentation**: Clear timeout constants make test code more readable and self-documenting
-- **Reusability**: Helper functions can be used across all E2E tests without duplication
-- **Reduced Flakiness**: Proper wait conditions prevent intermittent test failures in CI/CD
-- **Developer Experience**: Clearer error messages when timeouts occur with meaningful context
+* **Maintainability**: Single place to update timeout values if animation durations change
+* **Reliability**: Tests are more robust against timing issues with animated UIs
+* **Documentation**: Clear timeout constants make test code more readable and self-documenting
+* **Reusability**: Helper functions can be used across all E2E tests without duplication
+* **Reduced Flakiness**: Proper wait conditions prevent intermittent test failures in CI/CD
+* **Developer Experience**: Clearer error messages when timeouts occur with meaningful context
 
 ### Best Practices
 
@@ -537,7 +535,7 @@ just ci-check              # Complete CI pipeline
 ## File References
 
 - Configuration: [playwright.config.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/playwright.config.e2e.ts)
-- Docker compose: [docker-compose.e2e.yml](mdc:Ouroboros/Ouroboros/docker-compose.e2e.yml)
-- Test utilities: [test-utils.ts](mdc:Ouroboros/Ouroboros/frontend/e2e/test-utils.ts)
-- Global setup: [global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
-- Data seeding: [seed_e2e_data.py](mdc:Ouroboros/Ouroboros/scripts/seed_e2e_data.py)
+* Docker compose: [docker-compose.e2e.yml](mdc:Ouroboros/Ouroboros/docker-compose.e2e.yml)
+* Test utilities: [test-utils.ts](mdc:Ouroboros/Ouroboros/frontend/e2e/test-utils.ts)
+* Global setup: [global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
+* Data seeding: [seed_e2e_data.py](mdc:Ouroboros/Ouroboros/scripts/seed_e2e_data.py)

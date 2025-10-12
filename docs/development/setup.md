@@ -170,7 +170,7 @@ just clean
 
 ## Interface Development
 
-CipherSwarm provides two web interface options for development:
+Ouroboros provides two web interface options for development:
 
 ### SvelteKit Frontend Development
 

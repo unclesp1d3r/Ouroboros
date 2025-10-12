@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This specification defines the requirements for implementing a NiceGUI-based web interface integrated directly into the CipherSwarm FastAPI backend application. This alternative web interface will replicate the functionality and layout of the existing SvelteKit frontend while being served directly from the FastAPI application, eliminating the need for a separate frontend server and providing a more integrated deployment option.
+This specification defines the requirements for implementing a NiceGUI-based web interface integrated directly into the Ouroboros FastAPI backend application. This alternative web interface will replicate the functionality and layout of the existing SvelteKit frontend while being served directly from the FastAPI application, eliminating the need for a separate frontend server and providing a more integrated deployment option.
 
 The NiceGUI interface will provide the same core functionality as the SvelteKit frontend but with a Python-native implementation that can be more easily customized and extended by backend developers.
 

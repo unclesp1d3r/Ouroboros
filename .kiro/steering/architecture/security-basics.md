@@ -1,7 +1,7 @@
 ---
-
 inclusion: always
 ---
+
 ## Basics
 
 - Validate all input with Pydantic, never trust client data.

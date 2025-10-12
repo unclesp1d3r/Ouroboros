@@ -1,8 +1,8 @@
 ---
 inclusion: fileMatch
 fileMatchPattern:
-  - "frontend/**/*.test.ts"
-  - "frontend/**/e2e/*.ts"
+  - frontend/**/*.test.ts
+  - frontend/**/e2e/*.ts
 ---
 
 # Frontend Testing Patterns and Best Practices

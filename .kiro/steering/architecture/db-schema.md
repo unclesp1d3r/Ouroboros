@@ -1,9 +1,10 @@
 ---
 inclusion: fileMatch
-fileMatchPattern: 
-  - "app/models/**/*"
-  - "alembic/*"
+fileMatchPattern:
+  - app/models/**/*
+  - alembic/*
 ---
+
 ## Guidelines
 
 - All SQLAlchemy models live in `app/models/`

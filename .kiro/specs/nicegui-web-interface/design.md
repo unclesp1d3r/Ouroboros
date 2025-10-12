@@ -2,7 +2,7 @@
 
 ## Overview
 
-The NiceGUI Web Interface will be implemented as an integrated component of the CipherSwarm FastAPI backend, providing a Python-native alternative to the existing SvelteKit frontend. This design leverages NiceGUI's reactive components and FastAPI's existing authentication and API infrastructure to create a seamless, single-deployment web interface.
+The NiceGUI Web Interface will be implemented as an integrated component of the Ouroboros FastAPI backend, providing a Python-native alternative to the existing SvelteKit frontend. This design leverages NiceGUI's reactive components and FastAPI's existing authentication and API infrastructure to create a seamless, single-deployment web interface.
 
 The interface will be mounted at the `/ui/` path and will utilize the existing backend services, authentication system, and database models while providing a modern, responsive user experience comparable to the SvelteKit frontend.
 
@@ -105,6 +105,7 @@ from fastapi import FastAPI
 from app.ui.pages import setup_ui_pages
 from app.ui.auth.middleware import setup_auth_middleware
 
+
 def setup_nicegui_interface(fastapi_app: FastAPI) -> None:
     """Setup NiceGUI interface integrated with FastAPI application"""
 
@@ -118,6 +119,7 @@ def setup_nicegui_interface(fastapi_app: FastAPI) -> None:
     # instead of mounting as a separate application
     # The mount_path parameter makes all UI routes available under /ui/
     return fastapi_app  # NiceGUI routes are now part of the main app
+
 
 # In main.py, this would be called like:
 # from app.ui import setup_nicegui_interface
@@ -136,26 +138,34 @@ from starlette.responses import RedirectResponse
 from app.core.auth import verify_session_token
 from app.ui.auth.login import login_page
 
+
 class UIAuthMiddleware:
     def __init__(self):
-        self.protected_paths = ['/ui/dashboard', '/ui/campaigns', '/ui/agents',
-                               '/ui/attacks', '/ui/resources', '/ui/users', '/ui/settings']
+        self.protected_paths = [
+            "/ui/dashboard",
+            "/ui/campaigns",
+            "/ui/agents",
+            "/ui/attacks",
+            "/ui/resources",
+            "/ui/users",
+            "/ui/settings",
+        ]
 
     async def __call__(self, request: Request):
         path = request.url.path
 
         if any(path.startswith(p) for p in self.protected_paths):
             # Check authentication using NiceGUI's app.storage
-            if not app.storage.user.get('authenticated', False):
+            if not app.storage.user.get("authenticated", False):
                 # Use NiceGUI's proper navigation for middleware
-                return RedirectResponse('/ui/login')
+                return RedirectResponse("/ui/login")
 
             # Store user info in request state for use in handlers
             request.state.user = {
-                'id': app.storage.user.get('user_id'),
-                'username': app.storage.user.get('username'),
-                'role': app.storage.user.get('role'),
-                'login_time': app.storage.user.get('login_time')
+                "id": app.storage.user.get("user_id"),
+                "username": app.storage.user.get("username"),
+                "role": app.storage.user.get("role"),
+                "login_time": app.storage.user.get("login_time"),
             }
 ```
 
@@ -166,31 +176,34 @@ from nicegui import ui, app
 from app.core.auth import authenticate_user, create_session_token
 from datetime import datetime
 
-@ui.page('/ui/login')
-async def login_page():
-    with ui.card().classes('w-96 mx-auto mt-20'):
-        ui.label('CipherSwarm Login').classes('text-2xl font-bold mb-4')
 
-        username_input = ui.input('Username').classes('w-full')
-        password_input = ui.input('Password', password=True).classes('w-full')
+@ui.page("/ui/login")
+async def login_page():
+    with ui.card().classes("w-96 mx-auto mt-20"):
+        ui.label("Ouroboros Login").classes("text-2xl font-bold mb-4")
+
+        username_input = ui.input("Username").classes("w-full")
+        password_input = ui.input("Password", password=True).classes("w-full")
 
         async def handle_login():
             try:
-                user = await authenticate_user(username_input.value, password_input.value)
+                user = await authenticate_user(
+                    username_input.value, password_input.value
+                )
 
                 # Store user session in NiceGUI's app.storage
-                app.storage.user['authenticated'] = True
-                app.storage.user['user_id'] = user.id
-                app.storage.user['username'] = user.username
-                app.storage.user['role'] = user.role.value
-                app.storage.user['login_time'] = datetime.utcnow().isoformat()
+                app.storage.user["authenticated"] = True
+                app.storage.user["user_id"] = user.id
+                app.storage.user["username"] = user.username
+                app.storage.user["role"] = user.role.value
+                app.storage.user["login_time"] = datetime.utcnow().isoformat()
 
                 # Navigate to dashboard using NiceGUI's navigation
-                ui.navigate.to('/ui/dashboard')
+                ui.navigate.to("/ui/dashboard")
             except Exception as e:
-                ui.notify(f'Login failed: {str(e)}', type='negative')
+                ui.notify(f"Login failed: {str(e)}", type="negative")
 
-        ui.button('Login', on_click=handle_login).classes('w-full mt-4')
+        ui.button("Login", on_click=handle_login).classes("w-full mt-4")
 ```
 
 ### 3. Layout System
@@ -201,62 +214,74 @@ async def login_page():
 from nicegui import ui, app
 from typing import Callable, Optional
 
+
 class AppLayout:
     def __init__(self, user: Optional[dict] = None):
         self.user = user
         self.sidebar_items = [
-            {'label': 'Dashboard', 'path': '/ui/dashboard', 'icon': 'dashboard'},
-            {'label': 'Campaigns', 'path': '/ui/campaigns', 'icon': 'campaign'},
-            {'label': 'Agents', 'path': '/ui/agents', 'icon': 'smart_toy'},
-            {'label': 'Attacks', 'path': '/ui/attacks', 'icon': 'security'},
-            {'label': 'Resources', 'path': '/ui/resources', 'icon': 'folder'},
-            {'label': 'Users', 'path': '/ui/users', 'icon': 'people', 'admin_only': True},
-            {'label': 'Settings', 'path': '/ui/settings', 'icon': 'settings'},
+            {"label": "Dashboard", "path": "/ui/dashboard", "icon": "dashboard"},
+            {"label": "Campaigns", "path": "/ui/campaigns", "icon": "campaign"},
+            {"label": "Agents", "path": "/ui/agents", "icon": "smart_toy"},
+            {"label": "Attacks", "path": "/ui/attacks", "icon": "security"},
+            {"label": "Resources", "path": "/ui/resources", "icon": "folder"},
+            {
+                "label": "Users",
+                "path": "/ui/users",
+                "icon": "people",
+                "admin_only": True,
+            },
+            {"label": "Settings", "path": "/ui/settings", "icon": "settings"},
         ]
 
     def create_layout(self, content_func: Callable):
-        with ui.header().classes('bg-primary text-white'):
-            with ui.row().classes('w-full items-center'):
-                ui.label('CipherSwarm').classes('text-xl font-bold')
+        with ui.header().classes("bg-primary text-white"):
+            with ui.row().classes("w-full items-center"):
+                ui.label("Ouroboros").classes("text-xl font-bold")
                 ui.space()
                 if self.user:
-                    with ui.dropdown_button(self.user.get('username', 'Account')):
-                        ui.item('Profile', on_click=lambda: ui.navigate.to('/ui/profile'))
-                        ui.item('Logout', on_click=self._handle_logout)
+                    with ui.dropdown_button(self.user.get("username", "Account")):
+                        ui.item(
+                            "Profile", on_click=lambda: ui.navigate.to("/ui/profile")
+                        )
+                        ui.item("Logout", on_click=self._handle_logout)
 
-        with ui.left_drawer().classes('bg-gray-100'):
+        with ui.left_drawer().classes("bg-gray-100"):
             self._create_sidebar()
 
-        with ui.page_sticky(position='bottom-right', x_offset=20, y_offset=20):
-            ui.button(icon='refresh', on_click=self._refresh_data).props('fab color=primary')
+        with ui.page_sticky(position="bottom-right", x_offset=20, y_offset=20):
+            ui.button(icon="refresh", on_click=self._refresh_data).props(
+                "fab color=primary"
+            )
 
         # Main content area
-        with ui.column().classes('w-full p-4'):
+        with ui.column().classes("w-full p-4"):
             content_func()
 
     def _create_sidebar(self):
         for item in self.sidebar_items:
-            if item.get('admin_only') and not self._is_admin():
+            if item.get("admin_only") and not self._is_admin():
                 continue
 
-            with ui.item(clickable=True, on_click=lambda path=item['path']: ui.navigate.to(path)):
+            with ui.item(
+                clickable=True, on_click=lambda path=item["path"]: ui.navigate.to(path)
+            ):
                 with ui.item_section(avatar=True):
-                    ui.icon(item['icon'])
+                    ui.icon(item["icon"])
                 with ui.item_section():
-                    ui.item_label(item['label'])
+                    ui.item_label(item["label"])
 
     def _is_admin(self) -> bool:
-        return self.user and self.user.get('role') in ['admin', 'project_admin']
+        return self.user and self.user.get("role") in ["admin", "project_admin"]
 
     def _handle_logout(self):
         # Clear user session from NiceGUI storage
         app.storage.user.clear()
 
         # Navigate to login page
-        ui.navigate.to('/ui/login')
+        ui.navigate.to("/ui/login")
 
     def _refresh_data(self):
-        ui.notify('Refreshing data...', type='info')
+        ui.notify("Refreshing data...", type="info")
         # Use NiceGUI's reactive refresh pattern instead of JavaScript
         # This will trigger a re-render of the current page
         ui.refresh()
@@ -273,7 +298,8 @@ from app.ui.components.cards import MetricCard, CampaignCard
 from app.core.services.dashboard_service import DashboardService
 from app.ui.services.ui_events import setup_realtime_updates
 
-@ui.page('/ui/dashboard')
+
+@ui.page("/ui/dashboard")
 async def dashboard_page(request):
     user = request.state.user
     layout = AppLayout(user)
@@ -284,58 +310,60 @@ async def dashboard_page(request):
     campaigns = await dashboard_service.get_recent_campaigns()
 
     def create_dashboard_content():
-        ui.label('Dashboard').classes('text-3xl font-bold mb-6')
+        ui.label("Dashboard").classes("text-3xl font-bold mb-6")
 
         # Metrics row
-        with ui.row().classes('w-full gap-4 mb-6'):
+        with ui.row().classes("w-full gap-4 mb-6"):
             MetricCard(
-                title='Active Agents',
+                title="Active Agents",
                 value=dashboard_data.active_agents,
-                subtitle=f'/ {dashboard_data.total_agents} Total',
-                icon='smart_toy',
-                color='primary'
+                subtitle=f"/ {dashboard_data.total_agents} Total",
+                icon="smart_toy",
+                color="primary",
             )
             MetricCard(
-                title='Running Tasks',
+                title="Running Tasks",
                 value=dashboard_data.running_tasks,
-                subtitle='Active Campaigns',
-                icon='play_arrow',
-                color='positive'
+                subtitle="Active Campaigns",
+                icon="play_arrow",
+                color="positive",
             )
             MetricCard(
-                title='Cracked Hashes',
+                title="Cracked Hashes",
                 value=dashboard_data.recently_cracked_hashes,
-                subtitle='Last 24h',
-                icon='check_circle',
-                color='positive'
+                subtitle="Last 24h",
+                icon="check_circle",
+                color="positive",
             )
             MetricCard(
-                title='Resource Usage',
-                value='85%',
-                subtitle='System Load',
-                icon='memory',
-                color='warning'
+                title="Resource Usage",
+                value="85%",
+                subtitle="System Load",
+                icon="memory",
+                color="warning",
             )
 
         # Campaigns section
-        ui.label('Recent Campaigns').classes('text-xl font-semibold mb-4')
+        ui.label("Recent Campaigns").classes("text-xl font-semibold mb-4")
 
         if campaigns:
-            with ui.column().classes('w-full gap-4'):
+            with ui.column().classes("w-full gap-4"):
                 for campaign in campaigns:
                     CampaignCard(campaign)
         else:
-            with ui.card().classes('w-full p-8 text-center'):
-                ui.label('No campaigns yet').classes('text-gray-500')
-                ui.button('Create Campaign',
-                         on_click=lambda: ui.navigate.to('/ui/campaigns/new')).classes('mt-4')
+            with ui.card().classes("w-full p-8 text-center"):
+                ui.label("No campaigns yet").classes("text-gray-500")
+                ui.button(
+                    "Create Campaign",
+                    on_click=lambda: ui.navigate.to("/ui/campaigns/new"),
+                ).classes("mt-4")
 
         # Setup real-time updates
-        setup_realtime_updates('dashboard', _update_dashboard_data)
+        setup_realtime_updates("dashboard", _update_dashboard_data)
 
     def _update_dashboard_data(data):
         # Update dashboard metrics in real-time
-        ui.notify(f'Dashboard updated: {data.get("message", "")}', type='info')
+        ui.notify(f"Dashboard updated: {data.get('message', '')}", type="info")
 
     layout.create_layout(create_dashboard_content)
 ```
@@ -346,47 +374,63 @@ async def dashboard_page(request):
 from nicegui import ui
 from typing import Optional
 
+
 class MetricCard:
-    def __init__(self, title: str, value: str | int, subtitle: str = '',
-                 icon: str = '', color: str = 'primary'):
-        with ui.card().classes('p-4 cursor-pointer hover:shadow-lg transition-shadow'):
-            with ui.row().classes('items-center justify-between w-full'):
-                with ui.column().classes('flex-grow'):
-                    ui.label(title).classes('text-sm text-gray-600 mb-1')
-                    ui.label(str(value)).classes('text-3xl font-bold mb-1')
+    def __init__(
+        self,
+        title: str,
+        value: str | int,
+        subtitle: str = "",
+        icon: str = "",
+        color: str = "primary",
+    ):
+        with ui.card().classes("p-4 cursor-pointer hover:shadow-lg transition-shadow"):
+            with ui.row().classes("items-center justify-between w-full"):
+                with ui.column().classes("flex-grow"):
+                    ui.label(title).classes("text-sm text-gray-600 mb-1")
+                    ui.label(str(value)).classes("text-3xl font-bold mb-1")
                     if subtitle:
-                        ui.label(subtitle).classes('text-xs text-gray-500')
+                        ui.label(subtitle).classes("text-xs text-gray-500")
 
                 if icon:
-                    ui.icon(icon).classes(f'text-4xl text-{color}')
+                    ui.icon(icon).classes(f"text-4xl text-{color}")
+
 
 class CampaignCard:
     def __init__(self, campaign: dict):
-        with ui.card().classes('w-full p-4 hover:shadow-md transition-shadow cursor-pointer'):
-            with ui.row().classes('items-center justify-between w-full'):
-                with ui.column().classes('flex-grow'):
-                    ui.label(campaign['name']).classes('font-semibold text-lg')
-                    ui.label(campaign.get('description', 'No description')).classes('text-gray-600 text-sm')
+        with ui.card().classes(
+            "w-full p-4 hover:shadow-md transition-shadow cursor-pointer"
+        ):
+            with ui.row().classes("items-center justify-between w-full"):
+                with ui.column().classes("flex-grow"):
+                    ui.label(campaign["name"]).classes("font-semibold text-lg")
+                    ui.label(campaign.get("description", "No description")).classes(
+                        "text-gray-600 text-sm"
+                    )
 
                     # Progress bar
-                    progress = campaign.get('progress', 0)
-                    with ui.row().classes('items-center gap-2 mt-2'):
-                        ui.linear_progress(progress / 100).classes('flex-grow')
-                        ui.label(f'{progress:.1f}%').classes('text-sm')
+                    progress = campaign.get("progress", 0)
+                    with ui.row().classes("items-center gap-2 mt-2"):
+                        ui.linear_progress(progress / 100).classes("flex-grow")
+                        ui.label(f"{progress:.1f}%").classes("text-sm")
 
-                with ui.column().classes('items-end'):
+                with ui.column().classes("items-end"):
                     # Status badge
                     status_color = {
-                        'active': 'positive',
-                        'draft': 'warning',
-                        'archived': 'grey'
-                    }.get(campaign.get('state', 'draft'), 'grey')
+                        "active": "positive",
+                        "draft": "warning",
+                        "archived": "grey",
+                    }.get(campaign.get("state", "draft"), "grey")
 
-                    ui.badge(campaign.get('state', 'draft')).props(f'color={status_color}')
+                    ui.badge(campaign.get("state", "draft")).props(
+                        f"color={status_color}"
+                    )
 
                     # Last updated
-                    if campaign.get('updated_at'):
-                        ui.label(f"Updated {campaign['updated_at']}").classes('text-xs text-gray-500 mt-1')
+                    if campaign.get("updated_at"):
+                        ui.label(f"Updated {campaign['updated_at']}").classes(
+                            "text-xs text-gray-500 mt-1"
+                        )
 ```
 
 ### 5. Data Management Components
@@ -481,16 +525,16 @@ class DataTable:
         # Calculate pagination
         total_items = len(self.filtered_data)
         total_pages = (total_items + self.page_size - 1) // self.page_size if total_items > 0 else 1
-        
+
         # Reset page if out of range
         if self.page > total_pages:
             self.page = 1
-        
+
         # Slice data for current page
         start = (self.page - 1) * self.page_size
         end = start + self.page_size
         page_data = self.filtered_data[start:end]
-        
+
         # Update table using NiceGUI's reactive update pattern
         if self.table:
             self.table.rows = page_data
@@ -532,12 +576,14 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 
+
 class UIDashboardSummary(BaseModel):
     active_agents: int
     total_agents: int
     running_tasks: int
     recently_cracked_hashes: int
     resource_usage: List[dict]
+
 
 class UICampaignSummary(BaseModel):
     id: int
@@ -549,6 +595,7 @@ class UICampaignSummary(BaseModel):
     attack_count: int
     hash_count: int
 
+
 class UIAgentStatus(BaseModel):
     id: int
     name: str
@@ -557,6 +604,7 @@ class UIAgentStatus(BaseModel):
     current_task: Optional[str]
     hashrate: Optional[float]
     error_count: int
+
 
 class UIResourceInfo(BaseModel):
     id: int
@@ -580,11 +628,13 @@ class UIResourceInfo(BaseModel):
 from nicegui import ui, app
 from enum import Enum
 
+
 class NotificationType(Enum):
-    INFO = 'info'
-    SUCCESS = 'positive'
-    WARNING = 'warning'
-    ERROR = 'negative'
+    INFO = "info"
+    SUCCESS = "positive"
+    WARNING = "warning"
+    ERROR = "negative"
+
 
 class UIErrorHandler:
     @staticmethod
@@ -595,35 +645,39 @@ class UIErrorHandler:
     def show_error_dialog(title: str, message: str, details: Optional[str] = None):
         with ui.dialog() as dialog:
             with ui.card():
-                ui.label(title).classes('text-lg font-bold text-red-600')
-                ui.label(message).classes('mt-2')
+                ui.label(title).classes("text-lg font-bold text-red-600")
+                ui.label(message).classes("mt-2")
 
                 if details:
-                    with ui.expansion('Details'):
-                        ui.label(details).classes('text-sm text-gray-600')
+                    with ui.expansion("Details"):
+                        ui.label(details).classes("text-sm text-gray-600")
 
-                with ui.row().classes('justify-end mt-4'):
-                    ui.button('Close', on_click=dialog.close)
+                with ui.row().classes("justify-end mt-4"):
+                    ui.button("Close", on_click=dialog.close)
 
         dialog.open()
 
     @staticmethod
     def handle_api_error(error: Exception):
-        if hasattr(error, 'status_code'):
+        if hasattr(error, "status_code"):
             if error.status_code == 401:
-                ui.navigate.to('/ui/login')
+                ui.navigate.to("/ui/login")
             elif error.status_code == 403:
-                UIErrorHandler.show_notification('Access denied', NotificationType.ERROR)
+                UIErrorHandler.show_notification(
+                    "Access denied", NotificationType.ERROR
+                )
             elif error.status_code >= 500:
                 UIErrorHandler.show_error_dialog(
-                    'Server Error',
-                    'An internal server error occurred. Please try again later.',
-                    str(error)
+                    "Server Error",
+                    "An internal server error occurred. Please try again later.",
+                    str(error),
                 )
             else:
                 UIErrorHandler.show_notification(str(error), NotificationType.ERROR)
         else:
-            UIErrorHandler.show_notification('An unexpected error occurred', NotificationType.ERROR)
+            UIErrorHandler.show_notification(
+                "An unexpected error occurred", NotificationType.ERROR
+            )
 ```
 
 ## Testing Strategy
@@ -645,31 +699,33 @@ from nicegui.testing import Screen
 from app.ui.pages.dashboard import dashboard_page
 from app.ui.components.cards import MetricCard
 
+
 def test_metric_card_component(screen: Screen):
     """Test MetricCard component displays correctly"""
     MetricCard(
-        title='Active Agents',
+        title="Active Agents",
         value=5,
-        subtitle='/ 10 Total',
-        icon='smart_toy',
-        color='primary'
+        subtitle="/ 10 Total",
+        icon="smart_toy",
+        color="primary",
     )
 
-    screen.open('/')
-    screen.should_contain('Active Agents')
-    screen.should_contain('5')
-    screen.should_contain('/ 10 Total')
+    screen.open("/")
+    screen.should_contain("Active Agents")
+    screen.should_contain("5")
+    screen.should_contain("/ 10 Total")
+
 
 def test_dashboard_page_structure(screen: Screen):
     """Test dashboard page structure and components"""
     # Mock user authentication
-    screen.user = {'id': 1, 'name': 'Test User', 'role': 'user'}
+    screen.user = {"id": 1, "name": "Test User", "role": "user"}
 
-    screen.open('/ui/dashboard')
-    screen.should_contain('Dashboard')
-    screen.should_contain('Active Agents')
-    screen.should_contain('Running Tasks')
-    screen.should_contain('Cracked Hashes')
+    screen.open("/ui/dashboard")
+    screen.should_contain("Dashboard")
+    screen.should_contain("Active Agents")
+    screen.should_contain("Running Tasks")
+    screen.should_contain("Cracked Hashes")
 ```
 
 #### End-to-End Testing with Playwright
@@ -686,6 +742,7 @@ from playwright.async_api import async_playwright, Page, BrowserContext
 from app.main import app
 from app.core.config import settings
 
+
 @pytest.fixture
 async def authenticated_page():
     """Fixture that provides an authenticated browser page"""
@@ -696,8 +753,8 @@ async def authenticated_page():
 
         # Navigate to login and authenticate
         await page.goto(f"{settings.BASE_URL}/ui/login")
-        await page.fill('input[placeholder="Username"]', 'testuser')
-        await page.fill('input[placeholder="Password"]', 'testpass')
+        await page.fill('input[placeholder="Username"]', "testuser")
+        await page.fill('input[placeholder="Password"]', "testpass")
         await page.click('button:has-text("Login")')
 
         # Wait for redirect to dashboard
@@ -707,24 +764,25 @@ async def authenticated_page():
 
         await browser.close()
 
+
 @pytest.mark.asyncio
 async def test_complete_campaign_workflow(authenticated_page: Page):
     """Test complete campaign creation and management workflow"""
     page = authenticated_page
 
     # Navigate to campaigns
-    await page.click('text=Campaigns')
+    await page.click("text=Campaigns")
     await page.wait_for_selector('[data-testid="campaigns-page"]')
 
     # Create new campaign
     await page.click('button:has-text("Create Campaign")')
-    await page.fill('input[name="name"]', 'E2E Test Campaign')
-    await page.fill('textarea[name="description"]', 'Created by E2E test')
-    await page.select_option('select[name="hash_list_id"]', '1')
+    await page.fill('input[name="name"]', "E2E Test Campaign")
+    await page.fill('textarea[name="description"]', "Created by E2E test")
+    await page.select_option('select[name="hash_list_id"]', "1")
     await page.click('button:has-text("Create")')
 
     # Verify campaign was created
-    await page.wait_for_selector('text=E2E Test Campaign')
+    await page.wait_for_selector("text=E2E Test Campaign")
 ```
 
 ### Testing Organization
@@ -750,33 +808,35 @@ import pytest
 from nicegui.testing import User
 from app.ui.pages.dashboard import dashboard_page
 
+
 @pytest.mark.asyncio
 async def test_dashboard_page_loads():
     """Test that dashboard page loads correctly for authenticated user"""
     user = User(dashboard_page)
 
     # Mock authentication
-    user.request.state.user = {'id': 1, 'name': 'Test User', 'role': 'user'}
+    user.request.state.user = {"id": 1, "name": "Test User", "role": "user"}
 
     # Navigate to dashboard
-    await user.open('/ui/dashboard')
+    await user.open("/ui/dashboard")
 
     # Verify page elements
-    assert user.find('Dashboard').exists()
-    assert user.find('Active Agents').exists()
-    assert user.find('Running Tasks').exists()
+    assert user.find("Dashboard").exists()
+    assert user.find("Active Agents").exists()
+    assert user.find("Running Tasks").exists()
+
 
 @pytest.mark.asyncio
 async def test_campaign_table_filtering():
     """Test campaign table search and filtering functionality"""
-    user = User('/ui/campaigns')
+    user = User("/ui/campaigns")
 
     # Enter search term
-    await user.find('Search...').type('test campaign')
+    await user.find("Search...").type("test campaign")
 
     # Verify filtered results
-    assert user.find('test campaign').exists()
-    assert not user.find('other campaign').exists()
+    assert user.find("test campaign").exists()
+    assert not user.find("other campaign").exists()
 ```
 
 ## Updated Integration Approach
@@ -807,7 +867,7 @@ setup_nicegui_interface(app)
 
 # Run with NiceGUI integration
 if __name__ == "__main__":
-    ui.run_with(app, mount_path='/ui', storage_secret=settings.SECRET_KEY)
+    ui.run_with(app, mount_path="/ui", storage_secret=settings.SECRET_KEY)
 ```
 
 This design provides a comprehensive foundation for implementing a NiceGUI-based web interface that replicates the functionality of the existing SvelteKit frontend while being tightly integrated with the FastAPI backend infrastructure using the most efficient integration approach.

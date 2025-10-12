@@ -13,7 +13,7 @@ This rule defines patterns for integrating Zod schemas with OpenAPI specificatio
 
 ### Directory Structure
 
-```text
+```
 src/lib/schemas/
 ├── index.ts                # Re-exports all schemas
 ├── auth.ts                 # Authentication schemas
@@ -28,9 +28,9 @@ src/lib/schemas/
 ### Schema Naming Conventions
 
 - **Read schemas**: `EntityReadSchema` → `EntityRead` type
-- **Create schemas**: `EntityCreateSchema` → `EntityCreate` type
-- **Update schemas**: `EntityUpdateSchema` → `EntityUpdate` type
-- **List responses**: `EntityListResponseSchema` → `EntityListResponse` type
+* **Create schemas**: `EntityCreateSchema` → `EntityCreate` type
+* **Update schemas**: `EntityUpdateSchema` → `EntityUpdate` type
+* **List responses**: `EntityListResponseSchema` → `EntityListResponse` type
 
 ## OpenAPI Compliance
 
@@ -445,6 +445,6 @@ try {
 ## File References
 
 - Schema definitions: [campaigns.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/schemas/campaigns.ts)
-- Type adapters: [campaign.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/types/campaign.ts)
-- Store integration: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
-- OpenAPI contract: [current_api_openapi.json](mdc:Ouroboros/Ouroboros/contracts/current_api_openapi.json)
+* Type adapters: [campaign.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/types/campaign.ts)
+* Store integration: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
+* OpenAPI contract: [current_api_openapi.json](mdc:Ouroboros/Ouroboros/contracts/current_api_openapi.json)

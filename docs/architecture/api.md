@@ -1,6 +1,6 @@
 # API Documentation
 
-Ouroboros provides four distinct API interfaces, each serving different client types with specific authentication and error handling requirements:
+Ouroboros provides multiple API interfaces, each serving different client types with specific authentication and error handling requirements:
 
 1. **Agent API v1** (`/api/v1/client/*`) - Legacy compatibility for distributed agents
 2. **Agent API v2** (`/api/v2/client/*`) - Modernized agent interface (Preview)
@@ -10,11 +10,11 @@ Ouroboros provides four distinct API interfaces, each serving different client t
 
 ## Agent API v1 (`/api/v1/client/*`)
 
-The Agent API v1 follows the OpenAPI 3.0.1 specification defined in `contracts/v1_api_swagger.json` and is locked for backward compatibility. This API maintains strict compatibility with the legacy Ruby-on-Rails version of CipherSwarm.
+The Agent API v1 follows the OpenAPI 3.0.1 specification defined in `contracts/v1_api_swagger.json` and is locked for backward compatibility. This API maintains strict compatibility with the legacy Ruby-on-Rails version of Ouroboros.
 
 ## Agent API v2 (`/api/v2/client/*`)
 
-Agent API v2 is the modernized interface for CipherSwarm agents, providing enhanced features and improved security with best-effort compatibility where possible. This API is currently in development preview status.
+Agent API v2 is the modernized interface for Ouroboros agents, providing enhanced features and improved security with best-effort compatibility where possible. This API is currently in development preview status.
 
 ### Key Improvements in v2
 

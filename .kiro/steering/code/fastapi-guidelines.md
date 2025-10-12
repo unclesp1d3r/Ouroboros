@@ -1,11 +1,11 @@
 ---
 inclusion: fileMatch
 fileMatchPattern:
-  - "**/api/**/*.py"
-  - "**/routes/**/*.py"
-  - "**/endpoints/**/*.py"
-  - "**/schemas/**/*.py"
-  - "**/models/**/*.py"
+  - '**/api/**/*.py'
+  - '**/routes/**/*.py'
+  - '**/endpoints/**/*.py'
+  - '**/schemas/**/*.py'
+  - '**/models/**/*.py'
 ---
 
 # FastAPI Development Guidelines

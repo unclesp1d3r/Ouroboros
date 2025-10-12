@@ -2,9 +2,9 @@
 
 ## Introduction
 
-This specification defines the requirements for removing the SvelteKit frontend from CipherSwarm once the NiceGUI web interface has been fully implemented and validated. This cleanup operation will eliminate the separate frontend application, its dependencies, tooling, and associated documentation to simplify the project architecture and reduce maintenance overhead.
+This specification defines the requirements for removing the SvelteKit frontend from Ouroboros once the NiceGUI web interface has been fully implemented and validated. This cleanup operation will eliminate the separate frontend application, its dependencies, tooling, and associated documentation to simplify the project architecture and reduce maintenance overhead.
 
-The removal will ensure that CipherSwarm operates as a single FastAPI application with an integrated NiceGUI web interface, eliminating the complexity of managing separate frontend and backend services.
+The removal will ensure that Ouroboros operates as a single FastAPI application with an integrated NiceGUI web interface, eliminating the complexity of managing separate frontend and backend services.
 
 ## Requirements
 

@@ -1,12 +1,12 @@
 ---
-
 inclusion: fileMatch
 fileMatchPattern:
-    - "docker/**/*.yml"
-    - "docker/**/*.Dockerfile"
-    - "docker-compose*"
+  - docker/**/*.yml
+  - docker/**/*.Dockerfile
+  - docker-compose*
 ---
-# CipherSwarm Docker & Containerization Requirements
+
+# Ouroboros Docker & Containerization Requirements
 
 ## Project-Specific Standards
 

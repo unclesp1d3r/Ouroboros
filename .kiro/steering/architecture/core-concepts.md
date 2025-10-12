@@ -1,7 +1,8 @@
 ---
 inclusion: always
 ---
-# CipherSwarm Core Concepts
+
+# Ouroboros Core Concepts
 
 ## Project Overview
 

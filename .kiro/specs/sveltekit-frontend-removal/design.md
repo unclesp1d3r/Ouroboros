@@ -2,7 +2,7 @@
 
 ## Overview
 
-The SvelteKit Frontend Removal design outlines a systematic approach to eliminate the separate SvelteKit frontend from CipherSwarm while preserving all user functionality through the integrated NiceGUI interface. This design ensures a clean, safe, and complete transition to a single-application architecture.
+The SvelteKit Frontend Removal design outlines a systematic approach to eliminate the separate SvelteKit frontend from Ouroboros while preserving all user functionality through the integrated NiceGUI interface. This design ensures a clean, safe, and complete transition to a single-application architecture.
 
 The removal process is designed to be executed after the NiceGUI web interface has been fully implemented, tested, and validated to provide equivalent functionality to the existing SvelteKit frontend.
 
@@ -12,7 +12,7 @@ The removal process is designed to be executed after the NiceGUI web interface h
 
 ```mermaid
 graph TB
-    subgraph "Current CipherSwarm Architecture"
+    subgraph "Current Ouroboros Architecture"
         A[Client Browser] --> B[Nginx Reverse Proxy]
         B --> C[SvelteKit Frontend :5173]
         B --> D[FastAPI Backend :8000]
@@ -47,7 +47,7 @@ graph TB
 
 ```mermaid
 graph TB
-    subgraph "Target CipherSwarm Architecture"
+    subgraph "Target Ouroboros Architecture"
         A[Client Browser] --> B[Nginx Reverse Proxy]
         B --> C[FastAPI Backend :8000]
 
@@ -79,7 +79,7 @@ graph TB
 
 **Post-Removal System Components**
 
-After the SvelteKit frontend removal, CipherSwarm will consist of these core components:
+After the SvelteKit frontend removal, Ouroboros will consist of these core components:
 
 ```
 FastAPI Application
@@ -94,6 +94,7 @@ FastAPI Application
 ```
 
 **Component Responsibilities:**
+
 - **NiceGUI Interface**: Integrated web UI served directly from FastAPI
 - **Agent API**: External agent communication (preserved unchanged)
 - **Control API**: CLI/TUI interface (preserved unchanged)
@@ -112,38 +113,31 @@ class RouteMigration:
         # Root and dashboard
         "/": "/ui/dashboard",
         "/dashboard": "/ui/dashboard",
-
         # Campaign management
         "/campaigns": "/ui/campaigns",
         "/campaigns/new": "/ui/campaigns/new",
         "/campaigns/{id}": "/ui/campaigns/{id}",
         "/campaigns/{id}/edit": "/ui/campaigns/{id}/edit",
-
         # Agent management
         "/agents": "/ui/agents",
         "/agents/{id}": "/ui/agents/{id}",
-
         # Attack configuration
         "/attacks": "/ui/attacks",
         "/attacks/new": "/ui/attacks/new",
         "/attacks/{id}": "/ui/attacks/{id}",
-
         # Resource management
         "/resources": "/ui/resources",
         "/resources/upload": "/ui/resources/upload",
-
         # User management
         "/users": "/ui/users",
         "/users/new": "/ui/users/new",
         "/users/{id}": "/ui/users/{id}",
-
         # Settings and profile
         "/settings": "/ui/settings",
         "/profile": "/ui/profile",
-
         # Authentication (if different)
         "/login": "/ui/login",
-        "/logout": "/ui/logout"
+        "/logout": "/ui/logout",
     }
 
     @staticmethod
@@ -180,6 +174,7 @@ class RouteMigration:
 The following SvelteKit-related files and directories will be completely removed:
 
 **Directories:**
+
 - `frontend/` - Entire SvelteKit application
 - `node_modules/` - Node.js dependencies
 - `.svelte-kit/` - SvelteKit build cache
@@ -189,6 +184,7 @@ The following SvelteKit-related files and directories will be completely removed
 - `playwright-report/` - E2E test reports
 
 **Configuration Files:**
+
 - `package.json` - Node.js package configuration
 - `package-lock.json` / `pnpm-lock.yaml` - Dependency lock files
 - `svelte.config.js` - SvelteKit configuration
@@ -199,6 +195,7 @@ The following SvelteKit-related files and directories will be completely removed
 - `vitest.config.ts` - Frontend unit test configuration
 
 **Steering Documents:**
+
 - `.kiro/steering/sveltekit5-runes.md`
 - `.kiro/steering/shadcn-svelte-extras.md`
 - `.kiro/steering/ux-guidelines.md`
@@ -206,6 +203,7 @@ The following SvelteKit-related files and directories will be completely removed
 - `.kiro/steering/phase-3-task-verification.md`
 
 **Files to Update (not remove):**
+
 - `.gitignore` - Remove frontend-specific entries
 - `README.md` - Update setup instructions
 - `docker-compose.yml` - Remove frontend service
@@ -224,9 +222,9 @@ services:
   app:
     build: .
     ports:
-      - "8000:8000"
+      - 8000:8000
     environment:
-      - DATABASE_URL=postgresql://user:pass@db:5432/cipherswarm
+      - DATABASE_URL=postgresql://user:pass@db:5432/ouroboros
       - REDIS_URL=redis://redis:6379
       - MINIO_URL=http://minio:9000
     depends_on:
@@ -240,8 +238,8 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
@@ -251,7 +249,7 @@ services:
   db:
     image: postgres:16
     environment:
-      - POSTGRES_DB=cipherswarm
+      - POSTGRES_DB=ouroboros
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
     volumes:
@@ -271,8 +269,8 @@ services:
     volumes:
       - minio_data:/data
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - 9000:9000
+      - 9001:9001
 
 volumes:
   postgres_data:
@@ -332,9 +330,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   backend-tests:
@@ -352,32 +350,32 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.13'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
 
-    - name: Install uv
-      run: pip install uv
+      - name: Install uv
+        run: pip install uv
 
-    - name: Install dependencies
-      run: uv sync
+      - name: Install dependencies
+        run: uv sync
 
-    - name: Run linting
-      run: |
-        uv run ruff check .
-        uv run ruff format --check .
-        uv run mypy .
+      - name: Run linting
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run mypy .
 
-    - name: Run backend tests
-      run: uv run pytest
-      env:
-        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+      - name: Run backend tests
+        run: uv run pytest
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
 
-    - name: Run NiceGUI integration tests
-      run: uv run pytest tests/integration/ui/
+      - name: Run NiceGUI integration tests
+        run: uv run pytest tests/integration/ui/
 
     # Frontend steps completely removed:
     # - No Node.js setup
@@ -392,17 +390,17 @@ jobs:
     needs: backend-tests
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Build Docker image
-      run: docker build -t cipherswarm:latest .
+      - name: Build Docker image
+        run: docker build -t ouroboros:latest .
 
-    - name: Test Docker container
-      run: |
-        docker run -d --name test-container cipherswarm:latest
-        sleep 10
-        docker exec test-container curl -f http://localhost:8000/health
-        docker stop test-container
+      - name: Test Docker container
+        run: |
+          docker run -d --name test-container ouroboros:latest
+          sleep 10
+          docker exec test-container curl -f http://localhost:8000/health
+          docker stop test-container
 ```
 
 ### 6. Web UI API Routes Removal
@@ -430,7 +428,7 @@ class WebUIAPIRemoval:
         "/api/v1/web/resources/",
         "/api/v1/web/resources/upload",
         "/api/v1/web/users/",
-        "/api/v1/web/users/{id}"
+        "/api/v1/web/users/{id}",
     ]
 
     # Files containing Web UI API routes
@@ -441,7 +439,7 @@ class WebUIAPIRemoval:
         "app/api/v1/endpoints/web/dashboard.py",
         "app/api/v1/endpoints/web/resources.py",
         "app/api/v1/endpoints/web/users.py",
-        "app/api/v1/endpoints/web/__init__.py"
+        "app/api/v1/endpoints/web/__init__.py",
     ]
 
     # Schemas specific to Web UI API
@@ -450,14 +448,15 @@ class WebUIAPIRemoval:
         # Individual files if not in subdirectory:
         "app/schemas/dashboard.py",
         "app/schemas/web_campaign.py",
-        "app/schemas/web_attack.py"
+        "app/schemas/web_attack.py",
     ]
 
     # Tests for Web UI API routes
     WEB_API_TESTS_TO_REMOVE = [
         "tests/integration/web/",  # Entire web API test directory
-        "tests/unit/api/web/"
+        "tests/unit/api/web/",
     ]
+
 
 class NiceGUIServiceIntegration:
     """Defines how NiceGUI will integrate with backend services"""
@@ -467,23 +466,23 @@ class NiceGUIServiceIntegration:
         "campaigns": {
             "old_api": "/api/v1/web/campaigns/",
             "new_pattern": "await campaign_service.list_campaigns(db, user_id)",
-            "service_file": "app/core/services/campaign_service.py"
+            "service_file": "app/core/services/campaign_service.py",
         },
         "agents": {
             "old_api": "/api/v1/web/agents/",
             "new_pattern": "await agent_service.list_agents(db, project_id)",
-            "service_file": "app/core/services/agent_service.py"
+            "service_file": "app/core/services/agent_service.py",
         },
         "attacks": {
             "old_api": "/api/v1/web/attacks/",
             "new_pattern": "await attack_service.list_attacks(db, campaign_id)",
-            "service_file": "app/core/services/attack_service.py"
+            "service_file": "app/core/services/attack_service.py",
         },
         "dashboard": {
             "old_api": "/api/v1/web/dashboard/summary",
             "new_pattern": "await dashboard_service.get_summary(db, user_id)",
-            "service_file": "app/core/services/dashboard_service.py"
-        }
+            "service_file": "app/core/services/dashboard_service.py",
+        },
     }
 
     @staticmethod
@@ -496,7 +495,7 @@ class NiceGUIServiceIntegration:
             "attack_service",
             "dashboard_service",
             "resource_service",
-            "user_service"
+            "user_service",
         ]
 
         missing_services = []
@@ -507,7 +506,7 @@ class NiceGUIServiceIntegration:
 
         return ServiceValidationResult(
             all_services_available=len(missing_services) == 0,
-            missing_services=missing_services
+            missing_services=missing_services,
         )
 ```
 
@@ -563,17 +562,21 @@ graph TB
 The following documentation files need to be updated to remove SvelteKit references:
 
 **README.md Updates:**
+
 - Remove sections: "Frontend Development", "SvelteKit Setup", "Node.js Requirements", "Frontend Testing"
 - Update sections: "Quick Start" (remove frontend setup), "Development" (backend-only workflow), "Testing" (remove frontend commands), "Deployment" (single container)
 
 **docs/development/setup.md Updates:**
+
 - Remove sections: "Frontend Development Environment", "Node.js and pnpm Installation", "SvelteKit Development Server"
 - Update sections: "Development Workflow" (backend + NiceGUI only), "Hot Reload" (FastAPI + NiceGUI)
 
 **docs/architecture/overview.md Updates:**
+
 - Update sections: "System Architecture" (single FastAPI app), "Frontend Architecture" (replace with NiceGUI), "Deployment Architecture" (simplified containers)
 
 **Steering Documents to Remove:**
+
 - `.kiro/steering/sveltekit5-runes.md`
 - `.kiro/steering/shadcn-svelte-extras.md`
 - `.kiro/steering/ux-guidelines.md`
@@ -587,6 +590,7 @@ The following documentation files need to be updated to remove SvelteKit referen
 Before removing the SvelteKit frontend, the following validations must be completed:
 
 **NiceGUI Functionality Validation:**
+
 - All SvelteKit features have equivalent NiceGUI implementations
 - User workflows work identically in NiceGUI interface
 - Authentication and authorization function correctly
@@ -594,12 +598,14 @@ Before removing the SvelteKit frontend, the following validations must be comple
 - Performance is acceptable compared to SvelteKit
 
 **System Integration Validation:**
+
 - NiceGUI integrates properly with existing backend services
 - All API endpoints remain functional (Agent API, Control API, shared routes)
 - Database operations work correctly through service layer
 - Caching and storage systems function properly
 
 **User Experience Validation:**
+
 - All user workflows can be completed in NiceGUI
 - Interface is responsive and accessible
 - No functionality gaps exist
@@ -612,6 +618,7 @@ Before removing the SvelteKit frontend, the following validations must be comple
 Before removing the SvelteKit frontend, comprehensive testing must validate that NiceGUI provides equivalent functionality:
 
 **User Workflow Testing:**
+
 - User login and dashboard access
 - Campaign creation and management
 - Agent monitoring and control
@@ -620,6 +627,7 @@ Before removing the SvelteKit frontend, comprehensive testing must validate that
 - User management and permissions
 
 **System Integration Testing:**
+
 - Route redirects work correctly
 - Authentication functions properly
 - API endpoints remain functional
@@ -631,12 +639,14 @@ Before removing the SvelteKit frontend, comprehensive testing must validate that
 After removal, the following must be verified:
 
 **File System Validation:**
+
 - All SvelteKit files and directories removed
 - Node.js dependencies cleaned up
 - Docker configurations updated
 - Documentation updated
 
 **Functional Testing:**
+
 - Root path redirects to `/ui/dashboard`
 - Legacy routes redirect to NiceGUI equivalents
 - NiceGUI interface is accessible
@@ -644,6 +654,7 @@ After removal, the following must be verified:
 - No broken links or missing resources
 
 **Integration Testing:**
+
 - All user workflows work in NiceGUI
 - Authentication and authorization functional
 - Real-time updates working

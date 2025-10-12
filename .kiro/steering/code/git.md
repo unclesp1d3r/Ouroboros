@@ -1,6 +1,6 @@
 ---
 inclusion: fileMatch
-fileMatchPattern: "**/.git/*"
+fileMatchPattern: '**/.git/*'
 ---
 
 - **Commit Strategies:**

@@ -144,8 +144,8 @@ export function getCampaigns() {
 ### SSR Data vs Store Data
 
 - **Pages should use SSR data directly** when possible
-- **Only hydrate stores when components need reactive updates**
-- **Avoid mixing SSR data and store data in the same component**
+* **Only hydrate stores when components need reactive updates**
+* **Avoid mixing SSR data and store data in the same component**
 
 ```svelte
 <!-- ✅ CORRECT - Use SSR data directly -->
@@ -335,8 +335,8 @@ test('hydrateCampaigns updates store state correctly', () => {
 ### When to Hydrate Stores
 
 - **Components need reactive updates** after initial SSR load
-- **Real-time data updates** (polling, WebSocket updates)
-- **Cross-component state sharing** is required
+* **Real-time data updates** (polling, WebSocket updates)
+* **Cross-component state sharing** is required
 
 ```typescript
 // ✅ CORRECT - Hydrate only when reactive updates needed
@@ -500,40 +500,40 @@ test('loads data asynchronously', async () => {
 ### Unit Test Coverage
 
 - **Target Coverage**: 80%+ for all critical components
-- **Focus Areas**:
-  - Component rendering with various props
-  - Event handling and user interactions
-  - Store integration and state management
-  - Form validation and submission
-  - Error states and edge cases
+* **Focus Areas**:
+  * Component rendering with various props
+  * Event handling and user interactions
+  * Store integration and state management
+  * Form validation and submission
+  * Error states and edge cases
 
 ### Test Quality Standards
 
 - Use descriptive test names that explain the scenario
-- Test behavior, not implementation details
-- Mock external dependencies appropriately
-- Clean up after each test
-- Use proper assertions and matchers
+* Test behavior, not implementation details
+* Mock external dependencies appropriately
+* Clean up after each test
+* Use proper assertions and matchers
 
 ### Testing Best Practices
 
 - **Arrange-Act-Assert pattern**: Structure tests clearly
-- **Single responsibility**: Each test should verify one behavior
-- **Deterministic tests**: Avoid flaky tests with proper mocking
-- **Readable tests**: Use clear naming and comments when needed
+* **Single responsibility**: Each test should verify one behavior
+* **Deterministic tests**: Avoid flaky tests with proper mocking
+* **Readable tests**: Use clear naming and comments when needed
 
 ## Integration with Backend Testing
 
 ### API Mock Consistency
 
 - Frontend mocks must match backend API responses exactly
-- Use the same data structures and field names
-- Maintain consistency between test environments
-- Validate mock data against actual API schemas when possible
+* Use the same data structures and field names
+* Maintain consistency between test environments
+* Validate mock data against actual API schemas when possible
 
 ### Test Data Management
 
 - Use consistent test data across frontend and backend
-- Share common test utilities where appropriate
-- Ensure mock data reflects real-world scenarios
-- Update mocks when API contracts change
+* Share common test utilities where appropriate
+* Ensure mock data reflects real-world scenarios
+* Update mocks when API contracts change

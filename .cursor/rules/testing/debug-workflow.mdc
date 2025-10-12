@@ -378,15 +378,15 @@ const connectionHealth = {
 ### Debugging Mistakes
 
 - Making multiple changes simultaneously
-- Ignoring service health indicators
-- Not checking browser DevTools
-- Skipping log analysis
-- Assuming rather than verifying
+* Ignoring service health indicators
+* Not checking browser DevTools
+* Skipping log analysis
+* Assuming rather than verifying
 
 ### Environment Issues
 
 - Working with unhealthy containers
-- Not restarting services when needed
-- Ignoring Docker compose status
-- Creating conflicting development instances
-- Not cleaning up after debugging sessions
+* Not restarting services when needed
+* Ignoring Docker compose status
+* Creating conflicting development instances
+* Not cleaning up after debugging sessions

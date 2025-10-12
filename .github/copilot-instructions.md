@@ -1,6 +1,6 @@
-# CipherSwarm Development Guide for AI Agents
+# Ouroboros Development Guide for AI Agents
 
-CipherSwarm is a distributed password cracking management system with FastAPI backend, SvelteKit frontend, and Go-based agents. This guide provides essential patterns for immediate productivity.
+Ouroboros is a distributed password cracking management system with FastAPI backend, SvelteKit frontend, and Go-based agents. This guide provides essential patterns for immediate productivity.
 
 ## 🏗️ Architecture Overview
 

@@ -2,13 +2,14 @@
 
 ## Overview
 
-This implementation plan converts the SvelteKit Frontend Removal design into a series of systematic tasks for eliminating the separate SvelteKit frontend from CipherSwarm. The tasks are organized to safely remove frontend code, dependencies, and configurations while preserving all functionality through the integrated NiceGUI interface.
+This implementation plan converts the SvelteKit Frontend Removal design into a series of systematic tasks for eliminating the separate SvelteKit frontend from Ouroboros. The tasks are organized to safely remove frontend code, dependencies, and configurations while preserving all functionality through the integrated NiceGUI interface.
 
 The removal process must be executed after the NiceGUI web interface has been fully implemented, tested, and validated to provide equivalent functionality to the existing SvelteKit frontend.
 
 ## Prerequisites
 
 Before executing these tasks, the following must be completed:
+
 - NiceGUI web interface fully implemented and functional
 - All SvelteKit features have equivalent NiceGUI implementations
 - User workflows tested and validated in NiceGUI
@@ -17,12 +18,14 @@ Before executing these tasks, the following must be completed:
 ## Implementation Tasks
 
 - [ ] 1. Create Backup and Safety Branch
+
   - Create a complete backup of the current project state
   - Create a new branch `remove-sveltekit-frontend` for the removal work
   - Document the current state and create rollback procedures
   - _Requirements: 12.1, 12.2, 12.3_
 
 - [ ] 1.1 Validate NiceGUI Functionality
+
   - Test all major user workflows in NiceGUI interface
   - Verify authentication and authorization work correctly
   - Confirm real-time updates and notifications function properly
@@ -30,6 +33,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 11.1, 11.2, 11.3_
 
 - [ ] 1.2 Document Current Frontend Features
+
   - Create comprehensive list of all SvelteKit features and pages
   - Map each feature to its NiceGUI equivalent
   - Identify any functionality gaps that need addressing
@@ -37,6 +41,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 11.4, 11.5_
 
 - [ ] 2. Update Route Configuration
+
   - Add redirect middleware to FastAPI for legacy SvelteKit routes
   - Configure root path `/` to redirect to `/ui/dashboard`
   - Set up redirects for all major SvelteKit routes to NiceGUI equivalents
@@ -44,6 +49,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 7.1, 7.2, 7.3_
 
 - [ ] 2.1 Remove Web UI API Routes
+
   - Delete all `/api/v1/web/*` endpoint files in `app/api/v1/endpoints/web/`
   - Remove web-specific schemas from `app/schemas/web/` or individual web schema files
   - Update FastAPI router configuration to exclude web API routes
@@ -51,6 +57,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 2.1, 2.2, 2.3_
 
 - [ ] 2.2 Clean Up Web API Tests
+
   - Remove all Web UI API integration tests from `tests/integration/web/`
   - Remove web API unit tests from `tests/unit/api/web/`
   - Update test configuration to exclude web API test directories
@@ -58,6 +65,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 2.4, 10.1, 10.2_
 
 - [ ] 3. Update Docker Configuration
+
   - Remove `frontend` service from `docker-compose.yml`
   - Remove `frontend` service from `docker-compose.dev.yml`
   - Update nginx configuration to remove frontend proxy settings
@@ -65,6 +73,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 4.1, 4.2, 4.3_
 
 - [ ] 3.1 Test Docker Configuration
+
   - Build and test updated Docker containers
   - Verify only backend services are required (app, db, redis, minio)
   - Test that NiceGUI interface is accessible through nginx
@@ -72,6 +81,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 4.4, 4.5_
 
 - [ ] 4. Remove Node.js Dependencies
+
   - Delete `package.json` from project root
   - Delete `package-lock.json` or `pnpm-lock.yaml` from project root
   - Remove `node_modules/` directory from project root
@@ -79,6 +89,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 3.1, 3.2, 3.3_
 
 - [ ] 4.1 Remove Frontend Configuration Files
+
   - Delete `svelte.config.js` - SvelteKit configuration
   - Delete `vite.config.ts` - Vite build configuration
   - Delete `tailwind.config.js` - TailwindCSS configuration
@@ -88,6 +99,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 8.1, 8.2, 8.4_
 
 - [ ] 4.2 Remove Frontend TypeScript Configuration
+
   - Delete frontend-specific `tsconfig.json` files
   - Remove frontend ESLint configuration files (`.eslintrc.*`)
   - Remove frontend Prettier configuration files (`.prettierrc`, `.prettierignore`)
@@ -95,6 +107,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 8.2, 8.3_
 
 - [ ] 5. Remove Frontend Directory and Files
+
   - Delete entire `frontend/` directory and all contents
   - Remove `.svelte-kit/` build cache directory
   - Remove `build/` frontend build output directory
@@ -103,6 +116,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 1.1, 1.2_
 
 - [ ] 5.1 Update .gitignore File
+
   - Remove frontend-specific entries from `.gitignore`
   - Remove Node.js related ignore patterns (`node_modules/`, `.npm`, etc.)
   - Remove SvelteKit specific ignore patterns (`.svelte-kit/`, `build/`, etc.)
@@ -110,6 +124,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 8.1_
 
 - [ ] 6. Update Build System and CI/CD
+
   - Remove frontend test steps from `.github/workflows/ci.yml`
   - Remove frontend linting and formatting from CI workflows
   - Remove Node.js setup steps from GitHub Actions
@@ -117,6 +132,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 6.1, 6.2_
 
 - [ ] 6.1 Update Justfile Recipes
+
   - Remove frontend-related recipes from `justfile`
   - Remove `frontend-*` commands (test, lint, format, etc.)
   - Update `dev-fullstack` recipe to only start backend services
@@ -124,6 +140,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 6.3_
 
 - [ ] 6.2 Update Pre-commit Hooks
+
   - Remove frontend-specific hooks from `.pre-commit-config.yaml`
   - Remove ESLint, Prettier, and other frontend linting hooks
   - Remove any Node.js or npm related hooks
@@ -131,6 +148,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 6.4_
 
 - [ ] 7. Update Documentation
+
   - Update `README.md` to remove frontend development sections
   - Remove "Frontend Development", "SvelteKit Setup", "Node.js Requirements" sections
   - Update "Quick Start" to remove frontend setup steps
@@ -140,6 +158,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 5.1, 5.4_
 
 - [ ] 7.1 Update Development Documentation
+
   - Update `docs/development/setup.md` to remove frontend sections
   - Remove "Frontend Development Environment" section
   - Remove "Node.js and pnpm Installation" section
@@ -148,6 +167,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 5.2, 5.4_
 
 - [ ] 7.2 Update Architecture Documentation
+
   - Update `docs/architecture/overview.md` to reflect new architecture
   - Update "System Architecture" to single FastAPI application
   - Replace "Frontend Architecture" section with NiceGUI section
@@ -156,6 +176,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 5.3, 5.4_
 
 - [ ] 8. Remove Steering Documents
+
   - Delete `.kiro/steering/sveltekit5-runes.md`
   - Delete `.kiro/steering/shadcn-svelte-extras.md`
   - Delete `.kiro/steering/ux-guidelines.md`
@@ -164,6 +185,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 5.2, 5.5_
 
 - [ ] 8.1 Update Environment Configuration
+
   - Remove frontend-specific variables from `.env` and `env.example`
   - Remove frontend build and development settings
   - Update environment documentation to reflect backend-only requirements
@@ -171,6 +193,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 9.1, 9.2, 9.4_
 
 - [ ] 9. Remove Frontend Tests
+
   - Delete all SvelteKit component tests
   - Delete frontend-specific Playwright E2E tests
   - Remove frontend test utilities and helpers
@@ -178,6 +201,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 10.1, 10.2, 10.3_
 
 - [ ] 9.1 Update Test Configuration
+
   - Update test coverage configuration to exclude frontend code
   - Remove frontend test directories from coverage reports
   - Update CI test commands to only run backend and NiceGUI tests
@@ -185,6 +209,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 10.4, 10.5_
 
 - [ ] 10. Validate Removal Success
+
   - Test that root path `/` redirects to `/ui/dashboard`
   - Verify all legacy SvelteKit routes redirect to NiceGUI equivalents
   - Confirm NiceGUI interface is fully accessible and functional
@@ -193,6 +218,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 7.4, 7.5_
 
 - [ ] 10.1 Test User Workflows
+
   - Test complete user login and dashboard access workflow
   - Test campaign creation and management in NiceGUI
   - Test agent monitoring and control functionality
@@ -202,6 +228,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 11.1, 11.2, 11.3_
 
 - [ ] 10.2 Performance and Integration Testing
+
   - Verify application startup time improved (no frontend build)
   - Test that CI/CD pipeline runs faster without frontend steps
   - Confirm Docker container build is simpler and faster
@@ -210,6 +237,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 6.5, 9.5, 12.4_
 
 - [ ] 11. Final Cleanup and Documentation
+
   - Update project README with simplified architecture description
   - Document the benefits achieved (single container, faster builds, etc.)
   - Create migration notes for any users affected by the change
@@ -217,6 +245,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 13.1, 13.3, 13.4_
 
 - [ ] 11.1 Stakeholder Communication
+
   - Notify stakeholders of successful frontend removal
   - Provide updated documentation and setup instructions
   - Offer training on NiceGUI interface if needed
@@ -224,6 +253,7 @@ Before executing these tasks, the following must be completed:
   - _Requirements: 13.1, 13.2, 13.5_
 
 - [ ] 11.2 Final Validation and Merge
+
   - Run complete test suite to ensure no regressions
   - Perform final review of all changes
   - Get approval from project maintainers
@@ -233,7 +263,7 @@ Before executing these tasks, the following must be completed:
 
 ## Post-Removal Benefits
 
-Upon completion of these tasks, CipherSwarm will achieve:
+Upon completion of these tasks, Ouroboros will achieve:
 
 - **Simplified Architecture**: Single FastAPI application with integrated NiceGUI
 - **Reduced Complexity**: No separate frontend/backend coordination required

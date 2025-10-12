@@ -10,14 +10,18 @@ alwaysApply: false
 ### File Organization
 
 - Store schemas in `app/schemas/{resource}.py` (e.g., `hash_list.py`, `campaign.py`)
+
 - One schema file per domain/resource
+
 - Import shared schemas from `app/schemas/shared.py`
 - Group related schemas in the same file
 
 ### Schema Naming Conventions
 
 - Input schemas: `{Resource}Create`, `{Resource}Update`
+
 - Output schemas: `{Resource}Out`, `{Resource}Response`
+
 - Internal schemas: `{Resource}UpdateData` (for service layer)
 - List responses: Use `PaginatedResponse[{Resource}Out]` from [app/schemas/shared.py](mdc:app/schemas/shared.py)
 
@@ -26,7 +30,9 @@ alwaysApply: false
 ### Create Schemas
 
 - Include all required fields for resource creation
+
 - Use validation constraints with `Field()`
+
 - Exclude auto-generated fields (id, timestamps)
 
 ```python
@@ -41,7 +47,9 @@ class HashListCreate(BaseModel):
 ### Update Schemas
 
 - Make all fields optional for PATCH operations
+
 - Use same validation constraints as create schemas
+
 - Consider separate schemas for different update scenarios
 
 ```python
@@ -54,7 +62,9 @@ class HashListUpdate(BaseModel):
 ### Service Layer Update Schemas
 
 - Use for internal service operations
+
 - May have different validation rules than API schemas
+
 - Often used for partial updates
 
 ```python
@@ -72,7 +82,9 @@ class HashListUpdateData(BaseModel):
 ### Response Schemas
 
 - Include all fields that should be exposed to clients
+
 - Use `from_attributes = True` for SQLAlchemy model conversion
+
 - Include computed fields when needed
 
 ```python
@@ -93,6 +105,7 @@ class HashListOut(BaseModel):
 ### Pagination Responses
 
 - Always use `PaginatedResponse[T]` for list endpoints
+
 - Don't create custom pagination schemas
 
 ```python
@@ -115,7 +128,9 @@ async def list_hash_lists() -> PaginatedResponse[HashListOut]:
 ### Field Validation
 
 - Use `Field()` for constraints and documentation
+
 - Prefer built-in validators over custom ones when possible
+
 - Use descriptive error messages
 
 ```python
@@ -138,7 +153,9 @@ class CampaignCreate(BaseModel):
 ### Custom Validators
 
 - Use `@field_validator` for complex validation
+
 - Use `@model_validator` for cross-field validation
+
 - Keep validation logic simple and focused
 
 ```python
@@ -172,12 +189,15 @@ class AttackCreate(BaseModel):
 ### Modern Python Syntax
 
 - Use `str | None` instead of `Optional[str]` (Python 3.10+)
+
 - Use `list[T]` instead of `List[T]`
+
 - Use `dict[K, V]` instead of `Dict[K, V]`
 
 ### Annotated Types
 
 - Use `Annotated` for dependency injection
+
 - Combine with `Field()` for validation and documentation
 
 ```python
@@ -194,7 +214,9 @@ class ResourceCreate(BaseModel):
 ### Model Configuration
 
 - Use `from_attributes = True` for SQLAlchemy integration
+
 - Set `extra = "forbid"` to prevent unexpected fields
+
 - Use `str_strip_whitespace = True` for string fields
 
 ```python
@@ -211,6 +233,7 @@ class HashListCreate(BaseModel):
 ### Pydantic v2 Configuration
 
 - Use `model_config` for Pydantic v2 style
+
 - Prefer explicit configuration over defaults
 
 ```python
@@ -231,7 +254,9 @@ class HashListOut(BaseModel):
 ### Using Enums in Schemas
 
 - Define enums in separate files or model files
+
 - Use string enums for API compatibility
+
 - Provide clear enum values
 
 ```python
@@ -253,12 +278,15 @@ class AttackCreate(BaseModel):
 ### Validation Error Responses
 
 - Let FastAPI handle Pydantic validation errors automatically
+
 - Use structured error responses for complex validation
+
 - Provide helpful error messages
 
 ### Custom Error Models
 
 - Define error schemas for consistent error responses
+
 - Use for business logic validation errors
 
 ```python
@@ -277,7 +305,9 @@ class ValidationErrorResponse(BaseModel):
 ### Field Documentation
 
 - Always provide `description` for public API fields
+
 - Include `examples` for complex fields
+
 - Use clear, concise descriptions
 
 ```python
@@ -297,7 +327,9 @@ class CampaignCreate(BaseModel):
 ### Schema Examples
 
 - Provide complete examples in docstrings
+
 - Include both valid and invalid examples
+
 - Document expected behavior
 
 ```python
@@ -321,13 +353,17 @@ class AttackEstimateRequest(BaseModel):
 ### Lazy Loading
 
 - Use `Field(exclude=True)` for expensive computed fields
+
 - Consider separate schemas for different use cases
+
 - Avoid deep nesting in response schemas
 
 ### Serialization Optimization
 
 - Use `alias` for field name mapping
+
 - Consider `by_alias=True` for consistent output
+
 - Use `exclude_none=True` to reduce response size
 
 ```python
@@ -346,7 +382,9 @@ class HashListOut(BaseModel):
 ### Unit Testing Schemas
 
 - Test validation rules with valid and invalid data
+
 - Test edge cases and boundary conditions
+
 - Verify error messages are helpful
 
 ```python
