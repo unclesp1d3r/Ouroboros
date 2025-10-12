@@ -87,8 +87,7 @@ Agents must declare their version or use version-specific routes. Future version
 
 Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundaries or cross-link entities.
 
-3. **API Interfaces**
-   a. **Agent API** (`/api/v1/client/*`)
+3. **API Interfaces** a. **Agent API** (`/api/v1/client/*`)
 
    - MUST follow OpenAPI 3.0.1 specification in `contracts/v1_api_swagger.json`
    - Used by distributed Ouroboros agents
@@ -103,8 +102,7 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
      - `/api/v1/client/tasks/*`: Task management
      - `/api/v1/client/crackers/*`: Cracker binary updates
 
-   **Router File Structure:**
-   Each `/api/v1/client/<resource>` endpoint must be implemented in its own router file under `app/api/v1/endpoints/agent/<resource>.py`, except for root-level, non-resource endpoints, which are grouped in `general.py`.
+   **Router File Structure:** Each `/api/v1/client/<resource>` endpoint must be implemented in its own router file under `app/api/v1/endpoints/agent/<resource>.py`, except for root-level, non-resource endpoints, which are grouped in `general.py`.
 
    | Endpoint Path                  | Router File                              |
    | ------------------------------ | ---------------------------------------- |

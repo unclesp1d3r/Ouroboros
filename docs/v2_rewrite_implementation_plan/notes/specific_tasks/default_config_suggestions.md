@@ -6,8 +6,7 @@ Here's the updated version of the `attack.default_config_suggestions.md` note wi
 
 ## 🧠 Task: Show Default Attack Config Suggestions
 
-**ID:** `attack.default_config_suggestions`
-**Context:** Attack Editor UI (Web)
+**ID:** `attack.default_config_suggestions` **Context:** Attack Editor UI (Web)
 
 ### 🧭 Purpose
 

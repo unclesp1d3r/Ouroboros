@@ -32,8 +32,7 @@ async def list_users(db: AsyncSession = Depends(get_db)):
     return await user_service.list_users(db)
 ```
 
-**Base Model Pattern**:
-All models inherit from a base class providing:
+**Base Model Pattern**: All models inherit from a base class providing:
 
 - Auto-incrementing `id` (primary key)
 - `created_at` timestamp (auto-populated)

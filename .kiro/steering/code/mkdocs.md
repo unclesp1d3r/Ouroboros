@@ -23,16 +23,7 @@ This document provides comprehensive guidelines for developing documentation usi
 
 Example:
 
-mkdocs.yml
-docs/
-index.md
-about.md
-license.md
-img/
-screenshot.png
-user-guide/
-getting-started.md
-configuration-options.md
+mkdocs.yml docs/ index.md about.md license.md img/ screenshot.png user-guide/ getting-started.md configuration-options.md
 
 ### 1.2. File Naming Conventions
 

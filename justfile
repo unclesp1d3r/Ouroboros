@@ -54,35 +54,24 @@ update-deps:
 # PHONY: check, format, format-check, lint
 # -----------------------------
 
-# Run all pre-commit checks
-[unix]
-check:
-    # 🚀 Full code + commit checks
+pre-commit-run:
     uv lock --locked
     uv run pre-commit run -a
-    just based-pyright
 
-[windows]
-check:
-    # 🚀 Full code + commit checks
-    uv lock --locked
-    $env:PYTHONUTF8=1; uv run pre-commit run -a
-    just based-pyright
+# Run all pre-commit checks
+check: pre-commit-run based-pyright
 
 based-pyright:
     uv run --group dev basedpyright -p pyproject.toml
 
 # Format code using ruff, mdformat, and svelte check
-format:
-    cd {{justfile_dir()}}
-    just frontend-format
+format: frontend-format
     uv run --group dev ruff format .
-    uv run --group ci mdformat .
 
 # Check code formatting using ruff and mdformat
 format-check:
-    uv run --group dev ruff format --check .
-    uv run --group ci mdformat --check .
+    uv run --group dev ruff format --check
+    uv run --group ci mdformat --check **/*.md
 
 # Run all linting checks
 lint: format-check check frontend-lint
@@ -132,6 +121,7 @@ coverage:
 # -----------------------------
 
 # Clean up .pyc files, __pycache__, and pytest cache
+[unix]
 clean:
     cd {{justfile_dir()}}
     @echo "🧹 Cleaning .pyc files, __pycache__, and .pytest_cache..."
@@ -296,13 +286,7 @@ ci-setup:
     pnpm install --save-dev commitlint @commitlint/config-conventional || @echo "Make sure pnpm is installed manually"
 
 # Run all checks and tests for the entire project (three-tier architecture)
-ci-check:
-    cd {{justfile_dir()}}
-    just format-check
-    just check
-    just test-backend
-    just test-frontend
-    just test-e2e
+ci-check: lint test-backend test-frontend test-e2e
 
 # Run CI workflow locally with act
 github-actions-test:

@@ -126,8 +126,7 @@ Estimation is likely based on:
 - Rule permutations added
 - Any applied filtering patterns
 
-Skirmish should call:
-`POST /api/v1/web/attacks/estimate`\
+Skirmish should call: `POST /api/v1/web/attacks/estimate`\
 whenever modifiers are toggled.
 
 ---

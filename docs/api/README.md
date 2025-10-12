@@ -24,9 +24,7 @@ This directory contains comprehensive documentation for all Ouroboros API interf
 
 ### 1. Agent API (`/api/v1/client/*`)
 
-**Purpose**: Legacy-compatible interface for Ouroboros agents
-**Authentication**: Bearer tokens (`csa_<agent_id>_<token>`)
-**Key Features**:
+**Purpose**: Legacy-compatible interface for Ouroboros agents **Authentication**: Bearer tokens (`csa_<agent_id>_<token>`) **Key Features**:
 
 - Strict OpenAPI 3.0.1 specification compliance
 - Agent registration and heartbeat
@@ -36,9 +34,7 @@ This directory contains comprehensive documentation for all Ouroboros API interf
 
 ### 2. Web UI API (`/api/v1/web/*`)
 
-**Purpose**: Rich interface for SvelteKit frontend application
-**Authentication**: JWT tokens in HTTP-only cookies
-**Key Features**:
+**Purpose**: Rich interface for SvelteKit frontend application **Authentication**: JWT tokens in HTTP-only cookies **Key Features**:
 
 - Campaign and attack management
 - Real-time updates via Server-Sent Events
@@ -48,9 +44,7 @@ This directory contains comprehensive documentation for all Ouroboros API interf
 
 ### 3. Control API (`/api/v1/control/*`)
 
-**Purpose**: Programmatic interface for CLI tools and automation
-**Authentication**: API keys (`cst_<user_id>_<token>`)
-**Key Features**:
+**Purpose**: Programmatic interface for CLI tools and automation **Authentication**: API keys (`cst_<user_id>_<token>`) **Key Features**:
 
 - RFC9457-compliant error responses
 - Batch operations and bulk management

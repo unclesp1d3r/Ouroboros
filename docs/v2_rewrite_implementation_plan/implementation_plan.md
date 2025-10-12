@@ -104,5 +104,4 @@ Phase 2b was fully completed and tested, allowing file-backed resources to be su
 
 - [Core Algorithm Implementation Guide](core_algorithm_implementation_guide.md)
 - Phase 4 was moved up to phase 2b to allow for the resource management to be completed before the web UI is fully implemented. There's currently a TODO to reshuffle the phases to reflect this, but just move to 5 after 3 is completed.
-- As items in the various phases are completed, they are rolled up and added to this overview document.
-  dded to this overview document.
+- As items in the various phases are completed, they are rolled up and added to this overview document. dded to this overview document.

@@ -22,79 +22,33 @@
   Ouroboros is a distributed password cracking management system designed for efficiency, scalability, and airgapped networks. It coordinates multiple hashcat instances across different machines to efficiently crack password hashes using various attack strategies, with a modern web interface and robust API.
 
 - **Project Goals and Objectives**\
-  • Enable distributed hashcat cracking across multiple machines with centralized coordination
-  • Provide modern, user-friendly web interface for campaign and attack management
-  • Support offline-first operations in airgapped environments
-  • Maintain compatibility with existing agent infrastructure while modernizing the platform
-  • Deliver comprehensive monitoring and real-time progress tracking
-  • Support role-based access control and multi-project environments
+  • Enable distributed hashcat cracking across multiple machines with centralized coordination • Provide modern, user-friendly web interface for campaign and attack management • Support offline-first operations in airgapped environments • Maintain compatibility with existing agent infrastructure while modernizing the platform • Deliver comprehensive monitoring and real-time progress tracking • Support role-based access control and multi-project environments
 
 - **Target Audience and Stakeholders**\
-  • **Red Team Operators**: Primary users conducting password audits and penetration testing
-  • **Blue Team Analysts**: Security professionals analyzing password complexity and patterns
-  • **Infrastructure Administrators**: IT personnel managing and maintaining the distributed cracking infrastructure
-  • **Project Managers**: Oversight personnel tracking progress and resource utilization
+  • **Red Team Operators**: Primary users conducting password audits and penetration testing • **Blue Team Analysts**: Security professionals analyzing password complexity and patterns • **Infrastructure Administrators**: IT personnel managing and maintaining the distributed cracking infrastructure • **Project Managers**: Oversight personnel tracking progress and resource utilization
 
 - **Project Boundaries and Limitations**\
-  • Only supports hashcat as the cracking engine (no John the Ripper or other tools)
-  • Designed for trusted LAN environments, not Internet-facing deployments
-  • Requires high-speed, reliable network connections between agents
-  • Not intended for anonymous or untrusted client connections
+  • Only supports hashcat as the cracking engine (no John the Ripper or other tools) • Designed for trusted LAN environments, not Internet-facing deployments • Requires high-speed, reliable network connections between agents • Not intended for anonymous or untrusted client connections
 
 ### Scope Definition
 
-- **In-scope Features and Functionality**
-  • Complete rewrite from Ruby on Rails to FastAPI + SvelteKit architecture
-  • Agent API with full v1 contract compatibility for seamless migration
-  • Modern Web UI with real-time updates and comprehensive campaign management
-  • Three-tier testing architecture with Docker-based E2E testing
-  • Resource management with MinIO object storage integration
-  • Hash type detection and automated wordlist generation
-  • Campaign templates with import/export capabilities
-  • Role-based access control with project-level isolation
+- **In-scope Features and Functionality** • Complete rewrite from Ruby on Rails to FastAPI + SvelteKit architecture • Agent API with full v1 contract compatibility for seamless migration • Modern Web UI with real-time updates and comprehensive campaign management • Three-tier testing architecture with Docker-based E2E testing • Resource management with MinIO object storage integration • Hash type detection and automated wordlist generation • Campaign templates with import/export capabilities • Role-based access control with project-level isolation
 
-- **Out-of-scope Items**
-  • Support for cracking tools other than hashcat
-  • Internet-facing or cloud-based deployments
-  • Advanced machine learning or AI-based attack strategies
-  • Integration with external identity providers (beyond basic auth)
+- **Out-of-scope Items** • Support for cracking tools other than hashcat • Internet-facing or cloud-based deployments • Advanced machine learning or AI-based attack strategies • Integration with external identity providers (beyond basic auth)
 
-- **Success Criteria and Acceptance Criteria**
-  • All existing v1 agents can connect and operate without modification
-  • Web UI provides feature parity with existing Rails application
-  • System can handle distributed workloads across 10+ agents simultaneously
-  • E2E tests provide comprehensive coverage of all user workflows
-  • Performance meets or exceeds existing Ruby on Rails implementation
+- **Success Criteria and Acceptance Criteria** • All existing v1 agents can connect and operate without modification • Web UI provides feature parity with existing Rails application • System can handle distributed workloads across 10+ agents simultaneously • E2E tests provide comprehensive coverage of all user workflows • Performance meets or exceeds existing Ruby on Rails implementation
 
-- **Timeline and Milestones**
-  • **Phase 1**: Core Infrastructure ✅ **COMPLETED**
-  • **Phase 2**: API Implementation ✅ **COMPLETED** (2/3 parts)
-  • **Phase 3**: Web UI Development ✅ **COMPLETED**
-  • **Phase 4**: Containerization and Deployment
-  • **Phase 5**: Task Distribution System
-  • **Phase 6**: Monitoring, Testing and Documentation
+- **Timeline and Milestones** • **Phase 1**: Core Infrastructure ✅ **COMPLETED** • **Phase 2**: API Implementation ✅ **COMPLETED** (2/3 parts) • **Phase 3**: Web UI Development ✅ **COMPLETED** • **Phase 4**: Containerization and Deployment • **Phase 5**: Task Distribution System • **Phase 6**: Monitoring, Testing and Documentation
 
 ### Context and Background
 
-- **Business Context and Justification**
-  Legacy Ruby on Rails system requires modernization for maintainability, performance, and feature development. The v2 rewrite addresses technical debt while maintaining operational continuity.
+- **Business Context and Justification** Legacy Ruby on Rails system requires modernization for maintainability, performance, and feature development. The v2 rewrite addresses technical debt while maintaining operational continuity.
 
-- **Previous Work and Dependencies**
-  • Existing v1 API contract that must be maintained for agent compatibility
-  • Established user workflows and UI patterns that need preservation
-  • Current production deployments that require seamless migration path
+- **Previous Work and Dependencies** • Existing v1 API contract that must be maintained for agent compatibility • Established user workflows and UI patterns that need preservation • Current production deployments that require seamless migration path
 
-- **Assumptions and Constraints**
-  • All client machines are trustworthy and under direct user control
-  • Users belong to the same organization or project team
-  • High-speed LAN connectivity between all system components
-  • PostgreSQL and MinIO infrastructure available for deployment
+- **Assumptions and Constraints** • All client machines are trustworthy and under direct user control • Users belong to the same organization or project team • High-speed LAN connectivity between all system components • PostgreSQL and MinIO infrastructure available for deployment
 
-- **Risk Assessment Overview**
-  • **Technical Risk**: Complexity of maintaining v1 API compatibility during rewrite
-  • **Operational Risk**: Potential disruption during migration from Rails to FastAPI
-  • **Performance Risk**: Ensuring new architecture matches or exceeds current performance
-  • **User Risk**: Learning curve for new UI patterns and workflows
+- **Risk Assessment Overview** • **Technical Risk**: Complexity of maintaining v1 API compatibility during rewrite • **Operational Risk**: Potential disruption during migration from Rails to FastAPI • **Performance Risk**: Ensuring new architecture matches or exceeds current performance • **User Risk**: Learning curve for new UI patterns and workflows
 
 ---
 

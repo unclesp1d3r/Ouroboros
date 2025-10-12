@@ -215,8 +215,7 @@ export default defineConfig({
 
 ### Sample E2E Tests
 
-**Authentication Flow**: [frontend/tests/e2e/auth.e2e.test.ts](mdc:Ouroboros/frontend/tests/e2e/auth.e2e.test.ts)
-**Project Management**: [frontend/tests/e2e/projects.e2e.test.ts](mdc:Ouroboros/frontend/tests/e2e/projects.e2e.test.ts)
+**Authentication Flow**: [frontend/tests/e2e/auth.e2e.test.ts](mdc:Ouroboros/frontend/tests/e2e/auth.e2e.test.ts) **Project Management**: [frontend/tests/e2e/projects.e2e.test.ts](mdc:Ouroboros/frontend/tests/e2e/projects.e2e.test.ts)
 
 **Test Pattern**:
 

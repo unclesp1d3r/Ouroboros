@@ -49,19 +49,7 @@ This document provides comprehensive guidance on Docker best practices, covering
 ## 1. Code Organization and Structure
 
 - **Directory Structure Best Practices:**
-  - Organize your project with a clear separation of concerns. For example:
-    project-root/
-    ├── Dockerfile # Dockerfile for building the image
-    ├── docker-compose.yml # Docker Compose file for multi-container setup
-    ├── .dockerignore # Specifies intentionally untracked files that Docker should ignore
-    ├── app/ # Application source code
-    │ ├── ...
-    ├── config/ # Configuration files
-    │ ├── ...
-    ├── data/ # Data files (if any, though consider volumes)
-    │ ├── ...
-    ├── scripts/ # Scripts for building, deploying, or managing the container
-    │ ├── ...
+  - Organize your project with a clear separation of concerns. For example: project-root/ ├── Dockerfile # Dockerfile for building the image ├── docker-compose.yml # Docker Compose file for multi-container setup ├── .dockerignore # Specifies intentionally untracked files that Docker should ignore ├── app/ # Application source code │ ├── ... ├── config/ # Configuration files │ ├── ... ├── data/ # Data files (if any, though consider volumes) │ ├── ... ├── scripts/ # Scripts for building, deploying, or managing the container │ ├── ...
   - Keep the `Dockerfile` and `docker-compose.yml` at the root of your project for easy access.
 - **File Naming Conventions:**
   - Use descriptive names for your Dockerfiles (e.g., `Dockerfile.web`, `Dockerfile.api`).

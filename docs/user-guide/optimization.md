@@ -242,8 +242,7 @@ Efficient Mask Patterns:
 
 #### Attack Ordering
 
-Optimize attack sequence:
-Recommended Order:
+Optimize attack sequence: Recommended Order:
 
 1. Previous passwords (if available)
 2. Small targeted wordlists

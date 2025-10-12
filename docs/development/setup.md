@@ -82,8 +82,7 @@ This guide covers setting up your development environment for Ouroboros
 
 ### VS Code Configuration
 
-1. **Settings**
-   Create `.vscode/settings.json`:
+1. **Settings** Create `.vscode/settings.json`:
 
    ```json
    {
@@ -102,8 +101,7 @@ This guide covers setting up your development environment for Ouroboros
    }
    ```
 
-2. **Extensions**
-   Install recommended extensions:
+2. **Extensions** Install recommended extensions:
 
    ```json
    {

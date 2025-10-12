@@ -14,42 +14,7 @@ This document outlines the best practices and coding standards for using SQLAlch
 
 A well-organized directory structure improves code readability and maintainability. Here's a recommended structure for SQLAlchemy-based projects:
 
-project_name/
-├── app/
-│ ├── __init__.py
-│ ├── models/
-│ │ ├── __init__.py
-│ │ ├── user.py
-│ │ ├── product.py
-│ │ └── ...
-│ ├── database.py # SQLAlchemy engine and session setup
-│ ├── routes/
-│ │ ├── __init__.py
-│ │ ├── user_routes.py
-│ │ ├── product_routes.py
-│ │ └── ...
-│ ├── schemas/
-│ │ ├── __init__.py
-│ │ ├── user_schema.py
-│ │ ├── product_schema.py
-│ │ └── ...
-│ ├── utils.py
-│ └── main.py # Entry point for the application
-├── tests/
-│ ├── __init__.py
-│ ├── conftest.py # Fixtures for testing
-│ ├── test_models.py
-│ ├── test_routes.py
-│ └── ...
-├── migrations/
-│ ├── versions/
-│ │ ├── ... (Alembic migration scripts)
-│ ├── alembic.ini
-│ └── env.py
-├── .env # Environment variables
-├── requirements.txt
-├── pyproject.toml # Define project dependencies
-└── README.md
+project_name/ ├── app/ │ ├── __init__.py │ ├── models/ │ │ ├── __init__.py │ │ ├── user.py │ │ ├── product.py │ │ └── ... │ ├── database.py # SQLAlchemy engine and session setup │ ├── routes/ │ │ ├── __init__.py │ │ ├── user_routes.py │ │ ├── product_routes.py │ │ └── ... │ ├── schemas/ │ │ ├── __init__.py │ │ ├── user_schema.py │ │ ├── product_schema.py │ │ └── ... │ ├── utils.py │ └── main.py # Entry point for the application ├── tests/ │ ├── __init__.py │ ├── conftest.py # Fixtures for testing │ ├── test_models.py │ ├── test_routes.py │ └── ... ├── migrations/ │ ├── versions/ │ │ ├── ... (Alembic migration scripts) │ ├── alembic.ini │ └── env.py ├── .env # Environment variables ├── requirements.txt ├── pyproject.toml # Define project dependencies └── README.md
 
 ### 1.2 File Naming Conventions
 
@@ -83,10 +48,7 @@ project_name/
 
 - __Repository Pattern:__ Centralizes data access logic, improving testability and maintainability. Example:
 
-  python
-  class UserRepository:
-  def __init__(self, session: Session):
-  self.session = session
+  python class UserRepository: def __init__(self, session: Session): self.session = session
 
   ```
   def get_user_by_id(self, user_id: int) -> User | None:
