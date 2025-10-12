@@ -13,11 +13,27 @@ from app.core.security import create_access_token as security_create_access_toke
 BCRYPT_MAX_PASSWORD_LENGTH = 72
 
 
+class PasswordTooLongError(ValueError):
+    """Raised when password exceeds bcrypt's 72-byte limit."""
+
+
 def hash_password(password: str) -> str:
-    # Bcrypt has a 72-byte limit, truncate if necessary
+    """Hash a password using bcrypt.
+
+    Args:
+        password: The password to hash
+
+    Returns:
+        str: The hashed password
+
+    Raises:
+        PasswordTooLongError: If password exceeds 72 bytes when UTF-8 encoded
+    """
     password_bytes = password.encode("utf-8")
     if len(password_bytes) > BCRYPT_MAX_PASSWORD_LENGTH:
-        password_bytes = password_bytes[:BCRYPT_MAX_PASSWORD_LENGTH]
+        raise PasswordTooLongError(
+            f"Password exceeds maximum length of {BCRYPT_MAX_PASSWORD_LENGTH} bytes when UTF-8 encoded"
+        )
 
     # Use bcrypt directly
     salt = bcrypt.gensalt()
@@ -26,10 +42,19 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(password: str, hashed: str) -> bool:
-    # Bcrypt has a 72-byte limit, truncate if necessary
+    """Verify a password against a hash.
+
+    Args:
+        password: The password to verify
+        hashed: The stored hash to verify against
+
+    Returns:
+        bool: True if password matches, False otherwise
+    """
     password_bytes = password.encode("utf-8")
     if len(password_bytes) > BCRYPT_MAX_PASSWORD_LENGTH:
-        password_bytes = password_bytes[:BCRYPT_MAX_PASSWORD_LENGTH]
+        # Short-circuit: password too long, can't match
+        return False
 
     # Use bcrypt directly
     return bcrypt.checkpw(password_bytes, hashed.encode("utf-8"))

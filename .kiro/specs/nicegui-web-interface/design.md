@@ -132,6 +132,7 @@ def setup_nicegui_interface(fastapi_app: FastAPI) -> None:
 ```python
 from nicegui import app, ui
 from fastapi import Request, HTTPException
+from starlette.responses import RedirectResponse
 from app.core.auth import verify_session_token
 from app.ui.auth.login import login_page
 
@@ -147,7 +148,7 @@ class UIAuthMiddleware:
             # Check authentication using NiceGUI's app.storage
             if not app.storage.user.get('authenticated', False):
                 # Use NiceGUI's proper navigation for middleware
-                return {'redirect': '/ui/login'}
+                return RedirectResponse('/ui/login')
 
             # Store user info in request state for use in handlers
             request.state.user = {
@@ -477,8 +478,22 @@ class DataTable:
 
     def _update_table(self):
         # Update table using NiceGUI's reactive update pattern
+        # Calculate pagination
+        total_items = len(self.filtered_data)
+        total_pages = (total_items + self.page_size - 1) // self.page_size if total_items > 0 else 1
+        
+        # Reset page if out of range
+        if self.page > total_pages:
+            self.page = 1
+        
+        # Slice data for current page
+        start = (self.page - 1) * self.page_size
+        end = start + self.page_size
+        page_data = self.filtered_data[start:end]
+        
+        # Update table using NiceGUI's reactive update pattern
         if self.table:
-            self.table.rows = self.filtered_data
+            self.table.rows = page_data
             self.table.update()
 
     def _create_pagination(self):
@@ -488,9 +503,12 @@ class DataTable:
         total_pages = (len(self.filtered_data) + self.page_size - 1) // self.page_size
 
         with self.pagination_container:
-            ui.button('Previous',
-                     on_click=lambda: self._change_page(self.page - 1),
-                     enabled=self.page > 1)
+    def _change_page(self, new_page: int):
+        total_pages = (len(self.filtered_data) + self.page_size - 1) // self.page_size if len(self.filtered_data) > 0 else 1
+        if 1 <= new_page <= total_pages:
+            self.page = new_page
+            self._update_table()
+            self._create_pagination()  # Refresh pagination controls
 
             ui.label(f'Page {self.page} of {total_pages}').classes('mx-4')
 

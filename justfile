@@ -181,8 +181,7 @@ install-git-cliff:
     cargo install git-cliff --locked
     if ($LASTEXITCODE -ne 0) {
     Write-Host "Make sure git-cliff is installed manually"
-    $global:LASTEXITCODE = 0
-    }
+        exit $LASTEXITCODE
     }
 
 # -----------------------------

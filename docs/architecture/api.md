@@ -14,7 +14,7 @@ The Agent API v1 follows the OpenAPI 3.0.1 specification defined in `contracts/v
 
 ## Agent API v2 (`/api/v2/client/*`)
 
-Agent API v2 is the modernized interface for CipherSwarm agents, providing enhanced features and improved security while maintaining backward compatibility. This API is currently in development preview status.
+Agent API v2 is the modernized interface for CipherSwarm agents, providing enhanced features and improved security with best-effort compatibility where possible. This API is currently in development preview status.
 
 ### Key Improvements in v2
 
@@ -24,6 +24,8 @@ Agent API v2 is the modernized interface for CipherSwarm agents, providing enhan
 - **Enhanced Error Handling**: Structured error responses with detailed information and proper HTTP status codes
 - **Rate Limiting**: Comprehensive rate limiting with proper headers and backoff strategies
 - **Forward Compatibility**: Designed for Phase 3 resource management and future enhancements
+
+**Note on Compatibility**: While v2 aims for compatibility where possible, breaking changes may occur during the development preview phase. Migration guides will be provided when necessary.
 
 ### Development Status
 
