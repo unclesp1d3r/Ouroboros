@@ -35,7 +35,7 @@ dependencies = [
     "case-converter~=1.2.0",
     "fastapi-problem~=0.11.4",
     "starlette~=0.47.3",
-    "cryptography~=45.0.7",
+    "cryptography~=46.0.2",
     "greenlet~=3.2.4",
 ]
 
