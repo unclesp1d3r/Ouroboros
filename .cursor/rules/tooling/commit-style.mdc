@@ -32,57 +32,58 @@ Follow the [Conventional Commits](mdc:https:/www.conventionalcommits.org) specif
 ### 1. Type (Required)
 
 The type MUST be one of:
-* `feat`: A new feature (MINOR version)
-* `fix`: A bug fix (PATCH version)
-* `docs`: Documentation only changes
-* `style`: Changes that do not affect the meaning of the code
-* `refactor`: A code change that neither fixes a bug nor adds a feature
-* `perf`: A code change that improves performance
-* `test`: Adding missing tests or correcting existing tests
-* `build`: Changes that affect the build system or external dependencies
-* `ci`: Changes to CI configuration files and scripts
-* `chore`: Changes to the build process or auxiliary tools and libraries
+
+- `feat`: A new feature (MINOR version)
+- `fix`: A bug fix (PATCH version)
+- `docs`: Documentation only changes
+- `style`: Changes that do not affect the meaning of the code
+- `refactor`: A code change that neither fixes a bug nor adds a feature
+- `perf`: A code change that improves performance
+- `test`: Adding missing tests or correcting existing tests
+- `build`: Changes that affect the build system or external dependencies
+- `ci`: Changes to CI configuration files and scripts
+- `chore`: Changes to the build process or auxiliary tools and libraries
 
 ### 2. Scope (Optional)
 
 - MUST be a noun describing a section of the codebase
-* MUST be surrounded by parenthesis
-* MUST be one of the pre-defined scopes below
+- MUST be surrounded by parenthesis
+- MUST be one of the pre-defined scopes below
 
 #### Pre-defined Scopes for Ouroboros
 
 - `(auth)`: Authentication and authorization
-* `(api)`: API endpoints and routes
-* `(cli)`: Command-line interface
-* `(models)`: Data models and schemas
-* `(docs)`: Documentation
-* `(deps)`: Dependencies
+- `(api)`: API endpoints and routes
+- `(cli)`: Command-line interface
+- `(models)`: Data models and schemas
+- `(docs)`: Documentation
+- `(deps)`: Dependencies
 
 ### 3. Description (Required)
 
 - MUST immediately follow the colon and space after the type/scope prefix
-* MUST be a short summary of the code changes
-* MUST use imperative mood ("add" not "added")
-* MUST NOT end with a period
-* SHOULD be specific and concise; SHOULD under 72 characters
-* SHOULD be capitalized
-* MAY be followed by an itemized list of changes in the body
+- MUST be a short summary of the code changes
+- MUST use imperative mood ("add" not "added")
+- MUST NOT end with a period
+- SHOULD be specific and concise; SHOULD under 72 characters
+- SHOULD be capitalized
+- MAY be followed by an itemized list of changes in the body
 
 ### 4. Body (Optional)
 
 - MUST begin one blank line after the description
-* SHOULD use itemized lists for multiple changes
-* MAY consist of any number of newline separated paragraphs
-* SHOULD explain the what and why, not the how
-* MAY be longer when detailing multiple changes
+- SHOULD use itemized lists for multiple changes
+- MAY consist of any number of newline separated paragraphs
+- SHOULD explain the what and why, not the how
+- MAY be longer when detailing multiple changes
 
 ### 5. Footer (Optional)
 
 - MUST begin one blank line after the body
-* Each footer MUST consist of a word token, followed by either a `:` or `#` separator
-* Footer tokens MUST use `-` in place of whitespace characters
-* Exception: `BREAKING CHANGE` MAY be used as a token
-* Examples:
+- Each footer MUST consist of a word token, followed by either a `:` or `#` separator
+- Footer tokens MUST use `-` in place of whitespace characters
+- Exception: `BREAKING CHANGE` MAY be used as a token
+- Examples:
 
   ```
   Closes #123
@@ -167,16 +168,16 @@ BREAKING CHANGE: The following endpoints are removed:
 ## Guidelines
 
 - Use imperative mood ("add" not "added")
-* Use itemized lists for multiple changes
-* Reference issues in footer
-* Use present tense
-* Be specific and concise
-* Capitalize first word
-* No period at the end
-* Use `!` for breaking changes in type/scope
-* Use `BREAKING CHANGE:` in footer for detailed breaking changes
+- Use itemized lists for multiple changes
+- Reference issues in footer
+- Use present tense
+- Be specific and concise
+- Capitalize first word
+- No period at the end
+- Use `!` for breaking changes in type/scope
+- Use `BREAKING CHANGE:` in footer for detailed breaking changes
 
 ### Additional Guidelines for Skirmish
 
-* When in doubt, use the `chore:` type with a clear scope.
-* Skirmish should not create commits that break `just ci-check`.
+- When in doubt, use the `chore:` type with a clear scope.
+- Skirmish should not create commits that break `just ci-check`.

@@ -12,9 +12,7 @@ Standards and best practices for FastAPI development in the Ouroboros project.
 ## File Glob Patterns
 
 - `**/api/**/*.py`
-
 - `**/routes/**/*.py`
-
 - `**/endpoints/**/*.py`
 - `**/schemas/**/*.py`
 - `**/models/**/*.py`
@@ -26,9 +24,7 @@ true
 ## Key Principles
 
 - Write concise, technical responses with accurate Python examples
-
 - Use functional, declarative programming; avoid classes where possible
-
 - Prefer iteration and modularization over code duplication
 - Use descriptive variable names with auxiliary verbs (e.g., is_active, has_permission)
 - Use lowercase with underscores for directories and files (e.g., routers/user_routes.py)
@@ -80,9 +76,7 @@ async def create_resource(
 ### Error Handling
 
 - Handle errors at the beginning of functions
-
 - Use early returns for error conditions
-
 - Place the happy path last
 - Use guard clauses for preconditions
 - Implement proper error logging
@@ -106,9 +100,7 @@ async def process_resource(resource_id: int) -> Resource:
 ## Dependencies
 
 - FastAPI
-
 - Pydantic v2
-
 - SQLAlchemy 2.0
 - psycopg v3
 
@@ -192,9 +184,7 @@ async def get_item(
 ## Performance Optimization
 
 - Use async operations for I/O-bound tasks
-
 - Implement caching strategies
-
 - Use lazy loading for large datasets
 - Optimize Pydantic models
 - **All caching must use Cashews. No other cache mechanism is permitted.**
@@ -309,17 +299,13 @@ async def send_notification(
 ## References
 
 - [FastAPI Documentation](mdc:https:/fastapi.tiangolo.com)
-
 - [Pydantic Documentation](mdc:https:/docs.pydantic.dev)
-
 - [SQLAlchemy Documentation](mdc:https:/docs.sqlalchemy.org)
 
 ## 📦 Request/Response Schemas
 
 - All request and response models **must** inherit from `pydantic.BaseModel`.
-
 - Request and response models **must** be defined in `app/schemas/`, not inline in route files.
-
 - Every field in a schema should include `example=...` in the `Field(...)` definition to improve OpenAPI docs.
 - Use `Field(..., description=...)` to explain the purpose of non-obvious fields.
 - **Enum fields must always serialize as `.value` (not names or integers) in API responses.**

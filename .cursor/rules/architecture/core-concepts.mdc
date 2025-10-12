@@ -390,7 +390,7 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
 9. **Monitoring Setup**
 
    - Container metrics
-   - Application metrics - Resource usage
+   - Application me - Resource usage
    - Alert configuration
    - Log management
    - Performance tracking
@@ -459,9 +459,7 @@ All application logging MUST use the @`loguru` logging library. Standard Python 
    - Automatic token invalidation on agent removal
    - Rate limiting per agent token
    - Required headers:
-     - See @core-concepts-appendix.mdc for authentication examples.
-
-3. **Control API Authentication**
+     - See @core-concepts-appendix.mdc for authentic*TUI API Authentication**
 
    - API key-based authentication using bearer tokens
    - Keys generated through web interface

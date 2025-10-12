@@ -62,16 +62,16 @@ frontend/
 #### Backend Tests
 
 - **Unit tests**: `test_{module_name}.py` (e.g., `test_campaign_service.py`)
-* **Integration tests**: `test_{resource}.py` (e.g., `test_campaigns.py`)
-* **Factory files**: `{model_name}_factory.py` (e.g., `campaign_factory.py`)
-* **Utility files**: `{purpose}_utils.py` or `test_helpers.py`
+- **Integration tests**: `test_{resource}.py` (e.g., `test_campaigns.py`)
+- **Factory files**: `{model_name}_factory.py` (e.g., `campaign_factory.py`)
+- **Utility files**: `{purpose}_utils.py` or `test_helpers.py`
 
 #### Frontend Tests
 
 - **Component tests**: `{Component}.test.ts` (e.g., `CampaignCard.test.ts`)
-* **Route tests**: `{route-name}.test.ts` (e.g., `campaigns-list.test.ts`)
-* **E2E tests with mocks**: `{feature}.test.ts` (e.g., `agent-registration.test.ts`)
-* **Full E2E tests**: `{workflow}.e2e.test.ts` (e.g., `login-workflow.e2e.test.ts`)
+- **Route tests**: `{route-name}.test.ts` (e.g., `campaigns-list.test.ts`)
+- **E2E tests with mocks**: `{feature}.test.ts` (e.g., `agent-registration.test.ts`)
+- **Full E2E tests**: `{workflow}.e2e.test.ts` (e.g., `login-workflow.e2e.test.ts`)
 
 ## Test Environment Detection
 
@@ -115,8 +115,8 @@ def is_test_environment() -> bool:
 ### Coverage Targets
 
 - **Backend**: Minimum 80% coverage for all modules
-* **Frontend**: Minimum 80% coverage for critical components
-* **E2E**: Coverage of all major user workflows
+- **Frontend**: Minimum 80% coverage for critical components
+- **E2E**: Coverage of all major user workflows
 
 ### Backend Coverage Reporting
 
@@ -163,10 +163,10 @@ export default defineConfig({
 ### Coverage Expectations
 
 - **All HTTP endpoints** must have corresponding integration tests
-* **All business logic** (services, validators, helpers) must be covered with unit tests
-* **Critical user workflows** must be covered with E2E tests
-* **Error paths** and edge cases must be tested
-* **Authentication and authorization** boundaries must be validated
+- **All business logic** (services, validators, helpers) must be covered with unit tests
+- **Critical user workflows** must be covered with E2E tests
+- **Error paths** and edge cases must be tested
+- **Authentication and authorization** boundaries must be validated
 
 ## Test Command Patterns
 
@@ -258,10 +258,10 @@ const mockCampaigns = {
 ### Cross-Layer Mock Consistency
 
 - Frontend mocks must match backend API responses exactly
-* Use the same data structures and field names across test layers
-* Maintain consistency between test environments
-* Update mocks when API contracts change
-* Share common test data utilities where appropriate
+- Use the same data structures and field names across test layers
+- Maintain consistency between test environments
+- Update mocks when API contracts change
+- Share common test data utilities where appropriate
 
 ## CI Integration Standards
 
@@ -300,20 +300,20 @@ const mockCampaigns = {
 ### Test Isolation and Cleanup
 
 - Each test should be independent and not rely on test execution order
-* Use proper setup/teardown for test data
-* Clean state between tests (handled by fixtures)
-* Avoid shared mutable state between tests
-* Use containerized databases for isolation
+- Use proper setup/teardown for test data
+- Clean state between tests (handled by fixtures)
+- Avoid shared mutable state between tests
+- Use containerized databases for isolation
 
 ## Test Data Management
 
 ### Factory Usage Standards
 
 - **Always use factories** for creating test data in backend tests
-* **Provide required foreign keys explicitly** in test code
-* **Use pre-seeded data references** when possible (e.g., `hash_type_id = 0` for MD5)
-* **Set dynamic foreign keys to None** in factory defaults and require explicit setting
-* **Reuse shared factories** across test files
+- **Provide required foreign keys explicitly** in test code
+- **Use pre-seeded data references** when possible (e.g., `hash_type_id = 0` for MD5)
+- **Set dynamic foreign keys to None** in factory defaults and require explicit setting
+- **Reuse shared factories** across test files
 
 ### Test Data Lifecycle
 
@@ -350,63 +350,63 @@ async def test_campaign_creation(db_session):
 ### Test Documentation Standards
 
 - **Use descriptive test names** that explain the scenario being tested
-* **Include docstrings** for complex test setups or business logic
-* **Document test data requirements** and relationships
-* **Explain non-obvious assertions** with comments
-* **Note any special requirements** or constraints
+- **Include docstrings** for complex test setups or business logic
+- **Document test data requirements** and relationships
+- **Explain non-obvious assertions** with comments
+- **Note any special requirements** or constraints
 
 ### Test Quality Checklist
 
 - [ ] Test name clearly describes the scenario
-* [ ] Test follows Arrange-Act-Assert pattern
-* [ ] Test data is created using factories
-* [ ] Required foreign key relationships are established
-* [ ] Both success and failure cases are tested
-* [ ] Error messages are meaningful and actionable
-* [ ] Test is independent and doesn't rely on other tests
-* [ ] Cleanup is handled automatically by fixtures
+- [ ] Test follows Arrange-Act-Assert pattern
+- [ ] Test data is created using factories
+- [ ] Required foreign key relationships are established
+- [ ] Both success and failure cases are tested
+- [ ] Error messages are meaningful and actionable
+- [ ] Test is independent and doesn't rely on other tests
+- [ ] Cleanup is handled automatically by fixtures
 
 ## Common Anti-Patterns to Avoid
 
 ### Backend Anti-Patterns
 
 - ❌ **Random foreign keys** in factories (causes violations)
-* ❌ **Missing project associations** for project-scoped tests
-* ❌ **Manual SQL** instead of ORM operations
-* ❌ **Hardcoded test data** instead of factories
-* ❌ **Mixing unit and integration tests** in same files
+- ❌ **Missing project associations** for project-scoped tests
+- ❌ **Manual SQL** instead of ORM operations
+- ❌ **Hardcoded test data** instead of factories
+- ❌ **Mixing unit and integration tests** in same files
 
 ### Frontend Anti-Patterns
 
 - ❌ **Testing implementation details** instead of behavior
-* ❌ **Mismatched mock data** structures vs API responses
-* ❌ **Testing SPA patterns** in SSR environment
-* ❌ **Direct rune testing** in .ts files (not possible)
-* ❌ **Mixing SSR data and store data** in same component
+- ❌ **Mismatched mock data** structures vs API responses
+- ❌ **Testing SPA patterns** in SSR environment
+- ❌ **Direct rune testing** in .ts files (not possible)
+- ❌ **Mixing SSR data and store data** in same component
 
 ### General Anti-Patterns
 
 - ❌ **Flaky tests** due to timing issues or race conditions
-* ❌ **Tests that depend on external services** or network
-* ❌ **Overly complex test setup** that obscures the test intent
-* ❌ **Tests that test the framework** instead of application logic
-* ❌ **Catch-all exception handling** that masks real issues
+- ❌ **Tests that depend on external services** or network
+- ❌ **Overly complex test setup** that obscures the test intent
+- ❌ **Tests that test the framework** instead of application logic
+- ❌ **Catch-all exception handling** that masks real issues
 
 ## Migration and Maintenance
 
 ### When to Update Tests
 
 - **API contract changes**: Update integration tests and mocks
-* **Schema changes**: Update factory definitions and test data
-* **UI component changes**: Update component tests and E2E selectors
-* **Business logic changes**: Update service tests and validation tests
-* **Infrastructure changes**: Update CI configuration and Docker setup
+- **Schema changes**: Update factory definitions and test data
+- **UI component changes**: Update component tests and E2E selectors
+- **Business logic changes**: Update service tests and validation tests
+- **Infrastructure changes**: Update CI configuration and Docker setup
 
 ### Test Maintenance Best Practices
 
 - **Run tests frequently** during development
-* **Fix failing tests immediately** - don't let them accumulate
-* **Update tests with code changes** in the same commit
-* **Refactor tests** when they become hard to understand or maintain
-* **Remove obsolete tests** when features are removed
-* **Keep test utilities up to date** with current patterns
+- **Fix failing tests immediately** - don't let them accumulate
+- **Update tests with code changes** in the same commit
+- **Refactor tests** when they become hard to understand or maintain
+- **Remove obsolete tests** when features are removed
+- **Keep test utilities up to date** with current patterns
