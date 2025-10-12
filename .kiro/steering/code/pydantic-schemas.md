@@ -5,6 +5,8 @@ fileMatchPattern: app/schemas/**/*.py
 
 # Pydantic Schema Patterns for Ouroboros
 
+# Pydantic Schema Patterns for Ouroboros
+
 ## Schema Organization and Structure
 
 ### File Organization

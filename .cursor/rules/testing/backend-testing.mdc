@@ -14,13 +14,13 @@ This rule consolidates all backend testing patterns for Ouroboros, covering pyte
 ### Testcontainers & PostgreSQL Setup
 
 - All tests now expect Docker to be available and running on the host system
-* PostgreSQL is provided for tests by [`testcontainers.postgres.PostgresContainer`](mdc:Ouroboros/https:/testcontainers-python.readthedocs.io/en/latest/modules/postgres.html)
-* Database schema is bootstrapped for each test run using Alembic migrations (no hand-written SQL schemas)
-* The preferred SQLAlchemy dialect is `postgresql+psycopg` (async driver)
-* We have fully removed `asyncpg` and `psycopg2-binary` and they must not be used or referenced
-* Do not use SQLite or in-memory DBs for integration tests unless explicitly required
-* All test DB operations must use async SQLAlchemy sessions/engines compatible with `psycopg` v3
-* All test containers must be managed using `testcontainers-python` and properly cleaned up after tests
+- PostgreSQL is provided for tests by [`testcontainers.postgres.PostgresContainer`](mdc:Ouroboros/https:/testcontainers-python.readthedocs.io/en/latest/modules/postgres.html)
+- Database schema is bootstrapped for each test run using Alembic migrations (no hand-written SQL schemas)
+- The preferred SQLAlchemy dialect is `postgresql+psycopg` (async driver)
+- We have fully removed `asyncpg` and `psycopg2-binary` and they must not be used or referenced
+- Do not use SQLite or in-memory DBs for integration tests unless explicitly required
+- All test DB operations must use async SQLAlchemy sessions/engines compatible with `psycopg` v3
+- All test containers must be managed using `testcontainers-python` and properly cleaned up after tests
 
 ### Testcontainers & Psycopg v3 Best Practices
 
@@ -54,6 +54,13 @@ This rule consolidates all backend testing patterns for Ouroboros, covering pyte
 ## Factory Patterns and Best Practices
 
 ### Polyfactory Configuration
+
+- ✅ Use `polyfactory` for generating test data in service, model, and route tests. See [Polyfactory Documentation](mdc:Ouroboros/https:/polyfactory.litestar.dev/latest)
+- Use `polyfactory.create_async()` only. Do not use `.build()`, `SubFactory`, or `sync` methods. All test data must be persisted using an active async SQLAlchemy session
+- Define all factories in `tests/factories/`
+- Reuse shared factories across test files
+- Avoid manually constructing ORM or Pydantic objects in tests unless necessary
+- Keep factory defaults minimal — override fields in tests as needed
 
 - ✅ Use `polyfactory` for generating test data in service, model, and route tests. See [Polyfactory Documentation](mdc:Ouroboros/https:/polyfactory.litestar.dev/latest)
 * Use `polyfactory.create_async()` only. Do not use `.build()`, `SubFactory`, or `sync` methods. All test data must be persisted using an active async SQLAlchemy session
@@ -140,8 +147,8 @@ async def test_project_scoped_endpoint(authenticated_user_client, db_session):
 ### Request Testing Patterns
 
 - Test both success and failure cases
-* Verify status codes, response structure, and data accuracy
-* Example:
+- Verify status codes, response structure, and data accuracy
+- Example:
 
 ```python
 @pytest.mark.asyncio

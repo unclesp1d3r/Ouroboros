@@ -4,6 +4,8 @@ inclusion: always
 
 # Ouroboros Core Concepts
 
+# Ouroboros Core Concepts
+
 ## Project Overview
 
 Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.

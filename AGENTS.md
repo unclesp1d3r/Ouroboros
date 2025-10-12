@@ -1,12 +1,12 @@
 # Ouroboros Agents Guide
 
-This AGENTS.md file provides comprehensive guidance for AI agents working with the Ouroboros distributed password cracking management system.
+This AGENTS.md file provides comprehensive guidance for AI agents working with Ouroboros, the FastAPI + SvelteKit rewrite of Ouroboros.
 
 ---
 
 ## Project Overview
 
-Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It's a complete rewrite of Ouroboros, preserving backward compatibility with Ouroboros agents while modernizing the architecture. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
 ### Key Components
 

@@ -1,6 +1,6 @@
 # API Documentation
 
-Ouroboros provides multiple API interfaces, each serving different client types with specific authentication and error handling requirements:
+Ouroboros provides four distinct API interfaces, each serving different client types with specific authentication and error handling requirements:
 
 1. **Agent API v1** (`/api/v1/client/*`) - Legacy compatibility for distributed agents
 2. **Agent API v2** (`/api/v2/client/*`) - Modernized agent interface (Preview)

@@ -93,10 +93,11 @@ healthcheck:
 **File**: [scripts/seed_e2e_data.py](mdc:Ouroboros/Ouroboros/scripts/seed_e2e_data.py)
 
 **Architecture Pattern**:
-* ✅ **Service layer delegation** for all data persistence
-* ✅ **Pydantic validation** for all created objects
-* ✅ **Async/await patterns** throughout
-* ✅ **Graceful error handling** with table truncation
+
+- ✅ **Service layer delegation** for all data persistence
+- ✅ **Pydantic validation** for all created objects
+- ✅ **Async/await patterns** throughout
+- ✅ **Graceful error handling** with table truncation
 
 **Example Pattern**:
 
@@ -127,10 +128,11 @@ async def seed_test_data():
 ```
 
 **Test Data Created**:
-* **Users**: Admin and regular user with known credentials
-* **Projects**: "E2E Test Project Alpha" and "E2E Test Project Beta"
-* **Campaigns**: Sample campaign with hash list
-* **Agents**: Test agent configurations
+
+- **Users**: Admin and regular user with known credentials
+- **Projects**: "E2E Test Project Alpha" and "E2E Test Project Beta"
+- **Campaigns**: Sample campaign with hash list
+- **Agents**: Test agent configurations
 
 ## Playwright Global Setup/Teardown
 
@@ -535,7 +537,7 @@ just ci-check              # Complete CI pipeline
 ## File References
 
 - Configuration: [playwright.config.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/playwright.config.e2e.ts)
-* Docker compose: [docker-compose.e2e.yml](mdc:Ouroboros/Ouroboros/docker-compose.e2e.yml)
-* Test utilities: [test-utils.ts](mdc:Ouroboros/Ouroboros/frontend/e2e/test-utils.ts)
-* Global setup: [global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
-* Data seeding: [seed_e2e_data.py](mdc:Ouroboros/Ouroboros/scripts/seed_e2e_data.py)
+- Docker compose: [docker-compose.e2e.yml](mdc:Ouroboros/Ouroboros/docker-compose.e2e.yml)
+- Test utilities: [test-utils.ts](mdc:Ouroboros/Ouroboros/frontend/e2e/test-utils.ts)
+- Global setup: [global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
+- Data seeding: [seed_e2e_data.py](mdc:Ouroboros/Ouroboros/scripts/seed_e2e_data.py)

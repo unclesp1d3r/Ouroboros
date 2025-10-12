@@ -209,10 +209,11 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ### Session Endpoint Compatibility
 
 Ensure FastAPI backend supports:
-* Session-based authentication (not just JWT)
-* Cookie-based session management
-* Proper CORS configuration for SvelteKit frontend
-* Health check endpoints that work without authentication
+
+- Session-based authentication (not just JWT)
+- Cookie-based session management
+- Proper CORS configuration for SvelteKit frontend
+- Health check endpoints that work without authentication
 
 ### Required Backend Updates
 
@@ -243,10 +244,10 @@ async def login(credentials: LoginRequest, response: Response):
 ## File References
 
 - Session handling: [hooks.server.js](mdc:Ouroboros/Ouroboros/frontend/src/hooks.server.js) (to be created)
-* Server API client: [lib/server/api.js](mdc:Ouroboros/Ouroboros/frontend/src/lib/server/api.js) (to be updated)
-* Login routes: [routes/login/+page.server.ts](mdc:Ouroboros/Ouroboros/frontend/src/routes/login/+page.server.ts) (to be created)
-* E2E setup: [tests/global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
-* Migration plan: [spa_to_ssr.md](mdc:Ouroboros/Ouroboros/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md)
+- Server API client: [lib/server/api.js](mdc:Ouroboros/Ouroboros/frontend/src/lib/server/api.js) (to be updated)
+- Login routes: [routes/login/+page.server.ts](mdc:Ouroboros/Ouroboros/frontend/src/routes/login/+page.server.ts) (to be created)
+- E2E setup: [tests/global-setup.e2e.ts](mdc:Ouroboros/Ouroboros/frontend/tests/global-setup.e2e.ts)
+- Migration plan: [spa_to_ssr.md](mdc:Ouroboros/Ouroboros/docs/v2_rewrite_implementation_plan/side_quests/spa_to_ssr.md)
 
 ## Success Criteria
 

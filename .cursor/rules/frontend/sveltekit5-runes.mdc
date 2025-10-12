@@ -223,5 +223,5 @@ export const campaignsStore = {
 ## File References
 
 - Store examples: [campaigns.svelte.ts](mdc:Ouroboros/Ouroboros/frontend/src/lib/stores/campaigns.svelte.ts)
-* Component usage: [CampaignProgress.svelte](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.svelte)
-* SSR integration: [+page.svelte](mdc:Ouroboros/Ouroboros/frontend/src/routes/campaigns/+page.svelte)
+- Component usage: [CampaignProgress.svelte](mdc:Ouroboros/Ouroboros/frontend/src/lib/components/campaigns/CampaignProgress.svelte)
+- SSR integration: [+page.svelte](mdc:Ouroboros/Ouroboros/frontend/src/routes/campaigns/+page.svelte)

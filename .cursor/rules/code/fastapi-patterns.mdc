@@ -30,7 +30,6 @@ alwaysApply: false
 ### Pagination
 
 - All list endpoints MUST use `PaginatedResponse[T]` from [app/schemas/shared.py](mdc:Ouroboros/app/schemas/shared.py)
-
 - Standard pagination parameters: `page: int = 1`, `size: int = 20` (not skip/limit)
 
 - Example:
@@ -116,7 +115,6 @@ async def get_hash_list_service(db: AsyncSession, hash_list_id: int) -> HashList
 ### Input/Output Schemas
 
 - Input schemas: `{Resource}Create`, `{Resource}Update`
-
 - Output schemas: `{Resource}Out`
 
 - Update schemas: Use `{Resource}UpdateData` for service layer, optional fields

@@ -21,11 +21,11 @@ Ouroboros supports two active versions of the Agent API:
 
 * **v1: Legacy Compatibility (`/api/v1/client/*`)**
 
-  * Mirrors the legacy Ruby-on-Rails version of Ouroboros (`https://github.com/unclesp1d3r/Ouroboros`).
-  * Locked to `contracts/v1_api_swagger.json` (OpenAPI 3.0.1).
-  * When working with integration tests of the Agent API v1, `contracts/v1_api_swagger.json` is **always** the authoritative source for correct behavior.
-  * Must match every field, enum, and response exactly.
-  * Breaking changes are prohibited.
+  - Mirrors the legacy Ruby-on-Rails version of Ouroboros (`https://github.com/unclesp1d3r/Ouroboros`).
+  - Locked to `contracts/v1_api_swagger.json` (OpenAPI 3.0.1).
+  - When working with integration tests of the Agent API v1, `contracts/v1_api_swagger.json` is **always** the authoritative source for correct behavior.
+  - Must match every field, enum, and response exactly.
+  - Breaking changes are prohibited.
 
 * **v2: FastAPI-Native (`/api/v2/client/*`)**
   * NOT YET IMPLEMENTED. Will be created in the future.
@@ -88,18 +88,18 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
 3. **API Interfaces**
    a. **Agent API** (`/api/v1/client/*`)
 
-   * MUST follow OpenAPI 3.0.1 specification in `contracts/v1_api_swagger.json`
-   * Used by distributed Ouroboros agents
-   * Handles agent registration and heartbeat
-   * Task distribution and result collection
-   * Benchmark submission
-   * Error reporting
-   * Located under `app/api/v1/endpoints/agent` directory; wasn't previously located there, but should be moved.
-   * Endpoints (as defined in specification):
-     * `/api/v1/client/agents/*`: Agent lifecycle management
-     * `/api/v1/client/attacks/*`: Attack configuration retrieval
-     * `/api/v1/client/tasks/*`: Task management
-     * `/api/v1/client/crackers/*`: Cracker binary updates
+   - MUST follow OpenAPI 3.0.1 specification in `contracts/v1_api_swagger.json`
+   - Used by distributed Ouroboros agents
+   - Handles agent registration and heartbeat
+   - Task distribution and result collection
+   - Benchmark submission
+   - Error reporting
+   - Located under `app/api/v1/endpoints/agent` directory; wasn't previously located there, but should be moved.
+   - Endpoints (as defined in specification):
+     - `/api/v1/client/agents/*`: Agent lifecycle management
+     - `/api/v1/client/attacks/*`: Attack configuration retrieval
+     - `/api/v1/client/tasks/*`: Task management
+     - `/api/v1/client/crackers/*`: Cracker binary updates
 
    **Router File Structure:**
    Each `/api/v1/client/<resource>` endpoint must be implemented in its own router file under `app/api/v1/endpoints/agent/<resource>.py`, except for root-level, non-resource endpoints, which are grouped in `general.py`.
@@ -157,16 +157,16 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
 
 1. **SvelteKit-Based UI**
 
-   * Located in `frontend/` directory tree
-    * The frontend code has a different `package.json` than the backend code, so any pnpm/npm commands must be run from within `frontend` if it relates to the frontend code.
-   * Built with SvelteKit (SPA pre-build)
-   * Communicates with backend via JSON API (RESTful endpoints)
-   * [Shadcn-Svelte](mdc:Ouroboros/https:/www.shadcn-svelte.com/docs) for component library and styling
-   * Client-side routing and state management
-   * Client-side validation using [Zod](mdc:Ouroboros/https:/zod.dev)
-   * Modal-based forms using [Superforms](mdc:Ouroboros/https:/superforms.rocks)
-   * Responsive, accessible, and modern UX
-   * When writing Svelte components, aspire to use idiomatic Svelte (<https://svelte.dev/llms-small.txt>)
+   - Located in `frontend/` directory tree
+    - The frontend code has a different `package.json` than the backend code, so any pnpm/npm commands must be run from within `frontend` if it relates to the frontend code.
+   - Built with SvelteKit (SPA pre-build)
+   - Communicates with backend via JSON API (RESTful endpoints)
+   - [Shadcn-Svelte](mdc:Ouroboros/https:/www.shadcn-svelte.com/docs) for component library and styling
+   - Client-side routing and state management
+   - Client-side validation using [Zod](mdc:Ouroboros/https:/zod.dev)
+   - Modal-based forms using [Superforms](mdc:Ouroboros/https:/superforms.rocks)
+   - Responsive, accessible, and modern UX
+   - When writing Svelte components, aspire to use idiomatic Svelte (<https://svelte.dev/llms-small.txt>)
 
 2. **Component Library**
 
@@ -338,7 +338,7 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
 
 2. **Development Setup**
 
-* See [docker-guidelines.mdc](mdc:Ouroboros/.cursor/rules/architecture/docker-guidelines.mdc) for docker deployment guidance.
+- See [docker-guidelines.mdc](mdc:Ouroboros/.cursor/rules/architecture/docker-guidelines.mdc) for docker deployment guidance.
 
 4. **Container Security**
 
@@ -461,19 +461,19 @@ All application logging MUST use the @`loguru` logging library. Standard Python 
    * Required headers:
      * See @core-concepts-appendix.mdc for authentic*TUI API Authentication**
 
-   * API key-based authentication using bearer tokens
-   * Keys generated through web interface
-   * Associated with specific user accounts
-   * Configurable permissions and scopes
-   * Token format: `cst_<user_id>_<random_string>`
-   * Multiple active keys per user supported
-   * Key management features:
-     * Key creation with expiration
-     * Scope configuration
-     * Usage monitoring
-     * Emergency revocation
-   * Required headers:
-     * See @core-concepts-appendix.mdc for authentication example
+   - API key-based authentication using bearer tokens
+   - Keys generated through web interface
+   - Associated with specific user accounts
+   - Configurable permissions and scopes
+   - Token format: `cst_<user_id>_<random_string>`
+   - Multiple active keys per user supported
+   - Key management features:
+     - Key creation with expiration
+     - Scope configuration
+     - Usage monitoring
+     - Emergency revocation
+   - Required headers:
+     - See @core-concepts-appendix.mdc for authentication example
 
 3. **Common Security Features**
    * All tokens transmitted over HTTPS only

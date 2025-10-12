@@ -1,20 +1,20 @@
 services:
-    # PostgreSQL Database
-    postgres:
-        image: postgres:16
-        environment:
-            POSTGRES_DB: ${POSTGRES_DB:-ouroboros}
-            POSTGRES_USER: ${POSTGRES_USER:-ouroboros}
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ouroboros}
-        ports:
-            - "5432:5432"
-        volumes:
-            - postgres_data:/var/lib/postgresql/data
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ouroboros}"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ouroboros}
+      POSTGRES_USER: ${POSTGRES_USER:-ouroboros}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ouroboros}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ouroboros}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
     # MinIO Object Storage
     minio:
@@ -48,46 +48,46 @@ services:
             timeout: 5s
             retries: 3
 
-    # FastAPI Backend
-    backend:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-            - "8000:8000"
-        environment:
-            - DATABASE_URL=postgresql+psycopg://${POSTGRES_USER:-ouroboros}:${POSTGRES_PASSWORD:-ouroboros}@postgres:5432/${POSTGRES_DB:-ouroboros}
-            - POSTGRES_SERVER=postgres
-            - POSTGRES_USER=${POSTGRES_USER:-ouroboros}
-            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ouroboros}
-            - POSTGRES_DB=${POSTGRES_DB:-ouroboros}
-            - REDIS_HOST=redis
-            - REDIS_PORT=6379
-            - CELERY_BROKER_URL=redis://redis:6379/0
-            - CELERY_RESULT_BACKEND=redis://redis:6379/0
-            - SECRET_KEY=${SECRET_KEY:-k5moVLqLGy82D4FE54VvkkqAyxe6XF6k}
-            - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
-            - FIRST_SUPERUSER=${FIRST_SUPERUSER:-admin@ouroboros.org}
-            - FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD:-ouroboros}
-            - LOG_LEVEL=${LOG_LEVEL:-INFO}
-            - LOG_TO_FILE=${LOG_TO_FILE:-False}
-            - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS:-["http://localhost:5173","http://localhost:3000"]}
-            - ENVIRONMENT=${ENVIRONMENT:-production}
-        depends_on:
-            postgres:
-                condition: service_healthy
-            redis:
-                condition: service_healthy
-            minio:
-                condition: service_healthy
-        volumes:
-            - ./logs:/app/logs
-        healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:8000/api-info"]
-            interval: 30s
-            timeout: 10s
-            retries: 3
-            start_period: 30s
+  # FastAPI Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg://${POSTGRES_USER:-ouroboros}:${POSTGRES_PASSWORD:-ouroboros}@postgres:5432/${POSTGRES_DB:-ouroboros}
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_USER=${POSTGRES_USER:-ouroboros}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ouroboros}
+      - POSTGRES_DB=${POSTGRES_DB:-ouroboros}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-k5moVLqLGy82D4FE54VvkkqAyxe6XF6k}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+      - FIRST_SUPERUSER=${FIRST_SUPERUSER:-admin@ouroboros.local}
+      - FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD:-ouroboros}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - LOG_TO_FILE=${LOG_TO_FILE:-False}
+      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS:-["http://localhost:5173","http://localhost:3000"]}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api-info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
     # SvelteKit Frontend
     frontend:

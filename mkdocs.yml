@@ -1,6 +1,6 @@
 site_name: Ouroboros Documentation
-site_description: Documentation for the Ouroboros distributed password cracking management system
-repo_url: https://github.com/unclesp1d3r/ouroboros
+site_description: Documentation for Ouroboros, the FastAPI + SvelteKit rewrite of CipherSwarm
+repo_url: https://github.com/unclesp1d3r/Ouroboros
 site_url: http://127.0.0.1:9090/
 repo_name: Ouroboros
 
@@ -78,7 +78,6 @@ nav:
           - API: architecture/api.md
     - User Guide:
           - Web Interface: user-guide/web-interface.md
-          - NiceGUI Interface: user-guide/nicegui-interface.md
           - Agent Setup: user-guide/agent-setup.md
           - Attack Configuration: user-guide/attack-configuration.md
     - Development:
@@ -88,7 +87,6 @@ nav:
           - Testing Status: development/testing-status.md
           - Analysis Notes: development/analysis_notes.md
           - API Reference: development/api-reference.md
-          - Agent API v2 Development: development/agent-api-v2-development.md
           - Authentication: development/authentication.md
           - Security: development/security.md
           - Style Guide: development/style-guide.md
@@ -100,8 +98,7 @@ nav:
           - Backup: deployment/backup.md
     - API:
           - Overview: api/overview.md
-          - Agent API v1: api/agent.md
-          - Agent API v2: api/agent-api-v2.md
+          - Agent API: api/agent.md
           - Web UI API: api/web.md
           - Control API: api/control.md
           - Integration Guides: api/integration-guides.md

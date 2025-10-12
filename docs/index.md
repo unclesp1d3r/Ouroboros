@@ -1,6 +1,6 @@
 # Welcome to Ouroboros
 
-Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It's a complete rewrite of Ouroboros, preserving backward compatibility while modernizing the architecture. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
 ## Features
 
@@ -27,7 +27,7 @@ Ouroboros is a distributed password cracking management system built with FastAP
 
 ## Project Status
 
-Ouroboros is under active development. The core features are stable and the API specification is fixed, but we're continuously adding new features and improvements.
+Ouroboros is under active development as an experimental rewrite of Ouroboros. The core features are stable and the Agent API v1 specification is fixed for backward compatibility, but we're continuously adding new features and improvements.
 
 ## Support
 

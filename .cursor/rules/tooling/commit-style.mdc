@@ -32,16 +32,17 @@ Follow the [Conventional Commits](mdc:https:/www.conventionalcommits.org) specif
 ### 1. Type (Required)
 
 The type MUST be one of:
-* `feat`: A new feature (MINOR version)
-* `fix`: A bug fix (PATCH version)
-* `docs`: Documentation only changes
-* `style`: Changes that do not affect the meaning of the code
-* `refactor`: A code change that neither fixes a bug nor adds a feature
-* `perf`: A code change that improves performance
-* `test`: Adding missing tests or correcting existing tests
-* `build`: Changes that affect the build system or external dependencies
-* `ci`: Changes to CI configuration files and scripts
-* `chore`: Changes to the build process or auxiliary tools and libraries
+
+- `feat`: A new feature (MINOR version)
+- `fix`: A bug fix (PATCH version)
+- `docs`: Documentation only changes
+- `style`: Changes that do not affect the meaning of the code
+- `refactor`: A code change that neither fixes a bug nor adds a feature
+- `perf`: A code change that improves performance
+- `test`: Adding missing tests or correcting existing tests
+- `build`: Changes that affect the build system or external dependencies
+- `ci`: Changes to CI configuration files and scripts
+- `chore`: Changes to the build process or auxiliary tools and libraries
 
 ### 2. Scope (Optional)
 
@@ -79,10 +80,10 @@ The type MUST be one of:
 ### 5. Footer (Optional)
 
 - MUST begin one blank line after the body
-* Each footer MUST consist of a word token, followed by either a `:` or `#` separator
-* Footer tokens MUST use `-` in place of whitespace characters
-* Exception: `BREAKING CHANGE` MAY be used as a token
-* Examples:
+- Each footer MUST consist of a word token, followed by either a `:` or `#` separator
+- Footer tokens MUST use `-` in place of whitespace characters
+- Exception: `BREAKING CHANGE` MAY be used as a token
+- Examples:
 
   ```
   Closes #123

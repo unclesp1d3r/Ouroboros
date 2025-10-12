@@ -8,6 +8,8 @@ fileMatchPattern:
 
 # Ouroboros Frontend Development Guide
 
+# Ouroboros Frontend Development Guide
+
 ## Technology Stack
 
 - **Framework**: SvelteKit 2+ with TypeScript and SSR
