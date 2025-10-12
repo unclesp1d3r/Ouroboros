@@ -266,4 +266,4 @@ Complete REST interface for SvelteKit frontend with campaign management, attack 
 
 ### Next Steps
 
-The Web UI API foundation is ready to support **Phase 3: Frontend Implementation**, while the Control API (Part 3) remains to be implemented for CLI/TUI support in the future. o be implemented for CLI/TUI support in the future.
+The Web UI API foundation is ready to support **Phase 3: Frontend Implementation**, while the Control API (Part 3) remains to be implemented for CLI/TUI support in the future.

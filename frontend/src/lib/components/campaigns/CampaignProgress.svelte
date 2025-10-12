@@ -7,7 +7,7 @@
     import { campaignsStore } from '$lib/stores/campaigns.svelte';
     import type { CampaignProgress } from '$lib/types/campaign';
 
-    export let campaignId: number;
+    export let campaignId: number = undefined as unknown as number;
     export let initialProgress: CampaignProgress | null = null;
     export let refreshInterval: number = 5000; // 5 seconds default
     export let enableAutoRefresh: boolean = false; // Allow disabling auto-refresh

@@ -67,7 +67,7 @@ describe('AgentRegisterModal', () => {
         const open = writable(true);
 
         // Create a deferred promise that we can resolve manually
-        let resolvePromise: (value: unknown) => void = () => {};
+        let resolvePromise!: (value: unknown) => void;
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve;
         });

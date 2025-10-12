@@ -287,7 +287,7 @@ export const load = async ({ params, locals, cookies, url }: RequestEvent) => {
         // Combine campaign with attacks and calculate progress
         const campaignWithAttacks: CampaignDetail = {
             ...campaign,
-            attacks: attacks.sort((a, b) => a.position - b.position),
+            attacks: attacks.toSorted((a, b) => a.position - b.position),
             progress: Math.round(progress.percentage_complete ?? 0),
         };
 

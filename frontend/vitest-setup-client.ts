@@ -42,5 +42,3 @@ globalThis.__SVELTEKIT_PAYLOAD__ = {
 };
 
 // add more mocks here if you need them
-
-export {};

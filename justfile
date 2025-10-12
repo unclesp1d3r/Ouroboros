@@ -168,10 +168,11 @@ install-git-cliff:
 [windows]
 install-git-cliff:
     if (-not (Get-Command git-cliff -ErrorAction SilentlyContinue)) {
-    cargo install git-cliff --locked
-    if ($LASTEXITCODE -ne 0) {
-    Write-Host "Make sure git-cliff is installed manually"
-        exit $LASTEXITCODE
+        cargo install git-cliff --locked
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Make sure git-cliff is installed manually"
+            exit $LASTEXITCODE
+        }
     }
 
 # -----------------------------

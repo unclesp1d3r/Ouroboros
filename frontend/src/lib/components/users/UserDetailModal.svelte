@@ -9,9 +9,9 @@
     import { Select, SelectContent, SelectItem, SelectTrigger } from '$lib/components/ui/select';
     import type { User, UserUpdate } from '$lib/types/user';
 
-    export let user: User;
-    export let onClose: () => void;
-    export let onUserUpdated: () => void;
+    export let user: User = undefined as unknown as User;
+    export let onClose: () => void = () => {};
+    export let onUserUpdated: () => void = () => {};
 
     const dispatch = createEventDispatcher();
 

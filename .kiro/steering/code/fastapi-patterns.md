@@ -11,8 +11,6 @@ fileMatchPattern:
 
 # FastAPI Patterns and Best Practices for Ouroboros
 
-# FastAPI Patterns and Best Practices for Ouroboros
-
 ## API Structure and Organization
 
 ### Router Organization
