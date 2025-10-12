@@ -141,8 +141,18 @@ class RouteMigration:
     }
 
     @staticmethod
-    def create_redirect_middleware():
-        """Create FastAPI middleware for legacy route redirects"""
+    def create_redirect_middleware(app: FastAPI):
+        """
+        Create FastAPI middleware for legacy route redirects.
+
+        Required imports:
+            from fastapi import FastAPI, Request
+            from starlette.responses import RedirectResponse
+            import re
+
+        Usage:
+            RouteMigration.create_redirect_middleware(app)
+        """
 
         @app.middleware("http")
         async def redirect_legacy_routes(request: Request, call_next):

@@ -71,7 +71,7 @@ format: frontend-format
 # Check code formatting using ruff and mdformat
 format-check:
     uv run --group dev ruff format --check
-    uv run --group ci mdformat --check **/*.md
+    uv run --group ci mdformat --check *.md docs/**/*.md
 
 # Run all linting checks
 lint: format-check check frontend-lint

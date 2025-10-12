@@ -441,25 +441,29 @@ class CampaignCard:
 from nicegui import ui
 from typing import List, Dict, Callable, Optional
 
-class DataTable:
-    def __init__(self, columns: List[Dict], data: List[Dict],
-                 on_row_click: Optional[Callable] = None,
-                 searchable: bool = True,
-                 sortable: bool = True,
-                 pagination: bool = True):
 
+class DataTable:
+    def __init__(
+        self,
+        columns: List[Dict],
+        data: List[Dict],
+        on_row_click: Optional[Callable] = None,
+        searchable: bool = True,
+        sortable: bool = True,
+        pagination: bool = True,
+    ):
         self.columns = columns
         self.data = data
         self.filtered_data = data.copy()
         self.on_row_click = on_row_click
-        self.search_term = ''
+        self.search_term = ""
         self.sort_column = None
-        self.sort_direction = 'asc'
+        self.sort_direction = "asc"
         self.page = 1
         self.page_size = 10
 
         # Create reactive containers
-        self.table_container = ui.column().classes('w-full')
+        self.table_container = ui.column().classes("w-full")
         self.search_input = None
         self.table = None
         self.pagination_container = None
@@ -470,21 +474,23 @@ class DataTable:
         with self.table_container:
             # Search bar
             if searchable:
-                self.search_input = ui.input('Search...').classes('w-full mb-4')
-                self.search_input.on('input', self._handle_search)
+                self.search_input = ui.input("Search...").classes("w-full mb-4")
+                self.search_input.on("input", self._handle_search)
 
             # Table with proper NiceGUI reactive patterns
-            self.table = ui.table(columns=self.columns, rows=self.filtered_data).classes('w-full')
+            self.table = ui.table(
+                columns=self.columns, rows=self.filtered_data
+            ).classes("w-full")
 
             if sortable:
-                self.table.on('sort', self._handle_sort)
+                self.table.on("sort", self._handle_sort)
 
             if self.on_row_click:
-                self.table.on('rowClick', self._handle_row_click)
+                self.table.on("rowClick", self._handle_row_click)
 
             # Pagination
             if pagination:
-                self.pagination_container = ui.row().classes('justify-center mt-4')
+                self.pagination_container = ui.row().classes("justify-center mt-4")
                 self._create_pagination()
 
     def _handle_search(self, e):
@@ -492,31 +498,30 @@ class DataTable:
         self._filter_data()
 
     def _handle_sort(self, e):
-        self.sort_column = e.args['column']
-        self.sort_direction = e.args['direction']
+        self.sort_column = e.args["column"]
+        self.sort_direction = e.args["direction"]
         self._sort_data()
 
     def _handle_row_click(self, e):
         if self.on_row_click:
-            self.on_row_click(e.args['row'])
+            self.on_row_click(e.args["row"])
 
     def _filter_data(self):
         if not self.search_term:
             self.filtered_data = self.data.copy()
         else:
             self.filtered_data = [
-                row for row in self.data
-                if any(self.search_term in str(value).lower()
-                      for value in row.values())
+                row
+                for row in self.data
+                if any(self.search_term in str(value).lower() for value in row.values())
             ]
         self._update_table()
 
     def _sort_data(self):
         if self.sort_column:
-            reverse = self.sort_direction == 'desc'
+            reverse = self.sort_direction == "desc"
             self.filtered_data.sort(
-                key=lambda x: x.get(self.sort_column, ''),
-                reverse=reverse
+                key=lambda x: x.get(self.sort_column, ""), reverse=reverse
             )
         self._update_table()
 
@@ -524,7 +529,11 @@ class DataTable:
         # Update table using NiceGUI's reactive update pattern
         # Calculate pagination
         total_items = len(self.filtered_data)
-        total_pages = (total_items + self.page_size - 1) // self.page_size if total_items > 0 else 1
+        total_pages = (
+            (total_items + self.page_size - 1) // self.page_size
+            if total_items > 0
+            else 1
+        )
 
         # Reset page if out of range
         if self.page > total_pages:
@@ -544,25 +553,37 @@ class DataTable:
         if not self.pagination_container:
             return
 
-        total_pages = (len(self.filtered_data) + self.page_size - 1) // self.page_size
+        total_pages = (
+            (len(self.filtered_data) + self.page_size - 1) // self.page_size
+            if len(self.filtered_data) > 0
+            else 1
+        )
 
         with self.pagination_container:
+            ui.button(
+                "Previous",
+                on_click=lambda: self._change_page(self.page - 1),
+                enabled=self.page > 1,
+            )
+
+            ui.label(f"Page {self.page} of {total_pages}").classes("mx-4")
+
+            ui.button(
+                "Next",
+                on_click=lambda: self._change_page(self.page + 1),
+                enabled=self.page < total_pages,
+            )
+
     def _change_page(self, new_page: int):
-        total_pages = (len(self.filtered_data) + self.page_size - 1) // self.page_size if len(self.filtered_data) > 0 else 1
+        total_pages = (
+            (len(self.filtered_data) + self.page_size - 1) // self.page_size
+            if len(self.filtered_data) > 0
+            else 1
+        )
         if 1 <= new_page <= total_pages:
             self.page = new_page
             self._update_table()
-            self._create_pagination()  # Refresh pagination controls
-
-            ui.label(f'Page {self.page} of {total_pages}').classes('mx-4')
-
-            ui.button('Next',
-                     on_click=lambda: self._change_page(self.page + 1),
-                     enabled=self.page < total_pages)
-
-    def _change_page(self, new_page: int):
-        self.page = new_page
-        self._update_table()
+            self._create_pagination()
 ```
 
 ## Data Models
