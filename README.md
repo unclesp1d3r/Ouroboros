@@ -10,13 +10,13 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2025)
 [![wakatime](https://wakatime.com/badge/github/unclesp1d3r/Ouroboros.svg)](https://wakatime.com/badge/github/unclesp1d3r/Ouroboros)
 
-**Project Ouroboros** is the experimental FastAPI + SvelteKit rewrite of Ouroboros — a distributed password cracking orchestration system originally built in Ruby on Rails. This project represents a full-cycle rebuild of Ouroboros from the inside out, preserving its core ideas while modernizing its architecture, scalability, and user experience.
+**Project Ouroboros** is the experimental FastAPI + SvelteKit rewrite of CipherSwarm — a distributed password cracking orchestration system originally built in Ruby on Rails. This project represents a full-cycle rebuild of CipherSwarm from the inside out, preserving its core ideas while modernizing its architecture, scalability, and user experience.
 
 ---
 
 ## ⚙️ Purpose
 
-Ouroboros exists as a cleanroom implementation and future foundation for Ouroboros. It explores:
+Ouroboros exists as a cleanroom implementation and future foundation for CipherSwarm. It explores:
 
 - Asynchronous task distribution and agent management
 - Modern API design with FastAPI and Pydantic v2
@@ -28,19 +28,16 @@ Ouroboros exists as a cleanroom implementation and future foundation for Ourobor
 
 ## 🧩 Architecture Overview
 
-- Distributed hash-cracking tasks managed through user-friendly web interfaces
-- Scalable architecture to efficiently distribute workloads across a network of computers
-- Integration with hashcat for versatile hash cracking capabilities
-- Real-time monitoring of task progress and comprehensive result reporting
-- Secure, easy-to-use system for both setup and operation
-- **Dual Web Interface Options**:
-  - **SvelteKit Frontend**: Modern, high-performance web UI with Flowbite Svelte and DaisyUI
-  - **NiceGUI Interface**: Python-native web interface integrated directly into the FastAPI backend
-- RESTful API (OpenAPI 3.0.1)
-- Airgap and LAN support
+- **Backend:** FastAPI + SQLAlchemy 2.x (async) + PostgreSQL
+- **Frontend:** SvelteKit + Tailwind + shadcn-svelte
+- **Storage:** MinIO for file-backed resources
+- **Cache:** Cashews (in-memory / Redis)
+- **Messaging:** Server-Sent Events (SSE) for live updates
+- **Testing:** Pytest + Playwright
 
 - **Frontend:** SvelteKit + Tailwind + shadcn-svelte
 
+<<<<<<< HEAD
 - **Storage:** MinIO for file-backed resources
 
 - **Cache:** Cashews (in-memory / Redis)
@@ -51,9 +48,22 @@ Ouroboros exists as a cleanroom implementation and future foundation for Ourobor
 
 - **Frontend:** SvelteKit + Tailwind + shadcn-svelte
 
+||||||| parent of 7b6e459a (chore(docs): rename project from CipherSwarm to Ouroboros and update documentation)
+- **Storage:** MinIO for file-backed resources
+
+- **Cache:** Cashews (in-memory / Redis)
+
+- **Messaging:** Server-Sent Events (SSE) for live updates
+
+- **Testing:** Pytest + Playwright
+
+---
+
+=======
+>>>>>>> 7b6e459a (chore(docs): rename project from CipherSwarm to Ouroboros and update documentation)
 ## 🔍 Status
 
-Ouroboros is an active rewrite under development. Many components mirror Ouroboros's design documents but are implemented idiomatically for FastAPI. Until the project stabilizes, this branch should be treated as **experimental**.
+Ouroboros is an active rewrite under development. Many components mirror CipherSwarm's design documents but are implemented idiomatically for FastAPI. Until the project stabilizes, this branch should be treated as **experimental**.
 
 > "From its own code, it is reborn."
 
