@@ -326,8 +326,9 @@ def run_server() -> None:
     """Run the FastAPI server with development configuration.
 
     This function integrates NiceGUI with the FastAPI application by calling
-    `ui.run_with()` before starting uvicorn. This is the only startup path
-    that currently activates NiceGUI integration.
+    `ui.run_with()` to configure NiceGUI routes, then starts uvicorn with
+    the modified app object. This is the only startup path that currently
+    activates NiceGUI integration.
 
     To use this entrypoint:
     - Via pyproject.toml script: `uv run server`
@@ -338,13 +339,18 @@ def run_server() -> None:
     """
     from nicegui import ui
 
-    ui.run_with(
+    # Configure NiceGUI routes on the FastAPI app
+    # ui.run_with() modifies the app in-place and returns the wrapped ASGI app
+    wrapped_app = ui.run_with(
         app,
         mount_path="/ui",
         storage_secret=settings.SECRET_KEY,
     )
+
+    # Start uvicorn with the wrapped app object directly
+    # Using the app object (not string reference) ensures NiceGUI's modifications are used
     uvicorn.run(
-        "app.main:app",
+        wrapped_app if wrapped_app is not None else app,
         host="0.0.0.0",  # noqa: S104
         port=8000,
         reload=True,
