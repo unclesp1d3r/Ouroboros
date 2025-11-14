@@ -6,26 +6,43 @@ at the /ui/ path prefix.
 """
 
 from fastapi import FastAPI
+from nicegui import storage
+from starlette.middleware.sessions import SessionMiddleware
+
+from app.core.config import settings
+from app.ui.auth.middleware import register_auth_middleware
 
 
 def setup_nicegui_interface(app: FastAPI) -> None:
     """Initialize the NiceGUI interface for the FastAPI application.
 
-    This function sets up NiceGUI configuration and prepares it for integration
-    with the FastAPI app. Page registration and authentication middleware will
-    be implemented in subsequent phases.
+    This function sets up NiceGUI configuration, registers required middleware
+    for session management, and registers authentication components.
+
+    Middleware registration order is critical:
+    1. RequestTrackingMiddleware (for NiceGUI session tracking)
+    2. SessionMiddleware (for session cookie management)
+    3. Auth middleware (for authentication enforcement)
 
     Args:
         app: The FastAPI application instance to integrate NiceGUI with.
     """
-    # Import NiceGUI modules
-    # The ui module will be used in future phases for page registration
+    # Add NiceGUI session tracking middleware (must be first)
+    app.add_middleware(storage.RequestTrackingMiddleware)
+
+    # Add session middleware with matching secret key
+    # The secret must match the storage_secret used in ui.run_with()
+    app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
+
+    # Register authentication middleware
+    register_auth_middleware(app)
+
+    # Import login page module to trigger @ui.page decorator registration
+    # This must happen after middleware registration
+    # Import NiceGUI modules for future use
     from nicegui import ui
 
-    _ = ui  # Suppress unused import warning - will be used in future phases
+    from app.ui.auth import login
 
-    # Initial configuration will be added in subsequent phases
-    # This function is minimal at this stage as page registration and
-    # authentication middleware will be implemented later
-    # The app parameter will be used in future phases for mounting routes
-    _ = app
+    _ = ui  # Suppress unused import warning
+    _ = login  # Trigger module import
