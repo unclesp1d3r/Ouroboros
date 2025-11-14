@@ -7,9 +7,9 @@ export const userCreateSchema = z.object({
         .string()
         .min(8, 'Password must be at least 8 characters')
         .max(128, 'Password must be less than 128 characters'),
-    role: z
-        .enum(['analyst', 'operator', 'admin'])
-        .refine((val) => val !== undefined, { message: 'Please select a role' }),
+    role: z.enum(['analyst', 'operator', 'admin'], {
+        message: 'Please select a role (analyst, operator, or admin)',
+    }),
 });
 
 export type UserCreateForm = z.infer<typeof userCreateSchema>;

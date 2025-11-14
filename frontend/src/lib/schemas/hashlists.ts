@@ -87,7 +87,7 @@ export const HashItemOut = z.object({
     hash: z.string().describe('Hash value'),
     salt: z.string().nullish().describe('Salt value, if present'),
     meta: z
-        .union([z.record(z.string(), z.string()), z.null()])
+        .union([z.record(z.string(), z.unknown()), z.null()])
         .nullish()
         .describe('User-defined metadata for the hash item'),
     plain_text: z
