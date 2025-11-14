@@ -12,22 +12,25 @@ The implementation should follow the detailed UX specifications and user flow do
 
 - **[Dashboard UX Design](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/dashboard-ux.md)** - Complete dashboard layout, metrics cards, campaign overview, and real-time update specifications
 
-* **[Campaign List View](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/campaign_list_view.md)** - Campaign table layout, attack display, and action menus
-* **[User Flows Notes](../../../docs/v2_rewrite_implementation_plan/notes/user_flows_notes.md)** - Comprehensive user interaction flows and role-based access patterns
+- **[Campaign List View](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/campaign_list_view.md)** - Campaign table layout, attack display, and action menus
+
+- **[User Flows Notes](../../../docs/v2_rewrite_implementation_plan/notes/user_flows_notes.md)** - Comprehensive user interaction flows and role-based access patterns
 
 ### Component-Specific Documentation
 
 - **[Dictionary Attack Editor](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/new_dictionary_attack_editor.md)** - Attack configuration modal design and form patterns
 
-* **[Agent Notes](../../../docs/v2_rewrite_implementation_plan/notes/agent_notes.md)** - Agent monitoring, configuration, and management interface specifications
-* **[Campaign Notes](../../../docs/v2_rewrite_implementation_plan/notes/campaign_notes.md)** - Campaign behavior, attack ordering, and toolbar functionality
+- **[Agent Notes](../../../docs/v2_rewrite_implementation_plan/notes/agent_notes.md)** - Agent monitoring, configuration, and management interface specifications
+
+- **[Campaign Notes](../../../docs/v2_rewrite_implementation_plan/notes/campaign_notes.md)** - Campaign behavior, attack ordering, and toolbar functionality
 
 ### Additional UX Screens
 
 - **[Mask Attack Editor](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/new_mask_attack_editor.md)** - Mask attack configuration patterns
 
-* **[Brute Force Attack Editor](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/brute_force_attack_editor.md)** - Brute force attack setup
-* **[Health Status Screen](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/health_status_screen.md)** - System health monitoring interface
+- **[Brute Force Attack Editor](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/brute_force_attack_editor.md)** - Brute force attack setup
+
+- **[Health Status Screen](../../../docs/v2_rewrite_implementation_plan/notes/ui_screens/health_status_screen.md)** - System health monitoring interface
 
 Each task references the relevant UX documentation to ensure the NiceGUI implementation matches the established design patterns and user experience requirements.
 

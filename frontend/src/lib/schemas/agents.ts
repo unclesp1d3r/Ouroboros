@@ -21,7 +21,7 @@ export const AgentOut = z.object({
     state: AgentState.describe('Current agent state'),
     enabled: z.boolean().describe('Whether the agent is enabled'),
     advanced_configuration: z
-        .union([z.record(z.unknown()), z.null()])
+        .union([z.record(z.string(), z.unknown()), z.null()])
         .nullish()
         .describe('Advanced configuration settings'),
     devices: z
@@ -237,7 +237,7 @@ export type AgentUpdateDevicesOut = z.infer<typeof AgentUpdateDevicesOut>;
  */
 export const AgentUpdateHardwareOut = z.object({
     success: z.boolean().describe('Whether the operation was successful'),
-    hardware: z.record(z.unknown()).describe('Updated hardware information'),
+    hardware: z.record(z.string(), z.unknown()).describe('Updated hardware information'),
 });
 export type AgentUpdateHardwareOut = z.infer<typeof AgentUpdateHardwareOut>;
 
@@ -290,7 +290,7 @@ export type Body_update_agent_config_api_v1_web_agents__agent_id__config_patch =
  * Body for PATCH /api/v1/web/agents/{agent_id}/hardware
  */
 export const Body_update_agent_hardware_api_v1_web_agents__agent_id__hardware_patch = z.object({
-    hardware: z.record(z.unknown()).describe('Hardware information'),
+    hardware: z.record(z.string(), z.unknown()).describe('Hardware information'),
 });
 export type Body_update_agent_hardware_api_v1_web_agents__agent_id__hardware_patch = z.infer<
     typeof Body_update_agent_hardware_api_v1_web_agents__agent_id__hardware_patch

@@ -4,9 +4,9 @@ import { z } from 'zod';
 const baseAttackSchema = z.object({
     name: z.string().min(1, 'Attack name is required').max(255, 'Attack name too long'),
     comment: z.string().nullish(),
-    attack_mode: z.enum(['dictionary', 'mask', 'brute_force'], {
-        required_error: 'Attack mode is required',
-    }),
+    attack_mode: z
+        .enum(['dictionary', 'mask', 'brute_force'])
+        .refine((val) => val !== undefined, { message: 'Attack mode is required' }),
 });
 
 // Dictionary attack specific schema
