@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 
 /**
  * Centralized API client for client-side fetch calls
@@ -39,7 +40,7 @@ export async function apiFetch(url: string, options: RequestInit = {}): Promise<
 
     // Handle authentication errors by redirecting to login
     if (response.status === 401) {
-        goto('/login');
+        goto(resolve('/login'));
         throw new ApiError('Authentication required', 401);
     }
 

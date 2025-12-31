@@ -167,7 +167,7 @@
     {/if}
 
     {#if errors && errors.length > 0}
-        {#each errors as error}
+        {#each errors as error (error)}
             <p class="text-sm text-red-500" data-testid="hash-list-error">
                 {error}
             </p>
