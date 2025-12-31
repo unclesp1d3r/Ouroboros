@@ -39,7 +39,7 @@ update-deps:
     cd {{justfile_dir()}}
     uv sync --dev --all-groups --all-packages -U
     pnpm update --latest -r
-    pre-commit autoupdate
+    uv run pre-commit autoupdate
 
 [windows]
 update-deps:
@@ -135,15 +135,10 @@ build:
     uvx --from build pyproject-build --installer uv
 
 # Clean up and build the project
-clean-build:
-    just ci-check
-    just clean
-    just build
+clean-build: ci-check clean build
 
 # Clean up .pyc files, __pycache__, and pytest cache before testing
-clean-test: clean
-    @echo "✅ Cleaned. Running tests..."
-    just test-backend
+clean-test: clean test-backend
 
 # Generate CHANGELOG.md from commits
 release: install-git-cliff
@@ -226,12 +221,7 @@ docker-dev-up:
     docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --remove-orphans --build
 
 # Up the Docker services for development with hot reload and do not detach from the logs
-docker-dev-up-watch:
-    just docker-dev-up
-    @echo "🔄 Running database migrations..."
-    just docker-dev-migrate
-    @echo "🌱 Seeding E2E test data..."
-    just docker-dev-seed
+docker-dev-up-watch: docker-dev-up docker-dev-migrate docker-dev-seed
     @echo "📋 Following logs..."
     docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
 
@@ -248,7 +238,7 @@ docker-dev-migrate:
 # Seed E2E test data in development environment
 docker-dev-seed:
     cd {{justfile_dir()}}
-    docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T backend uv run python scripts/seed_e2e_data.py
+    docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T backend uv run --script scripts/seed_e2e_data.py
 
 # Down the Docker services for production
 docker-prod-down:
@@ -290,20 +280,14 @@ ci-setup:
 ci-check: lint test-backend test-frontend test-e2e
 
 # Run CI workflow locally with act
-github-actions-test:
-    cd {{justfile_dir()}}
-    just ci-setup
+github-actions-test: ci-setup
     @echo "Running CI workflow"
     act push --workflows .github/workflows/CI.yml --container-architecture linux/amd64
     @echo "Running Code Quality workflow"
     act push --workflows .github/workflows/ci-check.yml --container-architecture linux/amd64
 
 # Run all checks and tests for the backend only
-backend-check:
-    cd {{justfile_dir()}}
-    just format-check
-    just check
-    just test-backend
+backend-check: format-check check test-backend
 
 # -----------------------------
 # 🗄️ Database Tasks
@@ -319,7 +303,7 @@ db-drop-test:
 # Run Alembic migrations against the test database
 db-migrate-test:
     @echo "Running Alembic migrations on test database..."
-    @TEST_DATABASE_URL="$TEST_DATABASE_URL" alembic upgrade head
+    @TEST_DATABASE_URL="$TEST_DATABASE_URL" uv run alembic upgrade head
 
 # Full reset: drop, recreate, migrate for the test database
 db-reset: db-drop-test db-migrate-test
@@ -328,11 +312,11 @@ db-reset: db-drop-test db-migrate-test
 # Seed E2E test data for full-stack testing
 seed-e2e-data:
     cd {{justfile_dir()}}
-    uv run python scripts/seed_e2e_data.py
+    uv run --script scripts/seed_e2e_data.py
 
 # Check the schema types against the database
 check-schema:
-    uv run python scripts/dev/check_schema_types.py
+    uv run --script scripts/dev/check_schema_types.py
 
 # -----------------------------
 # 🚀 Development Environment (Decoupled)
@@ -342,8 +326,8 @@ check-schema:
 # Development: Run migrations and start the backend dev server only
 dev-backend:
     cd {{justfile_dir()}}
-    alembic upgrade head
-    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    uv run alembic upgrade head
+    uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 dev-seed-db:
     cd {{justfile_dir()}}
@@ -359,13 +343,10 @@ dev-frontend:
     cd {{justfile_dir()}}/frontend; pnpm dev --host 0.0.0.0 --port 5173
 
 # Development: Start both backend and frontend in Docker with hot reload
-dev-fullstack:
-    cd {{justfile_dir()}}
-    just docker-dev-up-watch
+dev-fullstack: docker-dev-up-watch
 
 # Legacy development command (runs backend only)
-dev:
-    just dev-backend
+dev: dev-backend
 
 # -----------------------------
 # Frontend Tasks
@@ -390,9 +371,7 @@ frontend-build:
     cd {{justfile_dir()}}/frontend; pnpm install; pnpm build
 
 # Run unit + e2e frontend tests (legacy - use test-frontend instead)
-frontend-test:
-    just frontend-test-unit
-    just frontend-test-e2e
+frontend-test: frontend-test-unit frontend-test-e2e
 
 # Run only frontend unit tests
 [unix]
@@ -440,10 +419,7 @@ frontend-format:
     cd {{justfile_dir()}}/frontend; pnpm format
 
 # Run all frontend checks including linting, testing, and building
-frontend-check:
-    just frontend-lint
-    just frontend-test
-    just frontend-build
+frontend-check: frontend-lint frontend-test frontend-build
 
 # Run only frontend E2E tests with UI for interactive testing
 [unix]
@@ -478,18 +454,11 @@ build-frontend-prod:
     cd {{justfile_dir()}}/frontend; pnpm install --frozen-lockfile; pnpm build
 
 # Build all production assets (backend + frontend)
-build-prod:
-    just build
-    just build-frontend-prod
+build-prod: build build-frontend-prod
 
 # Deploy production environment (Docker Compose)
-deploy-prod:
-    cd {{justfile_dir()}}
-    just docker-build
-    just docker-prod-up
-    @echo "✅ Production deployment started. Check docker compose logs for status."
+deploy-prod: docker-build docker-prod-up
 
 # Stop production deployment
-deploy-prod-stop:
-    just docker-prod-down
+deploy-prod-stop: docker-prod-down
     @echo "✅ Production deployment stopped."
