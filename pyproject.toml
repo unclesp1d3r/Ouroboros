@@ -3,89 +3,86 @@ name = "ouroboros"
 version = "0.1.0"
 description = "A distributed password cracking management system"
 authors = [{ name = "UncleSp1d3r", email = "unclesp1d3r@evilbitlabs.io" }]
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 dependencies = [
-    "fastapi[all]~=0.117.1",
-    "uvicorn[standard]~=0.37.0",
-    "sqlalchemy~=2.0.43",
-    "alembic~=1.16.5",
-    "pydantic~=2.11.0",
-    "pydantic-settings~=2.11.0",
+    "fastapi[all]~=0.128.0",
+    "uvicorn[standard]~=0.40.0",
+    "sqlalchemy~=2.0.45",
+    "alembic~=1.17.2",
+    "pydantic~=2.12.5",
+    "pydantic-settings~=2.12.0",
     "python-jose[cryptography]~=3.5.0",
     "passlib[bcrypt]~=1.7.4",
-    "python-multipart~=0.0.20",
-    "celery~=5.5.3",
-    "redis~=6.4.0",
+    "python-multipart~=0.0.21",
+    "celery~=5.6.1",
+    "redis~=7.1.0",
     "httpx[http2,brotli,zstd]~=0.28.1",
-    "python-dotenv~=1.1.1",
+    "python-dotenv~=1.2.1",
     "email-validator~=2.3.0",
     "loguru~=0.7.3",
     "casbin~=1.43.0",
     "pyjwt~=2.10.1",
     "bcrypt~=5.0.0",
-    "cashews[redis,dill]~=7.4.1",
+    "cashews[redis,dill]~=7.4.4",
     "packaging~=25.0",
     "timeago~=1.0.16",
     "name-that-hash~=1.11.0",
-    "psycopg[binary,pool]~=3.2.10",
+    "psycopg[binary,pool]~=3.3.2",
     "typing-extensions~=4.15.0",
-    "nh3~=0.3.0",
-    "minio~=7.2.17",
+    "nh3~=0.3.2",
+    "minio~=7.2.20",
     "fastapi-csrf-protect~=1.0.7",
     "case-converter~=1.2.0",
-    "fastapi-problem~=0.11.4",
-    "starlette~=0.48.0",
-    "cryptography~=46.0.1",
-    "greenlet~=3.2.4",
+    "fastapi-problem~=0.11.6",
+    "starlette~=0.50.0",
+    "cryptography~=46.0.3",
+    "greenlet~=3.3.0",
 ]
 
 [dependency-groups]
 ci = [
-    "mdformat~=0.7.22",
-    "mdformat-admon~=2.1.1",
-    "mdformat-config~=0.2.1",
-    "mdformat-footnote~=0.1.1",
-    "mdformat-frontmatter~=2.0.8",
-    "mdformat-gfm~=0.4.1",
-    "mdformat-gfm-alerts~=2.0.0",
-    "mdformat-ruff~=0.1.3",
-    "mdformat-simple-breaks~=0.0.1",
-    "mdformat-tables~=1.0.0",
-    "mdformat-toc~=0.5.0",
-    "mdformat-web~=0.2.0",
-    "mdformat-wikilink~=0.2.0",
+    "mdformat>=1.0.0",
+    "mdformat-admon>=2.1.1",
+    "mdformat-config>=0.2.1",
+    "mdformat-footnote>=0.1.2",
+    "mdformat-front-matters>=2.0.0",
+    "mdformat-gfm>=1.0.0",
+    "mdformat-gfm-alerts>=2.0.0",
+    "mdformat-ruff>=0.1.3",
+    "mdformat-simple-breaks>=0.1.0",
+    "mdformat-toc>=0.5.0",
+    "mdformat-web>=0.2.0",
 ]
 dev = [
-    "pre-commit~=4.3.0",
-    "pytest~=8.4.2",
+    "pre-commit~=4.5.1",
+    "pytest~=9.0.2",
     "pytest-cov~=7.0.0",
-    "pytest-asyncio~=1.2.0",
-    "ruff~=0.13.2",
-    "polyfactory~=2.22.2",
+    "pytest-asyncio~=1.3.0",
+    "ruff~=0.14.10",
+    "polyfactory~=3.2.0",
     "types-passlib~=1.7.7.20250602",
     "types-python-jose~=3.5.0.20250531",
-    "testcontainers[postgres,minio]~=4.13.1",
-    "deptry~=0.23.1",
+    "testcontainers[postgres,minio]~=4.13.3",
+    "deptry~=0.24.0",
     "jsonschema~=4.25.1",
-    "mdformat~=0.7.22",
     "pytest-xdist~=3.8.0",
-    "basedpyright~=1.31.4",
+    "basedpyright~=1.36.2",
 ]
 docs = [
-    "griffe-pydantic~=1.1.7",
-    "griffe-typingdoc~=0.2.9",
+    "griffe-pydantic~=1.1.8",
+    "griffe-typingdoc~=0.3.0",
     "mkdocs~=1.6.1",
     "mkdocs-awesome-pages-plugin~=2.10.1",
     "mkdocs-exporter~=6.2.0",
     "mkdocs-git-committers-plugin-2~=2.5.0",
-    "mkdocs-git-revision-date-localized-plugin~=1.4.7",
-    "mkdocs-macros-plugin~=1.4.0",
-    "mkdocs-material~=9.6.20",
-    "mkdocs-mermaid2-plugin~=1.2.2",
+    "mkdocs-git-revision-date-localized-plugin~=1.5.0",
+    "mkdocs-macros-plugin~=1.5.0",
+    "mkdocs-material~=9.7.1",
+    "mkdocs-mermaid2-plugin~=1.2.3",
     "mkdocs-minify-plugin~=0.8.0",
     "mkdocs-redirects~=1.2.2",
     "mkdocs-schema-reader~=0.11.1",
-    "mkdocstrings[python]~=0.30.1",
+    "mkdocstrings[python]~=1.0.0",
     "pydantic-2-mermaid~=0.7.3",
 ]
 
@@ -98,7 +95,7 @@ packages = ["app"]
 
 [tool.ruff]
 indent-width = 4
-target-version = "py312"
+target-version = "py314"
 line-length = 88
 fix = true
 include = [
@@ -234,6 +231,10 @@ reportCallIssue = "hint"
 minversion = "8.0"
 testpaths = ["tests"]
 asyncio_mode = "auto"
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.ruff.lint.pyupgrade]
 # Preserve types, even if a file imports `from __future__ import annotations`.
