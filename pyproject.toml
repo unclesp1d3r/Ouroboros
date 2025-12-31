@@ -27,7 +27,6 @@ dependencies = [
     "packaging~=25.0",
     "timeago~=1.0.16",
     "name-that-hash~=1.11.0",
-    "nicegui~=2.10.0",
     "psycopg[binary,pool]~=3.2.10",
     "typing-extensions~=4.15.0",
     "nh3~=0.3.0",
@@ -89,9 +88,6 @@ docs = [
     "mkdocstrings[python]~=0.30.1",
     "pydantic-2-mermaid~=0.7.3",
 ]
-
-[project.scripts]
-server = "app.main:run_server"
 
 [build-system]
 requires = ["hatchling"]

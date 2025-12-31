@@ -5,7 +5,6 @@ import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
 
-import uvicorn
 from cashews import cache
 from cashews.contrib.fastapi import (
     CacheDeleteMiddleware,
@@ -28,7 +27,6 @@ from app.core.logging import logger
 from app.core.openapi_customization import setup_openapi_customization
 from app.db.config import DatabaseSettings
 from app.db.session import sessionmanager
-from app.ui import setup_nicegui_interface
 
 
 # Redirect standard logging to loguru
@@ -289,69 +287,3 @@ app.add_exception_handler(HTTPException, v1_http_exception_handler)
 
 # Setup custom OpenAPI documentation
 setup_openapi_customization(app)
-
-# Setup NiceGUI interface
-setup_nicegui_interface(app)
-
-
-# NOTE: NiceGUI Integration Startup Path
-# ======================================
-# Currently, NiceGUI integration (`ui.run_with()`) is only active when starting
-# the application via `run_server()`, which is invoked through the `server`
-# entrypoint defined in pyproject.toml (project.scripts.server).
-#
-# Production Entrypoints (all use uvicorn directly):
-# - Dockerfile (production): `uvicorn app.main:app`
-# - Dockerfile.dev (development): `uvicorn app.main:app`
-# - docker-compose.yml: `uvicorn app.main:app`
-# - docker-compose.dev.yml: `uvicorn app.main:app`
-# - justfile dev-backend: `uvicorn app.main:app`
-#
-# These entrypoints do NOT call `run_server()`, so NiceGUI is not active in
-# production or standard development environments.
-#
-# Future Fix Required:
-# During the production configuration phase, one of the following approaches
-# should be implemented:
-# 1. Call `ui.run_with(app, mount_path="/ui", storage_secret=settings.SECRET_KEY)`
-#    immediately after `setup_nicegui_interface(app)` at module import time, OR
-# 2. Update all production entrypoints (Dockerfiles, docker-compose, justfile)
-#    to use the `server` entrypoint: `uv run server` instead of
-#    `uvicorn app.main:app`
-#
-# Current Status: No changes made - verification and documentation only.
-
-
-def run_server() -> None:
-    """Run the FastAPI server with development configuration.
-
-    This function integrates NiceGUI with the FastAPI application by calling
-    `ui.run_with()` to configure NiceGUI routes, then starts uvicorn with
-    the modified app object. This is the only startup path that currently
-    activates NiceGUI integration.
-
-    To use this entrypoint:
-    - Via pyproject.toml script: `uv run server`
-    - Direct import: `from app.main import run_server; run_server()`
-
-    Note: Production and standard development environments use `uvicorn app.main:app`
-    directly, which bypasses this function and does not activate NiceGUI.
-    """
-    from nicegui import ui
-
-    # Configure NiceGUI routes on the FastAPI app
-    # ui.run_with() modifies the app in-place and returns the wrapped ASGI app
-    wrapped_app = ui.run_with(
-        app,
-        mount_path="/ui",
-        storage_secret=settings.SECRET_KEY,
-    )
-
-    # Start uvicorn with the wrapped app object directly
-    # Using the app object (not string reference) ensures NiceGUI's modifications are used
-    uvicorn.run(
-        wrapped_app if wrapped_app is not None else app,
-        host="0.0.0.0",  # noqa: S104
-        port=8000,
-        reload=True,
-    )
