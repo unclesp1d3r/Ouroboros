@@ -1,6 +1,6 @@
 ---
-
-## inclusion: manual
+inclusion: manual
+---
 
 # SSE (Server-Sent Events) Implementation Patterns
 
@@ -151,23 +151,19 @@ export class SSEService {
 
 ### Media Type Mismatch
 
-**Problem**: SSE connections fail immediately after establishment
-**Solution**: Ensure backend uses `media_type="text/event-stream"`
+**Problem**: SSE connections fail immediately after establishment **Solution**: Ensure backend uses `media_type="text/event-stream"`
 
 ### Authentication Failures
 
-**Problem**: SSE connections receive 401 errors
-**Solution**: Use `withCredentials: true` in EventSource constructor
+**Problem**: SSE connections receive 401 errors **Solution**: Use `withCredentials: true` in EventSource constructor
 
 ### Connection Status Tracking
 
-**Problem**: Frontend shows "disconnected" despite working connections
-**Solution**: Only treat `EventSource.CLOSED` state as actual disconnection
+**Problem**: Frontend shows "disconnected" despite working connections **Solution**: Only treat `EventSource.CLOSED` state as actual disconnection
 
 ### Keep-Alive Handling
 
-**Problem**: Connections timeout after 30 seconds
-**Solution**: Backend should send periodic ping messages, frontend should filter them
+**Problem**: Connections timeout after 30 seconds **Solution**: Backend should send periodic ping messages, frontend should filter them
 
 ## Testing SSE Implementation
 

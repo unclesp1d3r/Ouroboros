@@ -5,8 +5,7 @@
 **ID:**
 
 - `auth.get_context`
-- `auth.set_context`
-  **Context:** Web UI (Authenticated User Session)
+- `auth.set_context` **Context:** Web UI (Authenticated User Session)
 
 ---
 

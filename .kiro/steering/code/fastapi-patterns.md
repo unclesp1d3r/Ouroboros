@@ -1,6 +1,13 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: [app/api/\*\*/\*.py]
+inclusion: fileMatch
+fileMatchPattern:
+  - app/**/*.py
+  - app/api/**/*.py
+  - app/routes/**/*.py
+  - app/endpoints/**/*.py
+  - app/schemas/**/*.py
+  - app/models/**/*.py
+---
 
 # FastAPI Patterns and Best Practices for Ouroboros
 

@@ -18,7 +18,7 @@
     import type { PageData } from './$types';
 
     // Receive SSR data
-    export let data: PageData;
+    export let data: PageData = undefined as unknown as PageData;
 
     // Extract data from SSR
     $: campaign = data.campaign;

@@ -1,6 +1,7 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: ['\*.py']
+inclusion: fileMatch
+fileMatchPattern: '*.py'
+---
 
 - **Model Definition:**
 
@@ -38,26 +39,7 @@
 
     - Example:
 
-      project_root/
-      ├── src/
-      │ ├── **init**.py
-      │ ├── models/
-      │ │ ├── **init**.py
-      │ │ ├── user.py
-      │ │ ├── item.py
-      │ ├── validators/
-      │ │ ├── **init**.py
-      │ │ ├── user_validators.py
-      │ ├── main.py # Application entry point
-      ├── tests/
-      │ ├── **init**.py
-      │ ├── test_user.py
-      │ ├── test_item.py
-      ├── docs/
-      │ ├── ...
-      ├── .env
-      ├── pyproject.toml
-      ├── README.md
+      project_root/ ├── src/ │ ├── **init**.py │ ├── models/ │ │ ├── **init**.py │ │ ├── user.py │ │ ├── item.py │ ├── validators/ │ │ ├── **init**.py │ │ ├── user_validators.py │ ├── main.py # Application entry point ├── tests/ │ ├── **init**.py │ ├── test_user.py │ ├── test_item.py ├── docs/ │ ├── ... ├── .env ├── pyproject.toml ├── README.md
 
   - **File Naming:**
 

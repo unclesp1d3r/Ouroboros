@@ -1,6 +1,6 @@
 ---
-
-## inclusion: manual
+inclusion: manual
+---
 
 # SSR Authentication Implementation Guide
 

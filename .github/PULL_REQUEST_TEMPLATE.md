@@ -68,8 +68,7 @@
 
 <!-- Link to related issues using GitHub's syntax -->
 
-Closes #
-Related to #
+Closes # Related to #
 
 ## Milestone
 

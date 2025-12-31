@@ -14,6 +14,7 @@ This guide covers setting up your development environment for Ouroboros
   - [Initial Setup](#initial-setup)
   - [Development Environment](#development-environment)
   - [Development Commands](#development-commands)
+  - [Interface Development](#interface-development)
   - [Database Management](#database-management)
   - [Testing](#testing)
   - [Code Quality](#code-quality)
@@ -81,8 +82,7 @@ This guide covers setting up your development environment for Ouroboros
 
 ### VS Code Configuration
 
-1. **Settings**
-   Create `.vscode/settings.json`:
+1. **Settings** Create `.vscode/settings.json`:
 
    ```json
    {
@@ -101,8 +101,7 @@ This guide covers setting up your development environment for Ouroboros
    }
    ```
 
-2. **Extensions**
-   Install recommended extensions:
+2. **Extensions** Install recommended extensions:
 
    ```json
    {
@@ -165,6 +164,70 @@ just docs
 
 # Clean development environment
 just clean
+```
+
+## Interface Development
+
+Ouroboros provides two web interface options for development:
+
+### SvelteKit Frontend Development
+
+For frontend-focused development with the SvelteKit interface:
+
+```bash
+# Install frontend dependencies
+cd frontend
+npm install
+
+# Start frontend development server
+npm run dev
+
+# Build frontend for production
+npm run build
+```
+
+The SvelteKit frontend runs on `http://localhost:5173` and proxies API calls to the FastAPI backend.
+
+### NiceGUI Interface Development
+
+For Python-native interface development with NiceGUI:
+
+```bash
+# Enable NiceGUI interface
+export NICEGUI_ENABLED=true
+
+# Start backend with NiceGUI interface
+just dev
+
+# Access NiceGUI interface at http://localhost:8000/ui/
+```
+
+**NiceGUI Development Benefits:**
+
+- **Python-only development**: No JavaScript/TypeScript knowledge required
+- **Integrated debugging**: Use Python debugger for both backend and UI
+- **Rapid prototyping**: Quick UI changes without frontend build process
+- **Simplified testing**: Test UI components using NiceGUI testing framework
+
+**Development Structure:**
+
+```
+app/ui/
+├── __init__.py              # NiceGUI app initialization
+├── auth/                    # Authentication components
+├── components/              # Reusable UI components
+├── pages/                   # Page components
+└── services/                # UI-specific services
+```
+
+**Hot Reload:**
+
+NiceGUI supports hot reload for rapid development:
+
+```python
+# Enable hot reload in development
+if settings.DEBUG:
+    ui.run_with(app, mount_path="/ui", reload=True, debug=True)
 ```
 
 ## Database Management

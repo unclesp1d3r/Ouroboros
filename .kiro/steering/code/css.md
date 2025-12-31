@@ -1,6 +1,8 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: ['\*.css']
+inclusion: fileMatch
+fileMatchPattern:
+  - '*.css'
+---
 
 - **Use a CSS Preprocessor**: Leverage preprocessors like Sass, Less, or Stylus for features like variables, nesting, mixins, and functions to enhance code organization and maintainability.
 

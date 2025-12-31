@@ -1,6 +1,9 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: \[frontend/\*\*/*.ts, docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*.md\]
+inclusion: fileMatch
+fileMatchPattern:
+  - frontend/**/*.ts
+  - docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*.md
+---
 
 # SSR Patterns and Load Function Best Practices
 

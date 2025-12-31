@@ -19,18 +19,34 @@ help:
 # -----------------------------
 
 # Install dependencies and setup pre-commit hooks
+[unix]
 install:
     cd {{justfile_dir()}}
     # 🚀 Set up dev env & pre-commit hooks
     uv sync --dev --all-groups --all-packages
     uv run pre-commit install --hook-type commit-msg
 
+[windows]
+install:
+    cd {{justfile_dir()}}
+    # 🚀 Set up dev env & pre-commit hooks
+    uv sync --dev --all-groups --all-packages
+    $env:PYTHONUTF8=1; uv run pre-commit install --hook-type commit-msg
+
 # Update uv and pnpm dependencies
+[unix]
 update-deps:
     cd {{justfile_dir()}}
     uv sync --dev --all-groups --all-packages -U
     pnpm update --latest -r
     pre-commit autoupdate
+
+[windows]
+update-deps:
+    cd {{justfile_dir()}}
+    uv sync --dev --all-groups --all-packages -U
+    pnpm update --latest -r
+    $env:PYTHONUTF8=1; uv run pre-commit autoupdate
 
 
 # -----------------------------
@@ -38,27 +54,24 @@ update-deps:
 # PHONY: check, format, format-check, lint
 # -----------------------------
 
-# Run all pre-commit checks
-check:
-    # 🚀 Full code + commit checks
+pre-commit-run:
     uv lock --locked
     uv run pre-commit run -a
-    just based-pyright
+
+# Run all pre-commit checks
+check: pre-commit-run based-pyright
 
 based-pyright:
     uv run --group dev basedpyright -p pyproject.toml
 
 # Format code using ruff, mdformat, and svelte check
-format:
-    cd {{justfile_dir()}}
-    just frontend-format
+format: frontend-format
     uv run --group dev ruff format .
-    uv run --group ci mdformat .
 
 # Check code formatting using ruff and mdformat
 format-check:
-    uv run --group dev ruff format --check .
-    uv run --group ci mdformat --check .
+    uv run --group dev ruff format --check
+    uv run --group ci mdformat --check *.md docs/**/*.md
 
 # Run all linting checks
 lint: format-check check frontend-lint
@@ -74,12 +87,25 @@ test-backend:
     uv run pytest -n auto --cov --cov-config=pyproject.toml --cov-report=xml --tb=short -q
 
 # Run frontend tests with mocked APIs (Layer 2: Frontend UI and logic validation)
+[unix]
 test-frontend:
     cd {{justfile_dir()}}/frontend && pnpm exec vitest run && pnpm exec playwright test
 
+[windows]
+test-frontend:
+    cd {{justfile_dir()}}/frontend
+    pnpm exec vitest run
+    pnpm exec playwright test
+
 # Run full-stack E2E tests against Docker backend (Layer 3: True user flows across real stack)
+[unix]
 test-e2e:
     cd {{justfile_dir()}}/frontend && pnpm exec playwright test --config=playwright.config.e2e.ts
+
+[windows]
+test-e2e:
+    cd {{justfile_dir()}}/frontend
+    pnpm exec playwright test --config=playwright.config.e2e.ts
 
 # Run all python tests with maxfail=1 and disable warnings
 test-fast:
@@ -95,6 +121,7 @@ coverage:
 # -----------------------------
 
 # Clean up .pyc files, __pycache__, and pytest cache
+[unix]
 clean:
     cd {{justfile_dir()}}
     @echo "🧹 Cleaning .pyc files, __pycache__, and .pytest_cache..."
@@ -144,7 +171,7 @@ install-git-cliff:
         cargo install git-cliff --locked
         if ($LASTEXITCODE -ne 0) {
             Write-Host "Make sure git-cliff is installed manually"
-            $global:LASTEXITCODE = 0
+            exit $LASTEXITCODE
         }
     }
 
@@ -245,20 +272,22 @@ docker-e2e-down:
 # -----------------------------
 
 # Setup CI checks and dependencies for CI workflow
+[unix]
 ci-setup:
     cd {{justfile_dir()}}
     uv sync --dev --group ci || @echo "Make sure uv is installed manually"
     uv run pre-commit install --hook-type commit-msg || @echo "Make sure pre-commit is installed manually"
     pnpm install --save-dev commitlint @commitlint/config-conventional || @echo "Make sure pnpm is installed manually"
 
-# Run all checks and tests for the entire project (three-tier architecture)
-ci-check:
+[windows]
+ci-setup:
     cd {{justfile_dir()}}
-    just format-check
-    just check
-    just test-backend
-    just test-frontend
-    just test-e2e
+    uv sync --dev --group ci || @echo "Make sure uv is installed manually"
+    $env:PYTHONUTF8=1; uv run pre-commit install --hook-type commit-msg || @echo "Make sure pre-commit is installed manually"
+    pnpm install --save-dev commitlint @commitlint/config-conventional || @echo "Make sure pnpm is installed manually"
+
+# Run all checks and tests for the entire project (three-tier architecture)
+ci-check: lint test-backend test-frontend test-e2e
 
 # Run CI workflow locally with act
 github-actions-test:
@@ -284,17 +313,17 @@ backend-check:
 
 # Drop the test database schema and recreate it
 db-drop-test:
-	@echo "Dropping test database..."
-	@psql "$TEST_DATABASE_URL" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" || true
+    @echo "Dropping test database..."
+    @psql "$TEST_DATABASE_URL" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" || true
 
 # Run Alembic migrations against the test database
 db-migrate-test:
-	@echo "Running Alembic migrations on test database..."
-	@TEST_DATABASE_URL="$TEST_DATABASE_URL" alembic upgrade head
+    @echo "Running Alembic migrations on test database..."
+    @TEST_DATABASE_URL="$TEST_DATABASE_URL" alembic upgrade head
 
 # Full reset: drop, recreate, migrate for the test database
 db-reset: db-drop-test db-migrate-test
-	@echo "Test database reset and migrated successfully!"
+    @echo "Test database reset and migrated successfully!"
 
 # Seed E2E test data for full-stack testing
 seed-e2e-data:
@@ -321,8 +350,13 @@ dev-seed-db:
     uv run --script scripts/seed_e2e_data.py
 
 # Development: Start the frontend dev server only (requires backend running separately)
+[unix]
 dev-frontend:
     cd {{justfile_dir()}}/frontend && pnpm dev --host 0.0.0.0 --port 5173
+
+[windows]
+dev-frontend:
+    cd {{justfile_dir()}}/frontend; pnpm dev --host 0.0.0.0 --port 5173
 
 # Development: Start both backend and frontend in Docker with hot reload
 dev-fullstack:
@@ -338,12 +372,22 @@ dev:
 # -----------------------------
 
 # Start the frontend dev server
+[unix]
 frontend-dev:
     cd {{justfile_dir()}}/frontend && pnpm dev
 
+[windows]
+frontend-dev:
+    cd {{justfile_dir()}}/frontend; pnpm dev
+
 # Build the frontend for static deploy
+[unix]
 frontend-build:
     cd {{justfile_dir()}}/frontend && pnpm install && pnpm build
+
+[windows]
+frontend-build:
+    cd {{justfile_dir()}}/frontend; pnpm install; pnpm build
 
 # Run unit + e2e frontend tests (legacy - use test-frontend instead)
 frontend-test:
@@ -351,24 +395,49 @@ frontend-test:
     just frontend-test-e2e
 
 # Run only frontend unit tests
+[unix]
 frontend-test-unit:
     cd {{justfile_dir()}}/frontend && pnpm exec vitest run
 
+[windows]
+frontend-test-unit:
+    cd {{justfile_dir()}}/frontend; pnpm exec vitest run
+
 # Run only frontend E2E tests (mocked APIs)
+[unix]
 frontend-test-e2e:
     cd {{justfile_dir()}}/frontend && pnpm exec playwright test
 
+[windows]
+frontend-test-e2e:
+    cd {{justfile_dir()}}/frontend; pnpm exec playwright test
+
 # Run only frontend E2E tests with full backend
+[unix]
 frontend-test-e2e-full:
     cd {{justfile_dir()}}/frontend && pnpm exec playwright test --config=playwright.config.e2e.ts
 
+[windows]
+frontend-test-e2e-full:
+    cd {{justfile_dir()}}/frontend; pnpm exec playwright test --config=playwright.config.e2e.ts
+
 # Lint frontend code using eslint and svelte check
+[unix]
 frontend-lint:
     cd {{justfile_dir()}}/frontend && pnpm lint
 
+[windows]
+frontend-lint:
+    cd {{justfile_dir()}}/frontend; pnpm lint
+
 # Format frontend code using pnpm format
+[unix]
 frontend-format:
     cd {{justfile_dir()}}/frontend && pnpm format
+
+[windows]
+frontend-format:
+    cd {{justfile_dir()}}/frontend; pnpm format
 
 # Run all frontend checks including linting, testing, and building
 frontend-check:
@@ -377,12 +446,22 @@ frontend-check:
     just frontend-build
 
 # Run only frontend E2E tests with UI for interactive testing
+[unix]
 frontend-test-e2e-ui:
     cd {{justfile_dir()}}/frontend && pnpm exec playwright test --ui
 
+[windows]
+frontend-test-e2e-ui:
+    cd {{justfile_dir()}}/frontend; pnpm exec playwright test --ui
+
 # Run only frontend E2E tests with UI for interactive testing
+[unix]
 frontend-test-e2e-full-ui:
     cd {{justfile_dir()}}/frontend && pnpm exec playwright test --ui --config=playwright.config.e2e.ts
+
+[windows]
+frontend-test-e2e-full-ui:
+    cd {{justfile_dir()}}/frontend; pnpm exec playwright test --ui --config=playwright.config.e2e.ts
 
 # -----------------------------
 # 🚢 Production Build & Deployment
@@ -390,8 +469,13 @@ frontend-test-e2e-full-ui:
 # -----------------------------
 
 # Build frontend for SSR production deployment
+[unix]
 build-frontend-prod:
     cd {{justfile_dir()}}/frontend && pnpm install --frozen-lockfile && pnpm build
+
+[windows]
+build-frontend-prod:
+    cd {{justfile_dir()}}/frontend; pnpm install --frozen-lockfile; pnpm build
 
 # Build all production assets (backend + frontend)
 build-prod:

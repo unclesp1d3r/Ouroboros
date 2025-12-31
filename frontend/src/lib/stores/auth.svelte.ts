@@ -28,8 +28,9 @@ const currentProject = $derived(
 // Import SSE service for reconnection after auth recovery
 let sseService: { reconnectAfterAuth: () => void } | null = null;
 if (browser) {
-    import('$lib/services/sse').then((module) => {
+    void import('$lib/services/sse').then((module) => {
         sseService = module.sseService;
+        return null;
     });
 }
 

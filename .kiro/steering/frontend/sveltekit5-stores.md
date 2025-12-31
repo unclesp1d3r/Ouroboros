@@ -1,6 +1,9 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: \[frontend/src/lib/stores/\*\*/*, docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*.md\]
+inclusion: fileMatch
+fileMatchPattern:
+  - frontend/src/lib/stores/**/*
+  - docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*.md
+---
 
 # SvelteKit 5 Store Implementation Patterns
 

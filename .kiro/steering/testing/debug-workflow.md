@@ -1,6 +1,7 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: [docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/\*]
+inclusion: fileMatch
+fileMatchPattern: docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*
+---
 
 # Debugging Workflow Patterns
 
