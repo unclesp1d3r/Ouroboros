@@ -45,7 +45,7 @@ jobs:
               uses: pnpm/action-setup@v4
 
             - name: Install just
-              uses: extractions/setup-just@v1
+              uses: extractions/setup-just@v3
 
             - name: Wait for PostgreSQL
               run: |
