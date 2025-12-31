@@ -8,6 +8,9 @@ This AGENTS.md file provides comprehensive guidance for AI agents working with t
 
 Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
+> [!NOTE]
+> Treat .kiro/specs/ as the authoritative source for the project's requirements and architecture. The specs are numbered sequentially and serve as the implementation plan for the project.
+
 ### Key Components
 
 - **Backend**: FastAPI application with PostgreSQL, SQLAlchemy ORM, JWT authentication

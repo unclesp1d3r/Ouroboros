@@ -34,43 +34,7 @@ Ouroboros exists as a cleanroom implementation and future foundation for CipherS
 
 - **Testing:** Pytest + Playwright
 
-\<<\<<\<<< HEAD
-
-- **Frontend:** SvelteKit + Tailwind + shadcn-svelte
-
-\<<\<<\<<< HEAD
-
-- **Storage:** MinIO for file-backed resources
-
-- **Cache:** Cashews (in-memory / Redis)
-
-- **Messaging:** Server-Sent Events (SSE) for live updates
-
-- **Testing:** Pytest + Playwright
-
-- **Frontend:** SvelteKit + Tailwind + shadcn-svelte
-
-||||||| parent of 7b6e459a (chore(docs): rename project from CipherSwarm to Ouroboros and update documentation)
-
-- **Storage:** MinIO for file-backed resources
-
-- **Cache:** Cashews (in-memory / Redis)
-
-- **Messaging:** Server-Sent Events (SSE) for live updates
-
-- **Testing:** Pytest + Playwright
-
 ---
-
-\=======
-
-> > > > > > > 7b6e459a (chore(docs): rename project from CipherSwarm to Ouroboros and update documentation) ||||||| parent of 397f2705 (chore(docs): enhance documentation formatting and clarity)
-
-- **Frontend:** SvelteKit + Tailwind + shadcn-svelte
-
-\=======
-
-> > > > > > > 397f2705 (chore(docs): enhance documentation formatting and clarity)
 
 ## 🔍 Status
 
