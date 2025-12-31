@@ -126,8 +126,7 @@ Change chars order:
 - Duplicate (adds the rule `d`)
 - Reverse (adds the rule `r`)
 
-Substitute chars:
-_This copies rules from several predefined lists collected from hashcat._
+Substitute chars: _This copies rules from several predefined lists collected from hashcat._
 
 - Substitute Leetspeak (adds the rules from `rules/unix-ninja-leetspeak.rule`)
 - Substitute with Combinator (adds the rules from `rules/combinator.rule`)

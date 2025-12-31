@@ -1,7 +1,6 @@
 # Ouroboros UI Style Guide
 
-**Version:** 1.0
-**Last Reviewed:** 2025-05-16
+**Version:** 1.0 **Last Reviewed:** 2025-05-16
 
 This document defines the visual design and behavior standards for the Ouroboros frontend. It ensures consistency across pages, components, and themes, while staying fully offline-capable and budget-friendly.
 

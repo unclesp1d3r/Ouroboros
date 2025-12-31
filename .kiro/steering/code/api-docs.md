@@ -1,5 +1,5 @@
 ---
-This document defines the conventions and rules for all FastAPI endpoints in this project.
+inclusion: always
 ---
 
 ## Principals

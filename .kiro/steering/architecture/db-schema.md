@@ -1,6 +1,9 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: \[app/models/\*\*/*, alembic/*\]
+inclusion: fileMatch
+fileMatchPattern:
+  - app/models/**/*
+  - alembic/*
+---
 
 ## Guidelines
 

@@ -1,12 +1,18 @@
 """Test configuration and fixtures."""
 
+import asyncio
 import logging
+import sys
 from collections.abc import AsyncGenerator, Generator
 from typing import Any
 
 import bcrypt
 import pytest
 import pytest_asyncio
+
+# Fix for Windows ProactorEventLoop compatibility with psycopg
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 from httpx import ASGITransport, AsyncClient
 from minio import Minio
 from pydantic import PostgresDsn

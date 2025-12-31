@@ -80,10 +80,7 @@ Admins only. Tabs:
   - UI:
     - Each device has an enable/disable toggle (Flowbite toggle).
     - If task is active:
-      - Prompt with:
-        1\. Restart task immediately
-        2\. Apply change to next task
-        3\. Cancel change
+      - Prompt with: 1. Restart task immediately 2. Apply change to next task 3. Cancel change
 - **Hardware Acceleration Settings**:
   - Temperature abort (`--hwmon-temp-abort`): Not yet implemented, suggest default to 90°C or capture as a note.
   - `opencl_devices` toggle: defines allowed OpenCL device types.

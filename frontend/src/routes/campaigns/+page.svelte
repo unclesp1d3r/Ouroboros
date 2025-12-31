@@ -166,7 +166,7 @@
     }
 
     function sortCampaigns(campaigns: CampaignWithUIData[]): CampaignWithUIData[] {
-        const sorted = [...campaigns].sort((a, b) => {
+        const sorted = [...campaigns].toSorted((a, b) => {
             let aValue: string | number;
             let bValue: string | number;
 

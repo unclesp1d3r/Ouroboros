@@ -155,8 +155,7 @@ Skirmish should convert these buttons into one or more rule files applied during
 </div>
 ```
 
-These values should be computed server-side via a call to:
-`POST /api/v1/web/attacks/estimate`\
+These values should be computed server-side via a call to: `POST /api/v1/web/attacks/estimate`\
 with live updates triggered via `hx-trigger="change"` from any input field.
 
 ---

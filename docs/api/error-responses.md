@@ -497,8 +497,7 @@ def make_api_request(
 
 #### Authentication Issues
 
-**Problem:** `401 Unauthorized` responses
-**Solutions:**
+**Problem:** `401 Unauthorized` responses **Solutions:**
 
 1. Verify token format matches expected pattern
 2. Check token hasn't expired
@@ -507,8 +506,7 @@ def make_api_request(
 
 #### Rate Limiting Issues
 
-**Problem:** `429 Too Many Requests` responses
-**Solutions:**
+**Problem:** `429 Too Many Requests` responses **Solutions:**
 
 1. Implement exponential backoff
 2. Reduce request frequency
@@ -517,8 +515,7 @@ def make_api_request(
 
 #### Validation Errors
 
-**Problem:** `422 Unprocessable Entity` responses
-**Solutions:**
+**Problem:** `422 Unprocessable Entity` responses **Solutions:**
 
 1. Check required fields are present
 2. Verify field types and formats
@@ -527,8 +524,7 @@ def make_api_request(
 
 #### Resource Not Found
 
-**Problem:** `404 Not Found` responses
-**Solutions:**
+**Problem:** `404 Not Found` responses **Solutions:**
 
 1. Verify resource ID is correct
 2. Check resource hasn't been deleted
@@ -537,8 +533,7 @@ def make_api_request(
 
 #### Server Errors
 
-**Problem:** `500 Internal Server Error` responses
-**Solutions:**
+**Problem:** `500 Internal Server Error` responses **Solutions:**
 
 1. Retry the request after a delay
 2. Check system status page

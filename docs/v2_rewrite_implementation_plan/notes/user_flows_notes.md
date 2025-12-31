@@ -151,8 +151,7 @@ The following list represents all discrete user-performable actions expected in 
 
 ## Flow 1: Login and Project Selection
 
-**Actors:** Admin, Project Admin, User
-**Triggers:** Landing at `/dashboard`
+**Actors:** Admin, Project Admin, User **Triggers:** Landing at `/dashboard`
 
 1. User logs in with username/password or valid session cookie
 2. Backend returns list of projects user has access to
@@ -175,8 +174,7 @@ journey
 
 ## Flow 2: Real-Time Campaign Monitoring
 
-**Actors:** All roles
-**Triggers:** Dashboard load or SSE notification
+**Actors:** All roles **Triggers:** Dashboard load or SSE notification
 
 1. Frontend fetches:
 
@@ -217,8 +215,7 @@ journey
 
 ## Flow 3: Launch Campaign Wizard
 
-**Actors:** User, Project Admin, Admin
-**Triggers:** Click "New Campaign"
+**Actors:** User, Project Admin, Admin **Triggers:** Click "New Campaign"
 
 1. **User clicks** the `Campaigns` icon in the sidebar (collapsed or expanded), then clicks the `New Campaign` button — triggers `modal dialog` overlay.
 
@@ -232,8 +229,7 @@ journey
 
    - User enters name, optional description, and toggles DAG support.
    - When DAG is enabled, campaign scheduling changes: no attack from a later DAG phase will be assigned to any agent until all attacks from the earlier phases are fully completed, even if other agents are idle.
-   - Form uses standard text inputs, checkbox. Upon completion, the modal closes and the user is taken to the campaign editor to add attacks. A toast appears confirming the campaign has been created, and the editor screen scrolls or focuses to the attack configuration section. Smooth animation or fade-in is used to emphasize the transition without jarring the user.
-     *(Transition to Campaign Editor page)*
+   - Form uses standard text inputs, checkbox. Upon completion, the modal closes and the user is taken to the campaign editor to add attacks. A toast appears confirming the campaign has been created, and the editor screen scrolls or focuses to the attack configuration section. Smooth animation or fade-in is used to emphasize the transition without jarring the user. *(Transition to Campaign Editor page)*
 
 4. **Add Attacks Step:**
 
@@ -279,8 +275,7 @@ journey
 
 ## Flow 4: Agent Sheet View
 
-**Actors:** User, Admin (manage)
-**Triggers:** Click "Active Agents" card
+**Actors:** User, Admin (manage) **Triggers:** Click "Active Agents" card
 
 1. Agent Sheet slides in from right
 
@@ -313,8 +308,7 @@ journey
 
 ## Flow 5: Crack Notification to Results View
 
-**Actors:** All roles
-**Triggers:** Crack event
+**Actors:** All roles **Triggers:** Crack event
 
 1. Toast appears ("3 new hashes cracked")
 
@@ -342,8 +336,7 @@ journey
 
 ## Flow 6: Upload New Resource
 
-**Actors:** Project Admin, User
-**Triggers:** "Upload Resource" on Resources page
+**Actors:** Project Admin, User **Triggers:** "Upload Resource" on Resources page
 
 1. User selects file and type (wordlist, rule, mask, charset)
 
@@ -398,8 +391,7 @@ journey
 
 ## Flow 8: Pause Resume Delete Campaign
 
-**Actors:** User, Project Admin, Admin
-**Triggers:** User clicks dropdown on campaign row
+**Actors:** User, Project Admin, Admin **Triggers:** User clicks dropdown on campaign row
 
 1. User opens campaign row menu (⋮)
 
@@ -446,8 +438,7 @@ journey
       Show toast notification: 4: Frontend
 ```
 
-**Actors:** Admin
-**Triggers:** User clicks dropdown on campaign row
+**Actors:** Admin **Triggers:** User clicks dropdown on campaign row
 
 1. User opens campaign row menu (⋮)
 
@@ -489,8 +480,7 @@ journey
 
 ## Flow 9: Agent Admin Controls
 
-**Actors:** Admin only
-**Triggers:** Click “⋮” or “Expand” on agent sheet
+**Actors:** Admin only **Triggers:** Click “⋮” or “Expand” on agent sheet
 
 1. Admin expands agent row for controls
 
@@ -506,8 +496,7 @@ journey
 
 - Apply changes immediately and restart the task (with confirmation)
 
-- Apply changes for the next task only (deferred)
-  This ensures clarity on potential task interruption and preserves cracking efficiency.
+- Apply changes for the next task only (deferred) This ensures clarity on potential task interruption and preserves cracking efficiency.
 
   - Backend sends control command via API
   - UI updates with new agent status and log message
@@ -531,8 +520,7 @@ journey
 
 ## Flow 10: Inline Resource Editing (Under 1MB)
 
-**Actors:** Admin, Analyst
-**Triggers:** Click "Edit" icon on a small (\<1MB) resource file
+**Actors:** Admin, Analyst **Triggers:** Click "Edit" icon on a small (\<1MB) resource file
 
 1. User clicks Edit button on file row (wordlist/rule/mask/charset)
 2. Modal opens with text editor preloaded
@@ -558,8 +546,7 @@ journey
 
 ## Flow 11: Health Status Screen (Admin Only)
 
-**Actors:** Admin
-**Triggers:** Click "Metrics" tab or sidebar item
+**Actors:** Admin **Triggers:** Click "Metrics" tab or sidebar item
 
 1. Admin opens Advanced Metrics page
 
@@ -592,8 +579,7 @@ journey
 
 ## Flow 12: Export Import Campaign Templates
 
-**Actors:** Admin, Analyst
-**Triggers:** Click “Export” or “Import” on Campaign Wizard
+**Actors:** Admin, Analyst **Triggers:** Click “Export” or “Import” on Campaign Wizard
 
 1. User clicks Export on existing campaign → downloads JSON
 2. User clicks Import → file picker + format validation
@@ -616,8 +602,7 @@ journey
 
 ## Flow 13: DAG Viewer Editor UI
 
-**Actors:** Admin, Analyst
-**Triggers:** Add/edit attacks in Campaign Wizard
+**Actors:** Admin, Analyst **Triggers:** Add/edit attacks in Campaign Wizard
 
 1. User sees attacks listed in DAG phase groups (1, 2, 3...)
 2. UI provides drag-and-drop or up/down arrows to reorder attacks
@@ -645,8 +630,7 @@ journey
 
 ## Flow 14: Rule Editor with learned.rules Overlay
 
-**Actors:** Admin, Analyst
-**Triggers:** Add/Edit Rule attack or learned.rule merge
+**Actors:** Admin, Analyst **Triggers:** Add/Edit Rule attack or learned.rule merge
 
 1. User opens Rule Editor modal
 2. File is shown in editable textbox (with syntax highlighting, if available)
@@ -692,8 +676,7 @@ journey
 
 ## Flow 15: Manual Task Control (Pause Reassign)
 
-**Actors:** Admin only
-**Triggers:** Expand attack → view tasks → click control icon
+**Actors:** Admin only **Triggers:** Expand attack → view tasks → click control icon
 
 1. Admin drills down into a campaign and attack
 

@@ -462,9 +462,7 @@ const showField = (field: string) => {
 
 ### 1. Formsnap Implementation
 
-**Issue**: Abandoning Formsnap for basic HTML when encountering integration issues
-**Solution**: Always use proper Formsnap pattern with Svelte 5 snippets
-**Rule**: Never shortcut to basic HTML - fix Formsnap integration instead
+**Issue**: Abandoning Formsnap for basic HTML when encountering integration issues **Solution**: Always use proper Formsnap pattern with Svelte 5 snippets **Rule**: Never shortcut to basic HTML - fix Formsnap integration instead
 
 ### 2. Environment Detection Strategy
 
@@ -486,15 +484,11 @@ webServer: {
 
 ### 3. Docker Configuration Reuse
 
-**Lesson**: Don't create new Docker setups - reuse existing working configurations
-**Example**: Use `Dockerfile.dev` for E2E testing instead of modifying production Dockerfile
-**Rule**: Check existing Docker files before creating new ones
+**Lesson**: Don't create new Docker setups - reuse existing working configurations **Example**: Use `Dockerfile.dev` for E2E testing instead of modifying production Dockerfile **Rule**: Check existing Docker files before creating new ones
 
 ### 4. Task Completion Discipline
 
-**Critical Rule**: Complete one task fully before moving to next
-**Anti-pattern**: Partial implementations across multiple routes
-**Verification**: Run `just ci-check` only after completing logical groups
+**Critical Rule**: Complete one task fully before moving to next **Anti-pattern**: Partial implementations across multiple routes **Verification**: Run `just ci-check` only after completing logical groups
 
 ### 5. Component Data Flow Changes
 

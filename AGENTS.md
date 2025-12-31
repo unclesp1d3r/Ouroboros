@@ -1,12 +1,12 @@
 # Ouroboros Agents Guide
 
-This AGENTS.md file provides comprehensive guidance for AI agents working with Ouroboros, the FastAPI + SvelteKit rewrite of Ouroboros.
+This AGENTS.md file provides comprehensive guidance for AI agents working with the Ouroboros distributed password cracking management system.
 
 ---
 
 ## Project Overview
 
-Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It's a complete rewrite of Ouroboros, preserving backward compatibility with Ouroboros agents while modernizing the architecture. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
+Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
 ### Key Components
 
@@ -150,6 +150,64 @@ async def process_resource(resource_id: int) -> Resource:
 - **Models**: Define relationships clearly with proper foreign keys and join tables
 - **Multi-tenancy**: Enforce project-level isolation for all data access
 
+#### Service Layer Architecture Patterns
+
+All business logic should be implemented in service functions, not in API endpoints:
+
+```python
+# ✅ Service Function Structure
+async def create_campaign_service(
+    db: AsyncSession, campaign_data: CampaignCreate, current_user: User
+) -> Campaign:
+    """Create a new campaign with business validation."""
+    # Validation
+    if await _campaign_name_exists(db, campaign_data.name, campaign_data.project_id):
+        raise CampaignExistsError("Campaign name already exists in project")
+
+    # Business logic
+    campaign = Campaign(**campaign_data.model_dump())
+    db.add(campaign)
+    await db.commit()
+    await db.refresh(campaign)
+    return campaign
+
+
+# ✅ Service Function Naming Conventions
+# CRUD: create_*, get_*, list_*, update_*, delete_*
+# Business: estimate_keyspace_*, reorder_attacks_*, start_campaign_*
+```
+
+#### Database Patterns
+
+**Session Management:**
+
+```python
+# ✅ Session management with dependency injection
+from app.core.deps import get_db
+
+
+@router.get("/campaigns")
+async def list_campaigns(db: AsyncSession = Depends(get_db)):
+    return await campaign_service.list_campaigns_service(db)
+```
+
+**Pagination Pattern:**
+
+```python
+# ✅ Pagination pattern
+async def list_campaigns_service(
+    db: AsyncSession, skip: int = 0, limit: int = 20
+) -> tuple[list[Campaign], int]:
+    query = select(Campaign).offset(skip).limit(limit)
+    result = await db.execute(query)
+    items = result.scalars().all()
+
+    count_query = select(func.count(Campaign.id))
+    total = await db.scalar(count_query)
+
+    return list(items), total or 0
+```
+
 ### Go Development (CipherSwarmAgent)
 
 - **Version**: Go 1.22 or later
@@ -206,19 +264,52 @@ async def process_resource(resource_id: int) -> Resource:
 
 ## Testing Requirements
 
+### Three-Tier Testing Architecture
+
+Ouroboros uses a strategic three-tier testing architecture:
+
+#### Tier 1: Backend (`just test-backend`)
+
+- **Technology**: pytest + testcontainers + polyfactory
+- **Scope**: API endpoints, services, models with real PostgreSQL
+- **Coverage**: Focused on `app/` directory
+- **Speed**: Fast (seconds)
+- **When to use**: Testing backend logic, services, database operations
+
+#### Tier 2: Frontend (`just test-frontend`)
+
+- **Technology**: Vitest + Playwright with mocked APIs
+- **Scope**: UI components, user interactions, client-side logic
+- **Speed**: Fast (seconds)
+- **When to use**: Testing UI components and frontend logic in isolation
+
+#### Tier 3: Full E2E (`just test-e2e`)
+
+- **Technology**: Playwright against full Docker stack
+- **Scope**: Complete user workflows across real backend
+- **Data**: Uses `scripts/seed_e2e_data.py` for test data
+- **Speed**: Slow (minutes)
+- **When to use**: Validating complete user workflows end-to-end
+
+**Testing Strategy Guidelines:**
+
+- Run the **smallest tier** that exercises your changes
+- Use `just ci-check` only when PR-ready or touching multiple tiers
+- For verification-only tasks (no code changes), testing is not required
+
 ### Backend Testing
 
 ```bash
 # Run all tests
-just test
+just test-backend
 
 # Run with coverage
-just test-cov
+just coverage
 
 # Run linting and type checking
 just check
 
-# Full CI check (REQUIRED before any commit)
+# Full CI check (REQUIRED before PR submission)
 just ci-check
 ```
 
@@ -244,6 +335,121 @@ pnpm check
 - Validate API responses against OpenAPI specifications
 
 ## Development Workflow
+
+### Quickstart Commands
+
+```bash
+# 1) Setup
+just install
+
+# 2) Backend dev only (hot reload)
+just dev
+
+# 3) Fullstack dev (Docker, hot reload, migrations, seed, logs)
+just docker-dev-up-watch
+
+# 4) Stop dev stack
+just docker-dev-down
+
+# 5) Open docs/UI
+open http://localhost:8000/docs     # Swagger UI
+open http://localhost:8000/redoc    # ReDoc
+open http://localhost:5173          # SvelteKit Frontend
+
+# 6) Full CI checks (heavy - only before PR)
+just ci-check
+```
+
+### Common Just Commands
+
+**Setup & Maintenance:**
+
+- `just install` - Install Python/JS dependencies and pre-commit hooks
+- `just update-deps` - Update uv and pnpm dependencies
+
+**Linting & Formatting:**
+
+- `just check` - Run all code and commit checks
+- `just format` - Auto-format code with ruff and prettier
+- `just format-check` - Check formatting only
+- `just lint` - Run all linting checks
+
+**Development Servers:**
+
+- `just dev` - Backend only (alias for `dev-backend`)
+- `just dev-backend` - Run migrations + start FastAPI dev server
+- `just dev-frontend` - Start SvelteKit dev server only
+- `just dev-fullstack` - Start both in Docker with hot reload
+
+**Docker Workflows:**
+
+- `just docker-dev-up-watch` - Start dev stack + follow logs
+- `just docker-dev-down` - Stop dev stack
+- `just docker-prod-up` / `just docker-prod-down` - Production compose
+
+**Documentation:**
+
+- `just docs` - Serve MkDocs locally (port 9090)
+- `just docs-test` - Test documentation build
+
+**Database:**
+
+- `just db-reset` - Drop, recreate, and migrate test database
+
+**Release Management:**
+
+- `just release` - Generate CHANGELOG.md with git-cliff
+- `just release-preview` - Preview changelog without writing
+
+### Git Workflow
+
+#### Branch Strategy
+
+- **Long-lived branches:**
+
+  - `main`: Primary development branch (v2 codebase)
+  - `v1-archive`: Archived v1 stable (maintenance-only, rarely updated)
+
+- **Short-lived branches:**
+
+  - `feature/<area>/<desc>`: New features off `main`
+  - `hotfix/<desc>`: Emergency fixes off `main`
+  - `release/<version>`: Release preparation off `main`
+
+#### Development Workflows
+
+**Standard Development:**
+
+```bash
+git checkout main && git pull
+git checkout -b feature/api/new-feature
+just dev  # develop with hot reload
+just test-backend  # smallest tier covering changes
+git commit -m "feat(api): add project quotas"
+gh pr create --base main
+```
+
+**Hotfixes:**
+
+```bash
+git checkout main && git pull
+git checkout -b hotfix/critical-security-fix
+# fix the issue...
+just test-backend
+git commit -m "fix(auth): patch security vulnerability"
+gh pr create --base main
+```
+
+**Releases:**
+
+```bash
+git checkout main && git pull
+git checkout -b release/v2.1.0
+# stabilization work...
+just ci-check  # full validation
+git commit -m "chore(release): prepare v2.1.0"
+gh pr create --base main
+```
 
 ### Git Conventions
 
@@ -279,6 +485,15 @@ Follow [Conventional Commits](https://www.conventionalcommits.org):
 - `(docs)`: Documentation
 - `(deps)`: Dependencies
 
+#### Golden Rules
+
+1. **NO direct pushes** to `main` - PRs only
+2. **Agent API v1 compatibility** - maintain existing contracts
+3. **Rebase before PR** - stay synced with `main`
+4. **Test locally first** - run appropriate test tier before opening PR
+5. **PR scope manageable** - under ~400 lines when feasible
+6. **v1-archive is read-only** - only emergency security patches if absolutely needed
+
 ### Dependency Management
 
 - **Python**: Use `uv` for all dependency management
@@ -296,6 +511,43 @@ Follow [Conventional Commits](https://www.conventionalcommits.org):
 - `alembic/` (database migrations)
 - `.cursor/` (cursor configuration)
 - `.github/` (GitHub workflows)
+
+## Docker Development Environment
+
+### Environment Variables
+
+Key environment variables from `docker-compose.yml` and `docker-compose.dev.yml`:
+
+- `DATABASE_URL` - PostgreSQL connection string
+- `REDIS_HOST/PORT` - Redis cache connection
+- `CELERY_BROKER_URL/RESULT_BACKEND` - Task queue configuration
+- `SECRET_KEY` - JWT signing secret
+- `FIRST_SUPERUSER/PASSWORD` - Initial admin user
+- `BACKEND_CORS_ORIGINS` - Frontend origins for CORS
+
+### Health Endpoints
+
+- `/api-info` - API metadata (name, version, docs links)
+- `/health` - Simple health check for Docker
+
+### Docker Commands
+
+**Development Environment:**
+
+```bash
+# Start fullstack with migrations, seeding, and log following
+just docker-dev-up-watch
+
+# Stop and clean up
+just docker-dev-down
+```
+
+**Production Environment:**
+
+```bash
+just docker-prod-up      # Start production stack
+just docker-prod-down    # Stop production stack
+```
 
 ## Security Guidelines
 
@@ -407,6 +659,29 @@ class ResourceNotFound(CipherSwarmException):
     """Resource not found exception"""
 
     pass
+
+
+class CampaignNotFoundError(Exception):
+    """Raised when a campaign is not found."""
+
+    pass
+```
+
+### Service Layer Error Patterns
+
+```python
+# ✅ Custom domain exceptions in services
+class CampaignNotFoundError(Exception):
+    """Raised when a campaign is not found."""
+
+    pass
+
+
+# ✅ Exception translation in endpoints
+try:
+    campaign = await get_campaign_service(db, campaign_id)
+except CampaignNotFoundError:
+    raise HTTPException(status_code=404, detail="Campaign not found")
 ```
 
 ### API Error Responses
@@ -478,6 +753,87 @@ except Exception as e:
 - Resource usage monitoring
 - Alert configuration for critical issues
 
+## Debugging and Development Tools
+
+### Backend Debugging
+
+- **VS Code**: Use provided launch configurations for debugging the backend
+- **Command Line**: Use `pytest --pdb` to drop into debugger on test failures
+- **Logs**: Check Docker logs with `docker compose logs -f backend`
+
+### Frontend Debugging
+
+- **Browser DevTools**: Use browser's developer tools for debugging the frontend
+- **Svelte DevTools**: Install Svelte DevTools browser extension
+- **Network Tab**: Monitor API requests and responses
+- **Console**: Check for JavaScript errors and warnings
+
+## SDK and Client Development
+
+### Rust Client Development
+
+When developing Rust clients for the Ouroboros API:
+
+- **Code Generation**: Use OpenAPI Generator for Rust client code from current API schema
+- **Linting**: Enforce `cargo clippy -- -D warnings` for strict checking
+- **Testing**: Recommend `criterion` for benchmarks, `insta` for snapshot testing
+- **Organization**: Keep generated SDK code in separate packages/repositories
+
+### SDK Best Practices
+
+- Generate from `contracts/current_api_openapi.json` specification
+- Maintain separate versioning for SDK releases
+- Include comprehensive examples and documentation
+- Test against live API endpoints in CI/CD
+
+## User Preferences and Project Conventions
+
+### Maintainer Preferences
+
+- **Code Review**: Prefer coderabbit.ai over GitHub Copilot auto-reviews
+- **Milestones**: Named as version numbers (e.g., `v2.0`) with descriptive summaries
+- **Identity**: Always use handle 'UncleSp1d3r', never real name in commits or documentation
+- **Commits**: Never commit on behalf of maintainer; always open PRs for review
+
+### Branch and PR Conventions
+
+- PRs must target `main` branch
+- Keep PR scope manageable (under ~400 lines when feasible)
+- Include descriptive PR titles following conventional commit format
+- Link related issues in PR description
+- Ensure CI checks pass before requesting review
+
+## First Tasks Checklist for New AI Agents
+
+When starting work on Ouroboros:
+
+1. **Setup**: Run `just install` to install dependencies
+2. **Start Development**: Run `just docker-dev-up-watch` for fullstack environment
+3. **Verify URLs**:
+   - <http://localhost:8000/docs> (Swagger UI)
+   - <http://localhost:8000/redoc> (ReDoc)
+   - <http://localhost:5173> (Frontend)
+4. **Read Documentation**:
+   - This AGENTS.md file (comprehensive agent rules)
+   - `.cursor/rules/` (project-specific patterns)
+   - Project README.md (overview and features)
+5. **Choose Test Strategy**: Select smallest tier covering your changes
+6. **API Compliance**:
+   - If touching `/api/v1/client/*`, validate against `contracts/v1_api_swagger.json`
+   - If touching Control API, ensure RFC9457 `application/problem+json` responses
+7. **Validate Changes**: Run appropriate test suite before marking complete
+
+### Onboarding Verification
+
+Before starting work, verify:
+
+- ✅ Development environment runs successfully
+- ✅ All documentation links are accessible
+- ✅ Test commands work correctly
+- ✅ Understanding of API compatibility requirements
+- ✅ Familiarity with protected files and directories
+- ✅ Knowledge of required libraries (loguru, cashews, datetime.UTC)
+
 ## AI Agent Guidelines
 
 When working with this codebase:
@@ -485,19 +841,23 @@ When working with this codebase:
 1. **Follow Existing Patterns**: Match the established code organization and style
 2. **Respect API Contracts**: Never break Agent API v1 compatibility
 3. **Use Proper Tools**: Use the specified libraries (loguru, cashews, etc.)
-4. **Validate Changes**: Always run `just ci-check` before completing tasks
+4. **Validate Changes**: Always run appropriate test tier before completing tasks
 5. **Security First**: Follow security guidelines for all code changes
 6. **Test Thoroughly**: Write and run appropriate tests for all changes
 7. **Document Changes**: Update relevant documentation when making changes
+8. **No Direct Commits**: Always open PRs; never push directly to main or commit on behalf of maintainer
 
 ### Common Pitfalls to Avoid
 
 - Using standard Python `logging` instead of `loguru`
 - Using `functools.lru_cache` instead of `cashews`
+- Using `datetime.utcnow()` instead of `datetime.now(datetime.UTC)`
 - Modifying protected files without permission
 - Breaking Agent API v1 compatibility
-- Skipping the `just ci-check` validation step
+- Skipping the appropriate test validation step
 - Hard-coding secrets or configuration values
 - Using deprecated Svelte patterns in frontend code
+- Running `just ci-check` for verification-only tasks (no code changes)
+- Pushing directly to `main` branch
 
 This AGENTS.md file serves as the definitive guide for AI agents working with Ouroboros. All code changes must comply with these standards and pass the programmatic checks before submission.

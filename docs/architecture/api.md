@@ -1,15 +1,46 @@
 # API Documentation
 
-Ouroboros provides four distinct API interfaces, each serving different client types with specific authentication and error handling requirements:
+Ouroboros provides multiple API interfaces, each serving different client types with specific authentication and error handling requirements:
 
-1. **Agent API** (`/api/v1/client/*`) - For distributed agents
-2. **Web UI API** (`/api/v1/web/*`) - For the SvelteKit dashboard
-3. **Control API** (`/api/v1/control/*`) - For TUI/CLI clients
-4. **Shared Infrastructure API** (`/api/v1/*`) - Common endpoints
+1. **Agent API v1** (`/api/v1/client/*`) - Legacy compatibility for distributed agents
+2. **Agent API v2** (`/api/v2/client/*`) - Modernized agent interface (Preview)
+3. **Web UI API** (`/api/v1/web/*`) - For the SvelteKit dashboard
+4. **Control API** (`/api/v1/control/*`) - For TUI/CLI clients
+5. **Shared Infrastructure API** (`/api/v1/*`) - Common endpoints
 
-## Agent API (`/api/v1/client/*`)
+## Agent API v1 (`/api/v1/client/*`)
 
-The Agent API follows the OpenAPI 3.0.1 specification defined in `contracts/v1_api_swagger.json` and is locked for backward compatibility.
+The Agent API v1 follows the OpenAPI 3.0.1 specification defined in `contracts/v1_api_swagger.json` and is locked for backward compatibility. This API maintains strict compatibility with the legacy Ruby-on-Rails version of Ouroboros.
+
+## Agent API v2 (`/api/v2/client/*`)
+
+Agent API v2 is the modernized interface for Ouroboros agents, providing enhanced features and improved security with best-effort compatibility where possible. This API is currently in development preview status.
+
+### Key Improvements in v2
+
+- **Enhanced Authentication**: Improved token security with cryptographic validation and expiration support
+- **Better State Management**: Finite state machine implementation for agent lifecycle management
+- **Improved Resource Management**: Time-limited presigned URLs with hash verification
+- **Enhanced Error Handling**: Structured error responses with detailed information and proper HTTP status codes
+- **Rate Limiting**: Comprehensive rate limiting with proper headers and backoff strategies
+- **Forward Compatibility**: Designed for Phase 3 resource management and future enhancements
+
+**Note on Compatibility**: While v2 aims for compatibility where possible, breaking changes may occur during the development preview phase. Migration guides will be provided when necessary.
+
+### Development Status
+
+Agent API v2 is currently in **development preview** (v2.0.0+). The foundational structure has been implemented with:
+
+- ✅ Basic routing structure and endpoint organization
+- ✅ Authentication framework and token validation infrastructure
+- ✅ Error handling middleware and response formatting
+- ✅ Rate limiting infrastructure
+- 🚧 Agent registration and heartbeat system (planned)
+- 🚧 Task assignment and progress tracking (planned)
+- 🚧 Result submission and validation (planned)
+- 🚧 Attack configuration and resource management (planned)
+
+For detailed v2 API documentation, see [Agent API v2 Documentation](../api/agent-api-v2.md).
 
 ### Authentication
 
@@ -622,7 +653,17 @@ All API responses include security headers:
 
 ## API Versioning
 
-- **Agent API v1**: Locked specification, no breaking changes allowed
+- **Agent API v1**: Locked specification, no breaking changes allowed, production-ready
+- **Agent API v2**: Development preview, enhanced features, forward-compatible design
 - **Web UI API**: FastAPI-native, breaking changes allowed with proper versioning
 - **Control API**: Independent versioning, RFC9457 compliance required
 - **Future versions**: Each API interface versions independently
+
+### Version Compatibility Matrix
+
+| API Version | Status  | Compatibility | Breaking Changes | Target Use Case    |
+| ----------- | ------- | ------------- | ---------------- | ------------------ |
+| Agent v1    | Stable  | Legacy RoR    | Prohibited       | Existing agents    |
+| Agent v2    | Preview | Enhanced      | Allowed          | New agents         |
+| Web UI v1   | Stable  | FastAPI       | Allowed          | SvelteKit frontend |
+| Control v1  | Stable  | RFC9457       | Allowed          | CLI/TUI tools      |

@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2025-01-XX
+
+### 🚀 Major Features
+
+- **Agent API v2 Implementation**: Introduced the modernized Agent API v2 with enhanced features and improved security
+  - Enhanced authentication with improved token security and expiration support
+  - Better state management using finite state machine implementation for agent lifecycle
+  - Improved resource management with time-limited presigned URLs and hash verification
+  - Enhanced error handling with structured responses and proper HTTP status codes
+  - Rate limiting infrastructure with comprehensive headers and backoff strategies
+  - Forward-compatible design for Phase 3 resource management
+
+### 🏗️ Architecture
+
+- **Multi-API Structure**: Established clear separation between Agent API v1 (legacy), Agent API v2 (modern), Web UI API, and Control API
+- **Routing Infrastructure**: Created modular endpoint organization under `app/api/v2/endpoints/`
+- **Backward Compatibility**: Maintained full compatibility with existing v1 agents while introducing v2 enhancements
+
+### 📚 Documentation
+
+- **Comprehensive API Documentation**: Added detailed Agent API v2 documentation with examples and migration guides
+- **Development Guide**: Created comprehensive development guide for Agent API v2 implementation
+- **Architecture Updates**: Updated API architecture documentation to reflect multi-version support
+
+### 🔧 Technical Improvements
+
+- **Version Bump**: Updated project version to 2.0.0 reflecting major API enhancements
+- **Dependency Updates**: Updated core dependencies including FastAPI, Pydantic, and SQLAlchemy
+- **Testing Infrastructure**: Established testing framework for v2 API validation and contract testing
+
+### 🚧 Development Status
+
+- **Foundation Complete**: Core routing, authentication framework, and error handling infrastructure implemented
+- **Endpoints Planned**: Agent registration, heartbeat, task management, and resource access endpoints designed
+- **Future Implementation**: Full v2 API functionality planned for upcoming releases
+
+### 📖 Migration
+
+- **Dual API Support**: v1 and v2 APIs can run simultaneously without conflicts
+- **No Breaking Changes**: Existing v1 agents continue to work unchanged
+- **Migration Path**: Clear upgrade path provided for agents to adopt v2 features
+
 ## [0.6.6] - 2024-12-22
 
 ### 🚀 Features

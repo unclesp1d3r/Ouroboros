@@ -8,8 +8,7 @@ Follow these three tasks in order. Do not start the next task until all tests pa
 
 ### 🧪 Task 1: Update `test-guidelines.mdc` for the new test infrastructure
 
-\[x\] Context:
-Ouroboros is migrating from `pytest-postgresql` and `asyncpg` to `testcontainers-python` and `psycopg3`. These changes affect test strategy and tooling expectations. Your first step is to update our project's testing guidance to reflect this shift.
+- [x] Context: Ouroboros is migrating from `pytest-postgresql` and `asyncpg` to `testcontainers-python` and `psycopg3`. These changes affect test strategy and tooling expectations. Your first step is to update our project's testing guidance to reflect this shift.
 
 🔧 What to do:
 
@@ -34,8 +33,7 @@ Ouroboros is migrating from `pytest-postgresql` and `asyncpg` to `testcontainers
 
 ### 🐘 Task 2: Migrate from `asyncpg` to `psycopg` (Driver Swap Only)
 
-\[x\] Context:
-We are replacing `asyncpg` with `psycopg` as the async PostgreSQL driver. This is a drop-in driver replacement and should not involve containerization yet.
+- [x] Context: We are replacing `asyncpg` with `psycopg` as the async PostgreSQL driver. This is a drop-in driver replacement and should not involve containerization yet.
 
 🔧 What to do:
 
@@ -53,8 +51,7 @@ We are replacing `asyncpg` with `psycopg` as the async PostgreSQL driver. This i
 
 - Ensure `alembic.ini` and any overrides (e.g., in `env.py`) also use `postgresql+psycopg` URLs.
 
-⚠️ Compatibility Note:
-Keep `psycopg2-binary` in your dependencies **for now**, because `pytest-postgresql` still depends on it. Do not remove it until Task 3 is complete.
+⚠️ Compatibility Note: Keep `psycopg2-binary` in your dependencies **for now**, because `pytest-postgresql` still depends on it. Do not remove it until Task 3 is complete.
 
 ✅ Success Criteria:
 
@@ -67,8 +64,7 @@ Keep `psycopg2-binary` in your dependencies **for now**, because `pytest-postgre
 
 ### 🧪 Task 3: Replace `pytest-postgresql` with `testcontainers[postgresql]`
 
-\[x\] Context:
-We are replacing `pytest-postgresql` with `testcontainers[postgresql]` for test DB provisioning. This enables containerized, isolated Postgres instances for all tests, and is a prerequisite for full async driver support and future DB scaling.
+- [x] Context: We are replacing `pytest-postgresql` with `testcontainers[postgresql]` for test DB provisioning. This enables containerized, isolated Postgres instances for all tests, and is a prerequisite for full async driver support and future DB scaling.
 
 🔧 What to do:
 
@@ -94,8 +90,7 @@ We are replacing `pytest-postgresql` with `testcontainers[postgresql]` for test 
 
 - Apply Alembic migrations inside the container before tests run (see existing `env.py` for how)
 
-🖐 Important:
-Once this step is complete, you may **safely remove `psycopg2-binary`** from `pyproject.toml`. Until then, keep it in place to avoid breaking `pytest-postgresql` or Alembic default behaviors.
+🖐 Important: Once this step is complete, you may **safely remove `psycopg2-binary`** from `pyproject.toml`. Until then, keep it in place to avoid breaking `pytest-postgresql` or Alembic default behaviors.
 
 ✅ Success Criteria:
 

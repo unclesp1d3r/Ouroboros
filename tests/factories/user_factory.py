@@ -2,10 +2,10 @@ import secrets
 from datetime import UTC, datetime
 
 from faker import Faker
-from passlib.hash import bcrypt
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
+from app.core.auth import hash_password
 from app.models.user import User, UserRole
 
 fake = Faker()
@@ -31,7 +31,8 @@ class UserFactory(SQLAlchemyFactory[User]):
         return f"user{cls._email_counter}-{cls.__faker__.uuid4()}@example.com"
 
     # Always use a valid bcrypt hash for 'password'
-    hashed_password = bcrypt.hash("password")
+    # Use a lambda to generate hash at runtime to avoid class definition issues
+    hashed_password = Use(lambda: hash_password("password"))
     is_active = True
     role = UserRole.ANALYST
     is_superuser = False

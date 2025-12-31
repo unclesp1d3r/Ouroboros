@@ -182,7 +182,7 @@
                     ...hashType,
                     confidence: detectedHashTypes.get(hashType.mode),
                 }))
-                .sort((a, b) => {
+                .toSorted((a, b) => {
                     // Sort by confidence descending, then by mode ascending
                     if (a.confidence !== b.confidence) {
                         return (b.confidence || 0) - (a.confidence || 0);
