@@ -1,7 +1,6 @@
 # Ouroboros TODO List
 
-> **Last Updated**: 2025-12-30
-> **Purpose**: Tracks tasks not captured in `.kiro/specs/` but identified through codebase analysis, ADR next steps, and technical debt
+> **Last Updated**: 2025-12-30 **Purpose**: Tracks tasks not captured in `.kiro/specs/` but identified through codebase analysis, ADR next steps, and technical debt
 
 ## 🔥 Critical - Blocking Production
 
@@ -15,6 +14,7 @@
 - [ ] Add campaign export/import actions (`frontend/src/routes/campaigns/[id]/+page.svelte:409`)
 
 **References**:
+
 - ADR 001 Next Steps: Week 1, Item 2
 - Phase 3a Task 5.2 (marked incomplete)
 - Frontend TODOs: 4 instances
@@ -29,6 +29,7 @@
 - [ ] Upgrade resource verification to Celery (`app/api/v1/endpoints/web/resources.py:379`)
 
 **References**:
+
 - ADR 001 Next Steps: Week 1, Item 2
 - Phase 3a Task 6.1 (marked incomplete)
 - Backend TODOs: 3 instances
@@ -43,6 +44,7 @@
 - [ ] Implement resource validation for mask/rule/charset (`app/core/services/resource_service.py:378`)
 
 **References**:
+
 - ADR 001 Next Steps: Week 1, Item 2
 - Backend TODOs: 4 instances
 
@@ -125,7 +127,8 @@
 
 ## 🔮 Future Work - Agent API v2
 
-> **Note**: Entire Agent API v2 implementation is deferred (Phase 2b - 0% complete)
+> [!NOTE]
+> Entire Agent API v2 implementation is deferred (Phase 2b - 0% complete)
 
 ### 12. Agent API v2 Endpoints (Scaffolded but not implemented)
 
@@ -138,8 +141,7 @@
 - [ ] Implement result submission endpoint (`app/api/v2/endpoints/tasks.py:27`)
 - [ ] Enable v2 API in main.py (`app/main.py:254`)
 
-**Backend TODOs**: 8 instances
-**References**: Phase 2b (entire phase at 0%)
+**Backend TODOs**: 8 instances **References**: Phase 2b (entire phase at 0%)
 
 ## 📚 Documentation (ADR 001: Week 3-4)
 
@@ -188,7 +190,8 @@
 
 ### 18. E2E Test Coverage
 
-> **Note**: Phase 3 (E2E Test Coverage) is 35% complete, but these specific gaps aren't captured as individual tasks
+> [!NOTE]
+> Phase 3 (E2E Test Coverage) is 35% complete, but these specific gaps aren't captured as individual tasks
 
 - [ ] Full E2E tests for attack editing workflow
 - [ ] Full E2E tests for resource upload with all file types

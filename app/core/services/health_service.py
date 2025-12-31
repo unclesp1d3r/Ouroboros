@@ -265,10 +265,9 @@ async def get_system_health_overview_service(
             host=settings.REDIS_HOST, port=settings.REDIS_PORT, decode_responses=True
         )
         start = datetime.now(UTC)
-        pong = await redis.ping()
+        await redis.ping()  # type: ignore[reportGeneralTypeIssues]
         redis_latency = (datetime.now(UTC) - start).total_seconds()
-        if pong:
-            redis_status = "healthy"
+        redis_status = "healthy"
         info = await redis.info()
         redis_memory = info.get("used_memory")
         redis_connections = info.get("connected_clients")

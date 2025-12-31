@@ -44,7 +44,7 @@ async def _get_redis_queue_info() -> dict[str, Any]:
         )
 
         # Test connection
-        await redis.ping()
+        await redis.ping()  # type: ignore[reportGeneralTypeIssues]
         queue_info["redis_available"] = True
 
         # Get Redis info

@@ -12,6 +12,11 @@ fake = Faker()
 
 class AgentErrorFactory(SQLAlchemyFactory[AgentError]):
     __model__ = AgentError
+    __async_session__ = None
+    __check_model__ = False
+    __set_relationships__ = False
+    __set_association_proxy__ = False
+
     message = Use(lambda: fake.sentence())
     severity = Severity.minor
     agent_id = None  # Must be set explicitly in tests

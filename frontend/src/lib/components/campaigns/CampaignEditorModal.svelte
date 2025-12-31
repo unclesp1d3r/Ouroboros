@@ -56,13 +56,15 @@
     // Update form data when campaign prop changes using $effect
     $effect(() => {
         if (campaign) {
+            // Editing existing campaign - use campaign's project_id
             formData.name = campaign.name || '';
             formData.description = campaign.description || '';
             formData.priority = campaign.priority || 0;
-            formData.project_id = campaign.project_id || projectId || 0;
+            formData.project_id = campaign.project_id;
             formData.hash_list_id = campaign.hash_list_id || hashListId || 0;
             formData.is_unavailable = campaign.is_unavailable || false;
         } else {
+            // Creating new campaign - use projectId prop
             formData.name = '';
             formData.description = '';
             formData.priority = 0;

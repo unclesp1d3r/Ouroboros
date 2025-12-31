@@ -47,10 +47,18 @@
     // Get URL parameters for default values
     const hashListId = $page.url.searchParams.get('hash_list_id');
 
-    // Set default values if provided via URL params
-    if (hashListId && !$form.hash_list_id) {
-        $form.hash_list_id = parseInt(hashListId, 10);
-    }
+    // Set default values reactively
+    $effect(() => {
+        // Set hash_list_id if provided via URL params
+        if (hashListId && !$form.hash_list_id) {
+            $form.hash_list_id = parseInt(hashListId, 10);
+        }
+
+        // Set project_id from current project
+        if (currentProject && !$form.project_id) {
+            $form.project_id = currentProject.id;
+        }
+    });
 </script>
 
 <svelte:head>
