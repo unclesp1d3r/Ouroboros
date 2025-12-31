@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 import '@testing-library/jest-dom/vitest';
 import { vi } from 'vitest';
 
@@ -18,7 +17,6 @@ Object.defineProperty(window, 'matchMedia', {
 
 // TypeScript global augmentation for SvelteKit payload
 declare global {
-    // eslint-disable-next-line no-var
     var __SVELTEKIT_PAYLOAD__: {
         data: Record<string, unknown>;
         status: number;
