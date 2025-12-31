@@ -66,7 +66,6 @@ For implementation-specific guidance, see:
 - `docs/development/` - Development setup and workflows
 - `docs/architecture/` - System architecture documentation
 - `docs/v2_rewrite_implementation_plan/` - Migration and implementation plans
-
 ---
 
 > ⚠️ Note: All rules should be followed consistently across the codebase. When in doubt, refer to the specific rule file for detailed guidance.
