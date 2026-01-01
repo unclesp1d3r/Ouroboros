@@ -29,15 +29,15 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
-            - name: Set up Python 3.13
+            - name: Set up Python 3.14
               uses: actions/setup-python@v6
               with:
-                  python-version: "3.13"
+                  python-version: "3.14"
 
             - name: Install uv (Python package manager)
-              uses: astral-sh/setup-uv@v3
+              uses: astral-sh/setup-uv@v7
               with:
                   version: "latest"
 
@@ -45,7 +45,7 @@ jobs:
               uses: pnpm/action-setup@v4
 
             - name: Install just
-              uses: extractions/setup-just@v1
+              uses: extractions/setup-just@v3
 
             - name: Wait for PostgreSQL
               run: |
@@ -90,7 +90,7 @@ jobs:
 
             - name: Upload coverage to Codecov
               if: success()
-              uses: codecov/codecov-action@v4
+              uses: codecov/codecov-action@v5
               with:
-                  file: ./coverage.xml
+                  files: ./coverage.xml
                   fail_ci_if_error: false
