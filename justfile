@@ -235,7 +235,7 @@ docker-e2e-up:
 # Run database migrations in development environment
 docker-dev-migrate:
     cd {{justfile_dir()}}
-    docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T backend /app/.venv/bin/python -c "import sys; sys.path.insert(0, '/app/.venv/lib/python3.13/site-packages'); from alembic.config import main; sys.argv = ['alembic', 'upgrade', 'head']; main()"
+    docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T backend uv run alembic upgrade head
 
 # Seed E2E test data in development environment
 docker-dev-seed:
