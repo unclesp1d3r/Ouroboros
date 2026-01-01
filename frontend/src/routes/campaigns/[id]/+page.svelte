@@ -26,6 +26,13 @@
     $: metrics = data.metrics;
     $: campaignId = $page.params.id;
 
+    // Validate campaign ID
+    $: isValidCampaignId = (() => {
+        if (!campaignId) return false;
+        const parsed = parseInt(campaignId, 10);
+        return !isNaN(parsed) && parsed > 0;
+    })();
+
     // State for client-side interactions
     let error = '';
 
@@ -314,16 +321,24 @@
         </div>
 
         <!-- Progress and Metrics -->
-        <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <CampaignProgress
-                campaignId={parseInt(campaignId ?? '0')}
-                initialProgress={progress}
-                enableAutoRefresh={true} />
-            <CampaignMetrics
-                campaignId={parseInt(campaignId ?? '0')}
-                initialMetrics={metrics}
-                enableAutoRefresh={true} />
-        </div>
+        {#if isValidCampaignId}
+            <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <CampaignProgress
+                    campaignId={parseInt(campaignId!)}
+                    initialProgress={progress}
+                    enableAutoRefresh={true} />
+                <CampaignMetrics
+                    campaignId={parseInt(campaignId!)}
+                    initialMetrics={metrics}
+                    enableAutoRefresh={true} />
+            </div>
+        {:else}
+            <Alert class="mb-6">
+                <AlertDescription>
+                    Invalid campaign ID. Please check the URL and try again.
+                </AlertDescription>
+            </Alert>
+        {/if}
 
         <!-- Attacks Table -->
         <Card>

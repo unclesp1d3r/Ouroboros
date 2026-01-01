@@ -29,6 +29,7 @@ class StatusEnum(str, Enum):
     active = "active"
     idle = "idle"
     inactive = "inactive"
+    error = "error"
 
 
 class TaskTypeStats(BaseModel):
@@ -65,10 +66,13 @@ class QueueStatus(BaseModel):
 
     name: Annotated[str, Field(description="Queue name")]
     type: Annotated[QueueType, Field(description="Queue type")] = QueueType.asyncio
-    pending_jobs: Annotated[int, Field(description="Number of pending jobs", ge=0)] = 0
+    pending_jobs: Annotated[int | None, Field(description="Number of pending jobs")] = 0
     running_jobs: Annotated[int, Field(description="Number of running jobs", ge=0)] = 0
     failed_jobs: Annotated[int, Field(description="Number of failed jobs", ge=0)] = 0
     status: Annotated[StatusEnum, Field(description="Queue status")] = StatusEnum.active
+    error: Annotated[
+        str | None, Field(description="Error message if status is error")
+    ] = None
 
 
 class QueueStatusResponse(BaseModel):

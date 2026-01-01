@@ -265,9 +265,11 @@ async def get_system_health_overview_service(
             host=settings.REDIS_HOST, port=settings.REDIS_PORT, decode_responses=True
         )
         start = datetime.now(UTC)
-        await redis.ping()  # type: ignore[reportGeneralTypeIssues]
+        # Redis ping() returns True on success or raises RedisError on failure
+        # Type checker has issues with redis-py stubs for async methods
+        await redis.ping()  # pyright: ignore[reportGeneralTypeIssues]
         redis_latency = (datetime.now(UTC) - start).total_seconds()
-        redis_status = "healthy"
+        redis_status = "healthy"  # If we reach here, ping succeeded
         info = await redis.info()
         redis_memory = info.get("used_memory")
         redis_connections = info.get("connected_clients")

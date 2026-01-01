@@ -303,7 +303,7 @@ db-drop-test:
 # Run Alembic migrations against the test database
 db-migrate-test:
     @echo "Running Alembic migrations on test database..."
-    @TEST_DATABASE_URL="$TEST_DATABASE_URL" uv run alembic upgrade head
+    @uv run alembic upgrade head
 
 # Full reset: drop, recreate, migrate for the test database
 db-reset: db-drop-test db-migrate-test

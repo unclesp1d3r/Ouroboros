@@ -50,12 +50,12 @@
     // Set default values reactively
     $effect(() => {
         // Set hash_list_id if provided via URL params
-        if (hashListId && !$form.hash_list_id) {
+        if (hashListId && $form.hash_list_id == null) {
             $form.hash_list_id = parseInt(hashListId, 10);
         }
 
         // Set project_id from current project
-        if (currentProject && !$form.project_id) {
+        if (currentProject && $form.project_id == null) {
             $form.project_id = currentProject.id;
         }
     });

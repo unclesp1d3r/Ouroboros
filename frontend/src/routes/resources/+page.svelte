@@ -1,9 +1,8 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
-    import { resolve } from '$app/paths';
     import { page } from '$app/stores';
-    import { SvelteURLSearchParams } from 'svelte/reactivity';
     import { Button } from '$lib/components/ui/button';
+    import { SvelteURLSearchParams } from 'svelte/reactivity';
 
     import { Badge } from '$lib/components/ui/badge';
     import {
