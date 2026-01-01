@@ -5,6 +5,7 @@ import {
     type TableState,
     createTable,
 } from '@tanstack/table-core';
+import { SvelteSet } from 'svelte/reactivity';
 
 /**
  * Creates a reactive TanStack table object for Svelte.
@@ -56,7 +57,6 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
             return mergeObjects(prev, options, {
                 state: mergeObjects(state, options.state || {}),
 
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onStateChange: (updater: any) => {
                     if (typeof updater === 'function') state = updater(state);
                     else state = mergeObjects(state, updater);
@@ -90,7 +90,6 @@ const __resolveThunk = <T extends object>(src: MaybeThunk<T>): T | undefined =>
  *
  * Proxy-based to avoid known WebKit recursion issue.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(
     ...sources: Sources
 ): Intersection<{ [K in keyof Sources]: Sources[K] }> {
@@ -114,7 +113,7 @@ export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(
         },
 
         ownKeys(): (string | symbol)[] {
-            const all = new Set<string | symbol>();
+            const all = new SvelteSet<string | symbol>();
             for (const s of sources) {
                 const obj = __resolveThunk(s);
                 if (obj) {
@@ -132,7 +131,6 @@ export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(
             return {
                 configurable: true,
                 enumerable: true,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 value: (src as any)[key],
                 writable: true,
             };

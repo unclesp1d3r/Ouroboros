@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import { chromium, type FullConfig } from '@playwright/test';
 
 /**
@@ -16,10 +16,14 @@ async function globalSetup(config: FullConfig) {
     try {
         // 1. Start Docker compose stack for E2E testing
         console.log('📦 Starting Docker compose stack...');
-        execSync('docker compose -f ../docker-compose.e2e.yml up -d --build', {
-            stdio: 'inherit',
-            cwd: process.cwd(),
-        });
+        execFileSync(
+            'docker',
+            ['compose', '-f', '../docker-compose.e2e.yml', 'up', '-d', '--build'],
+            {
+                stdio: 'inherit',
+                cwd: process.cwd(),
+            }
+        );
 
         // 2. Wait for services to be healthy
         console.log('⏳ Waiting for services to be healthy...');
@@ -44,7 +48,7 @@ async function globalSetup(config: FullConfig) {
         // Cleanup on failure
         console.log('🧹 Cleaning up Docker containers...');
         try {
-            execSync('docker compose -f ../docker-compose.e2e.yml down -v', {
+            execFileSync('docker', ['compose', '-f', '../docker-compose.e2e.yml', 'down', '-v'], {
                 stdio: 'inherit',
                 cwd: process.cwd(),
             });
@@ -67,8 +71,19 @@ async function waitForServices(): Promise<void> {
     while (Date.now() - startTime < maxWaitTime) {
         try {
             // Check if PostgreSQL is ready
-            execSync(
-                'docker compose -f ../docker-compose.e2e.yml exec -T postgres pg_isready -U postgres',
+            execFileSync(
+                'docker',
+                [
+                    'compose',
+                    '-f',
+                    '../docker-compose.e2e.yml',
+                    'exec',
+                    '-T',
+                    'postgres',
+                    'pg_isready',
+                    '-U',
+                    'postgres',
+                ],
                 {
                     stdio: 'pipe',
                 }
@@ -107,8 +122,21 @@ async function waitForServices(): Promise<void> {
  */
 async function runMigrations(): Promise<void> {
     try {
-        execSync(
-            "docker compose -f ../docker-compose.e2e.yml exec -T backend /app/.venv/bin/python -c \"import sys; sys.path.insert(0, '/app/.venv/lib/python3.13/site-packages'); from alembic.config import main; sys.argv = ['alembic', 'upgrade', 'head']; main()\"",
+        execFileSync(
+            'docker',
+            [
+                'compose',
+                '-f',
+                '../docker-compose.e2e.yml',
+                'exec',
+                '-T',
+                'backend',
+                'uv',
+                'run',
+                'alembic',
+                'upgrade',
+                'head',
+            ],
             {
                 stdio: 'inherit',
                 cwd: process.cwd(),
@@ -129,8 +157,22 @@ async function seedTestData(): Promise<void> {
     try {
         // Run the seeding script in the backend container using uv
         // Set E2E_CONTAINER_MODE to indicate running from inside container
-        execSync(
-            'docker compose -f ../docker-compose.e2e.yml exec -T -e E2E_CONTAINER_MODE=true backend uv run python scripts/seed_e2e_data.py',
+        execFileSync(
+            'docker',
+            [
+                'compose',
+                '-f',
+                '../docker-compose.e2e.yml',
+                'exec',
+                '-T',
+                '-e',
+                'E2E_CONTAINER_MODE=true',
+                'backend',
+                'uv',
+                'run',
+                'python',
+                'scripts/seed_e2e_data.py',
+            ],
             {
                 stdio: 'inherit',
                 cwd: process.cwd(),

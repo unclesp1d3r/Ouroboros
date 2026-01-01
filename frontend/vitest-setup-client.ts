@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-plugin-import/no-unassigned-import
 import '@testing-library/jest-dom/vitest';
 import { vi } from 'vitest';
 
@@ -14,6 +13,22 @@ Object.defineProperty(window, 'matchMedia', {
         removeEventListener: vi.fn(),
         dispatchEvent: vi.fn(),
     })),
+});
+
+// Mock localStorage for mode-watcher and other components
+const localStorageMock = {
+    getItem: vi.fn((key: string) => null),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+    clear: vi.fn(),
+    length: 0,
+    key: vi.fn(),
+};
+
+Object.defineProperty(window, 'localStorage', {
+    writable: true,
+    enumerable: true,
+    value: localStorageMock,
 });
 
 // TypeScript global augmentation for SvelteKit payload
