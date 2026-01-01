@@ -5,7 +5,10 @@
     "quoteProps": "as-needed",
     "printWidth": 100,
     "bracketSameLine": true,
-    "plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
+    "plugins": [
+        "prettier-plugin-svelte",
+        "prettier-plugin-tailwindcss"
+    ],
     "overrides": [
         {
             "files": "*.svelte",
