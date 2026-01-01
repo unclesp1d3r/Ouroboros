@@ -215,7 +215,7 @@ reportMissingTypeArgument = "hint"
 reportDeprecated = "warning"
 reportMissingTypeStubs = false
 reportGeneralTypeIssues = false
-reportUndefinedVariable = false
+reportUndefinedVariable = "hint"
 reportPrivateLocalImportUsage = "warning"
 reportCallIssue = "hint"
 
