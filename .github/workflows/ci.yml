@@ -86,7 +86,7 @@ jobs:
                   DB_NAME: ouroboros
                   DB_HOST: localhost
                   DB_PORT: 5432
-              run: uv run just ci-check
+              run: uv run just github-ci-check
 
             - name: Upload coverage to Codecov
               if: success()

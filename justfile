@@ -15,7 +15,6 @@ help:
 
 # -----------------------------
 # 🔧 Setup & Installation
-# PHONY: install
 # -----------------------------
 
 # Install dependencies and setup pre-commit hooks
@@ -51,7 +50,6 @@ update-deps:
 
 # -----------------------------
 # 🧹 Linting, Typing, Dep Check
-# PHONY: check, format, format-check, lint
 # -----------------------------
 
 pre-commit-run:
@@ -71,14 +69,18 @@ format: frontend-format
 # Check code formatting using ruff and mdformat
 format-check:
     uv run --group dev ruff format --check
+
+docs-format-check:
     uv run --group ci python -m mdformat --check *.md docs/**/*.md
 
+docs-format:
+    uv run --group ci python -m mdformat *.md docs/**/*.md
+
 # Run all linting checks
-lint: format-check check frontend-lint
+lint: format-check docs-format-check check frontend-lint
 
 # -----------------------------
 # 🧪 Testing & Coverage (Three-Tier Architecture)
-# PHONY: test-backend, test-frontend, test-e2e, test, coverage, clean-test
 # -----------------------------
 
 # Run backend Python tests (Layer 1: Backend API/unit integration)
@@ -278,6 +280,9 @@ ci-setup:
 
 # Run all checks and tests for the entire project (three-tier architecture)
 ci-check: lint test-backend test-frontend test-e2e
+
+# Reduced CI check for GitHub Actions
+github-ci-check: lint test-fast test-frontend
 
 # Run CI workflow locally with act
 github-actions-test: ci-setup
