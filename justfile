@@ -32,19 +32,19 @@ install:
     uv sync --dev --all-groups --all-packages
     $env:PYTHONUTF8=1; uv run pre-commit install --hook-type commit-msg
 
-# Update uv and pnpm dependencies
+# Update uv and bun dependencies
 [unix]
 update-deps:
     cd {{justfile_dir()}}
     uv sync --dev --all-groups --all-packages -U
-    pnpm update --latest -r
+    cd frontend && bun update
     uv run pre-commit autoupdate
 
 [windows]
 update-deps:
     cd {{justfile_dir()}}
     uv sync --dev --all-groups --all-packages -U
-    pnpm update --latest -r
+    cd frontend; bun update
     $env:PYTHONUTF8=1; uv run pre-commit autoupdate
 
 
@@ -91,23 +91,23 @@ test-backend:
 # Run frontend tests with mocked APIs (Layer 2: Frontend UI and logic validation)
 [unix]
 test-frontend:
-    cd {{justfile_dir()}}/frontend && pnpm exec vitest run && pnpm exec playwright test
+    cd {{justfile_dir()}}/frontend && bunx vitest run && bunx playwright test
 
 [windows]
 test-frontend:
     cd {{justfile_dir()}}/frontend
-    pnpm exec vitest run
-    pnpm exec playwright test
+    bunx vitest run
+    bunx playwright test
 
 # Run full-stack E2E tests against Docker backend (Layer 3: True user flows across real stack)
 [unix]
 test-e2e:
-    cd {{justfile_dir()}}/frontend && pnpm exec playwright test --config=playwright.config.e2e.ts
+    cd {{justfile_dir()}}/frontend && bunx playwright test --config=playwright.config.e2e.ts
 
 [windows]
 test-e2e:
     cd {{justfile_dir()}}/frontend
-    pnpm exec playwright test --config=playwright.config.e2e.ts
+    bunx playwright test --config=playwright.config.e2e.ts
 
 # Run all python tests with maxfail=1 and disable warnings
 test-fast:
@@ -269,14 +269,14 @@ ci-setup:
     cd {{justfile_dir()}}
     uv sync --dev --group ci || @echo "Make sure uv is installed manually"
     uv run pre-commit install --hook-type commit-msg || @echo "Make sure pre-commit is installed manually"
-    pnpm install --save-dev commitlint @commitlint/config-conventional || @echo "Make sure pnpm is installed manually"
+    cd frontend && bun add -d commitlint @commitlint/config-conventional || @echo "Make sure bun is installed manually"
 
 [windows]
 ci-setup:
     cd {{justfile_dir()}}
     uv sync --dev --group ci || @echo "Make sure uv is installed manually"
     $env:PYTHONUTF8=1; uv run pre-commit install --hook-type commit-msg || @echo "Make sure pre-commit is installed manually"
-    pnpm install --save-dev commitlint @commitlint/config-conventional || @echo "Make sure pnpm is installed manually"
+    cd frontend; bun add -d commitlint @commitlint/config-conventional || @echo "Make sure bun is installed manually"
 
 # Run all checks and tests for the entire project (three-tier architecture)
 ci-check: lint test-backend test-frontend test-e2e
@@ -341,11 +341,11 @@ dev-seed-db:
 # Development: Start the frontend dev server only (requires backend running separately)
 [unix]
 dev-frontend:
-    cd {{justfile_dir()}}/frontend && pnpm dev --host 0.0.0.0 --port 5173
+    cd {{justfile_dir()}}/frontend && bun run dev --host 0.0.0.0 --port 5173
 
 [windows]
 dev-frontend:
-    cd {{justfile_dir()}}/frontend; pnpm dev --host 0.0.0.0 --port 5173
+    cd {{justfile_dir()}}/frontend; bun run dev --host 0.0.0.0 --port 5173
 
 # Development: Start both backend and frontend in Docker with hot reload
 dev-fullstack: docker-dev-up-watch
@@ -360,20 +360,20 @@ dev: dev-backend
 # Start the frontend dev server
 [unix]
 frontend-dev:
-    cd {{justfile_dir()}}/frontend && pnpm dev
+    cd {{justfile_dir()}}/frontend && bun run dev
 
 [windows]
 frontend-dev:
-    cd {{justfile_dir()}}/frontend; pnpm dev
+    cd {{justfile_dir()}}/frontend; bun run dev
 
 # Build the frontend for static deploy
 [unix]
 frontend-build:
-    cd {{justfile_dir()}}/frontend && pnpm install && pnpm build
+    cd {{justfile_dir()}}/frontend && bun install && bun run build
 
 [windows]
 frontend-build:
-    cd {{justfile_dir()}}/frontend; pnpm install; pnpm build
+    cd {{justfile_dir()}}/frontend; bun install; bun run build
 
 # Run unit + e2e frontend tests (legacy - use test-frontend instead)
 frontend-test: frontend-test-unit frontend-test-e2e
@@ -381,47 +381,47 @@ frontend-test: frontend-test-unit frontend-test-e2e
 # Run only frontend unit tests
 [unix]
 frontend-test-unit:
-    cd {{justfile_dir()}}/frontend && pnpm exec vitest run
+    cd {{justfile_dir()}}/frontend && bunx vitest run
 
 [windows]
 frontend-test-unit:
-    cd {{justfile_dir()}}/frontend; pnpm exec vitest run
+    cd {{justfile_dir()}}/frontend; bunx vitest run
 
 # Run only frontend E2E tests (mocked APIs)
 [unix]
 frontend-test-e2e:
-    cd {{justfile_dir()}}/frontend && pnpm exec playwright test
+    cd {{justfile_dir()}}/frontend && bunx playwright test
 
 [windows]
 frontend-test-e2e:
-    cd {{justfile_dir()}}/frontend; pnpm exec playwright test
+    cd {{justfile_dir()}}/frontend; bunx playwright test
 
 # Run only frontend E2E tests with full backend
 [unix]
 frontend-test-e2e-full:
-    cd {{justfile_dir()}}/frontend && pnpm exec playwright test --config=playwright.config.e2e.ts
+    cd {{justfile_dir()}}/frontend && bunx playwright test --config=playwright.config.e2e.ts
 
 [windows]
 frontend-test-e2e-full:
-    cd {{justfile_dir()}}/frontend; pnpm exec playwright test --config=playwright.config.e2e.ts
+    cd {{justfile_dir()}}/frontend; bunx playwright test --config=playwright.config.e2e.ts
 
 # Lint frontend code using eslint and svelte check
 [unix]
 frontend-lint:
-    cd {{justfile_dir()}}/frontend && pnpm lint
+    cd {{justfile_dir()}}/frontend && bun run lint
 
 [windows]
 frontend-lint:
-    cd {{justfile_dir()}}/frontend; pnpm lint
+    cd {{justfile_dir()}}/frontend; bun run lint
 
-# Format frontend code using pnpm format
+# Format frontend code using bun format
 [unix]
 frontend-format:
-    cd {{justfile_dir()}}/frontend && pnpm format
+    cd {{justfile_dir()}}/frontend && bun run format
 
 [windows]
 frontend-format:
-    cd {{justfile_dir()}}/frontend; pnpm format
+    cd {{justfile_dir()}}/frontend; bun run format
 
 # Run all frontend checks including linting, testing, and building
 frontend-check: frontend-lint frontend-test frontend-build
@@ -429,20 +429,20 @@ frontend-check: frontend-lint frontend-test frontend-build
 # Run only frontend E2E tests with UI for interactive testing
 [unix]
 frontend-test-e2e-ui:
-    cd {{justfile_dir()}}/frontend && pnpm exec playwright test --ui
+    cd {{justfile_dir()}}/frontend && bunx playwright test --ui
 
 [windows]
 frontend-test-e2e-ui:
-    cd {{justfile_dir()}}/frontend; pnpm exec playwright test --ui
+    cd {{justfile_dir()}}/frontend; bunx playwright test --ui
 
 # Run only frontend E2E tests with UI for interactive testing
 [unix]
 frontend-test-e2e-full-ui:
-    cd {{justfile_dir()}}/frontend && pnpm exec playwright test --ui --config=playwright.config.e2e.ts
+    cd {{justfile_dir()}}/frontend && bunx playwright test --ui --config=playwright.config.e2e.ts
 
 [windows]
 frontend-test-e2e-full-ui:
-    cd {{justfile_dir()}}/frontend; pnpm exec playwright test --ui --config=playwright.config.e2e.ts
+    cd {{justfile_dir()}}/frontend; bunx playwright test --ui --config=playwright.config.e2e.ts
 
 # -----------------------------
 # 🚢 Production Build & Deployment
@@ -452,11 +452,11 @@ frontend-test-e2e-full-ui:
 # Build frontend for SSR production deployment
 [unix]
 build-frontend-prod:
-    cd {{justfile_dir()}}/frontend && pnpm install --frozen-lockfile && pnpm build
+    cd {{justfile_dir()}}/frontend && bun install --frozen-lockfile && bun run build
 
 [windows]
 build-frontend-prod:
-    cd {{justfile_dir()}}/frontend; pnpm install --frozen-lockfile; pnpm build
+    cd {{justfile_dir()}}/frontend; bun install --frozen-lockfile; bun run build
 
 # Build all production assets (backend + frontend)
 build-prod: build build-frontend-prod
