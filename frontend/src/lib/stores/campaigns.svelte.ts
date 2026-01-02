@@ -11,6 +11,7 @@ import {
     CampaignTemplate_Output,
 } from '$lib/schemas/campaigns';
 import { browser } from '$app/environment';
+import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 // Store state interfaces
 interface CampaignState {
@@ -206,7 +207,7 @@ export const campaignsStore = {
         this.setError(null);
 
         try {
-            const params = new URLSearchParams({
+            const params = new SvelteURLSearchParams({
                 page: page.toString(),
                 size: size.toString(),
             });

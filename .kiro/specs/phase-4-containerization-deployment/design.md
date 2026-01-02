@@ -531,7 +531,7 @@ jobs:
   docker-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build development image
         run: docker build -f docker/app/Dockerfile.dev -t ouroboros:dev .

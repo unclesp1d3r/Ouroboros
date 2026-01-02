@@ -306,7 +306,6 @@ All tokens require HTTPS, automatic expiration, and audit logging.
   - Integrate Docker into your CI/CD pipeline.
   - Automate the build, test, and deployment process.
   - Use tools like Jenkins, GitLab CI, or CircleCI.
-
 ---
 
 ## Additional Notes

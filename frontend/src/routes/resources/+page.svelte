@@ -2,6 +2,7 @@
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import { Button } from '$lib/components/ui/button';
+    import { SvelteURLSearchParams } from 'svelte/reactivity';
 
     import { Badge } from '$lib/components/ui/badge';
     import {
@@ -65,7 +66,7 @@
     });
 
     function updateURL() {
-        const params = new URLSearchParams();
+        const params = new SvelteURLSearchParams();
 
         if (searchInput.trim()) params.set('q', searchInput.trim());
         if (resourceTypeInput) params.set('resource_type', resourceTypeInput);
@@ -78,7 +79,7 @@
 
     function handleFilter() {
         // Reset to first page when filtering
-        const params = new URLSearchParams();
+        const params = new SvelteURLSearchParams();
 
         if (searchInput.trim()) params.set('q', searchInput.trim());
         if (resourceTypeInput) params.set('resource_type', resourceTypeInput);
@@ -90,7 +91,7 @@
     }
 
     function handlePageChange(newPage: number) {
-        const params = new URLSearchParams($page.url.searchParams);
+        const params = new SvelteURLSearchParams($page.url.searchParams);
         params.set('page', newPage.toString());
 
         const newUrl = `/resources?${params.toString()}`;

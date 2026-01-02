@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 import '@testing-library/jest-dom/vitest';
 import { vi } from 'vitest';
 
@@ -16,9 +15,51 @@ Object.defineProperty(window, 'matchMedia', {
     })),
 });
 
+// Mock localStorage for mode-watcher and other components
+class LocalStorageMock implements Storage {
+    private store: Map<string, string> = new Map();
+
+    get length(): number {
+        return this.store.size;
+    }
+
+    clear(): void {
+        this.store.clear();
+    }
+
+    getItem(key: string): string | null {
+        return this.store.get(key) ?? null;
+    }
+
+    key(index: number): string | null {
+        const keys = Array.from(this.store.keys());
+        return keys[index] ?? null;
+    }
+
+    removeItem(key: string): void {
+        this.store.delete(key);
+    }
+
+    setItem(key: string, value: string): void {
+        this.store.set(key, value);
+    }
+
+    [Symbol.iterator](): IterableIterator<[string, string]> {
+        return this.store.entries();
+    }
+}
+
+const localStorageMock = new LocalStorageMock();
+
+Object.defineProperty(window, 'localStorage', {
+    writable: true,
+    enumerable: true,
+    configurable: true,
+    value: localStorageMock,
+});
+
 // TypeScript global augmentation for SvelteKit payload
 declare global {
-    // eslint-disable-next-line no-var
     var __SVELTEKIT_PAYLOAD__: {
         data: Record<string, unknown>;
         status: number;

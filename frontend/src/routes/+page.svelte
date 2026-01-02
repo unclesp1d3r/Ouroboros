@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
+    import { resolve } from '$app/paths';
     import * as Accordion from '$lib/components/ui/accordion/index.js';
     import Badge from '$lib/components/ui/badge/badge.svelte';
     import CardContent from '$lib/components/ui/card/card-content.svelte';
@@ -95,15 +96,15 @@
     }
 
     function navigateToCampaigns() {
-        goto('/campaigns');
+        goto(resolve('/campaigns'));
     }
 
     function navigateToResources() {
-        goto('/resources');
+        goto(resolve('/resources'));
     }
 
     function navigateToCampaignDetail(campaignId: number) {
-        goto(`/campaigns/${campaignId}`);
+        goto(resolve(`/campaigns/${campaignId}`));
     }
 
     function triggerToast(msg: string) {

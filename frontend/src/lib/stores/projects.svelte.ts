@@ -5,6 +5,7 @@ import {
     ProjectListResponse,
 } from '$lib/schemas/projects';
 import { browser } from '$app/environment';
+import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 // Store state interfaces
 interface ProjectState {
@@ -213,7 +214,7 @@ export const projectsStore = {
         this.clearError();
 
         try {
-            const params = new URLSearchParams({
+            const params = new SvelteURLSearchParams({
                 limit: limit.toString(),
                 offset: offset.toString(),
             });

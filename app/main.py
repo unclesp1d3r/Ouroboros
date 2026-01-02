@@ -5,7 +5,6 @@ import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
 
-import uvicorn
 from cashews import cache
 from cashews.contrib.fastapi import (
     CacheDeleteMiddleware,
@@ -288,13 +287,3 @@ app.add_exception_handler(HTTPException, v1_http_exception_handler)
 
 # Setup custom OpenAPI documentation
 setup_openapi_customization(app)
-
-
-def run_server() -> None:
-    """Run the FastAPI server with development configuration."""
-    uvicorn.run(
-        "app.main:app",
-        host="0.0.0.0",  # noqa: S104
-        port=8000,
-        reload=True,
-    )

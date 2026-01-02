@@ -111,7 +111,7 @@ class Agent(Base):
     )
     user_id: Mapped[UUID | None] = mapped_column(ForeignKey("users.id"), nullable=True)
     user: Mapped[User | None] = relationship("User")
-    projects: Mapped[list["Project"]] = relationship(
+    projects: Mapped[list[Project]] = relationship(
         "Project", secondary=project_agents, back_populates="agents", lazy="selectin"
     )
     __table_args__ = (

@@ -8,7 +8,7 @@ export const userCreateSchema = z.object({
         .min(8, 'Password must be at least 8 characters')
         .max(128, 'Password must be less than 128 characters'),
     role: z.enum(['analyst', 'operator', 'admin'], {
-        required_error: 'Please select a role',
+        error: 'Please select a role (analyst, operator, or admin)',
     }),
 });
 

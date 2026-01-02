@@ -12,7 +12,7 @@ def set_async_sessions(db_session: AsyncSession) -> None:
 
 @pytest.mark.asyncio
 async def test_create_agent_minimal(
-    agent_factory: "AgentFactory",
+    agent_factory: AgentFactory,
     db_session: AsyncSession,
 ) -> None:
     agent = await agent_factory.create_async(operating_system=OperatingSystemEnum.linux)
@@ -23,7 +23,7 @@ async def test_create_agent_minimal(
 
 @pytest.mark.asyncio
 async def test_agent_enum_enforcement(
-    agent_factory: "AgentFactory",
+    agent_factory: AgentFactory,
     db_session: AsyncSession,
 ) -> None:
     with pytest.raises(Exception) as exc_info:
@@ -35,7 +35,7 @@ async def test_agent_enum_enforcement(
 
 @pytest.mark.asyncio
 async def test_agent_update_and_delete(
-    agent_factory: "AgentFactory",
+    agent_factory: AgentFactory,
     db_session: AsyncSession,
 ) -> None:
     agent = await agent_factory.create_async(

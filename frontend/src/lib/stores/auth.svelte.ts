@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 import {
     Body_login_api_v1_web_auth_login_post,
     ChangePasswordRequest,
@@ -116,7 +117,7 @@ if (browser) {
                     authState.user = null;
                     authState.isAuthenticated = false;
                     if (!window.location.pathname.includes('/login')) {
-                        goto('/login');
+                        goto(resolve('/login'));
                     }
                 }
             }
@@ -139,7 +140,7 @@ if (browser) {
                         authState.user = null;
                         authState.isAuthenticated = false;
                         if (!window.location.pathname.includes('/login')) {
-                            goto('/login');
+                            goto(resolve('/login'));
                         }
                     }
                 }
@@ -263,7 +264,7 @@ export const authStore = {
             authState.user = null;
             authState.isAuthenticated = false;
             authState.error = null;
-            goto('/login');
+            goto(resolve('/login'));
         }
     },
 

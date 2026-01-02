@@ -50,8 +50,8 @@ class ProjectUserAssociation(Base):
         Enum(ProjectUserRole), default=ProjectUserRole.member, nullable=False
     )
 
-    project: Mapped["Project"] = relationship(back_populates="user_associations")
-    user: Mapped["User"] = relationship(back_populates="project_associations")
+    project: Mapped[Project] = relationship(back_populates="user_associations")
+    user: Mapped[User] = relationship(back_populates="project_associations")
 
 
 class Project(Base):
@@ -78,7 +78,7 @@ class Project(Base):
         "user",
         creator=lambda user: ProjectUserAssociation(user=user),  # type: ignore[reportUnknownLambdaType]
     )
-    agents: Mapped[list["Agent"]] = relationship(
+    agents: Mapped[list[Agent]] = relationship(
         "Agent", secondary=project_agents, back_populates="projects", lazy="selectin"
     )
     campaigns = relationship("Campaign", back_populates="project", lazy="selectin")

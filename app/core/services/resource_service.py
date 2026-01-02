@@ -442,7 +442,7 @@ async def create_resource_and_presign_service(
     line_encoding: str | None = None,
     used_for_modes: list[str] | None = None,
     source: str | None = None,
-    background_tasks: "BackgroundTasks | None" = None,
+    background_tasks: BackgroundTasks | None = None,
     file_label: str | None = None,
     tags: list[str] | None = None,
 ) -> tuple[AttackResourceFile, str]:
@@ -932,7 +932,7 @@ async def create_upload_resource_and_task_for_text_service(
     project_id: int,
     file_label: str | None,
     user: User,
-    background_tasks: "BackgroundTasks | None" = None,
+    background_tasks: BackgroundTasks | None = None,
 ) -> tuple[UploadResourceFile, HashUploadTask]:
     """Create an UploadResourceFile for text content and associated HashUploadTask."""
     import hashlib
@@ -1024,7 +1024,7 @@ def _determine_step_status(
 def _create_processing_step(
     step_name: str,
     status: str,
-    task: "HashUploadTask",
+    task: HashUploadTask,
     error_message: str | None = None,
 ) -> UploadProcessingStep:
     """Helper to create a processing step."""
@@ -1054,7 +1054,7 @@ def _create_processing_step(
 
 
 def _build_processing_steps(
-    task: "HashUploadTask", resource: "UploadResourceFile", hash_type_id: int | None
+    task: HashUploadTask, resource: UploadResourceFile, hash_type_id: int | None
 ) -> tuple[list[UploadProcessingStep], str | None]:
     """Build all processing steps and determine current step."""
     processing_steps = []
