@@ -41,8 +41,10 @@ jobs:
               with:
                   version: "latest"
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v4
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
 
             - name: Install just
               uses: extractions/setup-just@v3
@@ -56,10 +58,10 @@ jobs:
               run: uv sync --all-packages --group ci --frozen
 
             - name: Install frontend dependencies
-              run: cd frontend && pnpm install
+              run: cd frontend && bun install
 
             - name: Install Playwright browsers
-              run: cd frontend && pnpm exec playwright install --with-deps
+              run: cd frontend && bunx playwright install --with-deps
 
             - name: Cache uv dependencies
               uses: actions/cache@v4
@@ -70,6 +72,14 @@ jobs:
                   key: ${{ runner.os }}-uv-${{ hashFiles('**/uv.lock', '**/.python-version') }}
                   restore-keys: |
                       ${{ runner.os }}-uv-
+
+            - name: Cache Bun dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.bun/install/cache
+                  key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-bun-
 
             - name: Run CI checks
               env:
