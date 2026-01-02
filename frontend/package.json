@@ -11,14 +11,14 @@
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "format": "prettier --write .",
-        "lint": "prettier --check . && pnpx oxlint && pnpx sv check && pnpx eslint",
+        "lint": "prettier --check . && bunx oxlint && bunx sv check && bunx eslint",
         "test:unit": "vitest",
-        "test": "npm run test:unit -- --run && npm run test:e2e",
+        "test": "bun run test:unit -- --run && bun run test:e2e",
         "test:e2e": "playwright test"
     },
     "dependencies": {
         "axios": "^1.13.2",
-        "zod": "^4.2.1"
+        "zod": "^4.3.4"
     },
     "devDependencies": {
         "@eslint/compat": "^2.0.0",
@@ -81,10 +81,5 @@
     },
     "engines": {
         "node": ">=20.19.0"
-    },
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "esbuild"
-        ]
     }
 }

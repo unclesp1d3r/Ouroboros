@@ -1,0 +1,16 @@
+# Bun configuration file
+# https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Enforce exact versions (equivalent to pnpm's engine-strict)
+exact = true
+
+# Auto-install peer dependencies
+auto = true
+
+[install.cache]
+# Cache directory for faster installs
+dir = "~/.bun/install/cache"
+
+# Disable cache if needed (useful for debugging)
+disable = false
