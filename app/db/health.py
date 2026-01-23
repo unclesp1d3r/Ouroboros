@@ -1,11 +1,8 @@
 """Database health check module."""
 
-import logging
-
+from loguru import logger
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
-
-logger = logging.getLogger(__name__)
 
 
 async def check_database_health(session: AsyncSession) -> tuple[bool, str]:
@@ -49,8 +46,8 @@ async def check_database_health(session: AsyncSession) -> tuple[bool, str]:
             logger.debug(f"Transaction query result: {value}")
             if value != 1:
                 return False, "Database transaction query returned unexpected value"
-    except Exception as e:
+    except Exception:  # noqa: BLE001 - Catch all DB errors for health check
         logger.exception("Health check failed")
-        return False, f"Database health check failed: {e!s}"
+        return False, "Database health check failed"
     else:
         return True, "Database is healthy"
