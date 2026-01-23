@@ -46,12 +46,6 @@ repos:
       hooks:
           - id: shellcheck
 
-    - repo: https://github.com/commitizen-tools/commitizen
-      rev: v4.12.1
-      hooks:
-          - id: commitizen
-            stages: [commit-msg]
-
     # 🐍 uv for Python environment management
     - repo: https://github.com/astral-sh/uv-pre-commit
       rev: 0.9.26
