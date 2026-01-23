@@ -27,7 +27,7 @@ Here's a Skirmish-style implementation checklist for the Crackable Upload Proces
 
 ## Crackable Upload Plugin Pipeline - Skirmish Task Checklist
 
-Review `📂 Crackable Uploads` section in `docs/v2_rewrite_implementation_plan/phase-2-api-implementation-parts/phase-2-api-implementation-part-2.md` for the complete description of the crackable uploads pipeline and the high level tasks that need to be completed. The tasks below are a more detailed breakdown of the tasks that need to be completed before the crackable uploads pipeline can be implemented.
+Review ` Crackable Uploads` section in `docs/v2_rewrite_implementation_plan/phase-2-api-implementation-parts/phase-2-api-implementation-part-2.md` for the complete description of the crackable uploads pipeline and the high level tasks that need to be completed. The tasks below are a more detailed breakdown of the tasks that need to be completed before the crackable uploads pipeline can be implemented.
 
 ### Backend Models & DB
 

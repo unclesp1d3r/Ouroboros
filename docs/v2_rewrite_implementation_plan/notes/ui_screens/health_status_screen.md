@@ -38,7 +38,7 @@ In addition to backend services, this page also displays the current operational
 
 ### MinIO
 
-- **Status Indicator**: 🟢 Healthy, 🟡 Degraded, 🔴 Unreachable (color-coded badge)
+- **Status Indicator**: [GREEN] Healthy, [YELLOW] Degraded, [RED] Unreachable (color-coded badge)
 
 - **Metrics**:
 
@@ -103,7 +103,7 @@ Use the pooled connection support from `psycopg[binary,pool]` in combination wit
 
 ### Agents
 
-- **Status Indicator**: Color-coded badge (🟢 Online, 🔴 Offline)
+- **Status Indicator**: Color-coded badge ([GREEN] Online, [RED] Offline)
 
 - **Metrics**:
 
@@ -176,7 +176,7 @@ This data is hidden for standard users to reduce clutter and limit sensitive sys
 
 ## Data Collection Strategy
 
-> ⚠️ Implementation Note: All system metrics should be gathered **from in-process Python code** using libraries or internal APIs.
+> [WARN] Implementation Note: All system metrics should be gathered **from in-process Python code** using libraries or internal APIs.
 >
 > Do **not** shell out to external binaries or system commands to collect data in production.
 

@@ -1,6 +1,6 @@
 # Phase 3 Step 3: Advanced Features & Real-Time Capabilities
 
-**🎯 Advanced Features Step** - This step implements real-time capabilities, completes advanced attack features, and finishes resource management functionality.
+\*\* Advanced Features Step\*\* - This step implements real-time capabilities, completes advanced attack features, and finishes resource management functionality.
 
 ---
 
@@ -44,7 +44,7 @@ With core functionality verified and user management complete, this step focuses
 
 ### Server-Sent Events (SSE) Infrastructure
 
-**🔧 Technical Context**: SSE provides lightweight trigger notifications (not full data streaming). Events are project-scoped to prevent data leaks. Frontend uses EventSource with reconnection handling.
+\*\* Technical Context\*\*: SSE provides lightweight trigger notifications (not full data streaming). Events are project-scoped to prevent data leaks. Frontend uses EventSource with reconnection handling.
 
 - [ ] **SSE-001**: Implement SSE endpoints in backend
 
@@ -70,7 +70,7 @@ With core functionality verified and user management complete, this step focuses
     - **Live Updates**: Keyspace-weighted progress via SSE without page refresh
     - **Performance**: Throttled updates to prevent UI flooding
   - [ ] Agent status updates in real-time (`DRM-002b`)
-    - **Status Indicators**: Real-time badge color changes (🟢 Online → 🔴 Offline)
+    - **Status Indicators**: Real-time badge color changes ([GREEN] Online → [RED] Offline)
     - **Agent Sheet**: Live updates in the slide-out Agent Status Sheet
     - **Table Updates**: Agent list table rows update status without full refresh
     - **Performance Metrics**: Live temperature, utilization, and hash rate displays
@@ -136,7 +136,7 @@ With core functionality verified and user management complete, this step focuses
 
 ### Advanced Attack Configuration
 
-**🔧 Technical Context**: Dictionary attacks support user-friendly modifier buttons (+Change Case, +Substitute Characters) that abstract hashcat rule complexity. Advanced users can select rule files directly. Ephemeral wordlists stored only on Attack object. All UI components must use idiomatic Shadcn-Svelte patterns.
+\*\* Technical Context\*\*: Dictionary attacks support user-friendly modifier buttons (+Change Case, +Substitute Characters) that abstract hashcat rule complexity. Advanced users can select rule files directly. Ephemeral wordlists stored only on Attack object. All UI components must use idiomatic Shadcn-Svelte patterns.
 
 - [ ] **ATTACK-ADV-001**: Rule modificators and custom rules
 
@@ -298,7 +298,7 @@ With core functionality verified and user management complete, this step focuses
 
 ### Testing Guidelines & Requirements
 
-**🧪 Critical Testing Context:**
+\*\* Critical Testing Context:\*\*
 
 - **Test Structure**: All user-facing functionality must have both E2E tests (mocked and full E2E). Strictly follow existing test structure and naming conventions as described in the [full testing architecture](../side_quests/full_testing_architecture.md) document.
 - **Test Execution**:

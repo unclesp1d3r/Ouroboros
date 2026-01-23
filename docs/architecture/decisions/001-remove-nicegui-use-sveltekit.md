@@ -90,17 +90,17 @@ For complex password cracking management UIs, SvelteKit offers:
 
 **Completed 2025-12-30:**
 
-- ✅ Removed `app/ui/` directory (NiceGUI code)
-- ✅ Removed NiceGUI imports and setup from `app/main.py`
-- ✅ Removed `nicegui` dependency from `pyproject.toml`
-- ✅ Removed `server` entrypoint script from `pyproject.toml`
-- ✅ Reverted Dockerfile to use `uvicorn app.main:app` directly
-- ✅ Reverted Dockerfile.dev to use `uvicorn app.main:app --reload`
-- ✅ Reverted docker-compose.dev.yml commands
-- ✅ Reverted justfile `dev-backend` recipe
-- ✅ Removed `.kiro/specs/nicegui-web-interface/`
-- ✅ Removed `.kiro/specs/sveltekit-frontend-removal/`
-- ✅ Verified README.md correctly shows SvelteKit as frontend
+- [x] Removed `app/ui/` directory (NiceGUI code)
+- [x] Removed NiceGUI imports and setup from `app/main.py`
+- [x] Removed `nicegui` dependency from `pyproject.toml`
+- [x] Removed `server` entrypoint script from `pyproject.toml`
+- [x] Reverted Dockerfile to use `uvicorn app.main:app` directly
+- [x] Reverted Dockerfile.dev to use `uvicorn app.main:app --reload`
+- [x] Reverted docker-compose.dev.yml commands
+- [x] Reverted justfile `dev-backend` recipe
+- [x] Removed `.kiro/specs/nicegui-web-interface/`
+- [x] Removed `.kiro/specs/sveltekit-frontend-removal/`
+- [x] Verified README.md correctly shows SvelteKit as frontend
 
 ## Consequences
 
@@ -129,7 +129,7 @@ For complex password cracking management UIs, SvelteKit offers:
 
 ### Immediate (Week 1)
 
-1. ✅ Remove all NiceGUI code and references
+1. [x] Remove all NiceGUI code and references
 2. Complete remaining SvelteKit TODOs:
    - Implement attack edit/add modals
    - Complete resource upload functionality

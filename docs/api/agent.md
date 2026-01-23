@@ -591,9 +591,9 @@ This API maintains strict backward compatibility with the legacy Ruby-on-Rails O
 
 ### Version Compatibility Matrix
 
-| Agent Version | API Version | Compatibility         |
-| ------------- | ----------- | --------------------- |
-| 1.0.x - 1.2.x | v1.0        | ✅ Full               |
-| 1.3.x - 1.5.x | v1.1        | ✅ Full               |
-| 2.0.x+        | v1.3        | ✅ Full               |
-| Future        | v2.0        | 🔄 Migration Required |
+| Agent Version | API Version | Compatibility      |
+| ------------- | ----------- | ------------------ |
+| 1.0.x - 1.2.x | v1.0        | [x] Full           |
+| 1.3.x - 1.5.x | v1.1        | [x] Full           |
+| 2.0.x+        | v1.3        | [x] Full           |
+| Future        | v2.0        | Migration Required |

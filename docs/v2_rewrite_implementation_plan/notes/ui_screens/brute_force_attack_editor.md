@@ -1,11 +1,11 @@
 ```html
-<!-- 🔐 Modal: New Brute Force Attack -->
+<!--  Modal: New Brute Force Attack -->
 <form class="p-6 dark:bg-gray-800 bg-white rounded-lg shadow" hx-post="/api/v1/web/attacks/" hx-swap="outerHTML" hx-target="#attack-list">
  <!-- Header -->
  <h3 class="text-xl font-bold dark:text-white mb-4">
   New Brute Force Attack
  </h3>
- <!-- 🔢 Mask Length -->
+ <!--  Mask Length -->
  <div class="grid grid-cols-2 gap-4 mb-4">
   <div>
    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="increment_minimum">
@@ -52,14 +52,14 @@
    </label>
   </div>
  </div>
- <!-- 🧩 Custom Charset Preview -->
+ <!--  Custom Charset Preview -->
  <div class="mb-4">
   <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
    Charset Preview (?1)
   </label>
   <input class="form-input w-full bg-gray-100 dark:bg-gray-700" readonly="" type="text" value="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$"/>
  </div>
- <!-- 🧠 Generated Mask Preview -->
+ <!--  Generated Mask Preview -->
  <div class="mb-4">
   <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
    Generated Mask
@@ -106,7 +106,7 @@
 
 ---
 
-### 🧩 Implementation Notes for Skirmish
+### Implementation Notes for Skirmish
 
 - Modal component: use Flowbite’s `Modal`
 

@@ -21,7 +21,7 @@
 
 ---
 
-**🎯 Critical Foundation Step** - This step implements the core authentication infrastructure required for all subsequent testing and functionality. Nothing else can be fully validated until this is complete.
+\*\* Critical Foundation Step\*\* - This step implements the core authentication infrastructure required for all subsequent testing and functionality. Nothing else can be fully validated until this is complete.
 
 ## Overview
 
@@ -40,7 +40,7 @@ This step addresses the critical blocker preventing full E2E testing: implementi
 
 ### Backend Session Management Implementation
 
-**🔧 Technical Context**: Adapt existing FastAPI JWT authentication for SSR compatibility. JWT tokens stored in HTTP-only cookies instead of localStorage, allowing server-side API calls.
+\*\* Technical Context\*\*: Adapt existing FastAPI JWT authentication for SSR compatibility. JWT tokens stored in HTTP-only cookies instead of localStorage, allowing server-side API calls.
 
 - [x] **AUTH-BE-001**: Modify existing JWT authentication to support HTTP-only cookies
 
@@ -74,7 +74,7 @@ This step addresses the critical blocker preventing full E2E testing: implementi
 
 ### SvelteKit Hooks Implementation
 
-**🔧 Technical Context**: SvelteKit hooks extract JWT cookies from requests and set `event.locals.user` for use in load functions. Must handle JWT validation and automatic login redirect.
+\*\* Technical Context\*\*: SvelteKit hooks extract JWT cookies from requests and set `event.locals.user` for use in load functions. Must handle JWT validation and automatic login redirect.
 
 - [x] **AUTH-FE-001**: Create `hooks.server.js` for JWT cookie handling
 
@@ -110,14 +110,14 @@ This step addresses the critical blocker preventing full E2E testing: implementi
 ### Load Function Authentication Updates
 
 - [x] **AUTH-FE-005**: Update all `+page.server.ts` files for authentication
-  - [x] Update dashboard load function (`/+page.server.ts`) - ✅ Fixed flaky modal test timing issue
-  - [x] Update campaigns load functions (`/campaigns/+page.server.ts`, `/campaigns/[id]/+page.server.ts`) - ✅ Updated to use locals.session and locals.user pattern
-  - [x] Update attacks load function (`/attacks/+page.server.ts`) - ✅ Updated to use locals.session and locals.user pattern
-  - [x] Update agents load function (`/agents/+page.server.ts`) - ✅ Updated to use locals.session and locals.user pattern
+  - [x] Update dashboard load function (`/+page.server.ts`) - [x] Fixed flaky modal test timing issue
+  - [x] Update campaigns load functions (`/campaigns/+page.server.ts`, `/campaigns/[id]/+page.server.ts`) - [x] Updated to use locals.session and locals.user pattern
+  - [x] Update attacks load function (`/attacks/+page.server.ts`) - [x] Updated to use locals.session and locals.user pattern
+  - [x] Update agents load function (`/agents/+page.server.ts`) - [x] Updated to use locals.session and locals.user pattern
   - [x] Update resources load functions (`/resources/+page.server.ts`, `/resources/[id]/+page.server.ts`)
-  - [x] Update users load function (`/users/+page.server.ts`) - ✅ Updated to use locals.session and locals.user pattern
-  - [x] Update projects load function (`/projects/+page.server.ts`) - ✅ Updated to use locals.session and locals.user pattern
-  - [x] Update settings load function (`/settings/+page.server.ts`) - ✅ Updated to use locals.session and locals.user pattern
+  - [x] Update users load function (`/users/+page.server.ts`) - [x] Updated to use locals.session and locals.user pattern
+  - [x] Update projects load function (`/projects/+page.server.ts`) - [x] Updated to use locals.session and locals.user pattern
+  - [x] Update settings load function (`/settings/+page.server.ts`) - [x] Updated to use locals.session and locals.user pattern
 
 ### Environment Detection for Testing
 
@@ -137,28 +137,28 @@ Be sure to use or reuse the existing test utils and helpers in `frontend/tests/t
 
 - [x] **TEST-ASM-001**: Login Flow Testing
 
-  - [x] **ASM-001a**: Successful login with valid credentials (E2E + Mock) - ✅ Updated to use new test helpers and utils - verified for both mocked and full E2E tests
-  - [x] **ASM-001b**: Failed login with invalid credentials (E2E + Mock) - ✅ Implemented both mocked and full E2E tests for invalid credentials error handling
-  - [x] **ASM-001c**: Login form validation errors (Mock) - ✅ Implemented comprehensive client-side validation error tests including empty form, invalid email, empty password, and error clearing scenarios
-  - [x] **ASM-001d**: JWT persistence across page refreshes (E2E) - ✅ Implemented comprehensive JWT persistence test with proper login helper, page refresh, and session validation
+  - [x] **ASM-001a**: Successful login with valid credentials (E2E + Mock) - [x] Updated to use new test helpers and utils - verified for both mocked and full E2E tests
+  - [x] **ASM-001b**: Failed login with invalid credentials (E2E + Mock) - [x] Implemented both mocked and full E2E tests for invalid credentials error handling
+  - [x] **ASM-001c**: Login form validation errors (Mock) - [x] Implemented comprehensive client-side validation error tests including empty form, invalid email, empty password, and error clearing scenarios
+  - [x] **ASM-001d**: JWT persistence across page refreshes (E2E) - [x] Implemented comprehensive JWT persistence test with proper login helper, page refresh, and session validation
   - [x] **ASM-001e**: Redirect to login when accessing protected routes unauthenticated (E2E)
-  - [x] **ASM-001f**: Login loading states and error display (Mock) - ✅ Implemented comprehensive tests for login loading states and error display in mocked environment
+  - [x] **ASM-001f**: Login loading states and error display (Mock) - [x] Implemented comprehensive tests for login loading states and error display in mocked environment
 
 - [x] **TEST-ASM-003**: JWT Token Management Testing
 
   - [x] **ASM-003a**: JWT expiration handling with redirect (E2E)
-  - [x] **ASM-003b**: Token refresh on API calls (E2E) - ✅ Implemented comprehensive E2E test that validates automatic token refresh during SSR navigation across multiple protected routes
+  - [x] **ASM-003b**: Token refresh on API calls (E2E) - [x] Implemented comprehensive E2E test that validates automatic token refresh during SSR navigation across multiple protected routes
   - [x] **ASM-003c**: Logout functionality with JWT cleanup (E2E + Mock)
-  - [x] **ASM-003d**: JWT expiry redirect to login (E2E) - ✅ Comprehensive test implemented in `frontend/tests/e2e/auth.e2e.test.ts` that simulates token expiry, verifies login redirect, and tests re-authentication flow
+  - [x] **ASM-003d**: JWT expiry redirect to login (E2E) - [x] Comprehensive test implemented in `frontend/tests/e2e/auth.e2e.test.ts` that simulates token expiry, verifies login redirect, and tests re-authentication flow
 
 ### Load Function Authentication Tests
 
 - [x] **TEST-AUTH-LOAD**: SSR Load Function Authentication
-  - [x] Test authenticated data loading for dashboard (E2E) - ✅ Comprehensive E2E tests implemented in `frontend/tests/e2e/auth.e2e.test.ts` that validate complete authentication flow, dashboard data loading, metrics display, user context, error handling, page refresh persistence, and cross-route navigation
-  - [x] Test authenticated data loading for campaigns (E2E) - ✅ Comprehensive E2E test implemented in `frontend/tests/e2e/auth.e2e.test.ts` that validates authenticated campaigns data loading, verifies unauthenticated redirect to login, tests campaign page functionality with proper test IDs, validates API responses, checks error handling, and ensures authentication persistence across navigation and page refresh
-  - [x] Test authenticated data loading for resources (E2E) - ✅ Comprehensive E2E test implemented in `frontend/tests/e2e/auth.e2e.test.ts` that validates authenticated resources data loading, verifies unauthenticated redirect to login, tests resources page functionality with proper test IDs, validates API responses, checks error handling, ensures authentication persistence across navigation and page refresh, and tests filter functionality
-  - [x] Test 401 handling and redirect to login (E2E) - ✅ Comprehensive E2E tests implemented covering all protected routes (dashboard, campaigns, attacks, agents, resources, users, projects, settings) with individual focused tests for each route, plus redirect functionality validation
-  - [x] Test environment detection and mock data fallback (Mock) - ✅ Verified all load functions have consistent environment detection patterns using `if (process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT_TEST || process.env.CI)` and provide appropriate mock data during testing
+  - [x] Test authenticated data loading for dashboard (E2E) - [x] Comprehensive E2E tests implemented in `frontend/tests/e2e/auth.e2e.test.ts` that validate complete authentication flow, dashboard data loading, metrics display, user context, error handling, page refresh persistence, and cross-route navigation
+  - [x] Test authenticated data loading for campaigns (E2E) - [x] Comprehensive E2E test implemented in `frontend/tests/e2e/auth.e2e.test.ts` that validates authenticated campaigns data loading, verifies unauthenticated redirect to login, tests campaign page functionality with proper test IDs, validates API responses, checks error handling, and ensures authentication persistence across navigation and page refresh
+  - [x] Test authenticated data loading for resources (E2E) - [x] Comprehensive E2E test implemented in `frontend/tests/e2e/auth.e2e.test.ts` that validates authenticated resources data loading, verifies unauthenticated redirect to login, tests resources page functionality with proper test IDs, validates API responses, checks error handling, ensures authentication persistence across navigation and page refresh, and tests filter functionality
+  - [x] Test 401 handling and redirect to login (E2E) - [x] Comprehensive E2E tests implemented covering all protected routes (dashboard, campaigns, attacks, agents, resources, users, projects, settings) with individual focused tests for each route, plus redirect functionality validation
+  - [x] Test environment detection and mock data fallback (Mock) - [x] Verified all load functions have consistent environment detection patterns using `if (process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT_TEST || process.env.CI)` and provide appropriate mock data during testing
 
 ## Docker Infrastructure Updates
 
@@ -167,19 +167,19 @@ Most of this is likely completed in previous steps and just needs to validated a
 ### E2E Testing Infrastructure
 
 - [x] **DOCKER-001**: Update E2E Docker environment for authentication
-  - [x] Update data seeding script to create test users with known credentials - ✅ Updated and verified for both mocked and full E2E tests
-  - [x] Modify Playwright global setup to handle login flow - ✅ Updated and verified for both mocked and full E2E tests
-  - [x] Update health check configuration for authenticated services - ✅ Updated and verified for full E2E tests
-  - [x] Ensure JWT cookie handling works in Docker environment - ✅ Verified for full E2E tests
+  - [x] Update data seeding script to create test users with known credentials - [x] Updated and verified for both mocked and full E2E tests
+  - [x] Modify Playwright global setup to handle login flow - [x] Updated and verified for both mocked and full E2E tests
+  - [x] Update health check configuration for authenticated services - [x] Updated and verified for full E2E tests
+  - [x] Ensure JWT cookie handling works in Docker environment - [x] Verified for full E2E tests
 
 ### Development Environment
 
 The development docker is started using recipes in `justfile`, specifically `just docker-dev-up` or `just docker-dev-up-watch` and uses the same seeding and migration scripts as the E2E tests. The development environment is used for testing and development, and is not used for production, but should otherwise follow the standards and best practices as production. It just needs to validated as following best practices and project standards.
 
 - [x] **DOCKER-002**: Update development Docker configuration
-  - [x] Ensure JWT handling works in development environment - ✅ Verified through successful E2E tests that validate complete authentication flows including JWT persistence, token refresh, and session management
-  - [x] Update hot reload configuration for authentication changes - ✅ Confirmed proper volume mounts and `--reload` flags in development containers for both backend and frontend services
-  - [x] Verify CORS settings work between services in Docker - ✅ Validated CORS configuration allows proper communication between frontend (localhost:5173) and backend (localhost:8000) with credentials support
+  - [x] Ensure JWT handling works in development environment - [x] Verified through successful E2E tests that validate complete authentication flows including JWT persistence, token refresh, and session management
+  - [x] Update hot reload configuration for authentication changes - [x] Confirmed proper volume mounts and `--reload` flags in development containers for both backend and frontend services
+  - [x] Verify CORS settings work between services in Docker - [x] Validated CORS configuration allows proper communication between frontend (localhost:5173) and backend (localhost:8000) with credentials support
 
 ## Validation & Success Criteria
 
@@ -200,19 +200,19 @@ If being performed by an AI, run the development docker using `just docker-dev-u
 Run the E2E tests using `just test-e2e` and verify that the tests pass and that the authentication flow works as expected, validating the output of the tests. Any errors, failures, or warnings should be addressed and resolved.
 
 - [x] **VALIDATE-002**: E2E infrastructure validation
-  - [x] Docker E2E environment starts successfully with authentication - ✅ Verified through successful E2E tests that validate complete authentication flows including JWT persistence, token refresh, and session management
-  - [x] Test users can log in through E2E tests - ✅ Verified through 25 passing E2E tests including admin and regular user login flows
-  - [x] All SSR load functions work with authenticated API calls - ✅ Verified through successful E2E tests that validate authenticated data loading for dashboard, campaigns, resources, and all protected routes
-  - [x] Health checks pass without breaking authentication requirements - ✅ Verified through successful Docker stack startup and health check validation in E2E test global setup
+  - [x] Docker E2E environment starts successfully with authentication - [x] Verified through successful E2E tests that validate complete authentication flows including JWT persistence, token refresh, and session management
+  - [x] Test users can log in through E2E tests - [x] Verified through 25 passing E2E tests including admin and regular user login flows
+  - [x] All SSR load functions work with authenticated API calls - [x] Verified through successful E2E tests that validate authenticated data loading for dashboard, campaigns, resources, and all protected routes
+  - [x] Health checks pass without breaking authentication requirements - [x] Verified through successful Docker stack startup and health check validation in E2E test global setup
 
 ### Development Workflow Validation
 
 This should have been validated in the Authentication Validation step, but its a final check for quality and completeness.
 
 - [x] **VALIDATE-003**: Development experience validation
-  - [x] `just test-e2e` command runs successfully with authentication - ✅ Verified through successful completion of all 25 E2E tests with proper Docker stack management
-  - [x] Development environment supports both authenticated and test modes - ✅ Verified through environment detection in load functions and successful test data seeding
-  - [x] Authentication errors provide clear debugging information - ✅ Verified through E2E tests that validate proper error handling for invalid credentials, token expiration, and 401 redirects
+  - [x] `just test-e2e` command runs successfully with authentication - [x] Verified through successful completion of all 25 E2E tests with proper Docker stack management
+  - [x] Development environment supports both authenticated and test modes - [x] Verified through environment detection in load functions and successful test data seeding
+  - [x] Authentication errors provide clear debugging information - [x] Verified through E2E tests that validate proper error handling for invalid credentials, token expiration, and 401 redirects
 
 ## Implementation Notes
 

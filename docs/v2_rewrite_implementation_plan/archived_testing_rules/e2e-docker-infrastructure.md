@@ -10,21 +10,21 @@ This rule documents the successful implementation of the three-tier testing arch
 
 - **Technology**: Python + pytest + testcontainers
 - **Scope**: Backend API endpoints, services, database operations
-- **Status**: ✅ **593 tests passing** (1 xfailed)
+- **Status**: [x] **593 tests passing** (1 xfailed)
 - **Command**: `just test-backend`
 
 ### Layer 2: Frontend Mocked Tests (`just test-frontend`)
 
 - **Technology**: Vitest (unit) + Playwright (E2E with mocks)
 - **Scope**: Frontend components and interactions with mocked APIs
-- **Status**: ✅ **149 unit tests + 161 E2E tests** (3 skipped)
+- **Status**: [x] **149 unit tests + 161 E2E tests** (3 skipped)
 - **Command**: `just test-frontend`
 
 ### Layer 3: Full E2E Tests (`just test-e2e`)
 
 - **Technology**: Playwright against real Docker backend stack
 - **Scope**: Complete user workflows with real database and API
-- **Infrastructure**: ✅ **Fully implemented and working**
+- **Infrastructure**: [x] **Fully implemented and working**
 - **Command**: `just test-e2e`
 
 ## Docker Infrastructure Implementation
@@ -92,10 +92,10 @@ healthcheck:
 
 **Architecture Pattern**:
 
-- ✅ **Service layer delegation** for all data persistence
-- ✅ **Pydantic validation** for all created objects
-- ✅ **Async/await patterns** throughout
-- ✅ **Graceful error handling** with table truncation
+- [x] **Service layer delegation** for all data persistence
+- [x] **Pydantic validation** for all created objects
+- [x] **Async/await patterns** throughout
+- [x] **Graceful error handling** with table truncation
 
 **Example Pattern**:
 
@@ -269,37 +269,37 @@ just test-e2e
 
 ### Docker Configuration Reuse
 
-- ✅ **Success**: Reused existing `docker-compose.dev.yml` patterns
-- ❌ **Anti-pattern**: Creating new Docker configurations from scratch
+- [x] **Success**: Reused existing `docker-compose.dev.yml` patterns
+- [FAIL] **Anti-pattern**: Creating new Docker configurations from scratch
 - **Rule**: Always check existing working Docker setups before creating new ones
 
 ### Path Resolution in Global Setup
 
-- ✅ **Fix**: Use relative paths from frontend directory (`../docker-compose.e2e.yml`)
-- ❌ **Initial mistake**: Assuming Docker compose file in same directory
+- [x] **Fix**: Use relative paths from frontend directory (`../docker-compose.e2e.yml`)
+- [FAIL] **Initial mistake**: Assuming Docker compose file in same directory
 - **Rule**: Be explicit about working directory in global setup/teardown
 
 ### Service Dependency Management
 
-- ✅ **Success**: Proper health checks and dependency waiting
-- ✅ **Success**: Development Dockerfile includes required build tools
+- [x] **Success**: Proper health checks and dependency waiting
+- [x] **Success**: Development Dockerfile includes required build tools
 - **Rule**: Use development Docker configuration for E2E testing
 
 ### Data Seeding Architecture
 
-- ✅ **Success**: Service layer delegation ensures consistency
-- ✅ **Success**: Pydantic validation catches schema mismatches early
+- [x] **Success**: Service layer delegation ensures consistency
+- [x] **Success**: Pydantic validation catches schema mismatches early
 - **Rule**: Never bypass service layer for test data creation
 
 ## Current Status
 
 ### Working Components
 
-- ✅ Docker infrastructure fully functional
-- ✅ Data seeding with service layer architecture
-- ✅ Playwright global setup/teardown working
-- ✅ E2E configuration properly implemented
-- ✅ Sample E2E tests demonstrate patterns
+- [x] Docker infrastructure fully functional
+- [x] Data seeding with service layer architecture
+- [x] Playwright global setup/teardown working
+- [x] E2E configuration properly implemented
+- [x] Sample E2E tests demonstrate patterns
 
 ### Next Implementation Steps
 

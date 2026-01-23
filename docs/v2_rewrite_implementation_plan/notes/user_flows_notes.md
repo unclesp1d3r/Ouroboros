@@ -281,7 +281,7 @@ journey
 
 2. Each agent displayed with:
 
-   - Status badge (🟢, 🟡, 🔴)
+   - Status badge ([GREEN], [YELLOW], [RED])
    - Last seen timestamp
    - Current task label
    - Guess rate + sparkline

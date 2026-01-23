@@ -9,7 +9,7 @@ This rule documents proven testing patterns for SvelteKit 5 applications with SS
 ### Environment Detection
 
 ```typescript
-// ✅ CORRECT - Comprehensive test environment detection
+// [x] CORRECT - Comprehensive test environment detection
 if (process.env.NODE_ENV === 'test' ||
     process.env.PLAYWRIGHT_TEST ||
     process.env.CI) {
@@ -40,7 +40,7 @@ export default defineConfig({
 ### Store Testing with Runes
 
 ```typescript
-// ✅ CORRECT - Mock .svelte.ts store files
+// [x] CORRECT - Mock .svelte.ts store files
 vi.mock('$lib/stores/campaigns.svelte', () => ({
     campaignsStore: {
         getCampaigns: vi.fn(),
@@ -49,14 +49,14 @@ vi.mock('$lib/stores/campaigns.svelte', () => ({
     }
 }));
 
-// ❌ WRONG - Cannot test runes directly in .ts files
+// [FAIL] WRONG - Cannot test runes directly in .ts files
 // Delete test files that try to test rune functionality directly
 ```
 
 ### Component Testing with SSR Data
 
 ```typescript
-// ✅ CORRECT - Test components with mock SSR data structure
+// [x] CORRECT - Test components with mock SSR data structure
 const mockPageData = {
     campaigns: {
         items: [
@@ -82,7 +82,7 @@ render(CampaignsList, {
 ### Mock Data Consistency
 
 ```typescript
-// ✅ CRITICAL - Mock data must match API structure exactly
+// [x] CRITICAL - Mock data must match API structure exactly
 const mockCampaigns = {
     items: [...], // Exact API response structure
     total_count: 1, // Use snake_case as API returns
@@ -91,7 +91,7 @@ const mockCampaigns = {
     total_pages: 1
 };
 
-// ❌ WRONG - Mismatched structure causes test failures
+// [FAIL] WRONG - Mismatched structure causes test failures
 const mockCampaigns = {
     data: [...], // API doesn't return 'data' wrapper
     totalCount: 1 // API uses snake_case, not camelCase
@@ -103,7 +103,7 @@ const mockCampaigns = {
 ### SSR vs SPA Test Expectations
 
 ```typescript
-// ✅ CORRECT - Test actual SSR-rendered content
+// [x] CORRECT - Test actual SSR-rendered content
 test('displays campaigns list', async ({ page }) => {
     await page.goto('/campaigns');
 
@@ -113,7 +113,7 @@ test('displays campaigns list', async ({ page }) => {
     // Don't test for loading spinners in SSR - data is pre-loaded
 });
 
-// ❌ WRONG - Testing SPA loading patterns in SSR
+// [FAIL] WRONG - Testing SPA loading patterns in SSR
 test('shows loading state', async ({ page }) => {
     await page.goto('/campaigns');
 
@@ -125,7 +125,7 @@ test('shows loading state', async ({ page }) => {
 ### Test Data Management
 
 ```typescript
-// ✅ CORRECT - Use environment detection for test data
+// [x] CORRECT - Use environment detection for test data
 export const load: PageServerLoad = async ({ cookies }) => {
     if (process.env.PLAYWRIGHT_TEST) {
         return {
@@ -149,14 +149,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ### Skipped Test Management
 
 ```typescript
-// ✅ CORRECT - Document why tests are skipped with clear reasoning
+// [x] CORRECT - Document why tests are skipped with clear reasoning
 test.skip('handles 403 error correctly', async ({ page }) => {
     // Skip reason: In SSR, 403 errors are handled at server level
     // and result in error pages, not client-side error handling.
     // This test would need backend authentication setup to test properly.
 });
 
-// ✅ CORRECT - Fix skipped tests when possible
+// [x] CORRECT - Fix skipped tests when possible
 test('shows loading state during form submission', async ({ page }) => {
     // Previously skipped due to DOM update timing issues
     // Fixed by using proper waitFor patterns and async state handling
@@ -178,11 +178,11 @@ test('shows loading state during form submission', async ({ page }) => {
 ### Development Testing
 
 ```bash
-# ✅ Fast iteration during development
+# [x] Fast iteration during development
 pnpm exec vitest run                    # Unit tests only
 pnpm exec playwright test --reporter=line --max-failures=1  # Quick E2E feedback
 
-# ✅ Component-specific testing
+# [x] Component-specific testing
 pnpm exec vitest run src/lib/components/campaigns/
 pnpm exec playwright test e2e/campaigns-list.test.ts
 ```
@@ -190,11 +190,11 @@ pnpm exec playwright test e2e/campaigns-list.test.ts
 ### Verification Testing
 
 ```bash
-# ✅ Frontend-specific verification
+# [x] Frontend-specific verification
 just frontend-check        # Unit tests + E2E tests + linting
 just frontend-test-e2e     # E2E tests only
 
-# ✅ Full project verification (only at completion)
+# [x] Full project verification (only at completion)
 just ci-check              # Complete CI pipeline
 ```
 
@@ -203,10 +203,10 @@ just ci-check              # Complete CI pipeline
 ### Runtime Errors from Store Exports
 
 ```typescript
-// ❌ PROBLEM - Direct $derived exports cause test failures
+// [FAIL] PROBLEM - Direct $derived exports cause test failures
 export const campaigns = $derived(campaignState.campaigns);
 
-// ✅ SOLUTION - Use store object pattern
+// [x] SOLUTION - Use store object pattern
 export const campaignsStore = {
     get campaigns() { return campaignState.campaigns; }
 };
@@ -215,31 +215,31 @@ export const campaignsStore = {
 ### Test Import Path Issues
 
 ```typescript
-// ❌ PROBLEM - Importing from wrong path after migration
+// [FAIL] PROBLEM - Importing from wrong path after migration
 vi.mock('$lib/stores/campaigns', () => ({ ... }));
 
-// ✅ SOLUTION - Update to .svelte.ts path
+// [x] SOLUTION - Update to .svelte.ts path
 vi.mock('$lib/stores/campaigns.svelte', () => ({ ... }));
 ```
 
 ### SSR Page Loading Issues
 
 ```typescript
-// ❌ PROBLEM - Page not loading due to store function calls
+// [FAIL] PROBLEM - Page not loading due to store function calls
 let campaigns = $derived(getCampaigns()); // Function calls in SSR
 
-// ✅ SOLUTION - Use SSR data directly
+// [x] SOLUTION - Use SSR data directly
 let campaigns = $derived(data.campaigns.items); // Direct SSR data
 ```
 
 ### Test Timing Issues
 
 ```typescript
-// ❌ PROBLEM - Tests fail due to async state updates
+// [FAIL] PROBLEM - Tests fail due to async state updates
 await fireEvent.click(submitButton);
 expect(submitButton).toBeDisabled(); // Might fail due to timing
 
-// ✅ SOLUTION - Use waitFor for async updates
+// [x] SOLUTION - Use waitFor for async updates
 await fireEvent.click(submitButton);
 await waitFor(() => {
     expect(submitButton).toBeDisabled();
@@ -276,14 +276,14 @@ frontend/
 ### Test Execution Speed
 
 ```typescript
-// ✅ FAST - Unit tests with mocks
+// [x] FAST - Unit tests with mocks
 describe('CampaignProgress', () => {
     // Mock all external dependencies
     vi.mock('$lib/stores/campaigns.svelte');
     // Test component logic in isolation
 });
 
-// ✅ COMPREHENSIVE - E2E tests with real data
+// [x] COMPREHENSIVE - E2E tests with real data
 test('campaign creation workflow', async ({ page }) => {
     // Test complete user journey with SSR
     // Slower but validates full integration
@@ -293,7 +293,7 @@ test('campaign creation workflow', async ({ page }) => {
 ### Test Environment Optimization
 
 ```typescript
-// ✅ CORRECT - Separate test commands for different needs
+// [x] CORRECT - Separate test commands for different needs
 {
   "scripts": {
     "test:unit": "vitest run",                    // Fast feedback

@@ -1,6 +1,6 @@
 # Phase 1: Core Infrastructure Setup
 
-## ✅ Base SQLAlchemy Configuration
+## [x] Base SQLAlchemy Configuration
 
 - [x] Async SQLAlchemy engine with pooling
 - [x] Base model with `id`, `created_at`, `updated_at` fields
@@ -9,9 +9,9 @@
 
 ---
 
-## 🧩 Core Models Implementation
+## Core Models Implementation
 
-### 👤 User Model
+### User Model
 
 - [x] Integrate `fastapi-users` for authentication and session handling
 - [x] Extend base user model to include:
@@ -21,19 +21,19 @@
   - Indexes: `email` (unique), `name` (unique), `reset_password_token` (unique)
   - Optional: TOTP 2FA field
 
-### 📁 Project Model
+### Project Model
 
 - [x] Fields: `name`, `description`, `private`, `archived_at` (optional), `notes` (optional)
 - [x] M2M Relationship with Users via association table
 - [x] Index: `name` (unique)
 
-### 🧠 OperatingSystem Model
+### OperatingSystem Model
 
 - [x] Fields: `name` (enum: `windows`, `linux`, `darwin`), `cracker_command`
 - [x] Index: `name` (unique)
 - [x] Validation: Enum enforcement via Pydantic and DB constraint
 
-### 🤖 Agent Model
+### Agent Model
 
 - [x] Fields:
   - Identity: `client_signature`, `host_name`, `custom_label`
@@ -46,14 +46,14 @@
 - [x] Indexes: `token` (unique), `state`, `custom_label` (unique)
 - [x] Relationships: `operating_system_id`, `user_id`
 
-### ⚠️ AgentError Model
+### [WARN] AgentError Model
 
 - [x] Fields: `message`, `severity`, `error_code`, `metadata` (JSON)
 - [x] Timestamps: `created_at`, `updated_at`
 - [x] Indexes: `agent_id`, `task_id`
 - [x] Relationships: `agent_id`, `task_id`
 
-### 💥 Attack Model
+### Attack Model
 
 - [x] Fields: `name`, `description`, `state`, `hash_type` (enum)
 - [x] Configuration block:
@@ -80,7 +80,7 @@
 
 ---
 
-## ✅ Notes for Cursor
+## [x] Notes for Cursor
 
 - Always use `Pydantic` v2 for schema validation and enforce field enums explicitly.
 - Use `SQLAlchemy` async ORM with Alembic for all model migrations.

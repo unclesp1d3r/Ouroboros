@@ -102,7 +102,7 @@ Monitor and control your distributed cracking infrastructure:
 
 #### Agent List View
 
-- **Status Monitoring**: Real-time agent status with color-coded indicators (🟢 Online, 🟡 Idle, 🔴 Offline)
+- **Status Monitoring**: Real-time agent status with color-coded indicators ([GREEN] Online, [YELLOW] Idle, [RED] Offline)
 - **Performance Metrics**: Temperature, utilization, hashrate, and current job information
 - **Hardware Details**: Agent name, operating system, and capability information
 
@@ -290,15 +290,15 @@ Both interfaces provide identical functionality:
 
 | Feature              | SvelteKit Frontend | NiceGUI Interface |
 | -------------------- | ------------------ | ----------------- |
-| Dashboard            | ✅                 | ✅                |
-| Campaign Management  | ✅                 | ✅                |
-| Agent Monitoring     | ✅                 | ✅                |
-| Attack Configuration | ✅                 | ✅                |
-| Resource Management  | ✅                 | ✅                |
-| User Management      | ✅                 | ✅                |
-| Real-time Updates    | ✅                 | ✅                |
-| Responsive Design    | ✅                 | ✅                |
-| Accessibility        | ✅                 | ✅                |
+| Dashboard            | [x]                | [x]               |
+| Campaign Management  | [x]                | [x]               |
+| Agent Monitoring     | [x]                | [x]               |
+| Attack Configuration | [x]                | [x]               |
+| Resource Management  | [x]                | [x]               |
+| User Management      | [x]                | [x]               |
+| Real-time Updates    | [x]                | [x]               |
+| Responsive Design    | [x]                | [x]               |
+| Accessibility        | [x]                | [x]               |
 
 ### Deployment Differences
 

@@ -1,8 +1,8 @@
-## 🎭 Page: New Mask Attack Dialog
+## Page: New Mask Attack Dialog
 
 This modal form allows a user to define a new **Mask-based attack**, including optional mask files, inline mask definitions, and custom symbol sets.
 
-### 💡 Summary
+### TIP: Summary
 
 - Rendered as a Flowbite modal
 - HTMX form post to `/api/v1/web/attacks/`
@@ -13,7 +13,7 @@ This modal form allows a user to define a new **Mask-based attack**, including o
 
 ---
 
-### 🧱 Modal Header
+### Modal Header
 
 ```html
 <h3 class="text-xl font-bold text-gray-900 dark:text-white">
@@ -26,7 +26,7 @@ This modal form allows a user to define a new **Mask-based attack**, including o
 
 ---
 
-### 📂 Mask File Upload (Optional)
+### Mask File Upload (Optional)
 
 ```html
 <div class="mb-4">
@@ -39,7 +39,7 @@ This modal form allows a user to define a new **Mask-based attack**, including o
 
 ---
 
-### 🌍 Language Selector
+### Language Selector
 
 ```html
 <div class="mb-4">
@@ -78,7 +78,7 @@ This modal form allows a user to define a new **Mask-based attack**, including o
 
 ---
 
-### 🧩 Custom Symbol Sets
+### Custom Symbol Sets
 
 These correspond to `?1` to `?4` in mask syntax. Shown as a vertical list.
 
@@ -98,7 +98,7 @@ These correspond to `?1` to `?4` in mask syntax. Shown as a vertical list.
 
 ---
 
-### 🛠️ Modificators (Optional Rule-Like Transforms)
+### Modificators (Optional Rule-Like Transforms)
 
 These are UI buttons that translate into rule file presets on the backend.
 
@@ -125,7 +125,7 @@ Skirmish should convert these buttons into one or more rule files applied during
 
 ---
 
-### 📊 Keyspace & Complexity
+### Keyspace & Complexity
 
 ```html
 <div class="mt-4 text-sm text-gray-900 dark:text-white">
@@ -160,7 +160,7 @@ with live updates triggered via `hx-trigger="change"` from any input field.
 
 ---
 
-### ✅ Buttons (Footer)
+### [x] Buttons (Footer)
 
 ```html
 <div class="flex justify-end gap-2 mt-6">
@@ -175,7 +175,7 @@ with live updates triggered via `hx-trigger="change"` from any input field.
 
 ---
 
-### 📦 Backend Submission Notes
+### Backend Submission Notes
 
 Skirmish should post this attack with the following fields:
 

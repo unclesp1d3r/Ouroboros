@@ -1,17 +1,17 @@
-## 🎯 Campaign View: Attack List Interface (Legacy "Attack Settings" Mockup)
+## Campaign View: Attack List Interface (Legacy "Attack Settings" Mockup)
 
 This screen represents the primary **Campaign detail view**, listing all attacks attached to a specific campaign. The title should reflect the **Campaign Name** dynamically.
 
 ---
 
-### 💡 General Notes
+### TIP: General Notes
 
 - The interface is a **table-like layout** rendered in the main content area, showing all active and configured attacks
 - Sidebar selection shows attack types, but creation flow is triggered via a toolbar button (`+ Add Attack`)
 
 ---
 
-## 🧱 Layout Description
+## Layout Description
 
 ### 🏷️ Title Bar
 
@@ -25,7 +25,7 @@ The text should reflect the name of the current campaign (e.g., "Fall PenTest Ro
 
 ---
 
-### 📋 Attack Table
+### Attack Table
 
 The main table has **six columns**, styled like a data grid:
 
@@ -40,7 +40,7 @@ The main table has **six columns**, styled like a data grid:
 
 Each row ends with a **gear icon** for a context menu (see [Campaign Notes - Attack Row Actions](../campaign_notes.md#attack-row-actions))
 
-#### 🧩 Attack Row Example
+#### Attack Row Example
 
 ```html
 <div class="grid grid-cols-6 items-center gap-4 py-2 border-b border-gray-200 dark:border-gray-700">
@@ -78,7 +78,7 @@ Each row ends with a **gear icon** for a context menu (see [Campaign Notes - Att
 
 ---
 
-### ⚙️ Row Action Menu
+### Row Action Menu
 
 Each attack row has a trailing **gear icon** button (`<button class="icon-btn"><CogIcon /></button>`)
 
@@ -128,7 +128,7 @@ Triggers modal dialog for choosing a new attack type and entering config.
 
 ---
 
-### 🗑️ Remove All Attacks
+### Remove All Attacks
 
 - Located at the bottom toolbar, uses a trash icon with “All” text
 - Clicking it clears all attacks after confirmation
@@ -155,7 +155,7 @@ Each of these uses standard HTMX interactions (GET for load fragments, POST for 
 
 ---
 
-### 📦 Backend Notes
+### Backend Notes
 
 The attack list is populated from:
 

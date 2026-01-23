@@ -62,10 +62,10 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
 
 **Implementation Strategy:**
 
-1. ✅ **Forms use standard SvelteKit form actions** (POST to same route)
-2. ✅ **Superforms handles validation & progressive enhancement** (out-of-the-box)
-3. ✅ **Server-side conversion** of validated data to Ouroboros API format
-4. ✅ **Components stay close to stock Shadcn-Svelte** patterns for maintainability
+1. [x] **Forms use standard SvelteKit form actions** (POST to same route)
+2. [x] **Superforms handles validation & progressive enhancement** (out-of-the-box)
+3. [x] **Server-side conversion** of validated data to Ouroboros API format
+4. [x] **Components stay close to stock Shadcn-Svelte** patterns for maintainability
 
 **Benefits:**
 
@@ -129,7 +129,7 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
   - Update campaigns data table to use SSR data with proper hydration
   - Implement search/filter functionality with URL state management
   - Add pagination support through URL parameters and SSR load function
-  - **Status: COMPLETE** ✅ - All 28 E2E tests passing, SSR working correctly, modal functionality moved to SSR tests
+  - **Status: COMPLETE** [x] - All 28 E2E tests passing, SSR working correctly, modal functionality moved to SSR tests
 - [x] **`frontend/src/routes/campaigns/[id]/+page.svelte`** with `task_id: campaigns.detail` - Convert campaign detail page to SSR with dynamic route parameter
   - Create `+page.server.ts` to fetch campaign details, attacks, and statistics
   - Update component to display SSR-loaded campaign data
@@ -153,11 +153,11 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
   - Create `+page.server.ts` to fetch users list with proper authorization
   - Update user data table with SSR data and admin functionality
   - Implement user role management and permissions display
-  - **Status: COMPLETE** ✅ - All 7 users E2E tests passing, SSR working correctly, proper error handling for admin-only access
+  - **Status: COMPLETE** [x] - All 7 users E2E tests passing, SSR working correctly, proper error handling for admin-only access
 - [x] **`frontend/src/routes/resources/+page.svelte`** `task_id: resources.overall`
   - Convert resources list (wordlists, rules, etc.) to SSR
   - Create `+page.server.ts` to fetch resources from MinIO/backend
-  - **Status: COMPLETE** ✅ - All 11 resources E2E tests passing, SSR working correctly, proper filtering and pagination, error handling implemented
+  - **Status: COMPLETE** [x] - All 11 resources E2E tests passing, SSR working correctly, proper filtering and pagination, error handling implemented
   - Update resource management interface with upload progress
   - Implement resource categorization and search functionality
 - [x] **`frontend/src/routes/resources/[id]/+page.svelte`** `task_id: resources.detail`
@@ -165,12 +165,12 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
   - Create `+page.server.ts` to fetch resource metadata and preview content
   - Update resource viewer with proper file type handling
   - Implement download functionality and usage statistics
-- [x] **`frontend/src/routes/agents/+page.svelte`** `task_id: agents.overall` ✅ **COMPLETE** - Migrated from client-side API calls to SSR data loading with comprehensive test coverage
+- [x] **`frontend/src/routes/agents/+page.svelte`** `task_id: agents.overall` [x] **COMPLETE** - Migrated from client-side API calls to SSR data loading with comprehensive test coverage
   - Convert agent management dashboard to SSR
   - Create `+page.server.ts` to fetch agent status and statistics
   - Update agent monitoring interface with real-time status updates
   - Implement agent configuration and control functionality
-- [x] **`frontend/src/routes/settings/+page.svelte`** `task_id: settings.overall` ✅ **COMPLETE** - Migrated from client-side API calls to SSR data loading with comprehensive test coverage
+- [x] **`frontend/src/routes/settings/+page.svelte`** `task_id: settings.overall` [x] **COMPLETE** - Migrated from client-side API calls to SSR data loading with comprehensive test coverage
   - Convert settings/configuration page to SSR
   - Create `+page.server.ts` to fetch current system configuration
   - Update settings forms with proper validation and persistence
@@ -180,18 +180,18 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
 
 #### 4.1 Campaign Form Migration
 
-- [x] **`CampaignEditorModal.svelte`** `task_id: campaigns.editor_modal` ✅ **COMPLETE**
+- [x] **`CampaignEditorModal.svelte`** `task_id: campaigns.editor_modal` [x] **COMPLETE**
   - Convert modal-based campaign editor to SvelteKit form actions
   - We may need to replace the modal with a dedicated route (`/campaigns/new`, `/campaigns/[id]/edit`), but it should still be shown as a modal and is triggered by a button in the campaigns list.
   - Implement Superforms with Zod validation for campaign schema
   - Create form actions in `+page.server.ts` for create/update operations
   - Convert from event dispatching to standard form submission with redirects
   - Add proper error handling and success feedback
-  - **Status: COMPLETE** ✅ - Converted to dedicated routes with modal presentation, using Superforms with Zod validation, all 34 campaign tests passing
+  - **Status: COMPLETE** [x] - Converted to dedicated routes with modal presentation, using Superforms with Zod validation, all 34 campaign tests passing
 
 #### 4.2 Attack Form Migration
 
-- [x] **`AttackEditorModal.svelte`** (Complex - 24KB) `task_id: attacks.editor_modal` ✅ **COMPLETE**
+- [x] **`AttackEditorModal.svelte`** (Complex - 24KB) `task_id: attacks.editor_modal` [x] **COMPLETE**
   - Convert complex attack configuration modal a wizard modal with a series of steps, each step contained in its own component.
   - Implement multi-step form wizard for attack configuration - represented as a modal with a series of steps represented as cards that are slid in and out of view. Each card contains a form with a different set of fields and represents a different step in the attack configuration process.
   - The wizard should be triggered by a button in the attacks list (e.g. `New Attack` or the edit button in the attacks list).
@@ -199,7 +199,7 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
   - Show only the appropriate fields and steps based on the attack type selected.
   - Add resource selection functionality integrated with SSR data
   - Convert from the current state management to use the idiomatic SvelteKit 5 form state management.
-  - **Status: COMPLETE** ✅ - Converted to dedicated routes (`/attacks/new`, `/attacks/[id]/edit`) with modal presentation, using Superforms with Zod validation, multi-step wizard with sliding card animations, attack type-specific field display, and SSR resource integration
+  - **Status: COMPLETE** [x] - Converted to dedicated routes (`/attacks/new`, `/attacks/[id]/edit`) with modal presentation, using Superforms with Zod validation, multi-step wizard with sliding card animations, attack type-specific field display, and SSR resource integration
 
 #### 4.3 User Form Migration
 
@@ -209,20 +209,20 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
   - Add role selection and project assignment functionality
   - Create form action for user creation with proper error handling
   - Implement password generation and email notification options
-  - **Status: COMPLETE** ✅ - Converted to dedicated route (`/users/new`) with modal presentation, using Superforms with Zod validation, role selection, form actions with test environment detection, and proper error handling
-- [x] **`UserDetailModal.svelte`** `task_id: users.detail_modal` ✅ **COMPLETE**
+  - **Status: COMPLETE** [x] - Converted to dedicated route (`/users/new`) with modal presentation, using Superforms with Zod validation, role selection, form actions with test environment detection, and proper error handling
+- [x] **`UserDetailModal.svelte`** `task_id: users.detail_modal` [x] **COMPLETE**
   - Convert user detail/edit modal to dedicated route (`/users/[id]`)
   - Implement user profile editing with Superforms
   - Add role management and project assignment interface
   - Create form actions for user updates and role changes
   - Implement user status management (active/inactive)
-  - **Status: COMPLETE** ✅ - Converted to dedicated route (`/users/[id]`) with modal presentation, using Superforms with Zod validation, role management, form actions with test environment detection, and proper error handling. All 17 E2E tests passing.
+  - **Status: COMPLETE** [x] - Converted to dedicated route (`/users/[id]`) with modal presentation, using Superforms with Zod validation, role management, form actions with test environment detection, and proper error handling. All 17 E2E tests passing.
 
 ### Phase 5: Complex Form Migration
 
 #### 5.1 File Upload Form
 
-- [x] **`CrackableUploadModal.svelte`** (Very Complex - 32KB) `task_id: crackable_upload.overall` ✅ **COMPLETE**
+- [x] **`CrackableUploadModal.svelte`** (Very Complex - 32KB) `task_id: crackable_upload.overall` [x] **COMPLETE**
   - Convert complex file upload modal to dedicated route (`/resources/upload`)
   - Implement multi-step upload wizard with file validation - allow drag and drop of files (using the `FileDropZone` component from Shadcn-Svelte-Extras <https://www.shadcn-svelte-extras.com/components/file-drop-zone/llms.txt>), as well as file selection from the file system.
   - Create progressive file upload with progress tracking
@@ -231,7 +231,7 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
   - Convert from modal-based upload to page-based workflow with proper error recovery
   - Integrate with MinIO backend for direct file uploads
   - Add upload resumption and retry functionality
-  - **Status: COMPLETE** ✅ - Successfully migrated from 32KB modal to dedicated SSR route (`/resources/upload`) using proper Formsnap integration with Field, Control, Label, FieldErrors components. Implemented FileDropZone from Shadcn-Svelte-Extras for drag-and-drop file uploads, hash type detection and validation, multi-mode support (text paste vs file upload), and comprehensive form handling with Superforms and Zod validation. All components follow the correct Formsnap pattern as documented, avoiding the shortcuts taken in previous implementations.
+  - **Status: COMPLETE** [x] - Successfully migrated from 32KB modal to dedicated SSR route (`/resources/upload`) using proper Formsnap integration with Field, Control, Label, FieldErrors components. Implemented FileDropZone from Shadcn-Svelte-Extras for drag-and-drop file uploads, hash type detection and validation, multi-mode support (text paste vs file upload), and comprehensive form handling with Superforms and Zod validation. All components follow the correct Formsnap pattern as documented, avoiding the shortcuts taken in previous implementations.
 
 ### Phase 6: Component Data Loading Migration
 
@@ -255,23 +255,23 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
 
 #### 6.3 Resource Component Data Loading
 
-- [x] **Resource Data Loading** `task_id: resources.data_loading` ✅ **COMPLETE**
+- [x] **Resource Data Loading** `task_id: resources.data_loading` [x] **COMPLETE**
   - Update resource management components to use SSR data
   - Implement resource metadata caching and display
   - Convert resource preview components to SSR-compatible format
   - Update resource usage statistics and analytics
   - Implement resource search and filtering with SSR support
-  - **Status: COMPLETE** ✅ - Successfully migrated resources pages to use the new resources store with proper SvelteKit 5 runes. Implemented comprehensive store with resource type-specific derived stores (wordlists, rulelists, masklists, charsets, dynamicWordlists), SSR data hydration using $effect for reactive updates, and proper filtering/pagination support. All 22 E2E tests passing (11 resources list + 11 resource detail). Store follows idiomatic SvelteKit 5 patterns with $state, $derived, and $effect runes.
+  - **Status: COMPLETE** [x] - Successfully migrated resources pages to use the new resources store with proper SvelteKit 5 runes. Implemented comprehensive store with resource type-specific derived stores (wordlists, rulelists, masklists, charsets, dynamicWordlists), SSR data hydration using $effect for reactive updates, and proper filtering/pagination support. All 22 E2E tests passing (11 resources list + 11 resource detail). Store follows idiomatic SvelteKit 5 patterns with $state, $derived, and $effect runes.
 
 #### 6.4 User & Project Component Data Loading
 
-- [x] **User & Project Data Loading** `task_id: users_and_projects.data_loading` ✅ **COMPLETE**
+- [x] **User & Project Data Loading** `task_id: users_and_projects.data_loading` [x] **COMPLETE**
   - Update user management components to use SSR stores
   - Implement project switching functionality with SSR data
   - Convert user permission displays to SSR-compatible format
   - Update user activity tracking and audit logs
   - Implement project statistics and member management
-  - **Status: COMPLETE** ✅ - Successfully migrated user and project components to use SvelteKit 5 runes-based stores. Updated ProjectContext component to use callback props instead of deprecated createEventDispatcher. Enhanced ProjectSelector and AppSidebar components to use real store data. All 160 E2E tests passing, proper SSR integration with reactive updates.
+  - **Status: COMPLETE** [x] - Successfully migrated user and project components to use SvelteKit 5 runes-based stores. Updated ProjectContext component to use callback props instead of deprecated createEventDispatcher. Enhanced ProjectSelector and AppSidebar components to use real store data. All 160 E2E tests passing, proper SSR integration with reactive updates.
 
 ### Phase 7: Medium-Priority Forms
 
@@ -283,25 +283,25 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
   - Add confirmation workflow with typed form validation
   - Create deletion form action with audit logging
   - Implement soft delete vs hard delete options (soft delete is the default, hard delete is an option only when the user has no associated resources and presents a confirmation dialog)
-  - **Status: COMPLETE** ✅ - Successfully migrated user deletion modal to form action with confirmation. Implemented proper cascade deletion handling, confirmation workflow with typed form validation, and soft delete vs hard delete options. All 17 E2E tests passing, proper SSR integration with reactive updates.
+  - **Status: COMPLETE** [x] - Successfully migrated user deletion modal to form action with confirmation. Implemented proper cascade deletion handling, confirmation workflow with typed form validation, and soft delete vs hard delete options. All 17 E2E tests passing, proper SSR integration with reactive updates.
 - [x] **`CampaignDeleteModal.svelte`** `task_id: campaigns.delete_modal`
   - Convert campaign deletion modal to form action (triggered by a button in the campaigns list toolbar, see `docs/development/user_journey_flowchart.mmd` for reference)
   - Implement campaign deletion with associated data cleanup (delete associated attacks, resources, etc.)
   - Add confirmation workflow with impact assessment (show a dialog with the number of associated attacks and resources, and ask the user to confirm the deletion)
   - Create deletion form action with proper error handling
   - Implement campaign archive vs delete options (all deletes are soft deletes)
-  - **Status: COMPLETE** ✅ - Successfully migrated campaign deletion from modal to dedicated SSR route `/campaigns/[id]/delete`. Implemented proper form action with Superforms validation, SSR data loading with campaign details and resource counts, and navigation-based workflow. Updated campaigns list page to use navigation instead of modal state. All 164 E2E tests passing, proper SSR integration with idiomatic SvelteKit 5 patterns.
+  - **Status: COMPLETE** [x] - Successfully migrated campaign deletion from modal to dedicated SSR route `/campaigns/[id]/delete`. Implemented proper form action with Superforms validation, SSR data loading with campaign details and resource counts, and navigation-based workflow. Updated campaigns list page to use navigation instead of modal state. All 164 E2E tests passing, proper SSR integration with idiomatic SvelteKit 5 patterns.
 
 ### Phase 8: Development Environment Setup
 
 #### 8.1 Docker Configuration
 
-- [x] **Update Docker Configuration** `task_id: docker.setup` ✅ **COMPLETE**
-  - **Status: COMPLETE** ✅ - Successfully implemented complete Docker infrastructure for decoupled SvelteKit SSR + FastAPI architecture. Created production and development Dockerfiles for both backend (Python 3.13 + uv) and frontend (Node.js + pnpm). Implemented docker-compose.yml for production, docker-compose.dev.yml for development with hot reload, and docker-compose.e2e.yml for E2E testing. Configured proper health checks using `/api-info` endpoint (unauthenticated), network communication between services, and environment variable handling. Frontend runs on port 5173, backend on port 8000. All services start successfully with proper dependency management and health monitoring.
+- [x] **Update Docker Configuration** `task_id: docker.setup` [x] **COMPLETE**
+  - **Status: COMPLETE** [x] - Successfully implemented complete Docker infrastructure for decoupled SvelteKit SSR + FastAPI architecture. Created production and development Dockerfiles for both backend (Python 3.13 + uv) and frontend (Node.js + pnpm). Implemented docker-compose.yml for production, docker-compose.dev.yml for development with hot reload, and docker-compose.e2e.yml for E2E testing. Configured proper health checks using `/api-info` endpoint (unauthenticated), network communication between services, and environment variable handling. Frontend runs on port 5173, backend on port 8000. All services start successfully with proper dependency management and health monitoring.
 
 #### 8.2 Development Commands
 
-- [x] **Update Justfile Commands** `task_id: justfile.update` ✅ **COMPLETE**
+- [x] **Update Justfile Commands** `task_id: justfile.update` [x] **COMPLETE**
   - **Reference:** Implement specific commands from `full_testing_architecture.md`:
     - `just test-backend` (rename existing `just test`)
     - `just test-frontend` (consolidate `frontend-test-unit` + `frontend-test-e2e`)
@@ -313,7 +313,7 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
   - Add commands for database seeding and development data setup
   - Implement commands for running frontend and backend independently
   - Add production build and deployment commands
-  - **Status: COMPLETE** ✅ - Successfully implemented three-tier testing architecture commands as specified in the migration plan and `full_testing_architecture.md`. Backend tests: 593 passed (1 xfailed), Frontend tests: 149 unit tests + 161 E2E tests (3 skipped), Full stack testing structure ready. All commands working correctly with `just ci-check` orchestrating all three test layers. Legacy alias maintained for backward compatibility.
+  - **Status: COMPLETE** [x] - Successfully implemented three-tier testing architecture commands as specified in the migration plan and `full_testing_architecture.md`. Backend tests: 593 passed (1 xfailed), Frontend tests: 149 unit tests + 161 E2E tests (3 skipped), Full stack testing structure ready. All commands working correctly with `just ci-check` orchestrating all three test layers. Legacy alias maintained for backward compatibility.
 
 ### Phase 9: Testing Setup
 
@@ -321,8 +321,8 @@ When in doubt about the implementation, refer to notes in the `docs/v2_rewrite_i
 
 #### 9.1 SSR-Specific Testing Integration
 
-- [x] **Integrate SSR Testing with Three-Tier Architecture** `task_id: tests.ssr_integration` ✅ **COMPLETE**
-  - **Status: COMPLETE** ✅ - Successfully implemented complete E2E testing infrastructure with Docker stack management, data seeding, and Playwright configuration. Created `scripts/seed_e2e_data.py` using service layer delegation and Pydantic validation, implemented global setup/teardown for Docker lifecycle management, and configured separate E2E Playwright config with sample authentication and project management tests. Infrastructure is working correctly - E2E test failure is due to missing SSR authentication implementation, not infrastructure issues.
+- [x] **Integrate SSR Testing with Three-Tier Architecture** `task_id: tests.ssr_integration` [x] **COMPLETE**
+  - **Status: COMPLETE** [x] - Successfully implemented complete E2E testing infrastructure with Docker stack management, data seeding, and Playwright configuration. Created `scripts/seed_e2e_data.py` using service layer delegation and Pydantic validation, implemented global setup/teardown for Docker lifecycle management, and configured separate E2E Playwright config with sample authentication and project management tests. Infrastructure is working correctly - E2E test failure is due to missing SSR authentication implementation, not infrastructure issues.
   - **Reference:** Complete foundation tasks from `full_testing_architecture.md` first:
     - Docker infrastructure (Dockerfiles, docker-compose.e2e.yml)
     - E2E data seeding script with Pydantic + service layer approach
@@ -574,17 +574,17 @@ export const actions: Actions = {
 #!/bin/bash
 # Check migration completion
 
-echo "🔍 Checking for remaining axios usage..."
-grep -r "axios\." frontend/src/routes/ || echo "✅ No axios in routes"
+echo " Checking for remaining axios usage..."
+grep -r "axios\." frontend/src/routes/ || echo "[x] No axios in routes"
 
-echo "🔍 Checking for remaining createEventDispatcher in forms..."
-grep -r "createEventDispatcher" frontend/src/lib/components/*/Modal.svelte || echo "✅ No dispatchers in modals"
+echo " Checking for remaining createEventDispatcher in forms..."
+grep -r "createEventDispatcher" frontend/src/lib/components/*/Modal.svelte || echo "[x] No dispatchers in modals"
 
-echo "🔍 Checking for server actions..."
+echo " Checking for server actions..."
 find frontend/src/routes -name "+page.server.ts" | wc -l
 echo "Server action files found"
 
-echo "🔍 Running tests..."
+echo " Running tests..."
 cd frontend && pnpm test && pnpm exec playwright test
 ```
 
@@ -747,8 +747,8 @@ function handleFileRejected({ reason, file }: { reason: string; file: File }) { 
   - `@typescript-eslint/no-explicit-any`: Replace `any` with proper types
 
 ```svelte
-{#each items as item (item.id)}  <!-- ✅ Correct -->
-{#each items as item}            <!-- ❌ ESLint error -->
+{#each items as item (item.id)}  <!-- [x] Correct -->
+{#each items as item}            <!-- [FAIL] ESLint error -->
 ```
 
 #### **Dependency Update Management**
@@ -766,7 +766,7 @@ function handleFileRejected({ reason, file }: { reason: string; file: File }) { 
 
 - **Anti-pattern:** Don't create "working but incorrect" implementations
 
-#### **Documentation as Source of Truth** ⚠️ CRITICAL
+#### **Documentation as Source of Truth** [WARN] CRITICAL
 
 - **Rule:** When Formsnap integration fails, refer to official Shadcn-Svelte docs
 - **Key insight:** Documentation shows `{#snippet children({ props })}` for a reason
