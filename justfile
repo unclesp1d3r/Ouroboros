@@ -142,35 +142,15 @@ clean-build: ci-check clean build
 # Clean up .pyc files, __pycache__, and pytest cache before testing
 clean-test: clean test-backend
 
-# Generate CHANGELOG.md from commits
-release: install-git-cliff
-    # 📝 Generate CHANGELOG.md from commits
+# Generate CHANGELOG.md from commits (requires mise: git-cliff)
+release:
     @echo "🚀 Generating changelog with git-cliff..."
     git cliff -o CHANGELOG.md --config cliff.toml
     @echo "✅ Changelog updated! Commit and tag when ready."
 
-# Preview changelog without writing
-release-preview: install-git-cliff
-    # 🔍 Preview changelog without writing
+# Preview changelog without writing (requires mise: git-cliff)
+release-preview:
     git cliff --config cliff.toml
-
-
-[unix]
-install-git-cliff:
-    #!/usr/bin/env bash
-    if ! command -v git-cliff &> /dev/null; then
-        cargo install git-cliff --locked || echo "Make sure git-cliff is installed manually"
-    fi
-
-[windows]
-install-git-cliff:
-    if (-not (Get-Command git-cliff -ErrorAction SilentlyContinue)) {
-        cargo install git-cliff --locked
-        if ($LASTEXITCODE -ne 0) {
-            Write-Host "Make sure git-cliff is installed manually"
-            exit $LASTEXITCODE
-        }
-    }
 
 # -----------------------------
 # 📚 Documentation
@@ -263,20 +243,20 @@ docker-e2e-down:
 # Note: Runs all checks and tests across all three tiers.
 # -----------------------------
 
-# Setup CI checks and dependencies for CI workflow
+# Setup CI checks and dependencies (requires mise: uv, bun, pre-commit)
 [unix]
 ci-setup:
     cd {{justfile_dir()}}
-    uv sync --dev --group ci || @echo "Make sure uv is installed manually"
-    uv run pre-commit install --hook-type commit-msg || @echo "Make sure pre-commit is installed manually"
-    cd frontend && bun add -d commitlint @commitlint/config-conventional || @echo "Make sure bun is installed manually"
+    uv sync --dev --group ci
+    uv run pre-commit install --hook-type commit-msg
+    cd frontend && bun add -d commitlint @commitlint/config-conventional
 
 [windows]
 ci-setup:
     cd {{justfile_dir()}}
-    uv sync --dev --group ci || @echo "Make sure uv is installed manually"
-    $env:PYTHONUTF8=1; uv run pre-commit install --hook-type commit-msg || @echo "Make sure pre-commit is installed manually"
-    cd frontend; bun add -d commitlint @commitlint/config-conventional || @echo "Make sure bun is installed manually"
+    uv sync --dev --group ci
+    $env:PYTHONUTF8=1; uv run pre-commit install --hook-type commit-msg
+    cd frontend; bun add -d commitlint @commitlint/config-conventional
 
 # Run all checks and tests for the entire project (three-tier architecture)
 ci-check: lint test-backend test-frontend test-e2e
@@ -375,9 +355,6 @@ frontend-build:
 frontend-build:
     cd {{justfile_dir()}}/frontend; bun install; bun run build
 
-# Run unit + e2e frontend tests (legacy - use test-frontend instead)
-frontend-test: frontend-test-unit frontend-test-e2e
-
 # Run only frontend unit tests
 [unix]
 frontend-test-unit:
@@ -395,15 +372,6 @@ frontend-test-e2e:
 [windows]
 frontend-test-e2e:
     cd {{justfile_dir()}}/frontend; bunx playwright test
-
-# Run only frontend E2E tests with full backend
-[unix]
-frontend-test-e2e-full:
-    cd {{justfile_dir()}}/frontend && bunx playwright test --config=playwright.config.e2e.ts
-
-[windows]
-frontend-test-e2e-full:
-    cd {{justfile_dir()}}/frontend; bunx playwright test --config=playwright.config.e2e.ts
 
 # Lint frontend code using eslint and svelte check
 [unix]
@@ -424,7 +392,7 @@ frontend-format:
     cd {{justfile_dir()}}/frontend; bun run format
 
 # Run all frontend checks including linting, testing, and building
-frontend-check: frontend-lint frontend-test frontend-build
+frontend-check: frontend-lint test-frontend frontend-build
 
 # Run only frontend E2E tests with UI for interactive testing
 [unix]

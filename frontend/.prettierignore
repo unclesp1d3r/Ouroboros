@@ -1,6 +1,5 @@
 # Package Managers
 package-lock.json
-pnpm-lock.yaml
 yarn.lock
 bun.lock
 bun.lockb
@@ -8,3 +7,6 @@ bun.lockb
 # Markdown files (handled by mdformat)
 *.md
 *.markdown
+
+# Bun cache (if accidentally created locally)
+~

@@ -9,10 +9,12 @@ node_modules
 !.env.example
 !.env.test
 
-# Ignore files for PNPM, NPM and YARN
-pnpm-lock.yaml
+# Ignore lock files for other package managers (project uses Bun)
 package-lock.json
 yarn.lock
+
+# Bun cache (if accidentally created locally)
+~
 
 # Test results
 test-results/

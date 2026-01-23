@@ -7,10 +7,3 @@ exact = true
 
 # Auto-install peer dependencies
 auto = true
-
-[install.cache]
-# Cache directory for faster installs
-dir = "~/.bun/install/cache"
-
-# Disable cache if needed (useful for debugging)
-disable = false
