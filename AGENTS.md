@@ -84,7 +84,9 @@ Each API interface must be organized in separate directories:
 
 ## Coding Standards
 
-- Avoid using any emoji in code, comments, or documentation; use plain text only.
+### Emoji Usage
+
+- Avoid using emojis and other non-ASCII characters in code, comments, or documentation, except when the code is handling non-plaintext characters (for example: em dash, en dash, or other non-ASCII symbols).
 
 ### Python Development
 
