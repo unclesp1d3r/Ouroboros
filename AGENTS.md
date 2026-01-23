@@ -84,6 +84,8 @@ Each API interface must be organized in separate directories:
 
 ## Coding Standards
 
+- Avoid using any emoji in code, comments, or documentation; use plain text only.
+
 ### Python Development
 
 - **Formatting**: Use `ruff format` with 119 character line limit
