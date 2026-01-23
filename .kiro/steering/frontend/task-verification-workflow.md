@@ -13,14 +13,14 @@ This rule documents the systematic approach for verifying and completing Phase 3
 ### 1. Task Selection Strategy
 
 ```markdown
-# ✅ CORRECT - Systematic task selection
+# [x] CORRECT - Systematic task selection
 1. Read the entire Phase 3 step document before beginning
 2. Identify the next group of unchecked tasks in the checklist
 3. Select the **first unchecked task** in that group
 4. Focus only on that specific task until completion
 5. Mark task complete and move to next task
 
-# ❌ WRONG - Random task selection
+# [FAIL] WRONG - Random task selection
 - Jumping between unrelated tasks
 - Working on multiple tasks simultaneously
 - Skipping prerequisite tasks
@@ -32,7 +32,7 @@ This rule documents the systematic approach for verifying and completing Phase 3
 #### Direct Observation (Preferred Method)
 
 ```bash
-# ✅ CORRECT - Use development environment for verification
+# [x] CORRECT - Use development environment for verification
 just docker-dev-up-watch  # Start development environment
 
 # Then use Playwright MCP tools to navigate to http://localhost:5173
@@ -42,7 +42,7 @@ just docker-dev-up-watch  # Start development environment
 #### Component Testing
 
 ```typescript
-// ✅ CORRECT - Test specific functionality
+// [x] CORRECT - Test specific functionality
 test('dashboard loads with authenticated data', async ({ page }) => {
     await page.goto('/');
     await page.fill('[data-testid="email"]', 'admin@e2e-test.example');
@@ -60,7 +60,7 @@ test('dashboard loads with authenticated data', async ({ page }) => {
 #### For Verification Tasks (No Code Changes)
 
 ```markdown
-✅ Verification Complete Checklist:
+[x] Verification Complete Checklist:
 - [ ] Functionality works as specified through direct observation
 - [ ] Authentication flows work correctly
 - [ ] UI components match design specifications
@@ -73,7 +73,7 @@ test('dashboard loads with authenticated data', async ({ page }) => {
 #### For Implementation Tasks (Code Changes Required)
 
 ```markdown
-✅ Implementation Complete Checklist:
+[x] Implementation Complete Checklist:
 - [ ] Make necessary code changes using idiomatic patterns
 - [ ] Run formatting: `just format`
 - [ ] Add or update tests for correctness
@@ -91,12 +91,12 @@ test('dashboard loads with authenticated data', async ({ page }) => {
 ### Docker Environment Control
 
 ```bash
-# ✅ CORRECT - Proper Docker management
+# [x] CORRECT - Proper Docker management
 just docker-dev-up-watch    # Start development environment
 # Work with existing containers
 just docker-dev-down        # Clean shutdown when done
 
-# ❌ WRONG - Creating conflicting instances
+# [FAIL] WRONG - Creating conflicting instances
 pnpm run dev                # Don't start separate frontend instances
 npm start                   # Don't create competing processes
 ```
@@ -104,7 +104,7 @@ npm start                   # Don't create competing processes
 ### Service Monitoring
 
 ```bash
-# ✅ CORRECT - Monitor existing services
+# [x] CORRECT - Monitor existing services
 docker compose ps           # Check service status
 docker compose logs backend --tail=20    # Check backend logs
 docker compose logs frontend --tail=20   # Check frontend logs
@@ -119,7 +119,7 @@ docker compose restart backend
 ### Standard Test Credentials
 
 ```typescript
-// ✅ CORRECT - Use standard E2E test credentials
+// [x] CORRECT - Use standard E2E test credentials
 const TEST_CREDENTIALS = {
     email: 'admin@e2e-test.example',
     password: 'admin-password-123'
@@ -134,7 +134,7 @@ await page.click('[data-testid="login-button"]');
 ### Authentication State Verification
 
 ```typescript
-// ✅ CORRECT - Verify authentication state
+// [x] CORRECT - Verify authentication state
 // Check for user menu presence
 await expect(page.locator('[data-testid="user-menu"]')).toBeVisible();
 
@@ -189,7 +189,7 @@ just ci-check              # Final validation
 ### SSR Load Function Implementation
 
 ```typescript
-// ✅ CORRECT - Authenticated SSR load function
+// [x] CORRECT - Authenticated SSR load function
 export const load: PageServerLoad = async ({ cookies }) => {
     // Environment detection for testing
     if (process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT_TEST) {
@@ -214,7 +214,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ### Component Implementation
 
 ```svelte
-<!-- ✅ CORRECT - SvelteKit 5 with Shadcn-Svelte -->
+<!-- [x] CORRECT - SvelteKit 5 with Shadcn-Svelte -->
 <script lang="ts">
     import type { PageData } from './$types';
     import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
@@ -284,7 +284,7 @@ test('dashboard loads with real backend data', async ({ page }) => {
 ### Verification Summary Format
 
 ```markdown
-## Task DRM-001b: Complete ✅
+## Task DRM-001b: Complete [x]
 
 Successfully verified that dashboard cards display correct real-time data.
 
@@ -294,16 +294,16 @@ Successfully verified that dashboard cards display correct real-time data.
 3. **Test Assertions**: Updated tests to expect correct media type
 
 ### Verification Results:
-- ✅ Dashboard loads with authenticated API calls
-- ✅ SSE connections establish successfully  
-- ✅ Real-time updates work correctly
-- ✅ All tests pass (596 backend, 149 frontend unit, 176 E2E)
+- [x] Dashboard loads with authenticated API calls
+- [x] SSE connections establish successfully  
+- [x] Real-time updates work correctly
+- [x] All tests pass (596 backend, 149 frontend unit, 176 E2E)
 ```
 
 ### Implementation Summary Format
 
 ```markdown
-## Task USR-001a: Complete ✅
+## Task USR-001a: Complete [x]
 
 Implemented user list page with role-based visibility.
 
@@ -314,10 +314,10 @@ Implemented user list page with role-based visibility.
 4. **Created** comprehensive test coverage
 
 ### Validation:
-- ✅ All linting passes (`just check`)
-- ✅ All tests pass (`just ci-check`) 
-- ✅ Authentication flows work correctly
-- ✅ Role-based access control functional
+- [x] All linting passes (`just check`)
+- [x] All tests pass (`just ci-check`) 
+- [x] Authentication flows work correctly
+- [x] Role-based access control functional
 ```
 
 ## Best Practices Summary

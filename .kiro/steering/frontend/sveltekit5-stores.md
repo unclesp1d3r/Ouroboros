@@ -35,7 +35,7 @@ src/lib/stores/
 ### State Management with Runes
 
 ```typescript
-// ✅ CORRECT - State object wrapper for complex state
+// [x] CORRECT - State object wrapper for complex state
 const campaignState = $state({
     campaigns: [] as Campaign[],
     totalCount: 0,
@@ -45,7 +45,7 @@ const campaignState = $state({
     error: null as string | null
 });
 
-// ✅ CORRECT - Derived values for computed state
+// [x] CORRECT - Derived values for computed state
 const filteredCampaigns = $derived(
     campaignState.campaigns.filter(c => c.status === 'active')
 );
@@ -54,7 +54,7 @@ const filteredCampaigns = $derived(
 ### Store Object Export Pattern
 
 ```typescript
-// ✅ CORRECT - Export store object with getters and methods
+// [x] CORRECT - Export store object with getters and methods
 export const campaignsStore = {
     // Reactive getters - DO NOT export $derived directly
     get campaigns() { return campaignState.campaigns; },
@@ -110,7 +110,7 @@ export const campaignsStore = {
 ```typescript
 import { CampaignListResponseSchema, CampaignCreateSchema } from '$lib/schemas/campaigns';
 
-// ✅ CORRECT - Parse API responses with Zod schemas
+// [x] CORRECT - Parse API responses with Zod schemas
 async loadCampaigns() {
     try {
         const response = await api.get('/api/v1/web/campaigns/');
@@ -129,7 +129,7 @@ async loadCampaigns() {
 ### Schema Validation in Store Methods
 
 ```typescript
-// ✅ CORRECT - Validate input data before state updates
+// [x] CORRECT - Validate input data before state updates
 async createCampaign(campaignData: unknown) {
     try {
         const validatedData = CampaignCreateSchema.parse(campaignData);
@@ -152,7 +152,7 @@ async createCampaign(campaignData: unknown) {
 ### Component Usage with SSR Data
 
 ```svelte
-<!-- ✅ CORRECT - Use SSR data directly in pages -->
+<!-- [x] CORRECT - Use SSR data directly in pages -->
 <script lang="ts">
     import type { PageData } from './$types';
     import { campaignsStore } from '$lib/stores/campaigns.svelte';
@@ -247,7 +247,7 @@ export const authStore = {
 ### Consistent Error Management
 
 ```typescript
-// ✅ CORRECT - Consistent error handling across stores
+// [x] CORRECT - Consistent error handling across stores
 const handleApiError = (error: unknown, context: string) => {
     if (error instanceof z.ZodError) {
         return `Invalid data format in ${context}`;
@@ -278,7 +278,7 @@ async loadCampaigns() {
 ### Store Testing with Mocks
 
 ```typescript
-// ✅ CORRECT - Mock .svelte.ts store files in tests
+// [x] CORRECT - Mock .svelte.ts store files in tests
 vi.mock('$lib/stores/campaigns.svelte', () => ({
     campaignsStore: {
         get campaigns() { return []; },
@@ -312,17 +312,17 @@ test('component uses store data correctly', () => {
 ### Direct Rune Exports
 
 ```typescript
-// ❌ WRONG - Never export $derived directly
+// [FAIL] WRONG - Never export $derived directly
 export const campaigns = $derived(campaignState.campaigns);
 
-// ❌ WRONG - Never export $state directly
+// [FAIL] WRONG - Never export $state directly
 export const campaignState = $state({ campaigns: [] });
 ```
 
 ### Mixing Store and SSR Data
 
 ```svelte
-<!-- ❌ WRONG - Don't mix SSR data with store calls -->
+<!-- [FAIL] WRONG - Don't mix SSR data with store calls -->
 <script>
     export let data: PageData;
     import { getCampaigns } from '$lib/stores/campaigns.svelte';
@@ -335,7 +335,7 @@ export const campaignState = $state({ campaigns: [] });
 ### Improper File Extensions
 
 ```typescript
-// ❌ WRONG - Using .ts extension with runes
+// [FAIL] WRONG - Using .ts extension with runes
 // campaigns.ts
 const state = $state({}); // This will cause build errors
 ```
@@ -363,7 +363,7 @@ const state = $state({}); // This will cause build errors
 ### Efficient State Updates
 
 ```typescript
-// ✅ CORRECT - Batch related state updates
+// [x] CORRECT - Batch related state updates
 updateCampaignData(campaigns: Campaign[], totalCount: number) {
     // Single reactive update
     Object.assign(campaignState, {
@@ -378,7 +378,7 @@ updateCampaignData(campaigns: Campaign[], totalCount: number) {
 ### Selective Reactivity
 
 ```typescript
-// ✅ CORRECT - Use derived for expensive computations
+// [x] CORRECT - Use derived for expensive computations
 const expensiveComputation = $derived(() => {
     return campaignState.campaigns
         .filter(c => c.status === 'active')

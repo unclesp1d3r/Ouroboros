@@ -43,7 +43,7 @@ The authoritative reference source for the schema files is the current backend O
 ### Schema Generation from OpenAPI
 
 ```typescript
-// ✅ CORRECT - Generate schemas that match OpenAPI exactly
+// [x] CORRECT - Generate schemas that match OpenAPI exactly
 import { z } from 'zod';
 
 // Match OpenAPI specification exactly
@@ -65,7 +65,7 @@ export type CampaignRead = z.infer<typeof CampaignReadSchema>;
 ### Pagination Schema Pattern
 
 ```typescript
-// ✅ CORRECT - Consistent pagination across all list responses
+// [x] CORRECT - Consistent pagination across all list responses
 export const PaginationMetaSchema = z.object({
     total_count: z.number().int(),
     page: z.number().int(),
@@ -86,7 +86,7 @@ export type CampaignListResponse = z.infer<typeof CampaignListResponseSchema>;
 ### API Response Parsing
 
 ```typescript
-// ✅ CORRECT - Parse all API responses with schemas
+// [x] CORRECT - Parse all API responses with schemas
 import { CampaignListResponseSchema } from '$lib/schemas/campaigns';
 
 export const campaignsStore = {
@@ -113,7 +113,7 @@ export const campaignsStore = {
 ### Form Data Validation
 
 ```typescript
-// ✅ CORRECT - Validate form data before API calls
+// [x] CORRECT - Validate form data before API calls
 import { CampaignCreateSchema } from '$lib/schemas/campaigns';
 
 async createCampaign(formData: unknown) {
@@ -146,7 +146,7 @@ async createCampaign(formData: unknown) {
 // src/lib/types/campaign.ts
 import type { CampaignRead } from '$lib/schemas/campaigns';
 
-// ✅ CORRECT - Extend schema types for UI needs
+// [x] CORRECT - Extend schema types for UI needs
 export interface CampaignItem extends CampaignRead {
     // Override optional fields to be required for UI consistency
     priority: number;           // Make required (was optional)
@@ -158,7 +158,7 @@ export interface CampaignItem extends CampaignRead {
     summary: string;
 }
 
-// ✅ CORRECT - Transform function for schema to UI type
+// [x] CORRECT - Transform function for schema to UI type
 export function toCampaignItem(campaign: CampaignRead): CampaignItem {
     return {
         ...campaign,
@@ -248,7 +248,7 @@ export const TASK_STATUS_OPTIONS = TaskStatusSchema.options;
 ### Validation Error Processing
 
 ```typescript
-// ✅ CORRECT - Process Zod validation errors for UI display
+// [x] CORRECT - Process Zod validation errors for UI display
 export function processValidationErrors(error: z.ZodError): Record<string, string> {
     const fieldErrors: Record<string, string> = {};
 
@@ -275,7 +275,7 @@ try {
 ### Schema Evolution Handling
 
 ```typescript
-// ✅ CORRECT - Handle schema version compatibility
+// [x] CORRECT - Handle schema version compatibility
 export const CampaignReadSchemaV1 = z.object({
     // Original schema fields
     id: z.number(),
@@ -301,7 +301,7 @@ export const CampaignReadSchema = z.union([
 ### Mock Data with Schemas
 
 ```typescript
-// ✅ CORRECT - Generate mock data that validates against schemas
+// [x] CORRECT - Generate mock data that validates against schemas
 import { CampaignReadSchema } from '$lib/schemas/campaigns';
 
 export function createMockCampaign(overrides: Partial<CampaignRead> = {}): CampaignRead {
@@ -326,7 +326,7 @@ export function createMockCampaign(overrides: Partial<CampaignRead> = {}): Campa
 ### Schema Validation Tests
 
 ```typescript
-// ✅ CORRECT - Test schema validation behavior
+// [x] CORRECT - Test schema validation behavior
 import { describe, it, expect } from 'vitest';
 import { CampaignCreateSchema } from '$lib/schemas/campaigns';
 
@@ -358,7 +358,7 @@ describe('CampaignCreateSchema', () => {
 ### Schema Parsing Optimization
 
 ```typescript
-// ✅ CORRECT - Cache parsed schemas for repeated use
+// [x] CORRECT - Cache parsed schemas for repeated use
 const schemaCache = new Map<string, unknown>();
 
 export function cachedParse<T>(schema: z.ZodSchema<T>, data: unknown, key: string): T {
@@ -375,7 +375,7 @@ export function cachedParse<T>(schema: z.ZodSchema<T>, data: unknown, key: strin
 ### Selective Parsing
 
 ```typescript
-// ✅ CORRECT - Parse only necessary fields for performance
+// [x] CORRECT - Parse only necessary fields for performance
 export const CampaignSummarySchema = CampaignReadSchema.pick({
     id: true,
     name: true,
@@ -403,20 +403,20 @@ export type CampaignSummary = z.infer<typeof CampaignSummarySchema>;
 ### Direct Type Assertions
 
 ```typescript
-// ❌ WRONG - Never use type assertions without validation
+// [FAIL] WRONG - Never use type assertions without validation
 const campaign = response.data as CampaignRead;
 
-// ✅ CORRECT - Always validate with schemas
+// [x] CORRECT - Always validate with schemas
 const campaign = CampaignReadSchema.parse(response.data);
 ```
 
 ### Schema Mutations
 
 ```typescript
-// ❌ WRONG - Don't modify schemas after creation
+// [FAIL] WRONG - Don't modify schemas after creation
 CampaignReadSchema.shape.newField = z.string();
 
-// ✅ CORRECT - Extend or compose schemas
+// [x] CORRECT - Extend or compose schemas
 const ExtendedCampaignSchema = CampaignReadSchema.extend({
     newField: z.string()
 });
@@ -425,14 +425,14 @@ const ExtendedCampaignSchema = CampaignReadSchema.extend({
 ### Inconsistent Error Handling
 
 ```typescript
-// ❌ WRONG - Inconsistent error handling
+// [FAIL] WRONG - Inconsistent error handling
 try {
     const data = schema.parse(input);
 } catch (e) {
     console.log('Error'); // Too generic
 }
 
-// ✅ CORRECT - Specific error handling
+// [x] CORRECT - Specific error handling
 try {
     const data = schema.parse(input);
 } catch (error) {

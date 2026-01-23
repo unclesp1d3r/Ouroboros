@@ -739,7 +739,7 @@ Keep API endpoints thin. Business logic should be in service classes under `app/
 
 Services should return Pydantic models. Endpoints should format them as JSONResponse with status codes.
 
-✅ Test services independently from the API layer.
+\[x\] Test services independently from the API layer.
 
 All business logic must live in services. These should:
 

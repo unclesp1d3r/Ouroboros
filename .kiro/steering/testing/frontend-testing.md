@@ -49,7 +49,7 @@ export default defineConfig({
 ### Store Mocking Patterns
 
 ```typescript
-// ✅ CORRECT - Mock .svelte.ts store files
+// [x] CORRECT - Mock .svelte.ts store files
 vi.mock("$lib/stores/campaigns.svelte", () => ({
     campaignsStore: {
         get campaigns() {
@@ -66,14 +66,14 @@ vi.mock("$lib/stores/campaigns.svelte", () => ({
     },
 }));
 
-// ❌ WRONG - Cannot test runes directly in .ts files
+// [FAIL] WRONG - Cannot test runes directly in .ts files
 // Delete test files that try to test rune functionality directly
 ```
 
 ### Store Implementation Testing
 
 ```typescript
-// ✅ CORRECT - Test store hydration methods with proper runes pattern
+// [x] CORRECT - Test store hydration methods with proper runes pattern
 let campaignState = $state({
     campaigns: [],
     totalCount: 0,
@@ -123,17 +123,17 @@ test("hydrateCampaigns updates store state correctly", () => {
 ### Runtime Errors from Store Exports
 
 ```typescript
-// ❌ PROBLEM - Direct $derived exports cause test failures
+// [FAIL] PROBLEM - Direct $derived exports cause test failures
 export const campaigns = $derived(campaignState.campaigns);
 
-// ✅ SOLUTION - Use store object pattern or getter functions
+// [x] SOLUTION - Use store object pattern or getter functions
 export const campaignsStore = {
     get campaigns() {
         return campaignState.campaigns;
     },
 };
 
-// ✅ ALTERNATIVE - Use export function pattern
+// [x] ALTERNATIVE - Use export function pattern
 export function getCampaigns() {
     return campaignState.campaigns;
 }
@@ -144,7 +144,7 @@ export function getCampaigns() {
 ### Mock Data Structure
 
 ```typescript
-// ✅ CRITICAL - Mock data must match API structure exactly (snake_case, not camelCase)
+// [x] CRITICAL - Mock data must match API structure exactly (snake_case, not camelCase)
 import type { PageData } from "./$types";
 
 const mockPageData: PageData = {
@@ -170,7 +170,7 @@ render(CampaignsList, {
     props: { data: mockPageData },
 });
 
-// ❌ WRONG - Mismatched structure causes test failures
+// [FAIL] WRONG - Mismatched structure causes test failures
 const mockCampaigns = {
     data: [...], // API doesn't return 'data' wrapper
     totalCount: 1 // API uses snake_case, not camelCase
@@ -180,7 +180,7 @@ const mockCampaigns = {
 ### Component Test Structure
 
 ```typescript
-// ✅ CORRECT - Comprehensive component test structure
+// [x] CORRECT - Comprehensive component test structure
 import { render, screen } from "@testing-library/svelte";
 import { expect, test, vi } from "vitest";
 import CampaignCard from "./CampaignCard.svelte";
@@ -207,7 +207,7 @@ test("displays campaign information correctly", () => {
 ### SSR Data Usage
 
 ```svelte
-<!-- ✅ CORRECT - Use SSR data directly -->
+<!-- [x] CORRECT - Use SSR data directly -->
 <script lang="ts">
     export let data: PageData;
 
@@ -215,7 +215,7 @@ test("displays campaign information correctly", () => {
     let totalCount = $derived(data.campaigns.total_count);
 </script>
 
-<!-- ❌ WRONG - Don't mix SSR data with store calls -->
+<!-- [FAIL] WRONG - Don't mix SSR data with store calls -->
 <script lang="ts">
     export let data: PageData;
     import { getCampaigns } from '$lib/stores/campaigns.svelte';
@@ -227,7 +227,7 @@ test("displays campaign information correctly", () => {
 ### Load Function Testing
 
 ```typescript
-// ✅ CORRECT - Robust load function with error handling
+// [x] CORRECT - Robust load function with error handling
 export const load: PageServerLoad = async ({ cookies, url, params }) => {
     // Environment detection for tests
     if (process.env.NODE_ENV === "test" || process.env.PLAYWRIGHT_TEST) {
@@ -258,7 +258,7 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 ### Store Hydration Testing
 
 ```typescript
-// ✅ CORRECT - Test store hydration when reactive updates needed
+// [x] CORRECT - Test store hydration when reactive updates needed
 $effect(() => {
     // Only hydrate if components will update this data
     if (needsReactiveUpdates) {
@@ -272,7 +272,7 @@ $effect(() => {
 ### Superforms Mock Setup
 
 ```typescript
-// ✅ CORRECT - Test form components with proper mock setup
+// [x] CORRECT - Test form components with proper mock setup
 import { superForm } from "sveltekit-superforms";
 import { zodClient } from "sveltekit-superforms/adapters";
 
@@ -304,7 +304,7 @@ test("form renders with correct fields", () => {
 ### Form Validation Testing
 
 ```typescript
-// ✅ CORRECT - Test form validation with Zod schemas
+// [x] CORRECT - Test form validation with Zod schemas
 import { z } from "zod";
 
 const campaignSchema = z.object({
@@ -329,7 +329,7 @@ test("form shows validation errors", async () => {
 ### Component Events
 
 ```typescript
-// ✅ CORRECT - Test component events and interactions
+// [x] CORRECT - Test component events and interactions
 import { fireEvent } from "@testing-library/svelte";
 
 test("emits delete event when delete button clicked", async () => {
@@ -350,7 +350,7 @@ test("emits delete event when delete button clicked", async () => {
 ### User Interactions
 
 ```typescript
-// ✅ CORRECT - Test user interactions with proper async handling
+// [x] CORRECT - Test user interactions with proper async handling
 test("search input filters campaigns", async () => {
     render(CampaignsList, { props: { data: mockPageData } });
 
@@ -369,7 +369,7 @@ test("search input filters campaigns", async () => {
 ### Test Environment Setup
 
 ```typescript
-// ✅ CORRECT - Comprehensive test environment detection
+// [x] CORRECT - Comprehensive test environment detection
 if (
     process.env.NODE_ENV === "test" ||
     process.env.PLAYWRIGHT_TEST ||
@@ -382,7 +382,7 @@ if (
 ### Mock API Responses
 
 ```typescript
-// ✅ CORRECT - Mock API responses for frontend tests
+// [x] CORRECT - Mock API responses for frontend tests
 vi.mock("$lib/api", () => ({
     api: {
         get: vi.fn().mockResolvedValue({
@@ -409,22 +409,22 @@ vi.mock("$lib/api", () => ({
 ### Frontend Testing Anti-Patterns
 
 ```typescript
-// ❌ WRONG - Testing runes directly in .ts files
+// [FAIL] WRONG - Testing runes directly in .ts files
 test("campaigns rune updates correctly", () => {
     // This will fail - runes can't be tested outside component context
 });
 
-// ❌ WRONG - Using camelCase in mock data when API uses snake_case
+// [FAIL] WRONG - Using camelCase in mock data when API uses snake_case
 const mockData = {
     totalCount: 1, // Should be total_count
     createdAt: "2024-01-01", // Should be created_at
 };
 
-// ❌ WRONG - Not mocking store dependencies
+// [FAIL] WRONG - Not mocking store dependencies
 import { campaignsStore } from "$lib/stores/campaigns.svelte";
 // This will cause runtime errors in tests
 
-// ❌ WRONG - Testing implementation details instead of behavior
+// [FAIL] WRONG - Testing implementation details instead of behavior
 test("component has correct class names", () => {
     // Focus on user-visible behavior, not implementation
 });
@@ -433,20 +433,20 @@ test("component has correct class names", () => {
 ### Best Practices
 
 ```typescript
-// ✅ CORRECT - Test user-visible behavior
+// [x] CORRECT - Test user-visible behavior
 test("displays loading state while fetching data", () => {
     render(CampaignsList, { props: { data: { campaigns: { items: [] } } } });
     expect(screen.getByText("Loading campaigns...")).toBeInTheDocument();
 });
 
-// ✅ CORRECT - Test component props and events
+// [x] CORRECT - Test component props and events
 test("passes correct props to child components", () => {
     const mockCampaign = { id: 1, name: "Test" };
     render(CampaignCard, { props: { campaign: mockCampaign } });
     expect(screen.getByText("Test")).toBeInTheDocument();
 });
 
-// ✅ CORRECT - Test accessibility
+// [x] CORRECT - Test accessibility
 test("form is accessible", () => {
     render(CampaignForm);
     expect(screen.getByLabelText("Campaign Name")).toBeInTheDocument();
@@ -489,7 +489,7 @@ pnpm test src/lib/components/CampaignCard.test.ts
 ### Memory Management
 
 ```typescript
-// ✅ CORRECT - Clean up after tests
+// [x] CORRECT - Clean up after tests
 afterEach(() => {
     vi.clearAllMocks();
     cleanup(); // From @testing-library/svelte
@@ -508,7 +508,7 @@ afterEach(() => {
 ### Debug Strategies
 
 ```typescript
-// ✅ CORRECT - Debug component state
+// [x] CORRECT - Debug component state
 test("debug component rendering", () => {
     const { debug } = render(CampaignCard, {
         props: { campaign: mockCampaign },

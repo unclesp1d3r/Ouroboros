@@ -8,53 +8,53 @@ Convert the feature design into a series of prompts for a code-generation LLM th
 
   - [x] 1.1 Create SSE event models and base infrastructure
 
-    - ✅ EventService class implemented in `app/core/services/event_service.py` with in-memory pub/sub
-    - ✅ EventMessage and EventListener classes with proper async handling
-    - ✅ Project-scoped event filtering and connection management
+    - [x] EventService class implemented in `app/core/services/event_service.py` with in-memory pub/sub
+    - [x] EventMessage and EventListener classes with proper async handling
+    - [x] Project-scoped event filtering and connection management
     - _Requirements: 1.1, 1.2, 1.6_
 
   - [x] 1.2 Implement SSE server endpoints
 
-    - ✅ `/api/v1/web/live/agents`, `/api/v1/web/live/campaigns`, and `/api/v1/web/live/toasts` endpoints implemented
-    - ✅ User authentication and connection cleanup with proper resource management
-    - ✅ Integration tests for SSE endpoints exist in `tests/integration/web/test_web_live_updates.py`
+    - [x] `/api/v1/web/live/agents`, `/api/v1/web/live/campaigns`, and `/api/v1/web/live/toasts` endpoints implemented
+    - [x] User authentication and connection cleanup with proper resource management
+    - [x] Integration tests for SSE endpoints exist in `tests/integration/web/test_web_live_updates.py`
     - _Requirements: 1.1, 1.2, 1.6_
 
   - [x] 1.3 Create frontend SSE client service
 
-    - ✅ SSEService class implemented in `frontend/src/lib/services/sse.ts` with connection management
-    - ✅ Automatic reconnection handling with exponential backoff and auth recovery
-    - ✅ Connection status indicators and error handling for connection failures
+    - [x] SSEService class implemented in `frontend/src/lib/services/sse.ts` with connection management
+    - [x] Automatic reconnection handling with exponential backoff and auth recovery
+    - [x] Connection status indicators and error handling for connection failures
     - _Requirements: 1.1, 1.2, 1.6_
 
   - [x] 1.4 Integrate SSE with existing components
 
-    - ✅ Dashboard components subscribe to SSE events for real-time updates
-    - ✅ Agent and campaign services broadcast SSE events on state changes
-    - ✅ Comprehensive integration tests for SSE triggers in `tests/integration/web/test_sse_campaign_triggers.py`
+    - [x] Dashboard components subscribe to SSE events for real-time updates
+    - [x] Agent and campaign services broadcast SSE events on state changes
+    - [x] Comprehensive integration tests for SSE triggers in `tests/integration/web/test_sse_campaign_triggers.py`
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
 
 - [x] 2. Toast Notification System Implementation
 
   - [x] 2.1 Create backend notification service
 
-    - ✅ EventService handles notification broadcasting with batching logic
-    - ✅ Toast notifications triggered for crack discoveries in agent service
-    - ✅ Integration tests for toast notifications exist
+    - [x] EventService handles notification broadcasting with batching logic
+    - [x] Toast notifications triggered for crack discoveries in agent service
+    - [x] Integration tests for toast notifications exist
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
   - [x] 2.2 Implement frontend toast management system
 
-    - ✅ Toast system using svelte-sonner with proper UI components
-    - ✅ Toast stacking and auto-dismiss functionality implemented
-    - ✅ Visual hierarchy with proper styling in layout
+    - [x] Toast system using svelte-sonner with proper UI components
+    - [x] Toast stacking and auto-dismiss functionality implemented
+    - [x] Visual hierarchy with proper styling in layout
     - _Requirements: 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12_
 
   - [x] 2.3 Integrate toast notifications with SSE events
 
-    - ✅ Toast system connected to SSE crack notification events
-    - ✅ Agent status change notifications and system alerts implemented
-    - ✅ E2E tests for toast notifications exist
+    - [x] Toast system connected to SSE crack notification events
+    - [x] Agent status change notifications and system alerts implemented
+    - [x] E2E tests for toast notifications exist
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
 - [ ] 3. Advanced Attack Configuration Features
@@ -127,9 +127,9 @@ Convert the feature design into a series of prompts for a code-generation LLM th
 
   - [x] 4.4 Integrate campaign operations with real-time updates
 
-    - ✅ Campaign lifecycle operations connected to SSE event broadcasting
-    - ✅ Real-time status updates for campaign state changes implemented
-    - ✅ Comprehensive integration tests for campaign operations with SSE event verification exist
+    - [x] Campaign lifecycle operations connected to SSE event broadcasting
+    - [x] Real-time status updates for campaign state changes implemented
+    - [x] Comprehensive integration tests for campaign operations with SSE event verification exist
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
 - [ ] 5. Enhanced Resource Management Implementation
@@ -222,16 +222,16 @@ Convert the feature design into a series of prompts for a code-generation LLM th
 
   - [x] 8.1 Implement performance optimizations
 
-    - ✅ Throttling for real-time updates implemented in SSE service to prevent UI flooding
-    - ✅ Connection limits and cleanup for SSE connections with proper timeout handling
-    - ✅ Performance considerations built into existing SSE implementation
+    - [x] Throttling for real-time updates implemented in SSE service to prevent UI flooding
+    - [x] Connection limits and cleanup for SSE connections with proper timeout handling
+    - [x] Performance considerations built into existing SSE implementation
     - _Requirements: 15.1, 15.2, 15.4, 15.5_
 
   - [x] 8.2 Enhance security measures
 
-    - ✅ Project-scoped event filtering implemented to prevent data leaks
-    - ✅ File type validation and security constraints in place
-    - ✅ Proper async handling patterns used throughout
+    - [x] Project-scoped event filtering implemented to prevent data leaks
+    - [x] File type validation and security constraints in place
+    - [x] Proper async handling patterns used throughout
     - _Requirements: 15.3, 15.6, 15.7, 15.8, 15.9, 15.10, 15.11_
 
 - [ ] 9. Comprehensive Testing and Integration
@@ -246,9 +246,9 @@ Convert the feature design into a series of prompts for a code-generation LLM th
 
   - [x] 9.2 Implement integration test coverage
 
-    - ✅ Integration tests for SSE functionality and event broadcasting exist
-    - ✅ Tests for real-time updates and campaign triggers implemented
-    - ✅ Toast notification integration tests in place
+    - [x] Integration tests for SSE functionality and event broadcasting exist
+    - [x] Tests for real-time updates and campaign triggers implemented
+    - [x] Toast notification integration tests in place
     - _Requirements: 11.1, 11.2, 11.4, 11.6, 11.7_
 
   - [ ] 9.3 Create end-to-end test suite for new features

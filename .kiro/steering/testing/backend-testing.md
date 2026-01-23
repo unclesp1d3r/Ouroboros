@@ -418,13 +418,13 @@ Key points for backend tests:
 ### Testing Anti-Patterns
 
 ```python
-# ❌ WRONG - Not testing error paths
+# [FAIL] WRONG - Not testing error paths
 async def test_create_campaign_success_only():
     # Only tests happy path
     pass
 
 
-# ✅ CORRECT - Testing both success and error paths
+# [x] CORRECT - Testing both success and error paths
 async def test_create_campaign_success():
     # Test success case
     pass
@@ -443,14 +443,14 @@ async def test_create_campaign_not_found_error():
 ### Session Management Anti-Patterns
 
 ```python
-# ❌ WRONG - Managing sessions in tests
+# [FAIL] WRONG - Managing sessions in tests
 async def test_bad_session_management():
     async with AsyncSession() as session:
         # Don't create sessions in tests
         pass
 
 
-# ✅ CORRECT - Using fixture-provided sessions
+# [x] CORRECT - Using fixture-provided sessions
 async def test_good_session_management(db_session):
     # Use the provided session
     result = await service_function(db_session, data)

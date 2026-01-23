@@ -14,7 +14,7 @@ This rule documents systematic debugging approaches for Ouroboros development, b
 ### Docker Service Health Monitoring
 
 ```bash
-# ✅ CORRECT - Systematic service health checking
+# [x] CORRECT - Systematic service health checking
 docker compose ps                    # Check all service status
 docker compose logs backend --tail=20   # Check recent backend logs
 docker compose logs frontend --tail=20  # Check recent frontend logs
@@ -33,7 +33,7 @@ docker compose down && docker compose up -d  # Full restart
 ### Log Analysis Patterns
 
 ```bash
-# ✅ CORRECT - Structured log analysis
+# [x] CORRECT - Structured log analysis
 # Backend API logs - look for:
 docker compose logs backend | grep "SSE"        # SSE connection logs
 docker compose logs backend | grep "401"        # Authentication failures
@@ -51,7 +51,7 @@ docker compose logs frontend | grep "Vite"      # Vite-specific issues
 ### Network Tab Analysis
 
 ```typescript
-// ✅ CORRECT - Network debugging checklist
+// [x] CORRECT - Network debugging checklist
 // 1. Check SSE connections (EventSource type)
 // 2. Verify response headers: Content-Type: text/event-stream
 // 3. Monitor connection duration (should be persistent)
@@ -68,7 +68,7 @@ docker compose logs frontend | grep "Vite"      # Vite-specific issues
 ### Console Error Patterns
 
 ```typescript
-// ✅ CORRECT - Console error interpretation
+// [x] CORRECT - Console error interpretation
 // SSE Connection Errors:
 "EventSource failed" → Check backend media type configuration
 "401 Unauthorized" → Verify authentication cookies
@@ -85,7 +85,7 @@ docker compose logs frontend | grep "Vite"      # Vite-specific issues
 ### SSE Endpoint Debugging
 
 ```python
-# ✅ CORRECT - SSE debugging checklist
+# [x] CORRECT - SSE debugging checklist
 # 1. Verify media_type="text/event-stream" (not "text/plain")
 # 2. Check authentication dependency injection
 # 3. Verify event format: 'data: {json}\n\n'
@@ -105,7 +105,7 @@ async def get_campaign_events(current_user: User = Depends(get_current_user)):
 ### Authentication Flow Debugging
 
 ```python
-# ✅ CORRECT - Authentication debugging steps
+# [x] CORRECT - Authentication debugging steps
 # 1. Check session cookie presence and validity
 # 2. Verify user exists and is active
 # 3. Check project membership for scoped resources
@@ -122,7 +122,7 @@ logger.info(f"User authenticated: {user.id if user else 'None'}")
 ### SvelteKit SSR Debugging
 
 ```typescript
-// ✅ CORRECT - SSR debugging patterns
+// [x] CORRECT - SSR debugging patterns
 // Load function debugging:
 export const load: PageServerLoad = async ({ cookies }) => {
     console.log('Load function called with cookies:', cookies.toString());
@@ -143,7 +143,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ### Store Integration Debugging
 
 ```typescript
-// ✅ CORRECT - Store debugging patterns
+// [x] CORRECT - Store debugging patterns
 export const campaignsStore = {
     async loadCampaigns() {
         console.log('Store: Loading campaigns...');
@@ -170,7 +170,7 @@ export const campaignsStore = {
 ### E2E Test Debugging
 
 ```typescript
-// ✅ CORRECT - E2E test debugging
+// [x] CORRECT - E2E test debugging
 test('dashboard loads with SSE connections', async ({ page }) => {
     // Enable console logging in tests
     page.on('console', msg => console.log('Browser:', msg.text()));
@@ -196,7 +196,7 @@ test('dashboard loads with SSE connections', async ({ page }) => {
 ### Mock API Debugging
 
 ```typescript
-// ✅ CORRECT - Mock debugging patterns
+// [x] CORRECT - Mock debugging patterns
 test('dashboard with mocked API', async ({ page }) => {
     // Debug mock route handling
     await page.route('/api/v1/web/campaigns/', (route) => {
@@ -219,7 +219,7 @@ test('dashboard with mocked API', async ({ page }) => {
 ### Problem Isolation Strategy
 
 ```markdown
-# ✅ CORRECT - Systematic debugging approach
+# [x] CORRECT - Systematic debugging approach
 1. **Identify the scope**: Frontend, backend, or integration issue?
 2. **Check service health**: Are all Docker services running properly?
 3. **Review recent changes**: What was modified since last working state?
@@ -272,7 +272,7 @@ Debugging Steps:
 ### Development Commands
 
 ```bash
-# ✅ CORRECT - Debugging command toolkit
+# [x] CORRECT - Debugging command toolkit
 # Service management
 just docker-dev-up-watch     # Start development environment
 just docker-dev-down         # Clean shutdown
@@ -292,7 +292,7 @@ curl http://localhost:5173/   # Frontend health check
 ### Browser DevTools Usage
 
 ```markdown
-# ✅ CORRECT - Browser debugging checklist
+# [x] CORRECT - Browser debugging checklist
 Network Tab:
 - Check SSE connections (eventsource type)
 - Verify response headers and status codes
@@ -316,7 +316,7 @@ Application Tab:
 ### Code Quality Checks
 
 ```bash
-# ✅ CORRECT - Preventive debugging measures
+# [x] CORRECT - Preventive debugging measures
 # Run before committing changes
 just check                    # Linting and formatting
 just test-backend            # Backend test suite
@@ -331,7 +331,7 @@ docker compose ps           # Verify service health
 ### Monitoring Patterns
 
 ```typescript
-// ✅ CORRECT - Production monitoring patterns
+// [x] CORRECT - Production monitoring patterns
 // Add structured logging for key operations
 logger.info("SSE connection established", {
     user_id: user.id,

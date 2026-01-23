@@ -35,26 +35,26 @@ Rules and guidelines for maintaining consistent Python code style across the pro
 - Use `Annotated` for field definitions with additional metadata:
 
   ```python
-  # ✅ Good
+  # [x] Good
   from typing import Annotated
   from pydantic import Field
 
   name: Annotated[str, Field(min_length=1, description="User's full name")]
 
-  # ❌ Avoid
+  # [FAIL] Avoid
   name: str = Field(..., min_length=1, description="User's full name")
   ```
 
 - Use `Annotated` for complex type hints with constraints:
 
   ```python
-  # ✅ Good
+  # [x] Good
   from typing import Annotated
   from pydantic import Field
 
   age: Annotated[int, Field(ge=0, le=120)]
 
-  # ❌ Avoid
+  # [FAIL] Avoid
   age: int = Field(..., ge=0, le=120)
   ```
 

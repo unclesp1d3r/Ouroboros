@@ -40,7 +40,7 @@ src/lib/schemas/
 - **Naming**: `EntityReadSchema` → `EntityRead` type, `EntityCreateSchema` → `EntityCreate` type
 
 ```typescript
-// ✅ CORRECT - Match OpenAPI specification exactly
+// [x] CORRECT - Match OpenAPI specification exactly
 export const CampaignReadSchema = z.object({
     id: z.number().int(),
     name: z.string(),
@@ -55,7 +55,7 @@ export type CampaignRead = z.infer<typeof CampaignReadSchema>;
 ### API Response Validation
 
 ```typescript
-// ✅ CORRECT - Always parse API responses with schemas
+// [x] CORRECT - Always parse API responses with schemas
 try {
     const response = await api.get("/api/v1/web/campaigns/");
     const data = CampaignListResponseSchema.parse(response.data);
@@ -152,7 +152,7 @@ export async function handle({
 ### Backend SSE Implementation
 
 ```python
-# ✅ CORRECT - Use proper SSE media type
+# [x] CORRECT - Use proper SSE media type
 @router.get("/live/campaigns")
 async def get_campaign_events():
     return StreamingResponse(
@@ -325,13 +325,13 @@ export function createMockCampaign(
 
 ## Anti-Patterns to Avoid
 
-- ❌ Using type assertions without schema validation
-- ❌ Direct API calls without error handling
-- ❌ Hardcoded API endpoints
-- ❌ Missing authentication in SSR load functions
-- ❌ Using `text/plain` instead of `text/event-stream` for SSE
-- ❌ Not cleaning up EventSource connections
-- ❌ Bypassing Zod validation for performance
+- [FAIL] Using type assertions without schema validation
+- [FAIL] Direct API calls without error handling
+- [FAIL] Hardcoded API endpoints
+- [FAIL] Missing authentication in SSR load functions
+- [FAIL] Using `text/plain` instead of `text/event-stream` for SSE
+- [FAIL] Not cleaning up EventSource connections
+- [FAIL] Bypassing Zod validation for performance
 
 ## File References
 

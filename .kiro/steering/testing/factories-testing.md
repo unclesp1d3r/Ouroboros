@@ -61,7 +61,7 @@ async def test_create_hash_list_service(db_session):
 ### Session Management
 
 ```python
-# ✅ CORRECT - Set session before using factories
+# [x] CORRECT - Set session before using factories
 async def test_with_factories(db_session):
     # Set session for all factories
     UserFactory.__async_session__ = db_session
@@ -101,7 +101,7 @@ class HashListFactory(SQLAlchemyFactory[HashList]):
 ### Preventing FK Violations
 
 ```python
-# ✅ CORRECT - Explicit FK management
+# [x] CORRECT - Explicit FK management
 class CampaignFactory(SQLAlchemyFactory[Campaign]):
     __model__ = Campaign
     __set_relationships__ = False  # Critical for FK safety
@@ -149,7 +149,7 @@ async def test_campaign_creation(db_session):
 ### Pre-seeded Data References
 
 ```python
-# ✅ CORRECT - Use pre-seeded data for stable references
+# [x] CORRECT - Use pre-seeded data for stable references
 class HashListFactory(SQLAlchemyFactory[HashList]):
     hash_type_id = 0  # MD5 - always exists in pre-seeded data
 
@@ -158,7 +158,7 @@ class AttackFactory(SQLAlchemyFactory[Attack]):
     attack_mode = 0  # Dictionary attack - stable reference
 
 
-# ❌ WRONG - Random FKs cause violations
+# [FAIL] WRONG - Random FKs cause violations
 class BadFactory(SQLAlchemyFactory[SomeModel]):
     foreign_key_id = Use(lambda: random.randint(1, 1000))  # Will fail
 ```
@@ -217,7 +217,7 @@ async def seed_e2e_data():
 ### Deterministic Test Data
 
 ```python
-# ✅ CORRECT - Deterministic data for reliable tests
+# [x] CORRECT - Deterministic data for reliable tests
 class UserFactory(SQLAlchemyFactory[User]):
     _name_counter = 0
     _email_counter = 0
@@ -368,17 +368,17 @@ async def create_project_with_user(session: AsyncSession) -> tuple[Project, User
 ### FK Violation Anti-Patterns
 
 ```python
-# ❌ WRONG - Random foreign keys cause FK violations
+# [FAIL] WRONG - Random foreign keys cause FK violations
 class BadFactory(SQLAlchemyFactory[Model]):
     foreign_key_id = Use(lambda: random.randint(1, 1000))
 
 
-# ❌ WRONG - Auto-relationships create unpredictable data
+# [FAIL] WRONG - Auto-relationships create unpredictable data
 class BadFactory(SQLAlchemyFactory[Model]):
     __set_relationships__ = True  # Causes FK violations
 
 
-# ❌ WRONG - Using sync methods in async tests
+# [FAIL] WRONG - Using sync methods in async tests
 def test_bad_pattern():
     model = BadFactory.build()  # Don't use build()
     model = BadFactory.create()  # Don't use sync create()
@@ -387,13 +387,13 @@ def test_bad_pattern():
 ### Session Management Anti-Patterns
 
 ```python
-# ❌ WRONG - Not setting async session
+# [FAIL] WRONG - Not setting async session
 async def test_bad_session():
     # This will fail - no session set
     user = await UserFactory.create_async()
 
 
-# ❌ WRONG - Mixing sync and async patterns
+# [FAIL] WRONG - Mixing sync and async patterns
 def test_mixed_patterns(db_session):
     user = UserFactory.create()  # Sync method in async test
     project = await ProjectFactory.create_async()  # Mixed patterns
@@ -402,7 +402,7 @@ def test_mixed_patterns(db_session):
 ### Test Data Anti-Patterns
 
 ```python
-# ❌ WRONG - Hardcoded test data instead of factories
+# [FAIL] WRONG - Hardcoded test data instead of factories
 async def test_hardcoded_data(db_session):
     user = User(
         name="Test User",
@@ -412,7 +412,7 @@ async def test_hardcoded_data(db_session):
     db_session.add(user)
 
 
-# ❌ WRONG - Non-deterministic test data
+# [FAIL] WRONG - Non-deterministic test data
 class BadFactory(SQLAlchemyFactory[User]):
     name = Use(lambda: random.choice(["Alice", "Bob"]))  # Flaky tests
 ```
@@ -429,7 +429,7 @@ class BadFactory(SQLAlchemyFactory[User]):
 ### Batch Creation Patterns
 
 ```python
-# ✅ CORRECT - Batch creation for performance
+# [x] CORRECT - Batch creation for performance
 async def create_multiple_hash_lists(session: AsyncSession, count: int):
     """Create multiple hash lists efficiently."""
     project = await ProjectFactory.create_async()

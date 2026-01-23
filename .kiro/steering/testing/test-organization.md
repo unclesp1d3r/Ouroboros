@@ -77,7 +77,7 @@ frontend/
 ### Universal Environment Detection Pattern
 
 ```typescript
-// ✅ CORRECT - Comprehensive test environment detection
+// [x] CORRECT - Comprehensive test environment detection
 function isTestEnvironment(): boolean {
     return process.env.NODE_ENV === 'test' ||
            process.env.PLAYWRIGHT_TEST === 'true' ||
@@ -98,7 +98,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ### Python Test Environment Detection
 
 ```python
-# ✅ CORRECT - Python test environment detection
+# [x] CORRECT - Python test environment detection
 import os
 
 
@@ -226,7 +226,7 @@ docker compose -f docker-compose.e2e.yml logs backend  # Service logs
 ### API Response Structure Consistency
 
 ```typescript
-// ✅ CORRECT - Mock data must match API structure exactly
+// [x] CORRECT - Mock data must match API structure exactly
 const mockCampaignListResponse = {
     items: [
         {
@@ -247,7 +247,7 @@ const mockCampaignListResponse = {
     total_pages: 1
 };
 
-// ❌ WRONG - Mismatched structure causes test failures
+// [FAIL] WRONG - Mismatched structure causes test failures
 const mockCampaigns = {
     data: [...],         // API doesn't return 'data' wrapper
     totalCount: 1,       // API uses snake_case, not camelCase
@@ -318,7 +318,7 @@ const mockCampaigns = {
 ### Test Data Lifecycle
 
 ```python
-# ✅ CORRECT - Proper test data lifecycle
+# [x] CORRECT - Proper test data lifecycle
 @pytest.mark.asyncio
 async def test_campaign_creation(db_session):
     # Arrange - Create test data
@@ -367,27 +367,27 @@ async def test_campaign_creation(db_session):
 
 ### Backend Anti-Patterns
 
-- ❌ **Random foreign keys** in factories (causes violations)
-- ❌ **Missing project associations** for project-scoped tests
-- ❌ **Manual SQL** instead of ORM operations
-- ❌ **Hardcoded test data** instead of factories
-- ❌ **Mixing unit and integration tests** in same files
+- [FAIL] **Random foreign keys** in factories (causes violations)
+- [FAIL] **Missing project associations** for project-scoped tests
+- [FAIL] **Manual SQL** instead of ORM operations
+- [FAIL] **Hardcoded test data** instead of factories
+- [FAIL] **Mixing unit and integration tests** in same files
 
 ### Frontend Anti-Patterns
 
-- ❌ **Testing implementation details** instead of behavior
-- ❌ **Mismatched mock data** structures vs API responses
-- ❌ **Testing SPA patterns** in SSR environment
-- ❌ **Direct rune testing** in .ts files (not possible)
-- ❌ **Mixing SSR data and store data** in same component
+- [FAIL] **Testing implementation details** instead of behavior
+- [FAIL] **Mismatched mock data** structures vs API responses
+- [FAIL] **Testing SPA patterns** in SSR environment
+- [FAIL] **Direct rune testing** in .ts files (not possible)
+- [FAIL] **Mixing SSR data and store data** in same component
 
 ### General Anti-Patterns
 
-- ❌ **Flaky tests** due to timing issues or race conditions
-- ❌ **Tests that depend on external services** or network
-- ❌ **Overly complex test setup** that obscures the test intent
-- ❌ **Tests that test the framework** instead of application logic
-- ❌ **Catch-all exception handling** that masks real issues
+- [FAIL] **Flaky tests** due to timing issues or race conditions
+- [FAIL] **Tests that depend on external services** or network
+- [FAIL] **Overly complex test setup** that obscures the test intent
+- [FAIL] **Tests that test the framework** instead of application logic
+- [FAIL] **Catch-all exception handling** that masks real issues
 
 ## Migration and Maintenance
 
