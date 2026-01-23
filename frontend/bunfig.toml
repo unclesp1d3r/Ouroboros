@@ -2,7 +2,7 @@
 # https://bun.sh/docs/runtime/bunfig
 
 [install]
-# Enforce exact versions (equivalent to pnpm's engine-strict)
+# Enforce exact versions in bun.lock
 exact = true
 
 # Auto-install peer dependencies

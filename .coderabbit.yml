@@ -86,7 +86,7 @@ reviews:
         - "**/*lock.yaml"
         - "**/*lock.yml"
         - "uv.lock"
-        - "pnpm-lock.yaml"
+        - "bun.lock"
         # OS files
         - "**/.DS_Store"
         - "**/Thumbs.db"
