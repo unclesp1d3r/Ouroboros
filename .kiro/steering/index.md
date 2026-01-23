@@ -6,15 +6,15 @@
 
 This document provides an index of all development rules and guidelines for the Ouroboros project.
 
-##  Rule Categories
+## Rule Categories
 
-###  Architecture Rules
+### Architecture Rules
 
 - **[core-concepts.mdc](mdc:.cursor/rules/architecture/core-concepts.mdc)**: Core architectural concepts and patterns
 - **[docker-guidelines.mdc](mdc:.cursor/rules/architecture/docker-guidelines.mdc)**: Docker containerization best practices
 - **[security-basics.mdc](mdc:.cursor/rules/architecture/security-basics.mdc)**: Security fundamentals and best practices
 
-###  Code Rules
+### Code Rules
 
 - **[python-style.mdc](mdc:.cursor/rules/code/python-style.mdc)**: Python coding standards and formatting
 - **[git.mdc](mdc:.cursor/rules/code/git.mdc)**: Git workflow and commit conventions
@@ -26,11 +26,11 @@ This document provides an index of all development rules and guidelines for the 
 - **[css.mdc](mdc:.cursor/rules/code/css.mdc)**: CSS development guidelines
 - **[ux-guidelines.mdc](mdc:.cursor/rules/code/ux-guidelines.mdc)**: SvelteKit + Shadcn-Svelte UI guidelines
 
-###  Meta Rules
+### Meta Rules
 
 - **[vibecoding-tips.mdc](mdc:.cursor/rules/meta/vibecoding-tips.mdc)**: Live coding session guidelines
 
-##  Rule Application
+## Rule Application
 
 ### Always Applied Rules
 
@@ -50,7 +50,7 @@ These rules apply when working in specific areas:
 - Database rules (when working with SQLAlchemy)
 - Frontend rules (when working with SvelteKit UI)
 
-##  Rule Updates
+## Rule Updates
 
 When updating rules:
 
@@ -59,7 +59,7 @@ When updating rules:
 3. Test changes against existing codebase
 4. Document breaking changes in commit messages
 
-##  Additional Resources
+## Additional Resources
 
 For implementation-specific guidance, see:
 
