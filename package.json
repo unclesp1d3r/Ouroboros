@@ -1,7 +1,7 @@
 {
     "devDependencies": {
-        "@commitlint/config-conventional": "^20.2.0",
-        "commitlint": "^20.2.0",
+        "@commitlint/config-conventional": "^20.3.1",
+        "commitlint": "^20.3.1",
         "markdownlint-cli2": "^0.20.0",
         "oxc": "^1.0.1"
     },
