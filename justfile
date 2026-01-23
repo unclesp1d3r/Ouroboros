@@ -1,4 +1,4 @@
-# 🧃 justfile — Ouroboros Developer Tasks
+# justfile - Ouroboros Developer Tasks
 set shell := ["bash", "-cu"]
 set windows-powershell := true
 set dotenv-load := true
@@ -14,21 +14,21 @@ help:
     just --summary
 
 # -----------------------------
-# 🔧 Setup & Installation
+# Setup & Installation
 # -----------------------------
 
 # Install dependencies and setup pre-commit hooks
 [unix]
 install:
     cd {{justfile_dir()}}
-    # 🚀 Set up dev env & pre-commit hooks
+    # Set up dev env & pre-commit hooks
     uv sync --dev --all-groups --all-packages
     uv run pre-commit install --hook-type commit-msg
 
 [windows]
 install:
     cd {{justfile_dir()}}
-    # 🚀 Set up dev env & pre-commit hooks
+    # Set up dev env & pre-commit hooks
     uv sync --dev --all-groups --all-packages
     $env:PYTHONUTF8=1; uv run pre-commit install --hook-type commit-msg
 
@@ -49,7 +49,7 @@ update-deps:
 
 
 # -----------------------------
-# 🧹 Linting, Typing, Dep Check
+# Linting, Typing, Dep Check
 # -----------------------------
 
 pre-commit-run:
@@ -80,7 +80,7 @@ docs-format:
 lint: format-check docs-format-check check frontend-lint
 
 # -----------------------------
-# 🧪 Testing & Coverage (Three-Tier Architecture)
+# Testing & Coverage (Three-Tier Architecture)
 # -----------------------------
 
 # Run backend Python tests (Layer 1: Backend API/unit integration)
@@ -118,7 +118,7 @@ coverage:
     uv run coverage report
 
 # -----------------------------
-# 📦 Build & Clean
+# Build & Clean
 # PHONY: build, clean-build
 # -----------------------------
 
@@ -126,7 +126,7 @@ coverage:
 [unix]
 clean:
     cd {{justfile_dir()}}
-    @echo "🧹 Cleaning .pyc files, __pycache__, and .pytest_cache..."
+    @echo "Cleaning .pyc files, __pycache__, and .pytest_cache..."
     find . -type d -name "__pycache__" -exec rm -rf "{}" +
     find . -type f -name "*.pyc" -delete
     rm -rf .pytest_cache
@@ -144,16 +144,16 @@ clean-test: clean test-backend
 
 # Generate CHANGELOG.md from commits (requires mise: git-cliff)
 release:
-    @echo "🚀 Generating changelog with git-cliff..."
+    @echo "Generating changelog with git-cliff..."
     git cliff -o CHANGELOG.md --config cliff.toml
-    @echo "✅ Changelog updated! Commit and tag when ready."
+    @echo "Changelog updated! Commit and tag when ready."
 
 # Preview changelog without writing (requires mise: git-cliff)
 release-preview:
     git cliff --config cliff.toml
 
 # -----------------------------
-# 📚 Documentation
+# Documentation
 # PHONY: docs, docs-test, docs-export
 # -----------------------------
 
@@ -167,11 +167,11 @@ docs-test:
 
 # Export documentation to a single combined PDF
 docs-export:
-    # 🧾 Export a single combined PDF via mkdocs-exporter
+    # Export a single combined PDF via mkdocs-exporter
     uv run mkdocs build
 
 # -----------------------------
-# 📦 Docker Tasks
+# Docker Tasks
 # PHONY: docker-build, docker-down, docker-up
 # -----------------------------
 
@@ -204,7 +204,7 @@ docker-dev-up:
 
 # Up the Docker services for development with hot reload and do not detach from the logs
 docker-dev-up-watch: docker-dev-up docker-dev-migrate docker-dev-seed
-    @echo "📋 Following logs..."
+    @echo "Following logs..."
     docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
 
 # Up the Docker services for E2E testing
@@ -238,7 +238,7 @@ docker-e2e-down:
     docker compose -f docker-compose.e2e.yml down -v --remove-orphans
 
 # -----------------------------
-# 🤖 CI Workflow (Three-Tier Architecture)
+# CI Workflow (Three-Tier Architecture)
 # PHONY: ci-check
 # Note: Runs all checks and tests across all three tiers.
 # -----------------------------
@@ -275,7 +275,7 @@ github-actions-test: ci-setup
 backend-check: format-check check test-backend
 
 # -----------------------------
-# 🗄️ Database Tasks
+# Database Tasks
 # PHONY: db-drop-test, db-migrate-test, db-reset, check-schema, seed-e2e-data
 # Note: Requires $TEST_DATABASE_URL to be set in your environment.
 # -----------------------------
@@ -304,7 +304,7 @@ check-schema:
     uv run --script scripts/dev/check_schema_types.py
 
 # -----------------------------
-# 🚀 Development Environment (Decoupled)
+# Development Environment (Decoupled)
 # PHONY: dev, dev-backend, dev-frontend, dev-fullstack
 # -----------------------------
 
@@ -413,7 +413,7 @@ frontend-test-e2e-full-ui:
     cd {{justfile_dir()}}/frontend; bunx playwright test --ui --config=playwright.config.e2e.ts
 
 # -----------------------------
-# 🚢 Production Build & Deployment
+# Production Build & Deployment
 # PHONY: build-prod, deploy-prod, build-frontend-prod
 # -----------------------------
 
@@ -434,4 +434,4 @@ deploy-prod: docker-build docker-prod-up
 
 # Stop production deployment
 deploy-prod-stop: docker-prod-down
-    @echo "✅ Production deployment stopped."
+    @echo "Production deployment stopped."

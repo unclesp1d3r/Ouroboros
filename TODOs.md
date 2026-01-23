@@ -2,7 +2,7 @@
 
 > **Last Updated**: 2025-12-30 **Purpose**: Tracks tasks not captured in `.kiro/specs/` but identified through codebase analysis, ADR next steps, and technical debt
 
-## 🔥 Critical - Blocking Production
+## Critical - Blocking Production
 
 ### 1. Attack Edit/Add Modals (Web UI)
 
@@ -48,7 +48,7 @@
 - ADR 001 Next Steps: Week 1, Item 2
 - Backend TODOs: 4 instances
 
-## ⚠️ High Priority - Production Hardening
+## [WARN] High Priority - Production Hardening
 
 ### 4. Security Audit (ADR 001: Week 2-3, Item 3)
 
@@ -97,7 +97,7 @@
 - [ ] SSE connection stress testing
 - [ ] Database query optimization validation
 
-## 📋 Medium Priority - Feature Completion
+## Medium Priority - Feature Completion
 
 ### 9. Attack Complexity Service Enhancements
 
@@ -125,7 +125,7 @@
 
 **Frontend TODOs**: 3 instances
 
-## 🔮 Future Work - Agent API v2
+## Future Work - Agent API v2
 
 > [!NOTE]
 > Entire Agent API v2 implementation is deferred (Phase 2b - 0% complete)
@@ -143,7 +143,7 @@
 
 **Backend TODOs**: 8 instances **References**: Phase 2b (entire phase at 0%)
 
-## 📚 Documentation (ADR 001: Week 3-4)
+## Documentation (ADR 001: Week 3-4)
 
 ### 13. User Documentation
 
@@ -169,7 +169,7 @@
 - [ ] Monitoring and logging setup
 - [ ] Backup and disaster recovery procedures
 
-## 🧹 Technical Debt
+## Technical Debt
 
 ### 16. Infrastructure Upgrades
 
@@ -186,7 +186,7 @@
 - [ ] Fix untyped dict return types throughout codebase
 - [ ] Convert remaining string literals to enums
 
-## 📊 Testing Gaps (Not in Specs)
+## Testing Gaps (Not in Specs)
 
 ### 18. E2E Test Coverage
 

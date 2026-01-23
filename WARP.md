@@ -150,12 +150,12 @@ For detailed architecture, see `AGENTS.md` sections 2-3 and `.kiro/steering/` do
 ### Backend Patterns
 
 ```python
-# ✅ Logging - use loguru exclusively
+# [x] Logging - use loguru exclusively
 from loguru import logger
 
 logger.info("Task completed", task_id=task.id)
 
-# ✅ Caching - use cashews only
+# [x] Caching - use cashews only
 from cashews import cache
 
 
@@ -163,25 +163,25 @@ from cashews import cache
 async def expensive_operation(): ...
 
 
-# ✅ Time handling - use UTC timezone
+# [x] Time handling - use UTC timezone
 from datetime import datetime
 
 now = datetime.now(datetime.UTC)  # NOT datetime.utcnow()
 
-# ✅ Pydantic v2 - use Annotated with Field
+# [x] Pydantic v2 - use Annotated with Field
 from typing import Annotated
 from pydantic import Field
 
 name: Annotated[str, Field(min_length=1, description="User's name")]
 
-# ✅ Strings - always double quotes
+# [x] Strings - always double quotes
 message = "Hello world"
 ```
 
 ### Frontend Patterns
 
 ```typescript
-// ✅ SvelteKit 5 Runes - SSR-first data loading
+// [x] SvelteKit 5 Runes - SSR-first data loading
 // +page.server.ts
 export const load = async ({ fetch, cookies }) => {
     const response = await fetch("/api/v1/web/campaigns", {
@@ -190,10 +190,10 @@ export const load = async ({ fetch, cookies }) => {
     return { campaigns: await response.json() };
 };
 
-// ✅ Component state management
+// [x] Component state management
 let campaigns = $state([]);
 
-// ✅ Superforms v2 + Zod
+// [x] Superforms v2 + Zod
 import { superForm } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 ```
@@ -201,7 +201,7 @@ import { zod } from "sveltekit-superforms/adapters";
 ### Service Layer Architecture Patterns
 
 ```python
-# ✅ Service Function Structure
+# [x] Service Function Structure
 async def create_campaign_service(
     db: AsyncSession, campaign_data: CampaignCreate, current_user: User
 ) -> Campaign:
@@ -218,7 +218,7 @@ async def create_campaign_service(
     return campaign
 
 
-# ✅ Service Function Naming
+# [x] Service Function Naming
 # CRUD: create_, get_, list_, update_, delete_
 # Business: estimate_keyspace_, reorder_attacks_, start_campaign_
 ```
@@ -226,7 +226,7 @@ async def create_campaign_service(
 ### Database Patterns
 
 ```python
-# ✅ Session management with dependency injection
+# [x] Session management with dependency injection
 from app.core.deps import get_db
 
 
@@ -235,7 +235,7 @@ async def list_campaigns(db: AsyncSession = Depends(get_db)):
     return await campaign_service.list_campaigns_service(db)
 
 
-# ✅ Pagination pattern
+# [x] Pagination pattern
 async def list_campaigns_service(
     db: AsyncSession, skip: int = 0, limit: int = 20
 ) -> tuple[list[Campaign], int]:
@@ -252,14 +252,14 @@ async def list_campaigns_service(
 ### Error Handling Patterns
 
 ```python
-# ✅ Custom domain exceptions in services
+# [x] Custom domain exceptions in services
 class CampaignNotFoundError(Exception):
     """Raised when a campaign is not found."""
 
     pass
 
 
-# ✅ Exception translation in endpoints
+# [x] Exception translation in endpoints
 try:
     campaign = await get_campaign_service(db, campaign_id)
 except CampaignNotFoundError:
@@ -526,11 +526,11 @@ gh pr create --base main
 
 Before considering this WARP.md complete:
 
-- ✅ `just check` passes (formatting and pre-commit hooks)
-- ✅ All referenced links resolve (README.md, AGENTS.md, GEMINI.md, /docs, /redoc)
-- ✅ Quickstart commands work on clean development environment
-- ✅ Critical constraints highlighted: Agent API v1 immutability, PROTECTED directories, required libraries (loguru/cashews/datetime.UTC)
-- ✅ No code changes made (documentation only), so `just ci-check` not required per Phase 3 verification rules
+- [x] `just check` passes (formatting and pre-commit hooks)
+- [x] All referenced links resolve (README.md, AGENTS.md, GEMINI.md, /docs, /redoc)
+- [x] Quickstart commands work on clean development environment
+- [x] Critical constraints highlighted: Agent API v1 immutability, PROTECTED directories, required libraries (loguru/cashews/datetime.UTC)
+- [x] No code changes made (documentation only), so `just ci-check` not required per Phase 3 verification rules
 
 ## References and Links
 

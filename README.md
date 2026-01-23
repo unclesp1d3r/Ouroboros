@@ -8,7 +8,7 @@
 
 ---
 
-## ⚙️ Purpose
+## Purpose
 
 Ouroboros exists as a cleanroom implementation and future foundation for CipherSwarm. It explores:
 
@@ -20,7 +20,7 @@ Ouroboros exists as a cleanroom implementation and future foundation for CipherS
 
 ---
 
-## 🧩 Architecture Overview
+## Architecture Overview
 
 - **Backend:** FastAPI + SQLAlchemy 2.x (async) + PostgreSQL
 
@@ -36,13 +36,13 @@ Ouroboros exists as a cleanroom implementation and future foundation for CipherS
 
 ---
 
-## 🔍 Status
+## Status
 
 Ouroboros is an active rewrite under development. Many components mirror CipherSwarm's design documents but are implemented idiomatically for FastAPI. Until the project stabilizes, this branch should be treated as **experimental**.
 
 > "From its own code, it is reborn."
 
-## 🐍 Symbolism
+## Symbolism
 
 The name **Ouroboros** represents the self-consuming, self-renewing nature of this rewrite—a system rebuilding itself from its legacy foundation, endlessly cycling toward improvement.
 
