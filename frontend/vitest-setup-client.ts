@@ -60,6 +60,7 @@ Object.defineProperty(window, 'localStorage', {
 
 // TypeScript global augmentation for SvelteKit payload
 declare global {
+    // eslint-disable-next-line no-var -- TypeScript requires 'var' in declare global
     var __SVELTEKIT_PAYLOAD__: {
         data: Record<string, unknown>;
         status: number;

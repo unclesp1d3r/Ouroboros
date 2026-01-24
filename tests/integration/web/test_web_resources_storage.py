@@ -302,6 +302,7 @@ async def test_refresh_metadata_success(
 async def test_refresh_metadata_file_missing(
     authenticated_async_client: AsyncClient,
     db_session: AsyncSession,
+    minio_client: Minio,  # Ensures MinIO container is started and settings are patched
 ) -> None:
     url = "/api/v1/web/resources/"
     file_name = f"test_refresh_{uuid.uuid4()}.txt"

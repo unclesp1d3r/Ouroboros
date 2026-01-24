@@ -1,25 +1,5 @@
 {
     "files": {
-        "./alembic/versions/20250624_015350_81868238d2dd_unified_migration.py": [
-            {
-                "code": "reportAttributeAccessIssue",
-                "range": {
-                    "startColumn": 20,
-                    "endColumn": 22,
-                    "lineCount": 1
-                }
-            }
-        ],
-        "./alembic/versions/20250707_050741_1587d62b626a_change_hashcat_benchmark_runtime_to_.py": [
-            {
-                "code": "reportAttributeAccessIssue",
-                "range": {
-                    "startColumn": 20,
-                    "endColumn": 22,
-                    "lineCount": 1
-                }
-            }
-        ],
         "./app/api/v1/endpoints/agent/agent.py": [
             {
                 "code": "reportUnreachable",

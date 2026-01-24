@@ -185,7 +185,8 @@ ignore = [
     "PLR2004", #  doesn't much matter for tests
     "B007",    # Loop control variable not used within loop body
 ]
-"alembic/versions/**/*.py" = [ "D" ]
+"alembic/*.py" = [ "INP001" ]  # alembic dir must not have __init__.py to avoid shadowing library
+"alembic/versions/**/*.py" = [ "D", "INP001" ]
 "tests/conftest.py" = [ "ARG001", "SLF001", "ANN401" ]
 "tests/db/test_session.py" = [ "SLF001" ]
 "scripts/dev/**/*.py" = [ "T201" ]

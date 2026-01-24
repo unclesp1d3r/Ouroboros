@@ -262,10 +262,10 @@ async def seed_e2e_data() -> None:
     # Connect to database using E2E configuration
     if os.getenv("E2E_CONTAINER_MODE") == "true":
         # Running inside Docker container - use container networking
-        db_url = "postgresql+psycopg://postgres:postgres@postgres:5432/cipherswarm_e2e"
+        db_url = "postgresql+psycopg://postgres:postgres@postgres:5432/ouroboros_e2e"
     elif os.getenv("TESTING") == "true":
         # Running from host - use external port
-        db_url = "postgresql+psycopg://postgres:postgres@localhost:5433/cipherswarm_e2e"
+        db_url = "postgresql+psycopg://postgres:postgres@localhost:5433/ouroboros_e2e"
     else:
         # Use default settings
         db_url = str(settings.sqlalchemy_database_uri)
