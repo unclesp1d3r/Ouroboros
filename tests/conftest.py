@@ -15,7 +15,6 @@ if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 from httpx import ASGITransport, AsyncClient
 from minio import Minio
-from pydantic import PostgresDsn
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -26,9 +25,8 @@ from testcontainers.minio import MinioContainer  # type: ignore[import-untyped]
 from testcontainers.postgres import PostgresContainer  # type: ignore[import-untyped]
 
 from app.core.auth import create_access_token
-from app.core.config import settings
+from app.core.config import Settings, settings
 from app.core.deps import get_db
-from app.db.config import DatabaseSettings
 from app.main import app
 from app.models.agent import Agent
 from app.models.base import Base
@@ -136,14 +134,30 @@ async def reset_db_and_seed_hash_types(db_session: AsyncSession) -> None:
 
 
 @pytest.fixture
-def db_settings(db_url: str) -> DatabaseSettings:
-    """Fixture for DatabaseSettings using the test database URL."""
-    return DatabaseSettings(url=PostgresDsn(db_url))
+def db_settings(db_url: str) -> Settings:
+    """Fixture for Settings using the test database URL.
+
+    Creates a Settings instance configured for testing with the test database URL.
+    """
+    # Parse the database URL to extract components
+    # Format: postgresql+psycopg://user:pass@host:port/dbname
+    from urllib.parse import urlparse
+
+    parsed = urlparse(db_url)
+    return Settings(
+        POSTGRES_SERVER=f"{parsed.hostname}:{parsed.port}"
+        if parsed.port
+        else parsed.hostname or "localhost",
+        POSTGRES_USER=parsed.username or "test",
+        POSTGRES_PASSWORD=parsed.password or "test",
+        POSTGRES_DB=parsed.path.lstrip("/") if parsed.path else "test",
+        DB_ECHO=False,
+    )
 
 
 @pytest_asyncio.fixture
 async def async_client(
-    db_session: AsyncSession, db_settings: DatabaseSettings
+    db_session: AsyncSession, db_settings: Settings
 ) -> AsyncGenerator[AsyncClient]:
     # Initialize the database session manager for the test environment
     from app.db.session import sessionmanager

@@ -6,12 +6,12 @@ import pytest
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.config import DatabaseSettings
+from app.core.config import Settings
 from app.db.session import DatabaseSessionManager
 
 
 @pytest.mark.asyncio
-async def test_session_manager_initialization(db_settings: DatabaseSettings) -> None:
+async def test_session_manager_initialization(db_settings: Settings) -> None:
     """Test session manager initialization."""
     manager = DatabaseSessionManager()
     manager.init(db_settings)
@@ -20,7 +20,7 @@ async def test_session_manager_initialization(db_settings: DatabaseSettings) -> 
 
 
 @pytest.mark.asyncio
-async def test_session_manager_close(db_settings: DatabaseSettings) -> None:
+async def test_session_manager_close(db_settings: Settings) -> None:
     """Test session manager cleanup."""
     manager = DatabaseSessionManager()
     manager.init(db_settings)
@@ -31,7 +31,7 @@ async def test_session_manager_close(db_settings: DatabaseSettings) -> None:
 
 
 @pytest.mark.asyncio
-async def test_session_context_manager(db_settings: DatabaseSettings) -> None:
+async def test_session_context_manager(db_settings: Settings) -> None:
     """Test session context manager functionality."""
     manager = DatabaseSessionManager()
     manager.init(db_settings)
@@ -53,7 +53,7 @@ async def _raise_and_rollback(manager: DatabaseSessionManager) -> None:
 
 
 @pytest.mark.asyncio
-async def test_session_rollback_on_error(db_settings: DatabaseSettings) -> None:
+async def test_session_rollback_on_error(db_settings: Settings) -> None:
     """Test session rollback on error."""
     manager = DatabaseSessionManager()
     manager.init(db_settings)
@@ -63,7 +63,7 @@ async def test_session_rollback_on_error(db_settings: DatabaseSettings) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_session_dependency(db_settings: DatabaseSettings) -> None:
+async def test_get_session_dependency(db_settings: Settings) -> None:
     """Test the FastAPI session dependency."""
     from app.db import session as db_session_module
 

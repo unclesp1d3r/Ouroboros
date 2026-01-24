@@ -7,10 +7,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Application settings.
 
+    All configuration is loaded from environment variables following 12-factor app principles.
+    Database pool settings are consolidated here for a single source of truth.
+
     Attributes:
         PROJECT_NAME: Name of the project
         VERSION: Project version
-        API_V1_STR: API version 1 prefix
         BACKEND_CORS_ORIGINS: List of origins that can access the API
         SECRET_KEY: Secret key for JWT tokens
         ENVIRONMENT: Application environment (production, development, testing)
@@ -18,7 +20,12 @@ class Settings(BaseSettings):
         POSTGRES_USER: PostgreSQL username
         POSTGRES_PASSWORD: PostgreSQL password
         POSTGRES_DB: PostgreSQL database name
-        sqlalchemy_database_uri: SQLAlchemy database URI
+        DB_POOL_SIZE: Size of the database connection pool
+        DB_MAX_OVERFLOW: Maximum overflow connections beyond pool_size
+        DB_POOL_TIMEOUT: Seconds to wait for a connection from the pool
+        DB_POOL_RECYCLE: Seconds after which connections are recycled
+        DB_ECHO: Echo SQL statements to stdout (development only)
+        sqlalchemy_database_uri: SQLAlchemy database URI (computed property)
         FIRST_SUPERUSER: First superuser email
         FIRST_SUPERUSER_PASSWORD: First superuser password
         REDIS_HOST: Redis server hostname
@@ -31,17 +38,15 @@ class Settings(BaseSettings):
         ACCESS_TOKEN_EXPIRE_MINUTES: JWT access token expiration time in minutes
         RESOURCE_EDIT_MAX_SIZE_MB: Maximum size (in MB) for in-browser resource editing
         RESOURCE_EDIT_MAX_LINES: Maximum number of lines for in-browser resource editing
-        DB_ECHO: bool = False
-        MINIO_ENDPOINT: str = "minio:9000"
-        MINIO_ACCESS_KEY: str = "minioadmin"
-        MINIO_SECRET_KEY: str = "minioadmin"
-        MINIO_BUCKET: str = "ouroboros-resources"
-        MINIO_SECURE: bool = False
-        MINIO_REGION: str | None = None
-        JWT_SECRET_KEY: str = "a_very_secret_key"
-        RESOURCE_UPLOAD_VERIFICATION_ENABLED: bool = True
-        CACHE_URI: str = "mem://"
-        UPLOAD_MAX_SIZE: int = 100 * 1024 * 1024  # 100MB
+        MINIO_ENDPOINT: MinIO S3-compatible storage endpoint
+        MINIO_ACCESS_KEY: MinIO access key
+        MINIO_SECRET_KEY: MinIO secret key
+        MINIO_BUCKET: MinIO bucket name
+        MINIO_SECURE: Whether MinIO uses HTTPS
+        MINIO_REGION: Optional MinIO region
+        JWT_SECRET_KEY: JWT secret key
+        CACHE_CONNECT_STRING: Cache connection string for cashews
+        UPLOAD_MAX_SIZE: Maximum upload size in bytes
     """
 
     PROJECT_NAME: str = "Ouroboros"
@@ -83,6 +88,33 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = Field(
         default="ouroboros",
         description="PostgreSQL database name",
+    )
+
+    # Database Connection Pool Settings
+    DB_POOL_SIZE: int = Field(
+        default=5,
+        ge=1,
+        le=20,
+        description="Size of the database connection pool",
+    )
+    DB_MAX_OVERFLOW: int = Field(
+        default=10,
+        ge=0,
+        description="Maximum overflow connections beyond pool_size",
+    )
+    DB_POOL_TIMEOUT: int = Field(
+        default=30,
+        ge=0,
+        description="Seconds to wait for a connection from the pool",
+    )
+    DB_POOL_RECYCLE: int = Field(
+        default=1800,
+        ge=-1,
+        description="Seconds after which connections are recycled (-1 to disable)",
+    )
+    DB_ECHO: bool = Field(
+        default=False,
+        description="Echo SQL statements to stdout (development only)",
     )
 
     # Users

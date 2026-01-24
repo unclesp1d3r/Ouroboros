@@ -25,7 +25,6 @@ from app.core.control_rfc9457_middleware import ControlRFC9457Middleware
 from app.core.exceptions import InvalidAgentTokenError
 from app.core.logging import logger
 from app.core.openapi_customization import setup_openapi_customization
-from app.db.config import DatabaseSettings
 from app.db.session import sessionmanager
 
 
@@ -56,12 +55,8 @@ for name in logging.root.manager.loggerDict:
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
     """FastAPI lifespan events."""
-    # Initialize database session manager
-    db_settings = DatabaseSettings(
-        url=settings.sqlalchemy_database_uri,
-        echo=False,  # Set to True for SQL debugging
-    )
-    sessionmanager.init(db_settings)
+    # Initialize database session manager with consolidated settings
+    sessionmanager.init(settings)
 
     yield
 
