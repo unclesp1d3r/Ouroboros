@@ -1,9 +1,9 @@
 """Queue monitoring schemas."""
 
 from enum import Enum
-from typing import Annotated
+from typing import Annotated, Self
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class QueueType(str, Enum):
@@ -64,15 +64,26 @@ class BackgroundTaskStats(BaseModel):
 class QueueStatus(BaseModel):
     """Status information for a single queue."""
 
-    name: Annotated[str, Field(description="Queue name")]
+    name: Annotated[str, Field(description="Queue name", min_length=1)]
     type: Annotated[QueueType, Field(description="Queue type")] = QueueType.asyncio
-    pending_jobs: Annotated[int | None, Field(description="Number of pending jobs")] = 0
+    pending_jobs: Annotated[
+        int | None, Field(description="Number of pending jobs", ge=0)
+    ] = 0
     running_jobs: Annotated[int, Field(description="Number of running jobs", ge=0)] = 0
     failed_jobs: Annotated[int, Field(description="Number of failed jobs", ge=0)] = 0
     status: Annotated[StatusEnum, Field(description="Queue status")] = StatusEnum.active
     error: Annotated[
         str | None, Field(description="Error message if status is error")
     ] = None
+
+    @model_validator(mode="after")
+    def validate_error_status_consistency(self) -> Self:
+        """Validate that error field is only set when status is error."""
+        if self.status == StatusEnum.error and not self.error:
+            raise ValueError("error message is required when status is 'error'")
+        if self.status != StatusEnum.error and self.error:
+            raise ValueError("error message should only be set when status is 'error'")
+        return self
 
 
 class QueueStatusResponse(BaseModel):

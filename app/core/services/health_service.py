@@ -45,6 +45,7 @@ async def _get_detailed_minio_health(
     """Get detailed MinIO health information for admin users"""
     object_count = None
     storage_usage = None
+    metrics_error = None
 
     if basic_health.status == "healthy":
         try:
@@ -68,6 +69,7 @@ async def _get_detailed_minio_health(
 
         except (RuntimeError, ConnectionError, S3Error) as e:
             logger.warning(f"Failed to get detailed MinIO metrics: {e}")
+            metrics_error = str(e)
 
     return MinioHealthDetailed(
         status=basic_health.status,
@@ -76,6 +78,7 @@ async def _get_detailed_minio_health(
         bucket_count=basic_health.bucket_count,
         object_count=object_count,
         storage_usage=storage_usage,
+        metrics_error=metrics_error,
     )
 
 
@@ -85,6 +88,7 @@ async def _get_detailed_redis_health(basic_health: RedisHealth) -> RedisHealthDe
     evicted_keys = None
     expired_keys = None
     max_memory = None
+    metrics_error = None
 
     if basic_health.status == "healthy":
         try:
@@ -120,6 +124,7 @@ async def _get_detailed_redis_health(basic_health: RedisHealth) -> RedisHealthDe
 
         except (RuntimeError, ConnectionError, aioredis.RedisError) as e:
             logger.warning(f"Failed to get detailed Redis metrics: {e}")
+            metrics_error = str(e)
 
     return RedisHealthDetailed(
         status=basic_health.status,
@@ -131,6 +136,7 @@ async def _get_detailed_redis_health(basic_health: RedisHealth) -> RedisHealthDe
         evicted_keys=evicted_keys,
         expired_keys=expired_keys,
         max_memory=max_memory,
+        metrics_error=metrics_error,
     )
 
 
@@ -142,6 +148,7 @@ async def _get_detailed_postgres_health(
     max_connections = None
     long_running_queries = None
     database_size = None
+    metrics_error = None
 
     if basic_health.status == "healthy":
         try:
@@ -177,6 +184,7 @@ async def _get_detailed_postgres_health(
 
         except (RuntimeError, ConnectionError, SQLAlchemyError) as e:
             logger.warning(f"Failed to get detailed PostgreSQL metrics: {e}")
+            metrics_error = str(e)
 
     return PostgresHealthDetailed(
         status=basic_health.status,
@@ -186,6 +194,7 @@ async def _get_detailed_postgres_health(
         max_connections=max_connections,
         long_running_queries=long_running_queries,
         database_size=database_size,
+        metrics_error=metrics_error,
     )
 
 

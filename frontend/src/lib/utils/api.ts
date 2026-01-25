@@ -19,6 +19,24 @@ export class ApiError extends Error {
 }
 
 /**
+ * Extract error details from an API response.
+ * Tries to parse JSON response body for detail/message fields.
+ * Falls back to HTTP status if parsing fails.
+ */
+export async function extractApiError(
+    response: Response,
+    fallbackMessage: string
+): Promise<string> {
+    try {
+        const errorBody = await response.json();
+        return errorBody.detail || errorBody.message || `${fallbackMessage}: ${response.status}`;
+    } catch {
+        // Response wasn't JSON, use fallback
+        return `${fallbackMessage}: ${response.status}`;
+    }
+}
+
+/**
  * Enhanced fetch wrapper that:
  * - Always includes credentials for cookie-based auth
  * - Handles 401 errors by redirecting to login
@@ -54,7 +72,8 @@ export async function apiGet<T = unknown>(url: string): Promise<T> {
     const response = await apiFetch(url);
 
     if (!response.ok) {
-        throw new ApiError(`HTTP ${response.status}`, response.status);
+        const errorMessage = await extractApiError(response, 'Request failed');
+        throw new ApiError(errorMessage, response.status);
     }
 
     return response.json();
@@ -70,7 +89,8 @@ export async function apiPost<T = unknown>(url: string, data?: unknown): Promise
     });
 
     if (!response.ok) {
-        throw new ApiError(`HTTP ${response.status}`, response.status);
+        const errorMessage = await extractApiError(response, 'Request failed');
+        throw new ApiError(errorMessage, response.status);
     }
 
     return response.json();
@@ -86,7 +106,8 @@ export async function apiPut<T = unknown>(url: string, data?: unknown): Promise<
     });
 
     if (!response.ok) {
-        throw new ApiError(`HTTP ${response.status}`, response.status);
+        const errorMessage = await extractApiError(response, 'Request failed');
+        throw new ApiError(errorMessage, response.status);
     }
 
     return response.json();

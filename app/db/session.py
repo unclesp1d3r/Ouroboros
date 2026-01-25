@@ -4,6 +4,7 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING, Any
 
+from loguru import logger
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -81,7 +82,10 @@ class DatabaseSessionManager:
         try:
             yield session
             await session.commit()
-        except Exception:
+        except Exception as e:
+            logger.error(
+                f"Database operation failed, rolling back: {type(e).__name__}: {e}"
+            )
             await session.rollback()
             raise
         finally:

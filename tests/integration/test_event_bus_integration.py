@@ -16,8 +16,8 @@ class TestEventBusServicePattern:
         For tests, we need to manage handler lifecycle carefully.
         """
         bus = get_event_bus()
-        # Clear all handlers for clean test state
-        bus._handlers.clear()
+        # Clear all handlers for clean test state using public method
+        bus.clear()
 
     @pytest.mark.asyncio
     async def test_cross_service_notification(self) -> None:

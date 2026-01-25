@@ -20,6 +20,26 @@ async def test_session_manager_initialization(db_settings: Settings) -> None:
 
 
 @pytest.mark.asyncio
+async def test_session_manager_not_initialized_raises_error() -> None:
+    """Test that accessing session on uninitialized manager raises RuntimeError."""
+    manager = DatabaseSessionManager()
+    # Not calling manager.init()
+
+    with pytest.raises(RuntimeError, match="not initialized"):
+        async with manager.session():
+            pass
+
+
+def test_engine_not_initialized_raises_error() -> None:
+    """Test that accessing engine on uninitialized manager raises RuntimeError."""
+    manager = DatabaseSessionManager()
+    # Not calling manager.init()
+
+    with pytest.raises(RuntimeError, match="not initialized"):
+        _ = manager.engine
+
+
+@pytest.mark.asyncio
 async def test_session_manager_close(db_settings: Settings) -> None:
     """Test session manager cleanup."""
     manager = DatabaseSessionManager()
