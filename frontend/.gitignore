@@ -26,4 +26,5 @@ coverage/
 .idea/
 
 # OS
-Thumbs.db 
+Thumbs.db
+.github/skills/*
