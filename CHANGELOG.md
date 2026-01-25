@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.0] - 2025-01-XX
 
-### 🚀 Major Features
+### Major Features
 
 - **Agent API v2 Implementation**: Introduced the modernized Agent API v2 with enhanced features and improved security
   - Enhanced authentication with improved token security and expiration support
@@ -14,19 +14,19 @@ All notable changes to this project will be documented in this file.
   - Rate limiting infrastructure with comprehensive headers and backoff strategies
   - Forward-compatible design for Phase 3 resource management
 
-### 🏗️ Architecture
+### Architecture
 
 - **Multi-API Structure**: Established clear separation between Agent API v1 (legacy), Agent API v2 (modern), Web UI API, and Control API
 - **Routing Infrastructure**: Created modular endpoint organization under `app/api/v2/endpoints/`
 - **Backward Compatibility**: Maintained full compatibility with existing v1 agents while introducing v2 enhancements
 
-### 📚 Documentation
+### Documentation
 
 - **Comprehensive API Documentation**: Added detailed Agent API v2 documentation with examples and migration guides
 - **Development Guide**: Created comprehensive development guide for Agent API v2 implementation
 - **Architecture Updates**: Updated API architecture documentation to reflect multi-version support
 
-### 🔧 Technical Improvements
+### Technical Improvements
 
 - **Version Bump**: Updated project version to 2.0.0 reflecting major API enhancements
 - **Dependency Updates**: Updated core dependencies including FastAPI, Pydantic, and SQLAlchemy
@@ -38,7 +38,7 @@ All notable changes to this project will be documented in this file.
 - **Endpoints Planned**: Agent registration, heartbeat, task management, and resource access endpoints designed
 - **Future Implementation**: Full v2 API functionality planned for upcoming releases
 
-### 📖 Migration
+### Migration
 
 - **Dual API Support**: v1 and v2 APIs can run simultaneously without conflicts
 - **No Breaking Changes**: Existing v1 agents continue to work unchanged
@@ -46,7 +46,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.6.6] - 2024-12-22
 
-### 🚀 Features
+### Features
 
 - Add .erb-lint.yml configuration for custom linting
 
@@ -58,7 +58,7 @@ Introduce a new .erb-lint.yml file to configure ERB linters. Default linters are
 
 Removed verbose and redundant inline comments from multiple files to improve readability. Focused on essential descriptions for methods, modules, and classes while maintaining clarity and functionality.
 
-### 📚 Documentation
+### Documentation
 
 - Add schema information to model comments
 
@@ -66,7 +66,7 @@ Add detailed schema information to all models for better clarity
 and reference. This will help developers understand the database
 structure directly from the model files.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Update Ruby version to 3.3.6 and bump dependencies
 
@@ -74,7 +74,7 @@ Aligned the Ruby version to 3.3.6 across `.ruby-version`, `Gemfile`, and `Docker
 
 ## [0.6.5] - 2024-10-23
 
-### 🚀 Features
+### Features
 
 - Remove Bootswatch stylesheets and add MPL-2.0 licenses
 
@@ -102,7 +102,7 @@ Replaces the hash_type method with a delegate call to the hash_list's hash_mode 
 
 Removed .chglog configuration files and replaced with git-cliff configuration by adding cliff.toml. This change simplifies the changelog generation process and uses git-cliff's templating and commit parsing capabilities.
 
-### 📚 Documentation
+### Documentation
 
 - Update CHANGELOG for v0.6.4 release
 
@@ -112,13 +112,13 @@ Update the CHANGELOG.md to reflect changes for the v0.6.4 release, including new
 
 Introduce a detailed Table of Contents to enhance navigation. Reformat sections for better readability and relocate "Project Assumptions and Target Audience" for logical flow. Improved inline code blocks for setup instructions.
 
-### 🧪 Testing
+### Testing
 
 - Correct usage of change matcher in hash list spec
 
 Update hash_lists_spec.rb to properly use the change matcher syntax. This ensures that the test accurately checks if the 'processed' attribute changes from true to false after updating the hash list.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Remove commented out SCSS imports
 
@@ -140,7 +140,7 @@ Update the changelog to reflect the new version 0.6.5 release. The update includ
 
 ## [0.6.4] - 2024-09-26
 
-### 🚀 Features
+### Features
 
 - Add after_transition hook for resume event
 
@@ -160,7 +160,7 @@ Replace inline attack rendering with collection rendering in the campaign show v
 
 Extract methods for checking agent status, removing task statuses, and abandoning tasks into private methods. Ensure database connections are properly cleared after execution.
 
-### 📚 Documentation
+### Documentation
 
 - Add detailed documentation for Campaign model
 
@@ -174,7 +174,7 @@ Refactored the documentation for the Attack model by removing unnecessary detail
 
 Include documentation for new features, refactoring efforts, and improved documentation for models. Notable changes include HTTP caching, the addition of an after_transition hook, and restructuring of task and attack management code.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Update dependency versions in lock files
 
@@ -186,7 +186,7 @@ Add functionality to pause lower-priority campaigns within the `UpdateStatusJob`
 
 ## [0.6.3] - 2024-09-24
 
-### 🚀 Features
+### Features
 
 - Add toggle for hiding completed activities
 
@@ -224,13 +224,13 @@ Replaced individual Turbo tags with a combined method for clarity. Ensured the n
 
 Simplify rendering of hash lists by using a partial in the index view. Consolidate the logic of individual hash list items and use Turbo Streams for dynamic content updates.
 
-### 🎨 Styling
+### Styling
 
 - Standardize Dockerfile stage names to uppercase aliases
 
 Ensure consistent capitalization for Dockerfile AS stage names for clarity and readability. This change does not affect functionality but helps maintain a uniform style across the Dockerfile.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Remove unused resource limits and replicas in docker
 
@@ -260,7 +260,7 @@ Include features like delete button for items, toggle for hiding completed activ
 
 ## [0.6.2] - 2024-09-23
 
-### 🚀 Features
+### Features
 
 - Enhance docker-compose for production deployments
 
@@ -322,7 +322,7 @@ Changed the table class to 'table-sm' for better mobile view compatibility. Real
 
 Apply bulk changes in database migrations for hash_items and agents tables. This improvement uses the change_table method, streamlining the removal and addition of columns.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Delete .idea/sqldialects.xml
 
@@ -346,13 +346,13 @@ Add detailed entries for new features, refactoring, and bug fixes in version 0.6
 
 ## [0.6.1] - 2024-09-20
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Fixed deployment issues discovered in 0.6.0 ([#186](https://github.com/unclesp1d3r/ouroboros/issues/186))
 
 ## [0.6.0] - 2024-09-19
 
-### 🚀 Features
+### Features
 
 - Added a blank slate component
 
@@ -424,7 +424,7 @@ Renamed the `active` field to `enabled` in the `Agent` model for better clarity.
 
 Fixed a typo in the campaign priority enum comment within the migration. Changed 'Defered' to 'Deferred' to ensure accurate documentation.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Updated CHANGELOG
 
@@ -472,29 +472,29 @@ Deleted the database_consistency gem from Gemfile and removed its configurations
 
 - Added rexml dependency
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Updated changelog
 
 ## [0.5.3-001] - 2024-09-03
 
-### 🚀 Features
+### Features
 
 - Upgraded ruby and rails versions ([#181](https://github.com/unclesp1d3r/ouroboros/issues/181))
 
-### 📚 Documentation
+### Documentation
 
 - Updated changelog format to include comments
 
 We use an automatic changelog generator (git-chglog) and often include comment bodies to explain a change in our commits further. This update to the configuration will now include those explanations.
 
-### 🧪 Testing
+### Testing
 
 - Added basic controller tests and cleaned up identified issues
 
 I created bare stubs that test each controller action that is accessible via HTTP GET. This revealed a few routes that were either wholly unneeded or severely broken. I will continue adding more tests to flesh out the permissions model as I lock down some of the features to different roles.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Update .gitattributes ([#180](https://github.com/unclesp1d3r/ouroboros/issues/180))
 
@@ -502,7 +502,7 @@ Changed gitattributes to always use crlf, since we use dev containers on windows
 
 ## [0.5.3] - 2024-08-29
 
-### 🚀 Features
+### Features
 
 - Updating an attack now resets it and makes it available
 
@@ -510,7 +510,7 @@ Changed gitattributes to always use crlf, since we use dev containers on windows
 
 - Resolved issue preventing the pause button from functioning
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Updated CHANGELOG
 
@@ -522,7 +522,7 @@ Changed gitattributes to always use crlf, since we use dev containers on windows
 
 - Added cascade on foreign keys to remove children of hash lists if hash lists are deleted
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Minor reordering of the Gemspec file
 
@@ -536,13 +536,13 @@ Changed gitattributes to always use crlf, since we use dev containers on windows
 
 - Resolved a weird bug breaking the docker builds
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Updated CHANGELOG
 
 ## [0.5] - 2024-08-26
 
-### 🚀 Features
+### Features
 
 - Added support for mask lists on mask attacks
 
@@ -576,11 +576,11 @@ There was a weird bug where the hash item would get created as a duplicate but c
 
 - Minor cleanup of erb files
 
-### 📚 Documentation
+### Documentation
 
 - Grammer-checked the primary project documents
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Updated the Gemfile.lock to reflect the removed gem
 
@@ -590,7 +590,7 @@ There was a weird bug where the hash item would get created as a duplicate but c
 
 ## [0.4.2] - 2024-08-07
 
-### 🚀 Features
+### Features
 
 - Agents are now notified if there’s new cracks or the task is paused
 
@@ -610,7 +610,7 @@ MAJOR BREAKING CHANGE
 
 For some reason, it only seemed to show up once we moved to benchmarking everything. Now, it is more resilient to write errors.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Enabled the CI actions on the develop branch
 
@@ -634,27 +634,27 @@ We added several properties to smooth the transition from Hashtopolis, but they 
 
 For systems with multiple GPUs, the benchmark listing showed the speed of each GPU for the various hashes. While this might be useful for some, it was confusing and messy for most. It now adds the speeds of all GPUs for each hash, which more accurately reflects how Hashcat would use them.
 
-### 📚 Documentation
+### Documentation
 
 - Removed FOSSA scan that never really worked
 
-### 🧪 Testing
+### Testing
 
 - Restored test for ordered methods
 
 We used to test whether methods were in alphabetical order, but the Rubocop plugin that did that broke. Now that it’s working again, we are testing it again.
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Updated changelog
 
 ## [0.4] - 2024-07-29
 
-### 🚀 Features
+### Features
 
 - Agents are now notified if there’s new cracks or the task is paused
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Enabled the CI actions on the develop branch
 
@@ -662,7 +662,7 @@ We used to test whether methods were in alphabetical order, but the Rubocop plug
 
 ## [0.3.4] - 2024-07-24
 
-### 🚀 Features
+### Features
 
 - Added ability to pause campaigns
 
@@ -678,7 +678,7 @@ We used to test whether methods were in alphabetical order, but the Rubocop plug
 
 - Completing the hash list now completes the campaign
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Bumped dependencies
 
@@ -694,13 +694,13 @@ We used to test whether methods were in alphabetical order, but the Rubocop plug
 
 - Improved job queues fo high volume system
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Update CHANGELOG
 
 ## [0.3.3] - 2024-06-21
 
-### 🚀 Features
+### Features
 
 - Improved Large File Upload
 
@@ -722,13 +722,13 @@ This fixes an issue with a hash, word, or rules list being deleted before it was
 
 - Removed duplicate notifications on index pages
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Updated ChangeLog
 
 ## [0.3.2] - 2024-06-18
 
-### 🚀 Features
+### Features
 
 - Added support for sending OpenCL device limits
 
@@ -746,7 +746,7 @@ The theme we were using was trying to reach out to google fonts API and was caus
 
 - Fixed issue with view hash list permission
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Updated changelog
 
@@ -766,7 +766,7 @@ We don't use any encrypted credentials, so there's no reason not to just include
 
 ## [0.3.0] - 2024-06-14
 
-### 🚀 Features
+### Features
 
 - Exposed agent advanced configuration
 
@@ -794,7 +794,7 @@ BREAKING CHANGE
 
 - Changed unprocessable_entity to unprocessable_content
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Update CHANGELOG
 
@@ -802,7 +802,7 @@ BREAKING CHANGE
 
 ## [0.2.6] - 2024-06-12
 
-### 🚀 Features
+### Features
 
 - Exposed agent advanced configuration
 
@@ -824,7 +824,7 @@ BREAKING CHANGE
 
 - Changed unprocessable_entity to unprocessable_content
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Update CHANGELOG
 
@@ -838,7 +838,7 @@ BREAKING CHANGE
 
 ## [0.2.4] - 2024-06-07
 
-### 🚀 Features
+### Features
 
 - Exposed agent advanced configuration
 
@@ -856,7 +856,7 @@ BREAKING CHANGE
 
 - Add better logic for empty metadata in errors
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Update CHANGELOG
 
@@ -870,7 +870,7 @@ The enum had an extra comma at the end of each word that shouldn’t have been t
 
 ## [0.2.1] - 2024-06-02
 
-### 🚀 Features
+### Features
 
 - Add minio backend storage
 
@@ -902,7 +902,7 @@ Renamed the various api endpoints to be more consistent with verbNoun in camelCa
 
 - Add additional database rules
 
-### 📚 Documentation
+### Documentation
 
 - Update changelog with v0.1.6
 
@@ -914,11 +914,11 @@ Added contributing instructions explaining the use of our coding standards. Also
 
 - Updated annotations
 
-### 🎨 Styling
+### Styling
 
 - Remove Rails/ReversibleMigration cop
 
-### ⚙️ Miscellaneous Tasks
+### Miscellaneous Tasks
 
 - Reduce frequency of dependabot checks
 
@@ -926,7 +926,7 @@ Added contributing instructions explaining the use of our coding standards. Also
 
 ## [0.1.6] - 2024-05-21
 
-### 🚀 Features
+### Features
 
 - Add ability to change password ([#97](https://github.com/unclesp1d3r/ouroboros/issues/97))
 
@@ -936,7 +936,7 @@ Logged in users can now change their password by selecting from the user menu on
 
 - Add additional conventions to chglog
 
-### 📚 Documentation
+### Documentation
 
 - Add note about conventional commits
 

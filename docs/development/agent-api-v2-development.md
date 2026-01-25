@@ -42,14 +42,14 @@ api_router.include_router(resources_router)
 
 ### Completed Components (v2.0.0)
 
-#### ✅ Foundation Infrastructure
+#### [x] Foundation Infrastructure
 
 - **Router Structure**: Modular endpoint organization with proper FastAPI routing
 - **Authentication Framework**: Token validation infrastructure and dependency injection
 - **Error Handling**: Structured error responses with proper HTTP status codes
 - **Rate Limiting**: Infrastructure for per-agent and global rate limiting
 
-#### ✅ Endpoint Stubs
+#### [x] Endpoint Stubs
 
 All endpoint modules have been created with proper documentation and TODO markers:
 

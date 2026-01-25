@@ -1,15 +1,15 @@
 # Ouroboros Campaign UX and Behavior
 
-## 🧠 Ouroboros — Campaign UX and Behavior Context
+## Ouroboros — Campaign UX and Behavior Context
 
-### 🎯 Campaign Attack Ordering
+### Campaign Attack Ordering
 
 - Attack order should be **user-controlled**, not locked to creation time or estimated complexity.
 - The campaign view must support **manual reordering** of attacks.
 
 ---
 
-### 🛠️ Campaign View Toolbar
+### Campaign View Toolbar
 
 - Toolbar should include:
   - **Add Attack** button:
@@ -26,7 +26,7 @@
 
 ---
 
-### 🧩 Attack List Display (Within Campaign)
+### Attack List Display (Within Campaign)
 
 - Display attacks in a **table-like list view**.
 - Each row includes:
@@ -40,7 +40,7 @@
 
 ---
 
-### 📋 Attack Row Actions (Context Menu)
+### Attack Row Actions (Context Menu)
 
 - Each attack row should have a menu (via right-click or button).
 - Menu options:

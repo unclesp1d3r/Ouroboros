@@ -5,7 +5,7 @@ mode: agent
 1. Read the entire tasks.md document before beginning. Do not skip this step.
 2. Identify the next unchecked task in the checklist.
 
-> ⚠️ Important: Some tasks may appear implemented but are still unchecked. You must verify that each task meets all project standards. "Complete" means the code is fully implemented, idiomatic, tested, lint-free, and aligned with all coding and architectural rules.
+> [WARN] Important: Some tasks may appear implemented but are still unchecked. You must verify that each task meets all project standards. "Complete" means the code is fully implemented, idiomatic, tested, lint-free, and aligned with all coding and architectural rules.
 
 #### Task Execution Process
 
@@ -30,4 +30,4 @@ mode: agent
 - [x] Task is marked complete in the checklist
 - [x] A short summary of what was done is reported
 
-> Update the @tasks.md task list with any items that are implemented and need test coverage, checking off items that have implemented tests. ❌ Do **not** commit or check in any code ⏸️ Do **not** begin another task ✅ Stop and wait for further instruction after completing this task
+> Update the @tasks.md task list with any items that are implemented and need test coverage, checking off items that have implemented tests. [FAIL] Do **not** commit or check in any code ⏸️ Do **not** begin another task [x] Stop and wait for further instruction after completing this task

@@ -7,7 +7,6 @@
     import UserMenu from '$lib/components/layout/UserMenu.svelte';
     import * as Sidebar from '$lib/components/ui/sidebar/index.js';
     import { ModeWatcher } from 'mode-watcher';
-    // eslint-disable-next-line
     import '../app.css';
 
     let { children } = $props();

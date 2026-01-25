@@ -179,7 +179,7 @@ async def get_item(
 
 ### Response Types
 
-✅ Use `JSONResponse` for all `/api/v1/web/*` views\
+\[x\] Use `JSONResponse` for all `/api/v1/web/*` views\
 🚫 Never use `TemplateResponse`, Jinja2, or fragment rendering
 
 - All endpoints must define response models with Pydantic
@@ -301,7 +301,7 @@ async def send_notification(
 - [Pydantic Documentation](mdc:https:/docs.pydantic.dev)
 - [SQLAlchemy Documentation](mdc:https:/docs.sqlalchemy.org)
 
-## 📦 Request/Response Schemas
+## Request/Response Schemas
 
 - All request and response models **must** inherit from `pydantic.BaseModel`.
 - Request and response models **must** be defined in `app/schemas/`, not inline in route files.

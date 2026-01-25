@@ -30,7 +30,7 @@ These endpoints support the Svelte-base dashboard that human users interact with
     - [Line-Oriented Editing](#line-oriented-editing)
   - [UX Support and Utility](#ux-support-and-utility)
     - [Purpose](#purpose)
-    - [Implementation Tasks](#implementation-tasks-2)
+    - [Implementation Tasks](#implementation-tasks-4)
     - [Crackable Uploads](#crackable-uploads)
     - [Live Event Feeds (Server-Sent Events)](#live-event-feeds-server-sent-events)
     - [Implementation Tasks (SSE Event System)](#implementation-tasks-sse-event-system)
@@ -49,7 +49,7 @@ These endpoints support the Svelte-base dashboard that human users interact with
 
 _Includes endpoints for administrator management of users and project access rights._
 
-💡 _Note: Users can only update their own name and email. Role assignment and project membership changes are restricted to admins._
+TIP: _Note: Users can only update their own name and email. Role assignment and project membership changes are restricted to admins._
 
 - [x] `POST /api/v1/web/auth/login` - Login `task_id:auth.login`
 - Authentication for the web interface is handled by JWT tokens in the `Authorization` header and the `app.auth` module. Authorization is handled by the `app.auth.get_current_user` dependency and by casbin in the `app.authz` module.
@@ -60,16 +60,16 @@ _Includes endpoints for administrator management of users and project access rig
 - [x] `POST /api/v1/web/auth/change_password` - Change password `task_id:auth.change_password`
 - [x] `GET /api/v1/web/auth/context` - Get current user + project context `task_id:auth.get_context` - See [Auth Context](../notes/specific_tasks/auth_context.md) for details.
 - [x] `POST /api/v1/web/auth/context` - Switch active project `task_id:auth.set_context` - See [Auth Context](../notes/specific_tasks/auth_context.md) for details.
-- [x] `GET /api/v1/web/users/` - 🔐 Admin: list all users (paginated, filterable) `task_id:auth.list_users` - This uses the flowbite table component (see [Table with Users](https://flowbite.com/docs/components/tables/#table-with-users) for inspiration) and supports filtering and pagination.
-- [x] `POST /api/v1/web/users/` - 🔐 Admin: create user `task_id:auth.create_user`
-- [x] `GET /api/v1/web/users/{id}` - 🔐 Admin: view user detail `task_id:auth.get_user`
-- [x] `PATCH /api/v1/web/users/{id}` - 🔐 Admin: update user info or role `task_id:auth.update_user`
-- [x] `DELETE /api/v1/web/users/{id}` - 🔐 Admin: deactivate or delete user `task_id:auth.delete_user`
-- [x] `GET /api/v1/web/projects/` - 🔐 Admin: list all projects `task_id:auth.list_projects`
-- [x] POST /api/v1/web/projects/ - 🔐 Admin: create project `task_id:web.projects.create_project`
-- [x] `GET /api/v1/web/projects/{id}` - 🔐 Admin: view project info `task_id:auth.get_project`
-- [x] `PATCH /api/v1/web/projects/{id}` - 🔐 Admin: update name, visibility, user assignment `task_id:auth.update_project` - Users have a many-to-many relationship with projects through `ProjectUserAssociation` and `ProjectUserRole`.
-- [x] `DELETE /api/v1/web/projects/{id}` - 🔐 Admin: archive project `task_id:auth.delete_project` - This should be a soft delete, and the project should be archived.
+- [x] `GET /api/v1/web/users/` - Admin: list all users (paginated, filterable) `task_id:auth.list_users` - This uses the flowbite table component (see [Table with Users](https://flowbite.com/docs/components/tables/#table-with-users) for inspiration) and supports filtering and pagination.
+- [x] `POST /api/v1/web/users/` - Admin: create user `task_id:auth.create_user`
+- [x] `GET /api/v1/web/users/{id}` - Admin: view user detail `task_id:auth.get_user`
+- [x] `PATCH /api/v1/web/users/{id}` - Admin: update user info or role `task_id:auth.update_user`
+- [x] `DELETE /api/v1/web/users/{id}` - Admin: deactivate or delete user `task_id:auth.delete_user`
+- [x] `GET /api/v1/web/projects/` - Admin: list all projects `task_id:auth.list_projects`
+- [x] POST /api/v1/web/projects/ - Admin: create project `task_id:web.projects.create_project`
+- [x] `GET /api/v1/web/projects/{id}` - Admin: view project info `task_id:auth.get_project`
+- [x] `PATCH /api/v1/web/projects/{id}` - Admin: update name, visibility, user assignment `task_id:auth.update_project` - Users have a many-to-many relationship with projects through `ProjectUserAssociation` and `ProjectUserRole`.
+- [x] `DELETE /api/v1/web/projects/{id}` - Admin: archive project `task_id:auth.delete_project` - This should be a soft delete, and the project should be archived.
 - Audit existing endpoints in `/api/v1/web` for authentication/authorization. - This will be done in its own project.
   - See [Authentication Cleanup](../side_quests/authentication_cleanup.md) for audit results and implementation plan.
   - Ensure that all endpoints in `/api/v1/web`, except for `/api/v1/web/auth/login`, require authentication using the `get_current_user` dependency.
@@ -252,7 +252,7 @@ Since hash lists are one of the most sensitive components of the system, they ar
 
 Ouroboros should allow saving and loading of both individual Attacks and entire Campaigns via a custom JSON format. This will support backup, sharing, and preconfiguration workflows.
 
-🔐 The exported format must include:
+The exported format must include:
 
 - All editable fields of the attack or campaign, including position and comment
 - For campaigns: the order of attached attacks must be preserved
@@ -264,7 +264,7 @@ Ouroboros should allow saving and loading of both individual Attacks and entire 
 - Project ID or User ID bindings
 - Internal database primary keys
 
-📥 On import:
+On import:
 
 - The backend must validate schema correctness
 - Rehydrate ephemeral resources directly
@@ -283,7 +283,7 @@ If a resource referenced by GUID cannot be matched during import (either due to 
 
 All fallback logic should be implemented server-side with support for frontend prompting. to support this. It should be unique, stable across sessions, and used as the canonical identifier for serialization workflows. of both individual Attacks and entire Campaigns via a custom JSON format. This will support backup, sharing, and preconfiguration workflows.
 
-🔐 The exported format must include:
+The exported format must include:
 
 - All editable fields of the attack or campaign, including position and comment
 - For campaigns: the order of attached attacks must be preserved
@@ -295,7 +295,7 @@ All fallback logic should be implemented server-side with support for frontend p
 - Hash list references (campaigns must be re-linked to a hash list upon import)
 - Internal database IDs
 
-📥 On import:
+On import:
 
 - The backend must validate schema correctness
 - Attachments to new or existing campaigns must be confirmed explicitly
@@ -311,7 +311,7 @@ Attacks can support ephemeral resources that can be created and edited within th
 
 ---
 
-#### 🧩 Extended Implementation Tasks
+#### Extended Implementation Tasks
 
 These tasks expand the attack editing interface and logic to support contextual UIs, one-off resources, and user-friendly modifiers without exposing raw hashcat details.
 
@@ -329,8 +329,8 @@ These tasks expand the attack editing interface and logic to support contextual 
 
 The attack editor must support a modal-based, multi-form interface with per-attack-type customization. It should dynamically update keyspace estimates and complexity scores as the user changes input.
 
-- ⚙️ The editor must show real-time keyspace and complexity values, even for non-persisted attacks. Backend support is needed for live estimation.
-- ⚠️ Editing an attack that is already running or exhausted must trigger a confirmation prompt and reset the state if confirmed. This restarts the attack lifecycle.
+- The editor must show real-time keyspace and complexity values, even for non-persisted attacks. Backend support is needed for live estimation.
+- [WARN] Editing an attack that is already running or exhausted must trigger a confirmation prompt and reset the state if confirmed. This restarts the attack lifecycle.
 - ✍️ User-facing options should be simplified (e.g. "+ Change Case") and map to hashcat rule resources internally.
 - 🔁 Certain attack types (e.g., dictionary, brute force) must support one-off word/mask lists that are ephemeral and attack-local.
 
@@ -340,9 +340,9 @@ The attack editor must support a modal-based, multi-form interface with per-atta
 
 For additional notes on the agent management, see [Agent Notes](../notes/agent_notes.md).
 
-#### 🧩 UX Design Goals
+#### UX Design Goals
 
-##### 🖥️ Agent List View
+##### Agent List View
 
 - Everyone can see all agents and their state
 
@@ -364,9 +364,9 @@ For additional notes on the agent management, see [Agent Notes](../notes/agent_n
 
 - Upon save, display generated token to admin
 
-##### ⚙️ Agent Detail Tabs
+##### Agent Detail Tabs
 
-###### 🔧 Settings
+###### Settings
 
 - `display_name = agent.custom_label or agent.host_name`
 - Toggle: Enabled/Disabled
@@ -376,7 +376,7 @@ For additional notes on the agent management, see [Agent Notes](../notes/agent_n
 - List: Project assignment toggles
 - Static: OS, IP, Signature, Token
 
-###### 🖥️ Hardware
+###### Hardware
 
 - List of backend devices from `--backend-info`
 
@@ -408,7 +408,7 @@ For additional notes on the agent management, see [Agent Notes](../notes/agent_n
 - Color-coded severity
 - Fields: message, code, task link, details
 
-###### 🧠 Capabilities
+###### Capabilities
 
 - Pulls from `HashcatBenchmark`
 - Table (rollup view): Toggle / Hash ID / Name / Speed / Category
@@ -419,7 +419,7 @@ For additional notes on the agent management, see [Agent Notes](../notes/agent_n
 
 ---
 
-#### 🧩 Implementation Tasks
+#### Implementation Tasks
 
 - [x] `GET /api/v1/web/agents/` - List/filter agents `task_id:agent.list_filter`
   - This will display a paginated, filterable datatable of all agents, with search and state filter. Used for the main agent management view. `task_id:agent.list_filter`
@@ -479,7 +479,7 @@ Ouroboros uses `AttackResourceFile` objects to represent reusable cracking resou
 
 Line-oriented resources (masks, rules, small wordlists) may be edited interactively in the Web UI. Each line is validated individually and exposed via a dedicated endpoint. Larger files must be downloaded, edited offline, and reuploaded.
 
-#### 🧩 Implementation Tasks
+#### Implementation Tasks
 
 - [x] Implement `AttackResourceFile.resource_type` with enum (`mask_list`, `rule_list`, etc.) `task_id:resource.define_enum`
 
@@ -531,7 +531,7 @@ Line-oriented resources (masks, rules, small wordlists) may be edited interactiv
 
   - This will store the resource metadata in `AttackResourceFile` for frontend use. It should include the `resource_type`, `line_count`, `byte_size`, and `source`, as well as the `used_for_modes`, `line_encoding` and which projects the resource is linked to or if it is unrestricted.
 
-🧠 Attack resource files share a common storage and metadata model, but differ significantly in validation, UI affordances, and where they are used within attacks. To support this diversity while enabling structured handling, each resource must declare a `resource_type`, which drives editor behavior, validation rules, and attack compatibility.
+Attack resource files share a common storage and metadata model, but differ significantly in validation, UI affordances, and where they are used within attacks. To support this diversity while enabling structured handling, each resource must declare a `resource_type`, which drives editor behavior, validation rules, and attack compatibility.
 
 Supported `resource_type` values:
 
@@ -556,13 +556,13 @@ source: Literal["upload", "generated", "linked"]
 
 Editor behavior must respect the declared type:
 
-| **Resource TypeEditable?Line FormatEncodingNotes** |      |              |       |                                           |
-| -------------------------------------------------- | ---- | ------------ | ----- | ----------------------------------------- |
-| `mask_list`                                        | ✅   | mask syntax  | ASCII | one per line, validated mask syntax       |
-| `rule_list`                                        | ✅   | rule grammar | ASCII | strict per-line validation                |
-| `word_list`                                        | ✅\* | freeform     | UTF-8 | loose rules, allow unicode, strip control |
-| `charset`                                          | ✅   | charset def  | ASCII | e.g. `custom1 = abc123`, used in attacks  |
-| `dynamic_word_list`                                | ❌   | N/A          | UTF-8 | read-only, generated from cracked hashes  |
+| **Resource TypeEditable?Line FormatEncodingNotes** |        |              |       |                                           |
+| -------------------------------------------------- | ------ | ------------ | ----- | ----------------------------------------- |
+| `mask_list`                                        | [x]    | mask syntax  | ASCII | one per line, validated mask syntax       |
+| `rule_list`                                        | [x]    | rule grammar | ASCII | strict per-line validation                |
+| `word_list`                                        | [x]\*  | freeform     | UTF-8 | loose rules, allow unicode, strip control |
+| `charset`                                          | [x]    | charset def  | ASCII | e.g. `custom1 = abc123`, used in attacks  |
+| `dynamic_word_list`                                | [FAIL] | N/A          | UTF-8 | read-only, generated from cracked hashes  |
 
 (\*) Editing of large word lists may be disabled based on configured size thresholds.
 
@@ -608,13 +608,13 @@ This should be returned from:
 
 For valid input, return `204 No Content` or the updated data, which controls both presign + DB insert. No orphaned files should exist. The backend remains source of truth for metadata, content type, and validation enforcement.
 
-🔒 All uploaded resource files must originate from the Ouroboros backend, which controls presigned upload URLs and creates the corresponding database entry in `AttackResourceFile` (defined in `app.models.attack_resource_file`). There should never be a case where a file exists in the object store without a corresponding DB row. The S3-compatible backend is used strictly for offloading large file transfer workloads (uploads/downloads by UI and agents), not as an authoritative metadata source.
+All uploaded resource files must originate from the Ouroboros backend, which controls presigned upload URLs and creates the corresponding database entry in `AttackResourceFile` (defined in `app.models.attack_resource_file`). There should never be a case where a file exists in the object store without a corresponding DB row. The S3-compatible backend is used strictly for offloading large file transfer workloads (uploads/downloads by UI and agents), not as an authoritative metadata source.
 
-💡 The UI should detect resource type and size to determine whether inline editing or full download is allowed. The backend should expose content metadata to guide this decision, such as `line_count`, `byte_size`, and `resource_type`. The frontend may display masks, rules, and short wordlists with line-level controls; long wordlists or binary-formatted resources must fall back to download/reupload workflows.
+TIP: The UI should detect resource type and size to determine whether inline editing or full download is allowed. The backend should expose content metadata to guide this decision, such as `line_count`, `byte_size`, and `resource_type`. The frontend may display masks, rules, and short wordlists with line-level controls; long wordlists or binary-formatted resources must fall back to download/reupload workflows.
 
 _Includes support for uploading, viewing, linking, and editing attack resources (mask lists, word lists, rule lists, and custom charsets). Resources are stored in an S3-compatible object store (typically MinIO), but Ouroboros must track metadata, linkage, and validation. Users should be able to inspect and edit resource content directly in the browser via web-based interactions._
 
-🔐 Direct editing is permitted only for resources under a safe size threshold (e.g., < 5,000 lines or < 1MB). Larger files must be downloaded, edited offline, and reuploaded. This threshold should be configurable via an environment variable or application setting (e.g., `RESOURCE_EDIT_MAX_SIZE_MB`, `RESOURCE_EDIT_MAX_LINES`) to allow for deployment-specific tuning.
+Direct editing is permitted only for resources under a safe size threshold (e.g., < 5,000 lines or < 1MB). Larger files must be downloaded, edited offline, and reuploaded. This threshold should be configurable via an environment variable or application setting (e.g., `RESOURCE_EDIT_MAX_SIZE_MB`, `RESOURCE_EDIT_MAX_LINES`) to allow for deployment-specific tuning.
 
 ---
 
@@ -648,7 +648,7 @@ These may be backed by temporary parsed representations for S3-stored resources,
 
 _Includes support for uploading, viewing, linking, and editing attack resources (mask lists, word lists, rule lists, and custom charsets). Resources are stored in an S3-compatible object store (typically MinIO), but Ouroboros must track metadata, linkage, and validation. Users should be able to inspect and edit resource content directly in the browser via HTMX-supported interactions._
 
-🔐 Direct editing is permitted only for resources under a safe size threshold (e.g., < 5,000 lines or < 1MB). Larger files must be downloaded, edited offline, and reuploaded. This threshold should be configurable via an environment variable or application setting (e.g., `RESOURCE_EDIT_MAX_SIZE_MB`, `RESOURCE_EDIT_MAX_LINES`) to allow for deployment-specific tuning.
+Direct editing is permitted only for resources under a safe size threshold (e.g., < 5,000 lines or < 1MB). Larger files must be downloaded, edited offline, and reuploaded. This threshold should be configurable via an environment variable or application setting (e.g., `RESOURCE_EDIT_MAX_SIZE_MB`, `RESOURCE_EDIT_MAX_LINES`) to allow for deployment-specific tuning.
 
 - [x] `GET /api/v1/web/resources/` - Combined list of all resources (filterable by type) `task_id:resource.list_all`
 - [x] `GET /api/v1/web/resources/{id}` - Metadata + linking `task_id:resource.get_by_id`
@@ -768,10 +768,10 @@ SSE is preferred over WebSockets for this use case because:
 
 #### Core Infrastructure
 
-- ✅ FastAPI `StreamingResponse` for SSE endpoints
-- ✅ In-memory event broadcasting (no Redis required)
-- ✅ JavaScript `EventSource` client-side support
-- ✅ JWT-based auth and project scoping
+- [x] FastAPI `StreamingResponse` for SSE endpoints
+- [x] In-memory event broadcasting (no Redis required)
+- [x] JavaScript `EventSource` client-side support
+- [x] JWT-based auth and project scoping
 
 #### Event Triggers by Feed
 

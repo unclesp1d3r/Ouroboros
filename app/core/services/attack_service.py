@@ -430,6 +430,11 @@ def _load_builtin_rulefile_lines(rulefile: str) -> list[str]:
     """
     Load lines from a bundled hashcat rule file (MIT-licensed).
     Only non-empty, non-comment lines are returned.
+
+    Note: Uses functools.lru_cache instead of cashews (exception to AGENTS.md)
+    because this is a synchronous function memoizing static bundled resources
+    that never change. The files are small, only 2 are cached, and this avoids
+    the overhead of async/Redis for simple in-memory memoization.
     """
     path = {
         "leetspeak.rule": _LEETSPEAK_RULE_PATH,

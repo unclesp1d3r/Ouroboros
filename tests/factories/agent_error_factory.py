@@ -2,7 +2,7 @@
 # type: ignore[assignment]
 
 from faker import Faker
-from polyfactory import Use
+from polyfactory import Ignore, Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
 from app.models.agent_error import AgentError, Severity
@@ -12,6 +12,12 @@ fake = Faker()
 
 class AgentErrorFactory(SQLAlchemyFactory[AgentError]):
     __model__ = AgentError
+    __async_session__ = None
+    __check_model__ = False
+    __set_relationships__ = False
+    __set_association_proxy__ = False
+
+    id = Ignore()  # Let database auto-generate the ID
     message = Use(lambda: fake.sentence())
     severity = Severity.minor
     agent_id = None  # Must be set explicitly in tests

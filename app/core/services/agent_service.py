@@ -752,7 +752,7 @@ async def submit_cracked_hash_service(
             agent_display_name = agent.custom_label or agent.host_name
 
             # Create toast message with hash and agent info
-            toast_message = f"🎉 Hash cracked by {agent_display_name}: {hash_value[:8]}...→{plain_text}"
+            toast_message = f"Hash cracked by {agent_display_name}: {hash_value[:8]}... -> {plain_text}"
 
             # Broadcast to project scope
             project_id = attack.campaign.project_id
@@ -772,7 +772,7 @@ async def submit_cracked_hash_service(
 # - a HashcatGuess record (describing the current base/mod candidate context)
 # - one or more DeviceStatus records (with temperature, utilization, and speed)
 #
-# ❗This service must:
+# IMPORTANT: This service must:
 # - Reject unauthorized or incorrectly scoped agents
 # - Enforce task ownership (agent must match)
 # - Validate that task is still running

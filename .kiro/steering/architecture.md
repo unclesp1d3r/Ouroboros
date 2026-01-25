@@ -306,7 +306,6 @@ All tokens require HTTPS, automatic expiration, and audit logging.
   - Integrate Docker into your CI/CD pipeline.
   - Automate the build, test, and deployment process.
   - Use tools like Jenkins, GitLab CI, or CircleCI.
-
 ---
 
 ## Additional Notes
@@ -740,7 +739,7 @@ Keep API endpoints thin. Business logic should be in service classes under `app/
 
 Services should return Pydantic models. Endpoints should format them as JSONResponse with status codes.
 
-✅ Test services independently from the API layer.
+\[x\] Test services independently from the API layer.
 
 All business logic must live in services. These should:
 

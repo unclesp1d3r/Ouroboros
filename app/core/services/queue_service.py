@@ -43,8 +43,8 @@ async def _get_redis_queue_info() -> dict[str, Any]:
             decode_responses=True,
         )
 
-        # Test connection
-        await redis.ping()
+        # Test connection - ping() returns True on success or raises RedisError on failure
+        await redis.ping()  # pyright: ignore[reportGeneralTypeIssues]
         queue_info["redis_available"] = True
 
         # Get Redis info
@@ -59,16 +59,25 @@ async def _get_redis_queue_info() -> dict[str, Any]:
         for queue_name in celery_queues:
             try:
                 # Check if queue exists in Redis
-                queue_length = await redis.llen(f"celery:{queue_name}")  # type: ignore[reportGeneralTypeIssues]
+                queue_length = await redis.llen(f"celery:{queue_name}")  # pyright: ignore[reportGeneralTypeIssues]
                 queue_info["celery_queues"][queue_name] = {
                     "length": queue_length,
                     "status": "active" if queue_length >= 0 else "inactive",
                 }
-            except (aioredis.RedisError, ConnectionError) as e:
-                logger.debug(f"Queue {queue_name} not found or error: {e}")
+            except aioredis.ResponseError as e:
+                # Queue doesn't exist - this is expected for placeholder queues
+                logger.debug(f"Queue {queue_name} not found: {e}")
                 queue_info["celery_queues"][queue_name] = {
                     "length": 0,
                     "status": "inactive",
+                }
+            except (aioredis.RedisError, ConnectionError) as e:
+                # Connection or Redis error - this indicates a problem
+                logger.error(f"Failed to check queue {queue_name}: {e}")
+                queue_info["celery_queues"][queue_name] = {
+                    "length": None,
+                    "status": "error",
+                    "error": str(e),
                 }
 
         await redis.aclose()
@@ -192,11 +201,13 @@ async def get_queue_status_service(db: AsyncSession) -> QueueStatusResponse:
     if redis_info["redis_available"]:
         for queue_name, queue_data in redis_info["celery_queues"].items():
             # Convert string status to enum
-            celery_status = (
-                StatusEnum.active
-                if queue_data["status"] == "active"
-                else StatusEnum.inactive
-            )
+            if queue_data["status"] == "active":
+                celery_status = StatusEnum.active
+            elif queue_data["status"] == "error":
+                celery_status = StatusEnum.error
+            else:
+                celery_status = StatusEnum.inactive
+
             queues.append(
                 QueueStatus(
                     name=f"celery_{queue_name}",
@@ -205,6 +216,7 @@ async def get_queue_status_service(db: AsyncSession) -> QueueStatusResponse:
                     running_jobs=0,  # Celery running jobs are harder to track
                     failed_jobs=0,  # Would need additional Redis keys
                     status=celery_status,
+                    error=queue_data.get("error"),
                 )
             )
 

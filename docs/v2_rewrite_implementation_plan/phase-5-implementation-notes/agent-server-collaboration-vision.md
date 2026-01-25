@@ -213,7 +213,7 @@ Server uses this to prefilter `/pickup` results.
 
 - Long-running performance metric
 - Affects priority in slice selection (stable agents go first)
-- UI badge: "🌟 Veteran" or "⚠️ Unstable"
+- UI badge: " Veteran" or "[WARN] Unstable"
 
 ### Adaptive Task Graphs
 

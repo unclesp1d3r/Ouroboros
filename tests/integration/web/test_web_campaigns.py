@@ -481,7 +481,7 @@ async def test_campaign_metrics_fragment_happy_path(
     project_factory: ProjectFactory,
     hash_list_factory: HashListFactory,
     hash_item_factory: HashItemFactory,
-    db_session: "AsyncSession",
+    db_session: AsyncSession,
 ) -> None:
     # Setup: create project, hash list, campaign, and hash items
     project = await project_factory.create_async()

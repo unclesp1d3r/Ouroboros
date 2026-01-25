@@ -38,7 +38,13 @@ def get_url() -> str:
         return database_url
 
     # Fall back to alembic.ini config
-    return config.get_main_option("sqlalchemy.url")
+    url = config.get_main_option("sqlalchemy.url")
+    if url is None:
+        raise ValueError(
+            "Database URL not configured. "
+            "Set DATABASE_URL environment variable or sqlalchemy.url in alembic.ini"
+        )
+    return url
 
 
 def run_migrations_offline() -> None:

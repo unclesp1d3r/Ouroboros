@@ -20,9 +20,10 @@ export default defineConfig({
         },
     },
     webServer: {
-        command: 'pnpm run build && pnpm run preview',
+        command: 'bun run build && bun run preview',
         port: 4173,
         reuseExistingServer: true,
+        timeout: 120_000, // 120 seconds for CI where build may take longer
         env: {
             PLAYWRIGHT_TEST: 'true',
             NODE_ENV: 'test',

@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 import {
     Body_login_api_v1_web_auth_login_post,
     ChangePasswordRequest,
@@ -116,7 +117,7 @@ if (browser) {
                     authState.user = null;
                     authState.isAuthenticated = false;
                     if (!window.location.pathname.includes('/login')) {
-                        goto('/login');
+                        goto(resolve('/login'));
                     }
                 }
             }
@@ -139,7 +140,7 @@ if (browser) {
                         authState.user = null;
                         authState.isAuthenticated = false;
                         if (!window.location.pathname.includes('/login')) {
-                            goto('/login');
+                            goto(resolve('/login'));
                         }
                     }
                 }
@@ -263,7 +264,7 @@ export const authStore = {
             authState.user = null;
             authState.isAuthenticated = false;
             authState.error = null;
-            goto('/login');
+            goto(resolve('/login'));
         }
     },
 
@@ -297,10 +298,24 @@ export const authStore = {
                             'member',
                     })),
                 };
+                authState.error = null;
                 return true;
+            } else {
+                // Try to extract error details from response
+                let errorDetail = `Failed to switch project: ${response.status}`;
+                try {
+                    const errorBody = await response.json();
+                    errorDetail = errorBody.detail || errorBody.message || errorDetail;
+                } catch {
+                    // Response wasn't JSON, use status
+                }
+                authState.error = errorDetail;
             }
         } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Failed to switch project';
             console.error('Project switch failed:', error);
+            authState.error = errorMessage;
         }
 
         return false;
@@ -331,10 +346,28 @@ export const authStore = {
 
             if (response.ok) {
                 const result = LoginResult.parse(await response.json());
-                return result.message === 'Password changed successfully.';
+                if (result.message === 'Password changed successfully.') {
+                    authState.error = null;
+                    return true;
+                }
+                authState.error = result.message;
+                return false;
+            } else {
+                // Try to extract error details from response
+                let errorDetail = `Failed to change password: ${response.status}`;
+                try {
+                    const errorBody = await response.json();
+                    errorDetail = errorBody.detail || errorBody.message || errorDetail;
+                } catch {
+                    // Response wasn't JSON, use status
+                }
+                authState.error = errorDetail;
             }
         } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Failed to change password';
             console.error('Password change failed:', error);
+            authState.error = errorMessage;
         }
 
         return false;
@@ -413,7 +446,10 @@ export const authStore = {
                 return true;
             }
         } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : 'Authentication check failed';
             console.error('Auth check failed:', error);
+            authState.error = errorMessage;
         }
 
         authState.user = null;

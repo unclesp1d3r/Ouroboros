@@ -28,7 +28,7 @@ The implementation emphasizes lightweight trigger notifications rather than full
 #### Acceptance Criteria
 
 1. WHEN campaigns are running THEN the dashboard SHALL display smooth progress bar animations with percentage displays and color coding (purple=running, green=completed)
-2. WHEN agent status changes THEN the system SHALL update badge colors in real-time (🟢 Online → 🔴 Offline) without page refresh
+2. WHEN agent status changes THEN the system SHALL update badge colors in real-time ([GREEN] Online → [RED] Offline) without page refresh
 3. WHEN tasks complete THEN the system SHALL show real-time updates to running/completed task counts with visual confirmation
 4. WHEN system health changes THEN the dashboard SHALL display color-coded service status indicators for Redis, MinIO, and PostgreSQL
 5. WHEN services fail THEN the system SHALL show alert banners with retry buttons for failed services
@@ -203,7 +203,7 @@ The implementation emphasizes lightweight trigger notifications rather than full
 3. WHEN handling URL validation THEN the system SHALL only accept HTTP/HTTPS schemes and disallow file:// or other protocols
 4. WHEN validation fails THEN the system SHALL treat 403/404 responses and network errors as invalid URLs
 5. WHEN processing validation requests THEN the system SHALL not follow redirects for security
-6. WHEN displaying results THEN the UI SHALL show green check or red ❌ indicators next to resource links
+6. WHEN displaying results THEN the UI SHALL show green check or red [FAIL] indicators next to resource links
 7. WHEN validating input THEN the system SHALL use Pydantic validation and return 422 for malformed URLs
 
 ### Requirement 14: Testing Infrastructure and Coverage

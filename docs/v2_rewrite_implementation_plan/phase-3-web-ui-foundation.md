@@ -74,21 +74,21 @@ This phase finalizes the web-based UI for Ouroboros using a modern JSON API arch
 
 ---
 
-**🎯 Major Accomplishment**: The complete migration from HTMX/Jinja templates to SvelteKit has been successfully completed via the Template Salvage side quest. All legacy templates have been converted to modern Svelte components with comprehensive test coverage.
+\*\* Major Accomplishment\*\*: The complete migration from HTMX/Jinja templates to SvelteKit has been successfully completed via the Template Salvage side quest. All legacy templates have been converted to modern Svelte components with comprehensive test coverage.
 
-**🎯 Major Architectural Evolution**: Successfully migrated from SvelteKit SPA (static) to fully decoupled SSR architecture via the SPA to SSR Migration side quest. This fundamental change provides proper SEO, deep linking, progressive enhancement, and server-side data loading while maintaining modern SvelteKit patterns.
+\*\* Major Architectural Evolution\*\*: Successfully migrated from SvelteKit SPA (static) to fully decoupled SSR architecture via the SPA to SSR Migration side quest. This fundamental change provides proper SEO, deep linking, progressive enhancement, and server-side data loading while maintaining modern SvelteKit patterns.
 
-**🎯 Major Testing Infrastructure Evolution**: Successfully implemented a comprehensive three-tier testing architecture via the Full Testing Architecture side quest. This system provides fast backend tests, mocked frontend tests for rapid iteration, and full Docker-based E2E tests for complete integration validation.
+\*\* Major Testing Infrastructure Evolution\*\*: Successfully implemented a comprehensive three-tier testing architecture via the Full Testing Architecture side quest. This system provides fast backend tests, mocked frontend tests for rapid iteration, and full Docker-based E2E tests for complete integration validation.
 
 Skirmish is responsible for implementing all views from scratch in SvelteKit using only JSON APIs. No templates from Phase 2 will be reused. This phase includes full component layout, state management, validation, and test coverage.
 
-**✅ Template Migration Complete**: All Jinja templates have been successfully converted to Svelte components with full Playwright e2e test coverage and comprehensive unit test coverage where appropriate. The template salvage effort resulted in complete UI modernization.
+**[x] Template Migration Complete**: All Jinja templates have been successfully converted to Svelte components with full Playwright e2e test coverage and comprehensive unit test coverage where appropriate. The template salvage effort resulted in complete UI modernization.
 
-**✅ SPA to SSR Migration Complete**: Complete architectural migration from SvelteKit SPA to decoupled SSR architecture with proper server-side data loading, form actions, and progressive enhancement. All routes now use SSR load functions with proper error handling and test environment detection.
+**[x] SPA to SSR Migration Complete**: Complete architectural migration from SvelteKit SPA to decoupled SSR architecture with proper server-side data loading, form actions, and progressive enhancement. All routes now use SSR load functions with proper error handling and test environment detection.
 
-**✅ Three-Tier Testing Architecture Complete**: Comprehensive testing infrastructure implemented with Docker-based E2E testing, service layer data seeding, and Playwright global lifecycle management. Testing patterns established for SSR applications with extensive lessons learned captured.
+**[x] Three-Tier Testing Architecture Complete**: Comprehensive testing infrastructure implemented with Docker-based E2E testing, service layer data seeding, and Playwright global lifecycle management. Testing patterns established for SSR applications with extensive lessons learned captured.
 
-**🔄 SSR Authentication Analysis Complete**: Comprehensive analysis of SSR authentication requirements completed with detailed implementation strategy developed. Architecture patterns defined for session management, server-side API clients, and test environment integration. Implementation remains the critical blocker for full E2E testing capability.
+\*\* SSR Authentication Analysis Complete\*\*: Comprehensive analysis of SSR authentication requirements completed with detailed implementation strategy developed. Architecture patterns defined for session management, server-side API clients, and test environment integration. Implementation remains the critical blocker for full E2E testing capability.
 
 A new test-seeding endpoint needs to be created in the backend to seed the database with the necessary data for the e2e tests. The existing e2e tests that rely on mock data need to be reclassified as integration tests, and new e2e tests need to be written that fully validate the functionality of the frontend and the backend together.
 
@@ -97,23 +97,23 @@ A new test-seeding endpoint needs to be created in the backend to seed the datab
 ## Summary
 
 - Backend endpoints are complete
-- **✅ COMPLETED**: All UI has been implemented using SvelteKit with Shadcn-Svelte components
-- **✅ COMPLETED**: All HTML templates from Phase 2 have been converted to SvelteKit components
-- **✅ COMPLETED**: Comprehensive Playwright e2e test coverage implemented for all UI components
-- **✅ COMPLETED**: All legacy HTMX, Alpine.js, and Flowbite JS removed
-- **✅ COMPLETED**: Complete migration from SvelteKit SPA to decoupled SSR architecture
-- **✅ COMPLETED**: All routes migrated to SSR with proper load functions and error handling
-- **✅ COMPLETED**: All forms migrated from modal-based to SvelteKit actions with Superforms
-- **✅ COMPLETED**: Docker infrastructure for decoupled frontend/backend services
-- **✅ COMPLETED**: Three-tier testing architecture (backend, frontend mocked, full E2E)
-- **✅ COMPLETED**: Complete Docker E2E infrastructure with data seeding and health checks
-- **✅ COMPLETED**: Service layer-based E2E data seeding with Pydantic validation
-- **✅ COMPLETED**: Playwright global setup/teardown for Docker lifecycle management
-- **✅ COMPLETED**: Testing patterns established for SSR applications with comprehensive lessons learned
-- **🔄 PARTIALLY COMPLETED**: SSR authentication analysis and implementation strategy
-- **❌ PENDING**: SSR authentication implementation (critical blocker for full E2E testing)
+- **[x] COMPLETED**: All UI has been implemented using SvelteKit with Shadcn-Svelte components
+- **[x] COMPLETED**: All HTML templates from Phase 2 have been converted to SvelteKit components
+- **[x] COMPLETED**: Comprehensive Playwright e2e test coverage implemented for all UI components
+- **[x] COMPLETED**: All legacy HTMX, Alpine.js, and Flowbite JS removed
+- **[x] COMPLETED**: Complete migration from SvelteKit SPA to decoupled SSR architecture
+- **[x] COMPLETED**: All routes migrated to SSR with proper load functions and error handling
+- **[x] COMPLETED**: All forms migrated from modal-based to SvelteKit actions with Superforms
+- **[x] COMPLETED**: Docker infrastructure for decoupled frontend/backend services
+- **[x] COMPLETED**: Three-tier testing architecture (backend, frontend mocked, full E2E)
+- **[x] COMPLETED**: Complete Docker E2E infrastructure with data seeding and health checks
+- **[x] COMPLETED**: Service layer-based E2E data seeding with Pydantic validation
+- **[x] COMPLETED**: Playwright global setup/teardown for Docker lifecycle management
+- **[x] COMPLETED**: Testing patterns established for SSR applications with comprehensive lessons learned
+- \*\* PARTIALLY COMPLETED\*\*: SSR authentication analysis and implementation strategy
+- **[FAIL] PENDING**: SSR authentication implementation (critical blocker for full E2E testing)
 - New e2e tests need to be written that fully validate the functionality of the frontend and the backend together that replicate all of the existing e2e tests, but relying on the new test-seeding endpoint to seed the database with the necessary data and then validate the functionality of the frontend and the backend together.
-- **✅ COMPLETED**: All frontend views have corresponding Playwright-based E2E tests
+- **[x] COMPLETED**: All frontend views have corresponding Playwright-based E2E tests
 
 ---
 
@@ -123,24 +123,24 @@ A new test-seeding endpoint needs to be created in the backend to seed the datab
 
 #### Fundamental Architecture Changes
 
-- **✅ COMPLETED**: Migrated from `adapter-static` to `adapter-node` for full SSR capability
-- **✅ COMPLETED**: Decoupled frontend and backend services (SvelteKit server + FastAPI API)
-- **✅ COMPLETED**: Implemented proper environment-based API configuration
-- **✅ COMPLETED**: Server-side data loading with `+page.server.ts` load functions
-- **✅ COMPLETED**: Progressive enhancement with JavaScript-optional functionality
-- **✅ COMPLETED**: Deep linking and URL sharing functionality restored
+- **[x] COMPLETED**: Migrated from `adapter-static` to `adapter-node` for full SSR capability
+- **[x] COMPLETED**: Decoupled frontend and backend services (SvelteKit server + FastAPI API)
+- **[x] COMPLETED**: Implemented proper environment-based API configuration
+- **[x] COMPLETED**: Server-side data loading with `+page.server.ts` load functions
+- **[x] COMPLETED**: Progressive enhancement with JavaScript-optional functionality
+- **[x] COMPLETED**: Deep linking and URL sharing functionality restored
 
 #### "Stock Shadcn-Svelte" Philosophy Implementation
 
-- **✅ COMPLETED**: Leveraged Superforms' built-in SvelteKit integration instead of custom API clients
-- **✅ COMPLETED**: Standard SvelteKit form actions (POST to same route) for all forms
-- **✅ COMPLETED**: Superforms handles validation & progressive enhancement out-of-the-box
-- **✅ COMPLETED**: Server-side conversion of validated data to Ouroboros API format
-- **✅ COMPLETED**: Components stay close to stock Shadcn-Svelte patterns for maintainability
+- **[x] COMPLETED**: Leveraged Superforms' built-in SvelteKit integration instead of custom API clients
+- **[x] COMPLETED**: Standard SvelteKit form actions (POST to same route) for all forms
+- **[x] COMPLETED**: Superforms handles validation & progressive enhancement out-of-the-box
+- **[x] COMPLETED**: Server-side conversion of validated data to Ouroboros API format
+- **[x] COMPLETED**: Components stay close to stock Shadcn-Svelte patterns for maintainability
 
 #### SSR Route Migration Complete
 
-- **✅ COMPLETED**: All major routes converted from client-side API calls to SSR data loading:
+- **[x] COMPLETED**: All major routes converted from client-side API calls to SSR data loading:
   - Dashboard (`/`) with live stats widgets and SSR initial data
   - Campaigns (`/campaigns`, `/campaigns/[id]`) with pagination and search via URL state
   - Attacks (`/attacks`) with filtering and sorting through URL parameters
@@ -152,8 +152,8 @@ A new test-seeding endpoint needs to be created in the backend to seed the datab
 
 #### SSR Authentication Challenge Identified
 
-- **🔄 ANALYSIS COMPLETED**: Comprehensive authentication strategy developed for SSR architecture
-- **❌ CRITICAL BLOCKER**: SSR load functions require authenticated API calls but no session handling exists
+- \*\* ANALYSIS COMPLETED\*\*: Comprehensive authentication strategy developed for SSR architecture
+- **[FAIL] CRITICAL BLOCKER**: SSR load functions require authenticated API calls but no session handling exists
 - **Technical Gap**: Need to implement session-based authentication for server-side data loading
 - **Impact**: E2E tests fail due to 401 responses from authentication-required endpoints
 - **Solution Strategy**: Session cookie management with SvelteKit hooks and server-side API client
@@ -161,59 +161,59 @@ A new test-seeding endpoint needs to be created in the backend to seed the datab
 
 #### Comprehensive Form Migration
 
-- **✅ COMPLETED**: All modal-based forms converted to dedicated routes with SvelteKit actions:
+- **[x] COMPLETED**: All modal-based forms converted to dedicated routes with SvelteKit actions:
   - Campaign editor: `/campaigns/new`, `/campaigns/[id]/edit` (Superforms + Zod validation)
   - Attack editor: `/attacks/new`, `/attacks/[id]/edit` (Multi-step wizard with sliding cards)
   - User management: `/users/new`, `/users/[id]` (Role management with form actions)
   - Resource upload: `/resources/upload` (FileDropZone with progressive upload)
   - Delete confirmations: Proper form actions with impact assessment
-- **✅ COMPLETED**: Environment detection for test scenarios with mock data fallbacks
-- **✅ COMPLETED**: Proper error handling and success feedback for all form workflows
+- **[x] COMPLETED**: Environment detection for test scenarios with mock data fallbacks
+- **[x] COMPLETED**: Proper error handling and success feedback for all form workflows
 
 ### Technology Stack Changes
 
-- **✅ COMPLETED**: Migrated from Flowbite to **Shadcn-Svelte** as primary UI component library
-- **✅ COMPLETED**: Implemented **SvelteKit v5 with runes** for reactive state management
-- **✅ COMPLETED**: Adopted **Tailwind v4** for styling
-- **✅ COMPLETED**: Integrated **formsnap** for all form handling (no regular HTML forms)
-- **✅ COMPLETED**: Implemented **svelte-sonner** for toast notifications
-- **✅ COMPLETED**: **Superforms v2** integration with SvelteKit form actions
-- **✅ COMPLETED**: **Zod schemas** for comprehensive form validation
+- **[x] COMPLETED**: Migrated from Flowbite to **Shadcn-Svelte** as primary UI component library
+- **[x] COMPLETED**: Implemented **SvelteKit v5 with runes** for reactive state management
+- **[x] COMPLETED**: Adopted **Tailwind v4** for styling
+- **[x] COMPLETED**: Integrated **formsnap** for all form handling (no regular HTML forms)
+- **[x] COMPLETED**: Implemented **svelte-sonner** for toast notifications
+- **[x] COMPLETED**: **Superforms v2** integration with SvelteKit form actions
+- **[x] COMPLETED**: **Zod schemas** for comprehensive form validation
 
 ### Testing Architecture Improvements
 
-- **✅ COMPLETED**: Comprehensive **Playwright e2e test coverage** for all UI components
-- **✅ COMPLETED**: **Vitest unit tests** for utility functions and simple components
-- **✅ COMPLETED**: All tests pass `just frontend-check` validation
-- **✅ COMPLETED**: **Three-tier testing architecture** implemented:
+- **[x] COMPLETED**: Comprehensive **Playwright e2e test coverage** for all UI components
+- **[x] COMPLETED**: **Vitest unit tests** for utility functions and simple components
+- **[x] COMPLETED**: All tests pass `just frontend-check` validation
+- **[x] COMPLETED**: **Three-tier testing architecture** implemented:
   - **Layer 1**: Backend tests with testcontainers (Python)
   - **Layer 2**: Frontend tests with mocked APIs (Vitest + Playwright)
   - **Layer 3**: Full E2E tests against real Docker backend
-- **✅ COMPLETED**: **Docker E2E infrastructure** with health checks and data seeding
-- **✅ COMPLETED**: **Environment detection** in tests with proper mock data fallbacks
+- **[x] COMPLETED**: **Docker E2E infrastructure** with health checks and data seeding
+- **[x] COMPLETED**: **Environment detection** in tests with proper mock data fallbacks
 - **Testing Pattern**: Mock API responses in Playwright tests since backend isn't running during e2e tests
 
 ### Component Architecture Established
 
-- **✅ COMPLETED**: Modular component structure in `frontend/src/lib/components/`
-- **✅ COMPLETED**: Proper separation of concerns (pages, components, utilities)
-- **✅ COMPLETED**: Consistent use of TypeScript interfaces for type safety
-- **✅ COMPLETED**: Role-based access control implemented in UI components
-- **✅ COMPLETED**: **SvelteKit 5 runes-based stores** for backend state management
-- **✅ COMPLETED**: **SSR-compatible store hydration** from server-side data
-- **✅ COMPLETED**: **Progressive enhancement** patterns throughout application
+- **[x] COMPLETED**: Modular component structure in `frontend/src/lib/components/`
+- **[x] COMPLETED**: Proper separation of concerns (pages, components, utilities)
+- **[x] COMPLETED**: Consistent use of TypeScript interfaces for type safety
+- **[x] COMPLETED**: Role-based access control implemented in UI components
+- **[x] COMPLETED**: **SvelteKit 5 runes-based stores** for backend state management
+- **[x] COMPLETED**: **SSR-compatible store hydration** from server-side data
+- **[x] COMPLETED**: **Progressive enhancement** patterns throughout application
 
 ### Docker & DevOps Infrastructure
 
-- **✅ COMPLETED**: **Complete Docker infrastructure** for decoupled SvelteKit SSR + FastAPI:
+- **[x] COMPLETED**: **Complete Docker infrastructure** for decoupled SvelteKit SSR + FastAPI:
   - Production and development Dockerfiles for both services
   - `docker-compose.yml` for production deployment
   - `docker-compose.dev.yml` for development with hot reload
   - `docker-compose.e2e.yml` for full-stack E2E testing
-- **✅ COMPLETED**: **Health check configuration** using `/api-info` endpoint (unauthenticated)
-- **✅ COMPLETED**: **Proper service networking** and dependency management
-- **✅ COMPLETED**: **Environment variable handling** across all deployment scenarios
-- **✅ COMPLETED**: **Development command integration** with three-tier testing architecture
+- **[x] COMPLETED**: **Health check configuration** using `/api-info` endpoint (unauthenticated)
+- **[x] COMPLETED**: **Proper service networking** and dependency management
+- **[x] COMPLETED**: **Environment variable handling** across all deployment scenarios
+- **[x] COMPLETED**: **Development command integration** with three-tier testing architecture
 
 ---
 
@@ -633,7 +633,7 @@ This section captures the comprehensive UX design goals and interface patterns d
 - Catppuccin Macchiato base
 - DarkViolet accent (`#9400D3`)
 - Layout surfaces use `base`, `surface0`, `crust`
-- **✅ COMPLETED**: Shadcn-Svelte components provide theme-compatible styling
+- **[x] COMPLETED**: Shadcn-Svelte components provide theme-compatible styling
 - **Note**: Dark mode toggle still pending implementation but theme foundation established
 
 ---
@@ -660,9 +660,9 @@ This section captures the comprehensive UX design goals and interface patterns d
 - [x] **COMPLETED**: All tests pass `just frontend-check` validation
 - [x] **COMPLETED**: Test coverage for all converted template components
 - [x] **COMPLETED**: **Three-tier testing architecture implemented**:
-  - **Backend tests**: ✅ **593 passed** (1 xfailed) with testcontainers (Python + pytest)
-  - **Frontend tests**: ✅ **149 unit tests + 161 E2E tests** (3 skipped) with mocked APIs (Vitest + Playwright)
-  - **Full E2E tests**: ✅ **Docker infrastructure complete** with service layer data seeding (Playwright + Docker backend)
+  - **Backend tests**: [x] **593 passed** (1 xfailed) with testcontainers (Python + pytest)
+  - **Frontend tests**: [x] **149 unit tests + 161 E2E tests** (3 skipped) with mocked APIs (Vitest + Playwright)
+  - **Full E2E tests**: [x] **Docker infrastructure complete** with service layer data seeding (Playwright + Docker backend)
 - [x] **COMPLETED**: **Docker E2E Infrastructure**:
   - Complete Docker Compose E2E environment (`docker-compose.e2e.yml`)
   - Service layer-based data seeding (`scripts/seed_e2e_data.py`)
@@ -685,9 +685,9 @@ This section captures the comprehensive UX design goals and interface patterns d
 
 **Testing Architecture Established**:
 
-- **Layer 1 (Backend)**: Python backend tests with testcontainers for database integration - ✅ **COMPLETE**
-- **Layer 2 (Frontend Mocked)**: Vitest + Playwright with mocked API responses for fast feedback - ✅ **COMPLETE**
-- **Layer 3 (Full E2E)**: Playwright against real Docker backend for integration validation - ✅ **Infrastructure Complete**
+- **Layer 1 (Backend)**: Python backend tests with testcontainers for database integration - [x] **COMPLETE**
+- **Layer 2 (Frontend Mocked)**: Vitest + Playwright with mocked API responses for fast feedback - [x] **COMPLETE**
+- **Layer 3 (Full E2E)**: Playwright against real Docker backend for integration validation - [x] **Infrastructure Complete**
 - Mock API responses in Playwright tests (Layer 2) since backend isn't running during frontend e2e tests
 - Unit tests for utility functions and simple component logic
 - E2E tests for full user workflows and component integration
@@ -699,7 +699,7 @@ This section captures the comprehensive UX design goals and interface patterns d
 
 ## Template Migration Accomplishments
 
-**✅ COMPLETED - All Legacy Templates Converted**:
+**[x] COMPLETED - All Legacy Templates Converted**:
 
 ### Major UI Sections Completed
 
@@ -730,7 +730,7 @@ This section captures the comprehensive UX design goals and interface patterns d
 
 ## SPA to SSR Migration Accomplishments
 
-**✅ COMPLETED - Complete Architectural Migration**:
+**[x] COMPLETED - Complete Architectural Migration**:
 
 ### **Fundamental Architecture Changes**
 
@@ -786,7 +786,7 @@ Complete migration from modal-based forms to dedicated routes with SvelteKit for
 
 ## Three-Tier Testing Architecture Accomplishments
 
-**✅ COMPLETED - Comprehensive Testing Infrastructure**:
+**[x] COMPLETED - Comprehensive Testing Infrastructure**:
 
 ### Testing Layer Implementation
 
@@ -795,24 +795,24 @@ Complete migration from modal-based forms to dedicated routes with SvelteKit for
 - **Technology Stack**: Python 3.13 + pytest + testcontainers
 - **Test Scope**: Backend API endpoints, services, database operations, integration testing
 - **Infrastructure**: PostgreSQL + MinIO containers with automated lifecycle management
-- **Test Results**: ✅ **593 tests passing** (1 xfailed) with comprehensive coverage
+- **Test Results**: [x] **593 tests passing** (1 xfailed) with comprehensive coverage
 - **Performance**: Fast execution with parallel test capabilities
-- **Status**: **COMPLETE** ✅ - Robust backend testing foundation established
+- **Status**: **COMPLETE** [x] - Robust backend testing foundation established
 
 #### Layer 2: Frontend Mocked Tests (`just test-frontend`)
 
 - **Technology Stack**: Vitest (unit) + Playwright (E2E with mocked APIs)
 - **Test Scope**: Frontend components, user interactions, SSR rendering with mock data
 - **Mock Strategy**: Environment detection with `PLAYWRIGHT_TEST` flag for test data
-- **Test Results**: ✅ **149 unit tests + 161 E2E tests** (3 skipped) all passing
+- **Test Results**: [x] **149 unit tests + 161 E2E tests** (3 skipped) all passing
 - **Performance**: Fast feedback loop for frontend development iteration
-- **Status**: **COMPLETE** ✅ - Comprehensive mocked frontend testing established
+- **Status**: **COMPLETE** [x] - Comprehensive mocked frontend testing established
 
 #### Layer 3: Full E2E Tests (`just test-e2e`)
 
 - **Technology Stack**: Playwright against real Docker backend stack
 - **Test Scope**: Complete user workflows with real database, API, and authentication
-- **Infrastructure**: ✅ **Docker Compose E2E environment fully implemented**
+- **Infrastructure**: [x] **Docker Compose E2E environment fully implemented**
 - **Data Strategy**: Service layer-based seeding with predictable test data
 - **Current Status**: **Infrastructure complete, authentication integration pending**
 

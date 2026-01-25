@@ -29,14 +29,14 @@ All operations are async and non-blocking. Agents offload debug artifacts to sto
 
 ## Key Concepts
 
-### ✅ Debug Artifact Submission
+### [x] Debug Artifact Submission
 
 - Agents always run rule-based attacks with `--debug-mode=3`
 - Output is compressed and uploaded to MinIO/S3
 - Reference is returned as part of task completion payload
 - Agent does not parse anything — it just pushes and forgets
 
-### ✅ Asynchronous Parsing
+### [x] Asynchronous Parsing
 
 - Server records metadata in `SubmittedDebugArtifact`
 - Celery job `parse_and_score_debug_rules(debug_file_url, task_id, project_id)` is queued
@@ -135,7 +135,7 @@ Stores promoted rules ready for attack use.
 
 Ouroboros will promote rules into `learned.rules` based on observed cracking success, recency, and project relevance. The promotion logic is run by background tasks and incorporates rule aging, scoring, and deduplication.
 
-### 🎯 Promotion Criteria
+### Promotion Criteria
 
 A rule is promoted if:
 
@@ -145,7 +145,7 @@ A rule is promoted if:
 
 Promotion is tracked per `(rule, hash_type)` to ensure hash-mode specificity.
 
-### 🔢 Dynamic Scoring
+### Dynamic Scoring
 
 Every rule is assigned a `score` that reflects not just usage frequency, but also relative cost and freshness:
 
@@ -168,10 +168,10 @@ This score is used to:
 - Sort the contents of `learned.rules`
 - Trim stale rules from promotion pool
 - Visualize rule effectiveness in UI
-- Guide DAG-level rule prioritization### 🛑 Filters (Pre-Promotion)
-- ❌ Reject empty rules (`rule == ""`)
-- ❌ Ignore rules with `cracked_count == 1`
-- ❌ Optionally ignore rules on a project-wide blacklist
+- Guide DAG-level rule prioritization### Filters (Pre-Promotion)
+- [FAIL] Reject empty rules (`rule == ""`)
+- [FAIL] Ignore rules with `cracked_count == 1`
+- [FAIL] Optionally ignore rules on a project-wide blacklist
 
 ### 🔃 Re-Aggregation and Aging
 
@@ -190,7 +190,7 @@ Rules that no longer meet recency or usage thresholds may be:
 
 Each `LearnedRule` will include a flag to indicate whether it was used in the most recent campaign. This supports active/dormant rule separation, and enables analytics on recent effectiveness.
 
-### 🔄 Rule Impact Feedback Loop
+### Rule Impact Feedback Loop
 
 As DAGs execute, rule effectiveness will be monitored in real time. Rules with zero impact in recent DAG nodes may be deprioritized or rotated out. Conversely, rules that yield cracks mid-campaign may be reprioritized dynamically.
 

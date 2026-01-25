@@ -4,7 +4,7 @@ This view represents a specialized **dictionary-style attack** that uses a dynam
 
 ---
 
-### 💡 Summary
+### TIP: Summary
 
 - UI built with Flowbite modal and Tailwind utility classes
 - No manual wordlist upload — dictionary is automatically linked to dynamic wordlist (`AttackResourceType.DYNAMIC_WORD_LIST`)
@@ -28,9 +28,9 @@ This view represents a specialized **dictionary-style attack** that uses a dynam
 
 ---
 
-### 🛠️ Modificators Block
+### Modificators Block
 
-#### 🔹 Input Wordlist (Dynamic)
+#### Input Wordlist (Dynamic)
 
 This field is static text. The actual wordlist is system-generated and not editable.
 
@@ -76,7 +76,7 @@ Each button opens a modifier configuration area (or toggles a preset), shown inl
 
 ---
 
-### 📤 Output Section
+### Output Section
 
 This is a visual placeholder — no actual field is shown in the mockup:
 
@@ -90,7 +90,7 @@ Can be omitted unless you plan to show a visual preview of generated candidates 
 
 ---
 
-### 📊 Estimation Block
+### Estimation Block
 
 ```html
 <div class="mt-4 text-sm text-gray-900 dark:text-white">
@@ -131,7 +131,7 @@ whenever modifiers are toggled.
 
 ---
 
-### ✅ Footer Controls
+### [x] Footer Controls
 
 ```html
 <div class="flex justify-end space-x-2 mt-6">
@@ -146,7 +146,7 @@ whenever modifiers are toggled.
 
 ---
 
-### 📦 Backend Submission Payload
+### Backend Submission Payload
 
 ```jsonc
 {
@@ -160,7 +160,7 @@ whenever modifiers are toggled.
 
 ---
 
-### 🔒 Notes for Skirmish
+### Notes for Skirmish
 
 - Wordlist is **read-only** and tied to prior crack results for the current campaign/project
 - Case modifier options should map to a known rule file or inlined rule syntax

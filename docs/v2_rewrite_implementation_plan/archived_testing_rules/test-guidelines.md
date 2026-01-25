@@ -42,7 +42,7 @@
 
 - Report coverage deltas in CI (or log locally if airgapped)
 
-- ✅ Use `polyfactory` for generating test data in service, model, and route tests. See [Polyfactory Documentation](mdc:https:/polyfactory.litestar.dev/latest)
+- [x] Use `polyfactory` for generating test data in service, model, and route tests. See [Polyfactory Documentation](mdc:https:/polyfactory.litestar.dev/latest)
 
   - Use `polyfactory.create_async()` only. Do not use `.build()`, `SubFactory`, or `sync` methods. All test data must be persisted using an active async SQLAlchemy session.
   - Define all factories in `tests/factories/`.
@@ -50,14 +50,14 @@
   - Avoid manually constructing ORM or Pydantic objects in tests unless necessary.
   - Keep factory defaults minimal — override fields in tests as needed.
 
-- ✅ Use `testcontainers-python` to run tests against isolated PostgreSQL instances.
+- [x] Use `testcontainers-python` to run tests against isolated PostgreSQL instances.
 
   - Do not use SQLite or in-memory DBs unless explicitly required.
   - Define shared test schemas and data fixtures in `conftest.py`.
   - Use `PostgresContainer` to provide a real database for integration and service tests.
   - Apply Alembic migrations to the containerized DB before running tests.
 
-- ✅ Use `httpx.AsyncClient` for testing FastAPI endpoints.
+- [x] Use `httpx.AsyncClient` for testing FastAPI endpoints.
 
   - Instantiate as: `httpx.AsyncClient(app=app, base_url="http://test")`
   - Do not use Starlette's test client or custom wrappers.
@@ -117,13 +117,13 @@ Avoid over-mocking. Prioritize realistic, layered testing grounded in the real s
 
 - ⚔️ **Concurrency & Race Conditions**: Simulate concurrent execution of relevant endpoints (e.g., task acquisition, job tracking) using `pytest-asyncio` with `asyncio.gather()` or `trio`. Verify consistent outcomes.
 
-- 📦 **Schema Drift & API Contracts**: Where endpoints return structured responses (e.g., JSON), add explicit schema validation using Pydantic models or response matchers to catch unintentional output changes.
+- **Schema Drift & API Contracts**: Where endpoints return structured responses (e.g., JSON), add explicit schema validation using Pydantic models or response matchers to catch unintentional output changes.
 
-- 🔐 **RBAC & Permission Boundaries**: For protected routes or admin-only actions, include both authorized and unauthorized test cases. Validate HTTP 403 behavior and prevent privilege escalation.
+- **RBAC & Permission Boundaries**: For protected routes or admin-only actions, include both authorized and unauthorized test cases. Validate HTTP 403 behavior and prevent privilege escalation.
 
 - 🔁 **Startup/Shutdown Events**: If your application registers services, event handlers, or startup hooks, write integration tests that validate those hooks fire and function as expected.
 
-- 🔄 **Migration Coverage**: Include at least one test that validates all Alembic migrations apply cleanly (alembic upgrade head) in CI against a fresh DB.
+- **Migration Coverage**: Include at least one test that validates all Alembic migrations apply cleanly (alembic upgrade head) in CI against a fresh DB.
 
 ---
 
@@ -133,9 +133,9 @@ You should attempt to satisfy all linter and static analysis rules in the `/test
 
 - Do **not** waste time chasing every false-positive caused by test-specific code structures (e.g., dynamically generated test IDs, parametrization, context-dependent mocks).
 - If a linter rule fails for a **legitimate test use case**:
-  - ✅ First, try to restructure the code to avoid the warning.
-  - ✅ If that's not possible, **ask permission** before adding a `# noqa` or updating `pyproject.toml` to silence the warning globally or selectively.
-  - ❌ Never disable test directory linting wholesale.
+  - [x] First, try to restructure the code to avoid the warning.
+  - [x] If that's not possible, **ask permission** before adding a `# noqa` or updating `pyproject.toml` to silence the warning globally or selectively.
+  - [FAIL] Never disable test directory linting wholesale.
 
 Linter errors in tests should be treated as **soft failures** unless they indicate real issues (e.g., unimported fixtures, unreachable code, broken decorators). Prioritize clarity and functionality over silence.
 

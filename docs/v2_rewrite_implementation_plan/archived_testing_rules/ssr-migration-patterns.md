@@ -13,7 +13,7 @@ This rule documents proven patterns for migrating SvelteKit applications from SP
 - **Avoid mixing SSR data and store data in the same component**
 
 ```svelte
-<!-- ✅ CORRECT - Use SSR data directly -->
+<!-- [x] CORRECT - Use SSR data directly -->
 <script lang="ts">
     export let data: PageData;
 
@@ -21,7 +21,7 @@ This rule documents proven patterns for migrating SvelteKit applications from SP
     let totalCount = $derived(data.campaigns.total_count);
 </script>
 
-<!-- ❌ WRONG - Don't mix SSR data with store calls -->
+<!-- [FAIL] WRONG - Don't mix SSR data with store calls -->
 <script lang="ts">
     export let data: PageData;
     import { getCampaigns } from '$lib/stores/campaigns.svelte';
@@ -33,7 +33,7 @@ This rule documents proven patterns for migrating SvelteKit applications from SP
 ### Load Function Patterns
 
 ```typescript
-// ✅ CORRECT - Robust load function with error handling
+// [x] CORRECT - Robust load function with error handling
 export const load: PageServerLoad = async ({ cookies, url, params }) => {
     // Environment detection for tests
     if (process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT_TEST) {
@@ -70,7 +70,7 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 - **Cross-component state sharing** is required
 
 ```typescript
-// ✅ CORRECT - Hydrate only when reactive updates needed
+// [x] CORRECT - Hydrate only when reactive updates needed
 $effect(() => {
     // Only hydrate if components will update this data
     if (needsReactiveUpdates) {
@@ -102,7 +102,7 @@ export const campaignsStore = {
 ### Environment Detection
 
 ```typescript
-// ✅ CORRECT - Comprehensive test environment detection
+// [x] CORRECT - Comprehensive test environment detection
 if (process.env.NODE_ENV === 'test' ||
     process.env.PLAYWRIGHT_TEST ||
     process.env.CI) {
@@ -128,7 +128,7 @@ export default defineConfig({
 ### Mock Data Consistency
 
 ```typescript
-// ✅ CORRECT - Mock data matches API structure exactly
+// [x] CORRECT - Mock data matches API structure exactly
 const mockCampaigns = {
     items: [
         {
@@ -150,7 +150,7 @@ const mockCampaigns = {
 ### Modal to Route Conversion
 
 ```typescript
-// ✅ CORRECT - Convert modals to dedicated routes with modal presentation
+// [x] CORRECT - Convert modals to dedicated routes with modal presentation
 // Route: /campaigns/new
 // Triggered by: Button in campaigns list
 // Presentation: Modal overlay using dialog component
@@ -246,7 +246,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ### Selective Store Usage
 
 ```svelte
-<!-- ✅ CORRECT - Use SSR data for initial render, store for updates -->
+<!-- [x] CORRECT - Use SSR data for initial render, store for updates -->
 <script lang="ts">
     export let data: PageData;
     import { campaignsStore } from '$lib/stores/campaigns.svelte';
@@ -382,10 +382,10 @@ const { form, errors, enhance, submitting } = superForm(data.form, {
 
 **Key Requirements**:
 
-- ✅ Use `{#snippet children({ props })}` (Svelte 5 syntax)
-- ✅ Destructure `props` from snippet parameter
-- ✅ Import from `'formsnap'` directly
-- ❌ Never use basic HTML forms as shortcuts
+- [x] Use `{#snippet children({ props })}` (Svelte 5 syntax)
+- [x] Destructure `props` from snippet parameter
+- [x] Import from `'formsnap'` directly
+- [FAIL] Never use basic HTML forms as shortcuts
 
 ### 4. Modal-to-Route Migration Pattern
 
@@ -545,11 +545,11 @@ $effect(() => {
 ### 1. Namespace Imports for Multi-Component Libraries
 
 ```typescript
-// ✅ Correct pattern
+// [x] Correct pattern
 import * as Accordion from '$lib/components/ui/accordion/index.js';
 // Usage: <Accordion.Root><Accordion.Item>
 
-// ❌ Avoid individual imports that may not exist
+// [FAIL] Avoid individual imports that may not exist
 import { AccordionRoot } from '$lib/components/ui/accordion/root.js';
 ```
 

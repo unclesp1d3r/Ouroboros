@@ -4,7 +4,7 @@ Here's the updated version of the `attack.default_config_suggestions.md` note wi
 
 ---
 
-## 🧠 Task: Show Default Attack Config Suggestions
+## Task: Show Default Attack Config Suggestions
 
 **ID:** `attack.default_config_suggestions` **Context:** Attack Editor UI (Web)
 
@@ -12,7 +12,7 @@ Here's the updated version of the `attack.default_config_suggestions.md` note wi
 
 Provide a curated list of **default attack configurations** (e.g., common mask patterns, rulesets, and charset combos) to guide new or casual users. These suggestions should be admin-managed and project-aware, enabling power users to surface battle-tested configurations to the rest of the team.
 
-### ✅ Final Design Approach
+### [x] Final Design Approach
 
 Rather than hardcoding suggestions or adding a new system, we will **extend the existing `AttackTemplate` concept** to allow templates to be stored and flagged as "recommended" in the backend.
 
@@ -20,9 +20,9 @@ Templates with `recommended: true` will be exposed to the frontend as default su
 
 ---
 
-## 🔧 Implementation Tasks
+## Implementation Tasks
 
-### 📦 Backend Tasks
+### Backend Tasks
 
 - [ ] Add a new `AttackTemplateRecord` database model to persist named templates server-side
 
@@ -50,7 +50,7 @@ Templates with `recommended: true` will be exposed to the frontend as default su
 
 - [ ] Add `DELETE /api/v1/web/templates/{id}` for deleting a template in the database (admin-only)
 
-### 🧑‍💼 Admin UI Tasks
+### 🧑‍ Admin UI Tasks
 
 - [ ] Add UI to list and manage stored templates (admin-only)
 - [ ] Add an upload form that accepts an AttackTemplate JSON file via drag and drop or file upload
@@ -58,7 +58,7 @@ Templates with `recommended: true` will be exposed to the frontend as default su
 - [ ] Add a button to remove a template
 - [ ] Add a button to open a modal to allow the assigned projects to be edited via checkbox selection, with a save button, cancel button, and a unselect all button.
 
-### 🎨 Attack Editor UI Tasks
+### Attack Editor UI Tasks
 
 - [ ] Display a new dropdown or section labeled "_"Use a Recommended Template"_
 - [ ] Pull recommended templates from the new endpoint (show all templates that have no project_id assigned, and all templates that have a project_id assigned to the current project)
@@ -67,7 +67,7 @@ Templates with `recommended: true` will be exposed to the frontend as default su
 
 ---
 
-## 🧠 Benefits
+## Benefits
 
 - Admins can define reusable, pre-tuned configurations
 - New users get battle-tested starting points without needing to understand hashcat internals

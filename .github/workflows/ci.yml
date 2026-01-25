@@ -29,23 +29,25 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
-            - name: Set up Python 3.13
+            - name: Set up Python 3.14
               uses: actions/setup-python@v6
               with:
-                  python-version: "3.13"
+                  python-version: "3.14"
 
             - name: Install uv (Python package manager)
-              uses: astral-sh/setup-uv@v3
+              uses: astral-sh/setup-uv@v7
               with:
                   version: "latest"
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v4
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
 
             - name: Install just
-              uses: extractions/setup-just@v1
+              uses: extractions/setup-just@v3
 
             - name: Wait for PostgreSQL
               run: |
@@ -56,10 +58,10 @@ jobs:
               run: uv sync --all-packages --group ci --frozen
 
             - name: Install frontend dependencies
-              run: cd frontend && pnpm install
+              run: cd frontend && bun install
 
             - name: Install Playwright browsers
-              run: cd frontend && pnpm exec playwright install --with-deps
+              run: cd frontend && bunx playwright install --with-deps
 
             - name: Cache uv dependencies
               uses: actions/cache@v4
@@ -70,6 +72,14 @@ jobs:
                   key: ${{ runner.os }}-uv-${{ hashFiles('**/uv.lock', '**/.python-version') }}
                   restore-keys: |
                       ${{ runner.os }}-uv-
+
+            - name: Cache Bun dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.bun/install/cache
+                  key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-bun-
 
             - name: Run CI checks
               env:
@@ -86,11 +96,11 @@ jobs:
                   DB_NAME: ouroboros
                   DB_HOST: localhost
                   DB_PORT: 5432
-              run: uv run just ci-check
+              run: uv run just github-ci-check
 
             - name: Upload coverage to Codecov
               if: success()
-              uses: codecov/codecov-action@v4
+              uses: codecov/codecov-action@v5
               with:
-                  file: ./coverage.xml
+                  files: ./coverage.xml
                   fail_ci_if_error: false

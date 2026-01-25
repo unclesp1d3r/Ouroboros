@@ -1,6 +1,6 @@
 # Ouroboros Attack Editor UX & Behavior
 
-## 🧠 Ouroboros — Attack Editor UX & Behavior Context
+## Ouroboros — Attack Editor UX & Behavior Context
 
 ### 🔁 General Issues with Current Attack Editor
 
@@ -12,7 +12,7 @@
 
 ---
 
-### 📚 Dictionary Attack Behavior
+### Dictionary Attack Behavior
 
 - Min/max length fields should default to the recommended range for the selected hash type (or default to 1-32).
 - Wordlist selection should use a **searchable dropdown**, showing:
@@ -33,7 +33,7 @@
 
 ---
 
-### 🎭 Mask Attack (Manual Entry, Not Mask List File)
+### Mask Attack (Manual Entry, Not Mask List File)
 
 - Users should be able to enter a mask directly in an input field.
 - Button: `+ Add Mask` — adds another input row.
@@ -45,7 +45,7 @@
 
 ---
 
-### 🔢 Brute Force (Incremental Mask) UI
+### Brute Force (Incremental Mask) UI
 
 - This is a convenience wrapper around incremental mask logic.
 - Provide checkboxes for character classes:
@@ -58,7 +58,7 @@
 
 ---
 
-### 💾 Save/Load Support
+### Save/Load Support
 
 - Users should be able to **export** a single Attack or an entire Campaign as a JSON file for reuse.
 - This supports offline backup, sharing, and templating.

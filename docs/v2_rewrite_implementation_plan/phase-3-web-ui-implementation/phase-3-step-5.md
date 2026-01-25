@@ -1,6 +1,6 @@
 # Phase 3 Step 5: System Monitoring & Administrative Features
 
-**🎯 System Administration Step** - This step implements comprehensive system monitoring, audit logging, and administrative features for system health and governance.
+\*\* System Administration Step\*\* - This step implements comprehensive system monitoring, audit logging, and administrative features for system health and governance.
 
 ---
 
@@ -47,7 +47,7 @@ With core functionality complete and integration tested, this step focuses on ad
 
 ### System Health Monitoring (Admin Only)
 
-**🔧 Technical Context**: Admin-only dashboard displaying Redis queue metrics, PostgreSQL performance, MinIO storage usage, and agent runtime stats. Real-time charts with alert thresholds and notification management. Dashboard must use idiomatic Shadcn-Svelte components for charts, cards, and data visualization.
+\*\* Technical Context\*\*: Admin-only dashboard displaying Redis queue metrics, PostgreSQL performance, MinIO storage usage, and agent runtime stats. Real-time charts with alert thresholds and notification management. Dashboard must use idiomatic Shadcn-Svelte components for charts, cards, and data visualization.
 
 - [ ] **HEALTH-001**: System health dashboard implementation
 
@@ -233,7 +233,7 @@ With core functionality complete and integration tested, this step focuses on ad
 
 ### Testing Guidelines & Requirements
 
-**🧪 Critical Testing Context:**
+\*\* Critical Testing Context:\*\*
 
 - **Test Structure**: All user-facing functionality must have both E2E tests (mocked and full E2E). Strictly follow existing test structure and naming conventions as described in the [full testing architecture](../side_quests/full_testing_architecture.md) document.
 - **Test Execution**:

@@ -31,10 +31,10 @@ Agent API v2 is the modernized interface for Ouroboros agents, providing enhance
 
 Agent API v2 is currently in **development preview** (v2.0.0+). The foundational structure has been implemented with:
 
-- ✅ Basic routing structure and endpoint organization
-- ✅ Authentication framework and token validation infrastructure
-- ✅ Error handling middleware and response formatting
-- ✅ Rate limiting infrastructure
+- [x] Basic routing structure and endpoint organization
+- [x] Authentication framework and token validation infrastructure
+- [x] Error handling middleware and response formatting
+- [x] Rate limiting infrastructure
 - 🚧 Agent registration and heartbeat system (planned)
 - 🚧 Task assignment and progress tracking (planned)
 - 🚧 Result submission and validation (planned)

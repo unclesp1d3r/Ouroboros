@@ -11,6 +11,8 @@ import {
     CampaignTemplate_Output,
 } from '$lib/schemas/campaigns';
 import { browser } from '$app/environment';
+import { SvelteURLSearchParams } from 'svelte/reactivity';
+import { extractApiError } from '$lib/utils/api';
 
 // Store state interfaces
 interface CampaignState {
@@ -206,7 +208,7 @@ export const campaignsStore = {
         this.setError(null);
 
         try {
-            const params = new URLSearchParams({
+            const params = new SvelteURLSearchParams({
                 page: page.toString(),
                 size: size.toString(),
             });
@@ -220,7 +222,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to fetch campaigns: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to fetch campaigns');
+                throw new Error(errorMessage);
             }
 
             const data = CampaignListResponse.parse(await response.json());
@@ -245,7 +248,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to create campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to create campaign');
+                throw new Error(errorMessage);
             }
 
             const campaign = CampaignRead.parse(await response.json());
@@ -272,7 +276,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to update campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to update campaign');
+                throw new Error(errorMessage);
             }
 
             const campaign = CampaignRead.parse(await response.json());
@@ -295,7 +300,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to delete campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to delete campaign');
+                throw new Error(errorMessage);
             }
 
             this.removeCampaign(id);
@@ -316,7 +322,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to fetch campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to fetch campaign');
+                throw new Error(errorMessage);
             }
 
             return CampaignDetailResponse.parse(await response.json());
@@ -337,7 +344,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to start campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to start campaign');
+                throw new Error(errorMessage);
             }
 
             // Update campaign state locally
@@ -360,7 +368,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to stop campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to stop campaign');
+                throw new Error(errorMessage);
             }
 
             // Update campaign state locally - stopping returns to draft state
@@ -383,7 +392,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to relaunch campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to relaunch campaign');
+                throw new Error(errorMessage);
             }
 
             return CampaignDetailResponse.parse(await response.json());
@@ -403,7 +413,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to export campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to export campaign');
+                throw new Error(errorMessage);
             }
 
             return CampaignTemplate_Output.parse(await response.json());
@@ -428,7 +439,8 @@ export const campaignsStore = {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to import campaign: ${response.status}`);
+                const errorMessage = await extractApiError(response, 'Failed to import campaign');
+                throw new Error(errorMessage);
             }
 
             return CampaignWithAttacks.parse(await response.json());

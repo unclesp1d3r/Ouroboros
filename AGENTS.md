@@ -8,6 +8,9 @@ This AGENTS.md file provides comprehensive guidance for AI agents working with t
 
 Ouroboros is a distributed password cracking management system built with FastAPI and SvelteKit. It coordinates multiple agents running hashcat to efficiently distribute password cracking tasks across a network of machines.
 
+> [!NOTE]
+> Treat .kiro/specs/ as the authoritative source for the project's requirements and architecture. The specs are numbered sequentially and serve as the implementation plan for the project.
+
 ### Key Components
 
 - **Backend**: FastAPI application with PostgreSQL, SQLAlchemy ORM, JWT authentication
@@ -81,6 +84,10 @@ Each API interface must be organized in separate directories:
 
 ## Coding Standards
 
+### Emoji Usage
+
+- Avoid using emojis and other non-ASCII characters in code, comments, or documentation, except when the code is handling non-plaintext characters (for example: em dash, en dash, or other non-ASCII symbols).
+
 ### Python Development
 
 - **Formatting**: Use `ruff format` with 119 character line limit
@@ -95,21 +102,21 @@ Each API interface must be organized in separate directories:
 #### Type Hints Best Practices
 
 ```python
-# ✅ Good
+# [x] Good
 from typing import Annotated
 from pydantic import Field
 
 name: Annotated[str, Field(min_length=1, description="User's full name")]
 age: Annotated[int, Field(ge=0, le=120)]
 
-# ❌ Avoid
+# [FAIL] Avoid
 name: str = Field(..., min_length=1, description="User's full name")
 ```
 
 #### Error Handling Patterns
 
 ```python
-# ✅ Good - Early returns and guard clauses
+# [x] Good - Early returns and guard clauses
 async def process_resource(resource_id: int) -> Resource:
     if not resource_id:
         raise ValueError("Resource ID is required")
@@ -155,7 +162,7 @@ async def process_resource(resource_id: int) -> Resource:
 All business logic should be implemented in service functions, not in API endpoints:
 
 ```python
-# ✅ Service Function Structure
+# [x] Service Function Structure
 async def create_campaign_service(
     db: AsyncSession, campaign_data: CampaignCreate, current_user: User
 ) -> Campaign:
@@ -172,7 +179,7 @@ async def create_campaign_service(
     return campaign
 
 
-# ✅ Service Function Naming Conventions
+# [x] Service Function Naming Conventions
 # CRUD: create_*, get_*, list_*, update_*, delete_*
 # Business: estimate_keyspace_*, reorder_attacks_*, start_campaign_*
 ```
@@ -182,7 +189,7 @@ async def create_campaign_service(
 **Session Management:**
 
 ```python
-# ✅ Session management with dependency injection
+# [x] Session management with dependency injection
 from app.core.deps import get_db
 
 
@@ -194,7 +201,7 @@ async def list_campaigns(db: AsyncSession = Depends(get_db)):
 **Pagination Pattern:**
 
 ```python
-# ✅ Pagination pattern
+# [x] Pagination pattern
 async def list_campaigns_service(
     db: AsyncSession, skip: int = 0, limit: int = 20
 ) -> tuple[list[Campaign], int]:
@@ -670,14 +677,14 @@ class CampaignNotFoundError(Exception):
 ### Service Layer Error Patterns
 
 ```python
-# ✅ Custom domain exceptions in services
+# [x] Custom domain exceptions in services
 class CampaignNotFoundError(Exception):
     """Raised when a campaign is not found."""
 
     pass
 
 
-# ✅ Exception translation in endpoints
+# [x] Exception translation in endpoints
 try:
     campaign = await get_campaign_service(db, campaign_id)
 except CampaignNotFoundError:
@@ -827,12 +834,12 @@ When starting work on Ouroboros:
 
 Before starting work, verify:
 
-- ✅ Development environment runs successfully
-- ✅ All documentation links are accessible
-- ✅ Test commands work correctly
-- ✅ Understanding of API compatibility requirements
-- ✅ Familiarity with protected files and directories
-- ✅ Knowledge of required libraries (loguru, cashews, datetime.UTC)
+- [x] Development environment runs successfully
+- [x] All documentation links are accessible
+- [x] Test commands work correctly
+- [x] Understanding of API compatibility requirements
+- [x] Familiarity with protected files and directories
+- [x] Knowledge of required libraries (loguru, cashews, datetime.UTC)
 
 ## AI Agent Guidelines
 

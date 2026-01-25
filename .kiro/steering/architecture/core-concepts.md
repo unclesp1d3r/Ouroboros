@@ -516,7 +516,7 @@ Ouroboros uses Cashews as the primary caching library f-compatible TTL caching a
 - In-memory caching (`mem://`) is used by default in development.
 - Production deployments may optionally switch to Redis by configuring `redis://...` during `cache.setup()`.
 
-#### 🔒 Usage Constraints
+#### Usage Constraints
 
 - Do **not** use other cache mechanisms (e.g., `functools.lru_cache`, FastAPI internal cache) for any persistent/shared value.
 - TTLs should be short (≤ 60s) unless a strong reason exists.
@@ -525,7 +525,7 @@ Ouroboros uses Cashews as the primary caching library f-compatible TTL caching a
 - Tagging and `.invalidate()` should be used for cache busting when data dependencies change.
 - Prefer decorator usage when possible.
 
-#### 🧠 Examples
+#### Examples
 
 - Cashews caching code examples are now in @core-concepts-appendix.mdc
 

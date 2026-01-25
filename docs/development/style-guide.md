@@ -6,9 +6,9 @@ This document defines the visual design and behavior standards for the Ouroboros
 
 ---
 
-## 🎨 Color & Theme
+## Color & Theme
 
-### 🎨 Macchiato Palette Reference
+### Macchiato Palette Reference
 
 | Role              | Token      | Hex       | Preview                                                                                                      |
 | ----------------- | ---------- | --------- | ------------------------------------------------------------------------------------------------------------ |
@@ -40,7 +40,7 @@ This document defines the visual design and behavior standards for the Ouroboros
 
 ---
 
-## 📐 Layout & Spacing
+## Layout & Spacing
 
 - Base layout follows Flowbite’s [Sidebar + Navbar Shell](https://flowbite.com/blocks/application/shells/)
 
@@ -74,7 +74,7 @@ This document defines the visual design and behavior standards for the Ouroboros
 
 ---
 
-## 🧱 Components
+## Components
 
 ### 🧭 Tooltip & Validation States
 
@@ -122,7 +122,7 @@ All UI elements should use Flowbite or native Tailwind components.
 
 ---
 
-## 🧠 Behavioral Expectations
+## Behavioral Expectations
 
 - Use `hx-get` and `hx-post` for fragment-based flows
 - Use `hx-trigger="change, input delay:300ms"` for live estimation
@@ -160,7 +160,7 @@ All UI elements should use Flowbite or native Tailwind components.
 
 ---
 
-## 🖥️ Viewport & Small Window Considerations
+## Viewport & Small Window Considerations
 
 Ouroboros is not designed for mobile-first usage but must remain usable in constrained browser windows (e.g., side-by-side dev consoles or dashboards).
 
@@ -201,7 +201,7 @@ Ouroboros is not designed for mobile-first usage but must remain usable in const
 
 ---
 
-## 📦 Offline & Zero-Budget Constraints
+## Offline & Zero-Budget Constraints
 
 - All fonts, icons, and assets must work offline
 - Use system fonts and local SVG assets
@@ -210,6 +210,6 @@ Ouroboros is not designed for mobile-first usage but must remain usable in const
 
 ---
 
-## ✅ Implementation Status
+## [x] Implementation Status
 
 > This style guide will evolve throughout Phase 3-5. For current implementation notes, refer to [Phase 3: Web UI Foundation](../v2_rewrite_implementation_plan/phase-3-web-ui-foundation.md).

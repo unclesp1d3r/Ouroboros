@@ -246,13 +246,13 @@ export function createTestHelpers(page: Page) {
 ### Navigation Timing Issues
 
 ```typescript
-// ❌ PROBLEM - Flaky tests due to navigation timing
+// [FAIL] PROBLEM - Flaky tests due to navigation timing
 test("search functionality", async ({ page }) => {
     await searchInput.press("Enter");
     await expect(page).toHaveURL(/.*search=test.*/); // May fail due to timing
 });
 
-// ✅ SOLUTION - Wait for navigation completion
+// [x] SOLUTION - Wait for navigation completion
 test("search functionality", async ({ page }) => {
     const helpers = createTestHelpers(page);
 
@@ -265,14 +265,14 @@ test("search functionality", async ({ page }) => {
 ### Modal Interaction Timing
 
 ```typescript
-// ❌ PROBLEM - Modal not fully rendered when test proceeds
+// [FAIL] PROBLEM - Modal not fully rendered when test proceeds
 test("modal tabs are accessible", async ({ page }) => {
     await detailsBtn.click();
     await expect(page.getByRole("dialog")).toBeVisible(); // May fail
     await expect(page.getByRole("tab", { name: "General" })).toBeVisible(); // May fail
 });
 
-// ✅ SOLUTION - Use helper functions with proper waits
+// [x] SOLUTION - Use helper functions with proper waits
 test("modal tabs are accessible", async ({ page }) => {
     const helpers = createTestHelpers(page);
 
@@ -289,13 +289,13 @@ test("modal tabs are accessible", async ({ page }) => {
 ### Form Submission States
 
 ```typescript
-// ❌ PROBLEM - Form state changes happen too fast to test reliably
+// [FAIL] PROBLEM - Form state changes happen too fast to test reliably
 test("form shows loading state", async ({ page }) => {
     await submitButton.click();
     await expect(submitButton).toBeDisabled(); // Might miss the state change
 });
 
-// ✅ SOLUTION - Use form submission helper
+// [x] SOLUTION - Use form submission helper
 test("form shows loading state", async ({ page }) => {
     const helpers = createTestHelpers(page);
 
@@ -312,7 +312,7 @@ test("form shows loading state", async ({ page }) => {
 ### SSR Test Expectations
 
 ```typescript
-// ✅ CORRECT - Test actual SSR-rendered content
+// [x] CORRECT - Test actual SSR-rendered content
 test("displays campaigns list", async ({ page }) => {
     await page.goto("/campaigns");
 
@@ -322,7 +322,7 @@ test("displays campaigns list", async ({ page }) => {
     // Don't test for loading spinners in SSR - data is pre-loaded
 });
 
-// ❌ WRONG - Testing SPA loading patterns in SSR
+// [FAIL] WRONG - Testing SPA loading patterns in SSR
 test("shows loading state", async ({ page }) => {
     await page.goto("/campaigns");
 
@@ -334,7 +334,7 @@ test("shows loading state", async ({ page }) => {
 ### Test Data Management
 
 ```typescript
-// ✅ CORRECT - Use environment detection for test data
+// [x] CORRECT - Use environment detection for test data
 export const load: PageServerLoad = async ({ cookies }) => {
     if (process.env.PLAYWRIGHT_TEST) {
         return {
@@ -356,14 +356,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
 ### Skipped Test Management
 
 ```typescript
-// ✅ CORRECT - Document why tests are skipped with clear reasoning
+// [x] CORRECT - Document why tests are skipped with clear reasoning
 test.skip("handles 403 error correctly", async ({ page }) => {
     // Skip reason: In SSR, 403 errors are handled at server level
     // and result in error pages, not client-side error handling.
     // This test would need backend authentication setup to test properly.
 });
 
-// ✅ CORRECT - Fix skipped tests when possible
+// [x] CORRECT - Fix skipped tests when possible
 test("shows loading state during form submission", async ({ page }) => {
     // Previously skipped due to DOM update timing issues
     // Fixed by using proper waitFor patterns and async state handling
@@ -433,20 +433,20 @@ export const TIMEOUTS = {
 ### Development Testing
 
 ```bash
-# ✅ Fast iteration during development
+# [x] Fast iteration during development
 pnpm exec playwright test --reporter=line --max-failures=1  # Quick E2E feedback
 
-# ✅ Component-specific testing
+# [x] Component-specific testing
 pnpm exec playwright test e2e/campaigns-list.test.ts
 ```
 
 ### Verification Testing
 
 ```bash
-# ✅ E2E-specific verification
+# [x] E2E-specific verification
 just test-e2e              # Full E2E tests with Docker stack
 
-# ✅ Full project verification (only at completion)
+# [x] Full project verification (only at completion)
 just ci-check              # Complete CI pipeline
 ```
 

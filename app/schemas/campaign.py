@@ -261,7 +261,7 @@ class CampaignTemplate(BaseModel):
     priority: Annotated[int | None, Field(description="Campaign priority", ge=0)] = None
     hash_list_id: Annotated[int | None, Field(description="Hash list ID")] = None
     attacks: Annotated[
-        list["CampaignTemplateAttack"], Field(description="List of attacks")
+        list[CampaignTemplateAttack], Field(description="List of attacks")
     ]
 
 

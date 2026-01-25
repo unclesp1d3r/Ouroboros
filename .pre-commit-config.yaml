@@ -23,20 +23,20 @@ repos:
 
     # 🧹 Ruff linting + formatting
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.14.0
+      rev: v0.14.14
       hooks:
           - id: ruff-check
             args: [--fix]
           - id: ruff-format
 
     - repo: https://github.com/asottile/pyupgrade
-      rev: v3.21.0
+      rev: v3.21.2
       hooks:
           - id: pyupgrade
-            args: ["--py313-plus"]
+            args: ["--py314-plus"]
 
     - repo: https://github.com/rhysd/actionlint
-      rev: v1.7.8
+      rev: v1.7.10
       hooks:
           - id: actionlint
             files: ".github/workflows/"
@@ -46,21 +46,15 @@ repos:
       hooks:
           - id: shellcheck
 
-    - repo: https://github.com/commitizen-tools/commitizen
-      rev: v4.9.1
-      hooks:
-          - id: commitizen
-            stages: [commit-msg]
-
     # 🐍 uv for Python environment management
     - repo: https://github.com/astral-sh/uv-pre-commit
-      rev: 0.9.2
+      rev: 0.9.26
       hooks:
           - id: uv-lock
             files: ^(.*/)?(pyproject\.toml|uv\.lock)$
 
-    - repo: https://github.com/hukkin/mdformat
-      rev: 0.7.22
+    - repo: https://github.com/executablebooks/mdformat
+      rev: 1.0.0
       hooks:
           - id: mdformat
             additional_dependencies:
@@ -68,12 +62,10 @@ repos:
                 - mdformat-admon
                 - mdformat-config
                 - mdformat-footnote
-                - mdformat-frontmatter
                 - mdformat-simple-breaks
-                - mdformat-tables
                 - mdformat-web
-                - mdformat-wikilink
                 - mdformat-ruff
                 - mdformat-gfm-alerts
-                - mdformat-rustfmt
                 - mdformat-toc
+                - mdformat-front-matters
+            types: [markdown]

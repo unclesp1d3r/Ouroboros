@@ -47,19 +47,19 @@ Now that cashews is available, consider it when implementing an endpoint to impr
 
 This document has been enhanced with detailed implementation context for:
 
-1. **🔐 API Key Authentication**: Complete database schema, dependency injection, and permission enforcement patterns
-2. **📦 Content Negotiation**: MsgPack support implementation with fallback to JSON
-3. **📁 Schema Compatibility**: Reuse existing `CampaignTemplate` and `AttackTemplate` from `app/schemas/shared.py`
+1. \*\* API Key Authentication\*\*: Complete database schema, dependency injection, and permission enforcement patterns
+2. \*\* Content Negotiation\*\*: MsgPack support implementation with fallback to JSON
+3. \*\* Schema Compatibility\*\*: Reuse existing `CampaignTemplate` and `AttackTemplate` from `app/schemas/shared.py`
 4. **Pagination and Filtering**: Leverage existing `PaginatedResponse[T]` schema with conversion utilities
 5. **🚨 Error Handling**: RFC9457-compliant error responses with standardized exception types (see `https://github.com/NRWLDev/fastapi-problem`)
-6. **🔄 State Management**: State validation and progress calculation based on core algorithm rules
+6. \*\* State Management\*\*: State validation and progress calculation based on core algorithm rules
 7. **Project Scoping**: Multi-tenant access control and data filtering utilities
 
 ## Service Layer Reuse Strategy
 
 **Critical Implementation Principle**: The Control API maximizes reuse of existing service layer functions to minimize development effort and maintain consistency:
 
-**✅ IMPLEMENTATION STATUS**: The foundation has been successfully implemented with a simplified authentication system using a single API key per user, reusing existing Web UI authentication patterns, and leveraging shared service functions wherever possible.
+**[x] IMPLEMENTATION STATUS**: The foundation has been successfully implemented with a simplified authentication system using a single API key per user, reusing existing Web UI authentication patterns, and leveraging shared service functions wherever possible.
 
 ### Existing Services to Reuse
 
@@ -215,12 +215,12 @@ async def get_current_control_user(
 
 ### Implementation Tasks
 
-- [x] Add API key field to User model and create migration ✅ **COMPLETED** `task_id:control.auth.user_model_fields`
-- [x] Add functionality to create the API key in the database during user creation ✅ **COMPLETED** `task_id:control.auth.create_keys`
-- [x] Implement `get_current_control_user` dependency ✅ **COMPLETED** `task_id:control.auth.api_key_dependency`
-- [x] Add API key generation utility functions (format: `cst_<user_id>_<random>`) ✅ **COMPLETED** `task_id:control.auth.key_generation`
-- [x] Add a test to verify that a user with an API key can access endpoints ✅ **COMPLETED** `task_id:control.auth.api_key_test`
-- [x] Add functionality to allow a user to rotate their API key ✅ **COMPLETED** `task_id:control.auth.rotate_keys`
+- [x] Add API key field to User model and create migration [x] **COMPLETED** `task_id:control.auth.user_model_fields`
+- [x] Add functionality to create the API key in the database during user creation [x] **COMPLETED** `task_id:control.auth.create_keys`
+- [x] Implement `get_current_control_user` dependency [x] **COMPLETED** `task_id:control.auth.api_key_dependency`
+- [x] Add API key generation utility functions (format: `cst_<user_id>_<random>`) [x] **COMPLETED** `task_id:control.auth.key_generation`
+- [x] Add a test to verify that a user with an API key can access endpoints [x] **COMPLETED** `task_id:control.auth.api_key_test`
+- [x] Add functionality to allow a user to rotate their API key [x] **COMPLETED** `task_id:control.auth.rotate_keys`
 
 ---
 
@@ -298,10 +298,10 @@ class ProjectAccessDeniedError(ForbiddenProblem):
 
 ### Implementation Tasks
 
-- [x] Add `fastapi-problem` dependency ✅ **COMPLETED** `task_id:control.error.add_dependency` - Includes adding the new_exception_handler to the app
-- [x] Create custom Control API exception classes ✅ **COMPLETED** `task_id:control.error.custom_exceptions`
-- [x] Configure exception handler for Control API router ✅ **COMPLETED** `task_id:control.error.configure_handler`
-- [x] Update all Control API endpoints to use custom exceptions ✅ **COMPLETED** `task_id:control.error.update_endpoints`
+- [x] Add `fastapi-problem` dependency [x] **COMPLETED** `task_id:control.error.add_dependency` - Includes adding the new_exception_handler to the app
+- [x] Create custom Control API exception classes [x] **COMPLETED** `task_id:control.error.custom_exceptions`
+- [x] Configure exception handler for Control API router [x] **COMPLETED** `task_id:control.error.configure_handler`
+- [x] Update all Control API endpoints to use custom exceptions [x] **COMPLETED** `task_id:control.error.update_endpoints`
 
 ---
 
@@ -363,8 +363,8 @@ async def filter_campaigns_by_project_access(
 
 ### Implementation Tasks
 
-- [x] Create project access utilities and dependencies ✅ **COMPLETED** `task_id:control.access.project_utilities`
-- [x] Add project filtering to all list endpoints ✅ **COMPLETED** `task_id:control.access.project_filtering`
+- [x] Create project access utilities and dependencies [x] **COMPLETED** `task_id:control.access.project_utilities`
+- [x] Add project filtering to all list endpoints [x] **COMPLETED** `task_id:control.access.project_filtering`
 - [x] Add project access checks to detail endpoints `task_id:control.access.detail_checks`
 
 ---
@@ -419,8 +419,8 @@ async def control_list_campaigns(
 
 ### Implementation Tasks
 
-- [x] Create pagination conversion utilities ✅ **COMPLETED** `task_id:control.pagination.conversion_utils`
-- [x] Adapt existing service functions for Control API pagination `task_id:control.pagination.service_adaptation` ✅ **COMPLETED** (there's now an OffsetPagination class in the shared.py file and we should use that instead with the control API)
+- [x] Create pagination conversion utilities [x] **COMPLETED** `task_id:control.pagination.conversion_utils`
+- [x] Adapt existing service functions for Control API pagination `task_id:control.pagination.service_adaptation` [x] **COMPLETED** (there's now an OffsetPagination class in the shared.py file and we should use that instead with the control API)
 
 ---
 
@@ -432,10 +432,10 @@ These endpoints provide status introspection and control-plane telemetry for `cs
 
 **Reuse Existing Services**: All endpoints should leverage existing service layer functions:
 
-- [x] `GET /api/v1/control/system/status` - System health → Use `health_service.py` functions ✅ **COMPLETED** `task_id:control.system.status`
-- [x] `GET /api/v1/control/system/version` - API version → Create version service or use existing config ✅ **COMPLETED** `task_id:control.system.version`
-- [x] `GET /api/v1/control/system/queues` - Queue status → Create queue monitoring service ✅ **COMPLETED** `task_id:control.system.queue_depth`
-- [x] `GET /api/v1/control/system/stats` - System stats → Use `dashboard_service.py` for `DashboardSummary` schema ✅ **COMPLETED** `task_id:control.system.summary`
+- [x] `GET /api/v1/control/system/status` - System health → Use `health_service.py` functions [x] **COMPLETED** `task_id:control.system.status`
+- [x] `GET /api/v1/control/system/version` - API version → Create version service or use existing config [x] **COMPLETED** `task_id:control.system.version`
+- [x] `GET /api/v1/control/system/queues` - Queue status → Create queue monitoring service [x] **COMPLETED** `task_id:control.system.queue_depth`
+- [x] `GET /api/v1/control/system/stats` - System stats → Use `dashboard_service.py` for `DashboardSummary` schema [x] **COMPLETED** `task_id:control.system.summary`
 
 ---
 
@@ -448,12 +448,12 @@ These endpoints provide administrative access to user accounts and API key manag
 **Reuse Existing Services**: All endpoints should leverage existing service layer functions:
 
 - [x] `GET /api/v1/control/users` - List users → Use existing user listing service `task_id:control.user.list`
-- [x] `GET /api/v1/control/users/{id}` - User detail → Use existing user detail service ✅ **COMPLETED** `task_id:control.user.detail`
-- [x] `POST /api/v1/control/users/` - Create user → Use existing user creation service ✅ **COMPLETED** `task_id:control.user.create`
-- [x] `PATCH /api/v1/control/users/{id}` - Update user → Use existing user update service ✅ **COMPLETED** `task_id:control.user.update`
-- [x] `DELETE /api/v1/control/users/{id}` - Delete user → Use existing user deletion service ✅ **COMPLETED** `task_id:control.user.delete`
-- [x] `POST /api/v1/control/users/{id}/rotate-keys` - Rotate API keys → Create key rotation service `task_id:control.user.rotate_keys` ✅ **COMPLETED**
-- [x] `GET /api/v1/control/users/{id}/api-keys` - View API key info → Create key info service `task_id:control.user.api_key_info` ✅ **COMPLETED**
+- [x] `GET /api/v1/control/users/{id}` - User detail → Use existing user detail service [x] **COMPLETED** `task_id:control.user.detail`
+- [x] `POST /api/v1/control/users/` - Create user → Use existing user creation service [x] **COMPLETED** `task_id:control.user.create`
+- [x] `PATCH /api/v1/control/users/{id}` - Update user → Use existing user update service [x] **COMPLETED** `task_id:control.user.update`
+- [x] `DELETE /api/v1/control/users/{id}` - Delete user → Use existing user deletion service [x] **COMPLETED** `task_id:control.user.delete`
+- [x] `POST /api/v1/control/users/{id}/rotate-keys` - Rotate API keys → Create key rotation service `task_id:control.user.rotate_keys` [x] **COMPLETED**
+- [x] `GET /api/v1/control/users/{id}/api-keys` - View API key info → Create key info service `task_id:control.user.api_key_info` [x] **COMPLETED**
 
 ---
 
@@ -465,12 +465,12 @@ These endpoints provide administrative access to project management and user ass
 
 **Reuse Existing Services**: All endpoints should leverage existing service layer functions:
 
-- [x] `GET /api/v1/control/projects` - List projects → Use existing project listing service ✅ **COMPLETED** `task_id:control.project.list`
-- [x] `GET /api/v1/control/projects/{id}` - Project detail → Use existing project detail service ✅ **COMPLETED** `task_id:control.project.detail`
-- [x] `POST /api/v1/control/projects/` - Create project → Use existing project creation service ✅ **COMPLETED** `task_id:control.project.create`
-- [x] `PATCH /api/v1/control/projects/{id}` - Update project → Use existing project update service ✅ **COMPLETED** `task_id:control.project.update`
-- [x] `DELETE /api/v1/control/projects/{id}` - Delete project → Use existing project deletion service ✅ **COMPLETED** `task_id:control.project.delete`
-- [x] `GET /api/v1/control/projects/{id}/users` - List project users → Create project user listing service ✅ **COMPLETED** `task_id:control.project.list_users`
+- [x] `GET /api/v1/control/projects` - List projects → Use existing project listing service [x] **COMPLETED** `task_id:control.project.list`
+- [x] `GET /api/v1/control/projects/{id}` - Project detail → Use existing project detail service [x] **COMPLETED** `task_id:control.project.detail`
+- [x] `POST /api/v1/control/projects/` - Create project → Use existing project creation service [x] **COMPLETED** `task_id:control.project.create`
+- [x] `PATCH /api/v1/control/projects/{id}` - Update project → Use existing project update service [x] **COMPLETED** `task_id:control.project.update`
+- [x] `DELETE /api/v1/control/projects/{id}` - Delete project → Use existing project deletion service [x] **COMPLETED** `task_id:control.project.delete`
+- [x] `GET /api/v1/control/projects/{id}/users` - List project users → Create project user listing service [x] **COMPLETED** `task_id:control.project.list_users`
 - [ ] `POST /api/v1/control/projects/{id}/users` - Add user to project → Create user assignment service `task_id:control.project.add_user`
 - [ ] `DELETE /api/v1/control/projects/{id}/users/{user_id}` - Remove user from project → Create user removal service `task_id:control.project.remove_user`
 
@@ -506,7 +506,7 @@ These endpoints provide hash type detection and validation capabilities for auto
 
 **Reuse Existing Services**: All endpoints should leverage existing service layer functions:
 
-- [x] `POST /api/v1/control/hash/guess` - Detect hash type → Use `hash_guess_service.py` ✅ **COMPLETED** `task_id:control.hash.guess`
+- [x] `POST /api/v1/control/hash/guess` - Detect hash type → Use `hash_guess_service.py` [x] **COMPLETED** `task_id:control.hash.guess`
 - [ ] `POST /api/v1/control/hash/validate` - Validate hash format → Use hash validation service `task_id:control.hash.validate`
 - [ ] `GET /api/v1/control/hash/types` - List supported hash types → Use existing hash type service `task_id:control.hash.types`
 
@@ -664,7 +664,7 @@ These endpoints provide structured read and write access to the full set of agen
 
 Task endpoints allow administrative-level inspection, state control, and lifecycle monitoring of individual cracking tasks. This includes agent-task assignments, requeue operations, error diagnostics, and performance tracking.
 
-### 🧩 Implementation Tasks
+### Implementation Tasks
 
 **Reuse Existing Services**: All endpoints should leverage existing service layer functions from `app/core/services/task_service.py`:
 
@@ -682,7 +682,7 @@ Task endpoints allow administrative-level inspection, state control, and lifecyc
 
 These endpoints support the automated workflow for uploading files or hash text and converting them into hash lists and campaigns.
 
-### 🧩 Implementation Tasks
+### Implementation Tasks
 
 **Reuse Existing Services**: All endpoints should leverage existing crackable upload services:
 
@@ -699,7 +699,7 @@ These endpoints support the automated workflow for uploading files or hash text 
 
 These endpoints provide real-time monitoring capabilities for campaign progress, agent status, and system health.
 
-### 🧩 Implementation Tasks
+### Implementation Tasks
 
 **Reuse Existing Services**: All endpoints should leverage existing event and monitoring services:
 

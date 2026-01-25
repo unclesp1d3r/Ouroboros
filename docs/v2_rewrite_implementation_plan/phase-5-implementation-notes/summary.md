@@ -147,10 +147,10 @@ This is the Ouroboros's effort to implement Directed Acyclic Graph (DAG) based c
 
 ## Suggested Skirmish Sequence
 
-1. ✅ Extend TaskPlan + WorkSlice model
-2. ✅ Implement lease tracking + reclaim worker
-3. ✅ Implement Markov stats + hcstat2 autogen
-4. ✅ Add debug rule parser → learned.rules
-5. ✅ Build `/status` endpoint + log pipeline
-6. ✅ Add PACK-core modules: mask, rule, stats
-7. ✅ Add DAG node scoring + trigger logic
+1. [x] Extend TaskPlan + WorkSlice model
+2. [x] Implement lease tracking + reclaim worker
+3. [x] Implement Markov stats + hcstat2 autogen
+4. [x] Add debug rule parser → learned.rules
+5. [x] Build `/status` endpoint + log pipeline
+6. [x] Add PACK-core modules: mask, rule, stats
+7. [x] Add DAG node scoring + trigger logic

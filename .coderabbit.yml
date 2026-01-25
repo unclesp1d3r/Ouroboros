@@ -1,104 +1,471 @@
-# CodeRabbit AI Configuration
-# Optimized for Ouroboros dual-track development workflow
-
-# Review settings
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+tone_instructions: "Be precise and security-conscious. Prioritize Agent API v1 compatibility, multi-tenancy boundaries, and distributed systems reliability. Flag security implications, API contract violations, and testing gaps."
+early_access: true
+enable_free_tier: true
+inheritance: false
 reviews:
-  # Enable detailed reviews for all PR types
-  profile: "chill"
+    profile: assertive
+    request_changes_workflow: true
+    high_level_summary: true
+    high_level_summary_instructions: |
+        Focus on the core architectural changes and business impact.
+        Highlight any breaking changes, API modifications, or security implications.
+        Emphasize multi-tenancy, Agent API v1 compatibility, and testing tier coverage.
+        Note database migrations, authentication changes, or infrastructure updates.
+    high_level_summary_placeholder: "@coderabbitai summary"
+    high_level_summary_in_walkthrough: true
+    auto_title_placeholder: "@coderabbitai"
+    auto_title_instructions: |
+        Follow Conventional Commits format: type(scope): description
+        Use appropriate types: feat, fix, docs, refactor, test, chore
+        Use scopes from: (auth), (api), (models), (frontend), (docs), (deps)
+        Keep descriptions concise and imperative mood
+        Focus on the primary change area (backend, frontend, infrastructure)
+    review_status: true
+    commit_status: true
+    fail_commit_status: false
+    collapse_walkthrough: true
+    changed_files_summary: true
+    sequence_diagrams: true
+    estimate_code_review_effort: true
+    assess_linked_issues: true
+    related_issues: true
+    related_prs: true
+    suggested_labels: true
+    labeling_instructions:
+        - label: "javascript"
+          instructions: "Apply for frontend/SvelteKit changes in the frontend/ directory."
+        - label: "python:uv"
+          instructions: "Apply for Python dependency changes in pyproject.toml, uv.lock, or requirements files."
+        - label: "github_actions"
+          instructions: "Apply for CI/CD workflow changes in .github/workflows/ directory."
+        - label: "documentation"
+          instructions: "Apply for changes to docs/, README.md, or other documentation files."
+        - label: "dependencies"
+          instructions: "Apply for dependency updates (especially automated ones from dependabot)."
+        - label: "enhancement"
+          instructions: "Apply for new features or significant improvements."
+        - label: "bug"
+          instructions: "Apply for bug fixes and issue resolutions."
+        - label: "security"
+          instructions: "Apply for security-related changes, authentication updates, or security fixes."
+        - label: "api-contract"
+          instructions: "Apply for changes to API schemas, contracts/, or OpenAPI specifications."
+        - label: "testing"
+          instructions: "Apply for changes to test files, test configuration, or CI testing improvements."
+    auto_apply_labels: true
+    suggested_reviewers: true
+    auto_assign_reviewers: true
+    in_progress_fortune: true
+    poem: true
+    enable_prompt_for_ai_agents: true
+    path_filters:
+        # Python bytecode cache
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+        - "**/*.pyo"
+        # Build artifacts
+        - "frontend/build/**"
+        - "frontend/test-results/**"
+        - "frontend/test-artifacts/**"
+        # Generated files
+        - "contracts/current_api_openapi.json"
+        - "alembic/versions/*.py"
+        - "coverage.xml"
+        # Logs and debug files
+        - "logs/**"
+        - "**/*.log"
+        - "firebase-debug.log"
+        # IDE and editor files
+        - "**/*.code-workspace"
+        - "**/.vscode/**"
+        - "**/.idea/**"
+        # Lock files (review dependency changes instead)
+        - "**/*lock.json"
+        - "**/*lock.yaml"
+        - "**/*lock.yml"
+        - "uv.lock"
+        - "bun.lock"
+        # OS files
+        - "**/.DS_Store"
+        - "**/Thumbs.db"
+    path_instructions:
+        - path: app/api/v1/endpoints/agent/**
+          instructions: >
+              This is Agent API v1 - IMMUTABLE CONTRACT.
 
-  # Focus areas per WARP.md architecture
-  high_level_summary: true
-  poem: false
-  review_status: true
+              Any changes must maintain exact compatibility with
+              contracts/v1_api_swagger.json.
 
-  # Custom instructions for Ouroboros
-  instructions: |
-    You are reviewing code for Ouroboros, a distributed password cracking management platform.
-
-    Key considerations:
-
-    **Architecture (WARP.md compliance):**
-    - Service Layer: Business logic must be in app/core/services/
-    - Agent API v1: IMMUTABLE - must match contracts/v1_api_swagger.json exactly
-    - Web UI API: FastAPI-native, can evolve with versioning
-    - Control API: Must use RFC9457 application/problem+json format
-    - Frontend: SvelteKit 5 with Runes, SSR-first data loading
-
-    **Protected Areas (reject if modified without justification):**
-    - contracts/ - Agent API specifications
-    - alembic/ - Database migrations (Alembic CLI only)
-    - .cursor/ - AI assistant configuration
-    - .github/workflows/ - CI workflows
-
-    **Code Quality:**
-    - Python: Type hints mandatory, Pydantic v2, SQLAlchemy 2.0 async
-    - JavaScript/TypeScript: SvelteKit 5 patterns, Superforms v2 + Zod
-    - Database: No raw SQL, use SQLAlchemy ORM/async patterns
-    - Error handling: Custom domain exceptions, proper HTTP status codes
-    - Logging: Use loguru exclusively
-    - Time handling: datetime.now(datetime.UTC) not datetime.utcnow()
-
-    **Security:**
-    - No hardcoded secrets/credentials
-    - Input validation via Pydantic schemas
-    - RBAC with project-level scoping in service layer
-
-    **Testing:**
-    - Three-tier: backend (pytest), frontend (vitest), E2E (playwright)
-    - Suggest smallest tier that covers changes
-
-    **Branch Strategy:**
-    - v2 features target rewrite-v2 branch
-    - v1 fixes target main branch
-    - PRs should be under ~400 lines when feasible
-
-  # Path-based configuration
-  path_instructions:
-    - path: "app/api/v1/endpoints/agent/**"
-      instructions: |
-        This is Agent API v1 - IMMUTABLE CONTRACT.
-        Any changes must maintain exact compatibility with contracts/v1_api_swagger.json.
-        Validate against OpenAPI spec before approval.
-
-    - path: "app/core/services/**"
-      instructions: |
-        Service Layer - focus on business logic patterns:
-        - Functions named {action}_{resource}_service()
-        - Early returns with guard clauses
-        - Specific domain exceptions
-        - SQLAlchemy async patterns only
-
-    - path: "frontend/**"
-      instructions: |
-        SvelteKit 5 frontend - check for:
-        - Runes usage ($state, $derived, $effect)
-        - SSR-first data loading with load functions
-        - Shadcn-Svelte + bits-ui components
-        - Superforms v2 with Zod validation
-        - Tailwind CSS v4 utility classes
-
-    - path: "alembic/**"
-      instructions: |
-        Database migrations - PROTECTED AREA.
-        Only Alembic CLI should generate these files.
-        Verify migration follows SQLAlchemy 2.0 async patterns.
-
-# Language-specific settings
-language_settings:
-  python:
-    # Focus on Ouroboros Python patterns
-    review_style: "concise"
-
-  typescript:
-    # SvelteKit 5 focus
-    review_style: "concise"
-
-  svelte:
-    # Svelte 5 with Runes
-    review_style: "concise"
-
-# Integration settings
+              Validate against OpenAPI spec before approval.
+        - path: app/api/v1/endpoints/web/**
+          instructions: |
+              Web UI API - RESTful endpoints for frontend.
+              Focus on proper response schemas and error handling.
+              Ensure RFC9457 compliance for Control API responses.
+        - path: app/api/v1/endpoints/control/**
+          instructions: |
+              Control API - CLI/client interface.
+              Must return RFC9457 application/problem+json error format.
+              Command-line focused, batch operations supported.
+        - path: app/models/**
+          instructions: |
+              SQLAlchemy ORM models - database layer.
+              Check relationships, foreign keys, and multi-tenancy isolation.
+              Ensure proper async patterns and type hints.
+        - path: app/schemas/**
+          instructions: |
+              Pydantic schemas - API contracts and validation.
+              Use Annotated with Field() for proper OpenAPI generation.
+              Validate against contracts for API compatibility.
+        - path: app/core/services/**
+          instructions: |
+              Service Layer - focus on business logic patterns:
+              - Functions named {action}_{resource}_service()
+              - Early returns with guard clauses
+              - Specific domain exceptions
+              - SQLAlchemy async patterns only
+        - path: frontend/**
+          instructions: |
+              SvelteKit 5 frontend - check for:
+              - Runes usage ($state, $derived, $effect)
+              - SSR-first data loading with load functions
+              - Shadcn-Svelte + bits-ui components
+              - Superforms v2 with Zod validation
+              - Tailwind CSS v4 utility classes
+        - path: tests/**
+          instructions: |
+              Test suite - three-tier architecture.
+              Ensure appropriate test coverage and factory usage.
+              Validate against OpenAPI specs for API tests.
+        - path: contracts/**
+          instructions: |
+              API contracts - PROTECTED FILES.
+              Never modify v1_api_swagger.json - immutable legacy contract.
+              current_api_openapi.json is auto-generated.
+        - path: alembic/**
+          instructions: |
+              Database migrations - PROTECTED AREA.
+              Only Alembic CLI should generate these files.
+              Verify migration follows SQLAlchemy 2.0 async patterns.
+    abort_on_close: true
+    disable_cache: false
+    auto_review:
+        enabled: true
+        auto_incremental_review: true
+        ignore_title_keywords:
+            - "WIP"
+            - "[WIP]"
+            - "Draft"
+            - "[Draft]"
+            - "work in progress"
+        labels:
+            - "auto-reviewed"
+            - "security-review-needed"
+        drafts: false
+        base_branches:
+            - "main"
+        ignore_usernames:
+            - "dependabot[bot]"
+            - "dependabot"
+            - "github-actions[bot]"
+    finishing_touches:
+        docstrings:
+            enabled: true
+        unit_tests:
+            enabled: false
+    pre_merge_checks:
+        docstrings:
+            mode: warning
+            threshold: 80
+        title:
+            mode: error
+            requirements: "Must follow Conventional Commits format: type(scope): description. Use types: feat, fix, docs, refactor, test, chore. Use scopes: (auth), (api), (models), (frontend), (docs), (deps)."
+        description:
+            mode: warning
+        issue_assessment:
+            mode: warning
+        custom_checks:
+            - name: "API Contract Compliance"
+              instructions: "Flag for manual review when PR title contains feat(api), fix(api), or refactor(api) - requires contracts/v1_api_swagger.json compatibility check"
+            - name: "Security Review Required"
+              instructions: "Flag for manual review when PR involves authentication, security, or password-related changes"
+    tools:
+        ast-grep:
+            rule_dirs: []
+            util_dirs: []
+            essential_rules: true
+            packages: []
+        shellcheck:
+            enabled: true
+        ruff:
+            enabled: true
+        markdownlint:
+            enabled: true
+        github-checks:
+            enabled: true
+            timeout_ms: 90000
+        languagetool:
+            enabled: true
+            enabled_rules: []
+            disabled_rules:
+                - DOUBLE_PUNCTUATION
+                - SENTENCE_FRAGMENT
+                - SENTENCE_FRAGMENT_SINGLE_WORDS
+                - TOO_LONG_SENTENCE
+                - TOO_LONG_PARAGRAPH
+                - PARAGRAPH_REPEAT_BEGINNING_RULE
+                - SENTENCE_WHITESPACE
+                - UNLIKELY_OPENING_PUNCTUATION
+                - UNLIKELY_CLOSING_PUNCTUATION
+            enabled_categories:
+                - CASING
+                - GRAMMAR
+                - MISC
+                - STYLE
+                - TYPOGRAPHY
+            disabled_categories:
+                - REDUNDANCY
+                - PLAIN_ENGLISH
+                - PUNCTUATION
+            enabled_only: true
+            level: picky
+        biome:
+            enabled: true
+        hadolint:
+            enabled: true
+        swiftlint:
+            enabled: false
+        phpstan:
+            enabled: false
+        phpmd:
+            enabled: false
+        phpcs:
+            enabled: false
+        golangci-lint:
+            enabled: false
+        yamllint:
+            enabled: true
+        gitleaks:
+            enabled: true
+        checkov:
+            enabled: true
+        detekt:
+            enabled: false
+        eslint:
+            enabled: true
+        flake8:
+            enabled: false
+        fortitudeLint:
+            enabled: false
+        rubocop:
+            enabled: false
+        buf:
+            enabled: false
+        regal:
+            enabled: false
+        actionlint:
+            enabled: true
+        pmd:
+            enabled: false
+        clang:
+            enabled: false
+        cppcheck:
+            enabled: false
+        semgrep:
+            enabled: true
+        circleci:
+            enabled: false
+        clippy:
+            enabled: false
+        sqlfluff:
+            enabled: true
+        prismaLint:
+            enabled: false
+        pylint:
+            enabled: false
+        oxc:
+            enabled: true
+        shopifyThemeCheck:
+            enabled: false
+        luacheck:
+            enabled: false
+        brakeman:
+            enabled: false
+        dotenvLint:
+            enabled: true
+        htmlhint:
+            enabled: true
+        checkmake:
+            enabled: false
+        osvScanner:
+            enabled: true
 chat:
-  auto_reply: false
+    art: true
+    auto_reply: false
+    integrations:
+        jira:
+            usage: auto
+        linear:
+            usage: auto
+knowledge_base:
+    opt_out: false
+    web_search:
+        enabled: true
+    code_guidelines:
+        enabled: true
+        filePatterns: []
+    learnings:
+        scope: auto
+    issues:
+        scope: auto
+    jira:
+        usage: auto
+        project_keys: []
+    linear:
+        usage: auto
+        team_keys: []
+    pull_requests:
+        scope: auto
+    mcp:
+        usage: auto
+        disabled_servers: []
+code_generation:
+    docstrings:
+        language: en-US
+        path_instructions:
+            - path: "app/**/*.py"
+              instructions: |
+                  Use Google pydoc style for Python backend code.
+                  Include Args, Returns, and Raises sections for functions.
+                  Use proper type hints in docstrings.
+                  Example:
+                  """Process user authentication.
 
-early_access: false
+                  Args:
+                      username: The user's login name.
+                      password: The user's password.
+
+                  Returns:
+                      Authentication token on success.
+
+                  Raises:
+                      AuthenticationError: If credentials are invalid.
+                  """
+            - path: "frontend/**/*.ts"
+              instructions: |
+                  Use JSDoc best practices for TypeScript frontend code.
+                  Include @param, @returns, and @throws tags.
+                  Use proper TypeScript types in documentation.
+                  Example:
+                  /**
+                   * Process user authentication
+                   * @param {string} username - The user's login name
+                   * @param {string} password - The user's password
+                   * @returns {Promise<string>} Authentication token on success
+                   * @throws {AuthenticationError} If credentials are invalid
+                   */
+            - path: "frontend/**/*.js"
+              instructions: |
+                  Use JSDoc best practices for JavaScript code.
+                  Include @param, @returns, and @throws tags.
+                  Document parameter and return types clearly.
+                  Example:
+                  /**
+                   * Process user authentication
+                   * @param {string} username - The user's login name
+                   * @param {string} password - The user's password
+                   * @returns {Promise<string>} Authentication token on success
+                   * @throws {AuthenticationError} If credentials are invalid
+                   */
+            - path: "tests/**/*.py"
+              instructions: |
+                  Use Google pydoc style for test files.
+                  Focus on describing test scenarios and expected behavior.
+                  Include brief descriptions of what each test validates.
+    unit_tests:
+        path_instructions:
+            - path: "app/**/*.py"
+              instructions: |
+                  Generate pytest unit tests for Python backend code.
+                  Use test factories from tests/factories/ for test data.
+                  Focus on service layer functions with realistic scenarios.
+                  Include both success and error case testing.
+                  Use descriptive test names like test_should_create_user_when_valid_data.
+                  Mock external dependencies, test business logic thoroughly.
+                  Example structure:
+                  def test_create_campaign_service_with_valid_data(db_session, user_factory):
+                      # Arrange
+                      user = user_factory.create()
+                      campaign_data = {...}
+
+                      # Act
+                      result = create_campaign_service(db_session, campaign_data, user)
+
+                      # Assert
+                      assert result.name == campaign_data.name
+            - path: "frontend/**/*.ts"
+              instructions: |
+                  Generate Vitest unit tests for TypeScript frontend code.
+                  Focus on component logic, custom hooks, and utility functions.
+                  Use descriptive test names with should/behavior patterns.
+                  Mock API calls and external dependencies.
+                  Test component props, state changes, and user interactions.
+                  Example structure:
+                  describe('CampaignCard', () => {
+                    it('should display campaign name correctly', () => {
+                      // Arrange
+                      const mockCampaign = { name: 'Test Campaign' };
+
+                      // Act
+                      render(CampaignCard, { props: { campaign: mockCampaign } });
+
+                      // Assert
+                      expect(screen.getByText('Test Campaign')).toBeInTheDocument();
+                    });
+                  });
+            - path: "frontend/**/*.svelte"
+              instructions: |
+                  Generate Vitest tests for Svelte components.
+                  Test component rendering, props, events, and store interactions.
+                  Use Svelte Testing Library for component testing.
+                  Mock stores and API calls appropriately.
+                  Test runes usage ($state, $derived, $effect) behavior.
+                  Focus on user-facing behavior rather than implementation details.
+            - path: "tests/**/*.py"
+              instructions: |
+                  Do not generate additional tests for existing test files.
+                  Focus on improving or expanding existing test coverage if needed.
+                  Suggest new test scenarios based on code changes.
+issue_enrichment:
+    auto_enrich:
+        enabled: true
+    planning:
+        enabled: true
+        auto_planning:
+            enabled: false
+            labels: []
+    labeling:
+        labeling_instructions:
+            - label: "bug"
+              instructions: "Apply for bug reports, crashes, unexpected behavior, or error descriptions."
+            - label: "enhancement"
+              instructions: "Apply for feature requests, improvements, or new functionality suggestions."
+            - label: "documentation"
+              instructions: "Apply for documentation issues, unclear docs, missing guides, or help requests."
+            - label: "security"
+              instructions: "Apply for security vulnerabilities, authentication issues, or security concerns."
+            - label: "api-contract"
+              instructions: "Apply for API-related issues, endpoint problems, or schema inconsistencies."
+            - label: "testing"
+              instructions: "Apply for test failures, testing framework issues, or CI/CD problems."
+            - label: "dependencies"
+              instructions: "Apply for dependency conflicts, version issues, or package-related problems."
+            - label: "question"
+              instructions: "Apply for questions, clarifications, or support requests."
+            - label: "good first issue"
+              instructions: "Apply for issues suitable for newcomers, well-scoped tasks, or straightforward fixes."
+            - label: "help wanted"
+              instructions: "Apply for complex issues needing additional contributors or specialized expertise."
+        auto_apply_labels: true

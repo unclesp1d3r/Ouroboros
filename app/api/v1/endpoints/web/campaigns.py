@@ -2,9 +2,9 @@
 Follow these rules for all endpoints in this file:
 1. Must return Pydantic models as JSON (no TemplateResponse or render()).
 2. Must use FastAPI parameter types: Query, Path, Body, Depends, etc.
-3. Must not parse inputs manually — let FastAPI validate and raise 422s.
+3. Must not parse inputs manually -- let FastAPI validate and raise 422s.
 4. Must use dependency-injected context for auth/user/project state.
-5. Must not include database logic — delegate to a service layer (e.g. campaign_service).
+5. Must not include database logic -- delegate to a service layer (e.g. campaign_service).
 6. Must not contain HTMX, Jinja, or fragment-rendering logic.
 7. Must annotate live-update triggers with: # WS_TRIGGER: <event description>
 """
@@ -146,7 +146,7 @@ async def reorder_attacks(
     - User must have 'write' access to the campaign
 
     **State Transitions:**
-    - `draft` → `active`: Campaign starts successfully
+    - `draft` -> `active`: Campaign starts successfully
     - Other states will result in a 400 Bad Request error
 
     **Real-time Updates:**

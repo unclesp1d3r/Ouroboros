@@ -227,7 +227,7 @@ The system must provide comprehensive agent management including registration, m
 
 #### Acceptance Criteria
 
-1. WHEN I access system health THEN the system SHALL display status cards for MinIO, Redis, PostgreSQL, and Agents with color-coded health indicators (🟢 Healthy, 🟡 Degraded, 🔴 Unreachable)
+1. WHEN I access system health THEN the system SHALL display status cards for MinIO, Redis, PostgreSQL, and Agents with color-coded health indicators ([GREEN] Healthy, [YELLOW] Degraded, [RED] Unreachable)
 2. WHEN I view MinIO status THEN the system SHALL show latency, errors, storage utilization using `/minio/health/live` endpoint and `minio-py` client
 3. WHEN I view Redis status THEN the system SHALL show command latency, memory usage, active connections using `redis.asyncio.Redis` with `info()` commands
 4. WHEN I view PostgreSQL status THEN the system SHALL show query latency, connection pool usage, replication lag using SQLAlchemy async sessions and system views

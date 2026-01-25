@@ -9,7 +9,7 @@ inclusion: always
 
 ---
 
-## ✅ Endpoint Definitions
+## [x] Endpoint Definitions
 
 - All routes **must** use a return type, rather than define a `response_model=...` in the route decorator.
 - Every route **must** include a `summary` and `description` argument to support OpenAPI documentation.
@@ -23,7 +23,7 @@ inclusion: always
 
 ---
 
-## 📦 Request/Response Schemas
+## Request/Response Schemas
 
 - All request and response models **must** inherit from `pydantic.BaseModel`.
 - Request and response models **must** be defined in `app/schemas/`, not inline in route files.
@@ -47,7 +47,7 @@ Document all routes using FastAPI's OpenAPI schema. Use tags to group them by fe
 
 ---
 
-## 🔐 Authentication & Authorization
+## Authentication & Authorization
 
 - Protected routes **must** include an explicit dependency (e.g., `Depends(current_user)`).
 - Authorization logic (e.g., role enforcement) **must** be declared using dependencies or decorators.
@@ -65,7 +65,7 @@ Document all routes using FastAPI's OpenAPI schema. Use tags to group them by fe
 
 ---
 
-## 🧪 Validation and Payload Rules
+## Validation and Payload Rules
 
 - Use built-in Pydantic field types (`constr`, `conint`, `EmailStr`, etc.) instead of manual validation inside route functions.
 - Required fields must be enforced with `Field(..., ...)`, not `Optional`.
@@ -87,7 +87,7 @@ Document all routes using FastAPI's OpenAPI schema. Use tags to group them by fe
 
 ---
 
-## 📝 Documentation & Tags
+## Documentation & Tags
 
 - Routes should be tagged using domain-specific nouns (e.g., `["Agents"]`, `["Tasks"]`, `["Projects"]`).
 - Avoid generic tags like `["API"]`, `["General"]`, or tags with inconsistent capitalization.
@@ -95,7 +95,7 @@ Document all routes using FastAPI's OpenAPI schema. Use tags to group them by fe
 
 ---
 
-## 🧪 Testing Requirements
+## Testing Requirements
 
 - Every endpoint must have corresponding integration tests.
 - Tests must cover:
@@ -112,14 +112,14 @@ Document all routes using FastAPI's OpenAPI schema. Use tags to group them by fe
 
 ---
 
-## ⚠️ Logging (during testing)
+## [WARN] Logging (during testing)
 
 - Avoid structured logging or Loguru calls in unit or integration test environments unless explicitly debugging.
 - Use `print()` or `pprint()` for debug output in test runs if needed, and remove before commit.
 
 ---
 
-## 🛠️ Performance & Misc
+## Performance & Misc
 
 - Avoid performing expensive database queries in route-level logic. Prefer delegating to service-layer functions.
 - Routes should never have database calls in the router. See [service-patterns.mdc](mdc:.cursor/rules/code/service-patterns.mdc)
@@ -128,6 +128,6 @@ Document all routes using FastAPI's OpenAPI schema. Use tags to group them by fe
 
 ---
 
-## 📌 Summary
+## Summary
 
 All endpoints must be well-structured, documented, and validated with clear input/output contracts. All tests must mirror real-world usage scenarios and ensure both correctness and resilience. Style violations in API design, schema usage, and route structure are treated as blocking issues in code review.

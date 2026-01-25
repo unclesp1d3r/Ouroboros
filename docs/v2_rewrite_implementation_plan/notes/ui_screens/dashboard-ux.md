@@ -123,7 +123,7 @@ Agent status is accessible via a slide-out **Sheet** anchored to the right side 
 
 Each agent is displayed as a vertically stacked **Card** inside the Sheet:
 
-- **Header:** Agent label or ID with status badge (🟢 Online, 🟡 Idle, 🔴 Offline)
+- **Header:** Agent label or ID with status badge ([GREEN] Online, [YELLOW] Idle, [RED] Offline)
 - **Subtext:** Last seen timestamp (e.g., "Seen 1m ago")
 - **Current Task:** Display current Campaign / Attack name or `Idle`
 - **Guess Rate:** Current or averaged hashes per second, bolded
@@ -137,10 +137,10 @@ Example layout for each agent card:
 ```text
 ╔════════════════════════════════╗
 ║ Agent Name or Label            ║
-║ ● Online   |  🕒 Last seen 1m  ║
+║ ● Online   |   Last seen 1m  ║
 ╠════════════════════════════════╣
-║ 📊 Current Task: Campaign X    ║
-║ 🔢 Guess Rate: 55 MH/s         ║
+║  Current Task: Campaign X    ║
+║  Guess Rate: 55 MH/s         ║
 ║ 📈 Sparkline: ▄▅▆▇█▇▆▅▃        ║
 ╚════════════════════════════════╝
 ```
@@ -214,9 +214,9 @@ This aligns with Ouroboros v2's broader mission to evolve from "a tool" into "a 
 | State     | Color  | Icon Variant |
 | --------- | ------ | ------------ |
 | Running   | Purple | ⚡ or ⏱️     |
-| Completed | Green  | ✅ or ✔️     |
-| Error     | Red    | ❌ or 🛑     |
-| Paused    | Gray   | ⏸️ or 🏁     |
+| Completed | Green  | [x] or ✔️    |
+| Error     | Red    | [FAIL] or    |
+| Paused    | Gray   | ⏸️ or        |
 | Offline   | Muted  | 🔘 or 📴     |
 
 ## Access Behavior

@@ -1,4 +1,4 @@
-# 🚨 Do not check user roles inline.
+# IMPORTANT: Do not check user roles inline.
 # Always use these permission helpers so RBAC stays consistent and testable.
 
 from app.core.authz import user_can, user_can_access_project
