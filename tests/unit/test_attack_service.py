@@ -527,3 +527,133 @@ def test_safe_int() -> None:
     assert _safe_int("invalid", 10) == 10
     assert _safe_int(None, 5) == 5
     assert _safe_int(3.14, 0) == 0  # Non-int, non-string
+
+
+# --- State machine integration tests ---
+
+
+@pytest.mark.asyncio
+@patch("app.core.services.attack_service._broadcast_campaign_update")
+async def test_delete_attack_service_aborts_running_attack(
+    mock_broadcast: AsyncMock,
+    db_session: AsyncSession,
+) -> None:
+    """Test that delete_attack_service marks RUNNING attack as ABANDONED."""
+    from app.models.attack import AttackState
+    from tests.factories.hash_list_factory import HashListFactory
+    from tests.utils.hash_type_utils import get_or_create_hash_type
+
+    # Set factory sessions
+    AttackFactory.__async_session__ = db_session
+    CampaignFactory.__async_session__ = db_session
+    ProjectFactory.__async_session__ = db_session
+    HashListFactory.__async_session__ = db_session
+
+    project = await ProjectFactory.create_async()
+    hash_type = await get_or_create_hash_type(db_session, 0, "MD5")
+    hash_list = await HashListFactory.create_async(
+        project_id=project.id, hash_type_id=hash_type.id
+    )
+    campaign = await CampaignFactory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await AttackFactory.create_async(
+        campaign_id=campaign.id,
+        state=AttackState.RUNNING,
+    )
+
+    # Delete running attack (should abort instead of delete)
+    result = await delete_attack_service(attack.id, db_session)
+
+    assert result["deleted"] is True
+    assert result["id"] == attack.id
+
+    # Verify attack is marked as ABANDONED (not actually deleted)
+    attack_result = await db_session.execute(
+        select(Attack).where(Attack.id == attack.id)
+    )
+    updated_attack = attack_result.scalar_one()
+    assert updated_attack.state == AttackState.ABANDONED
+
+
+@pytest.mark.asyncio
+@patch("app.core.services.attack_service._broadcast_campaign_update")
+async def test_delete_attack_service_aborts_paused_attack(
+    mock_broadcast: AsyncMock,
+    db_session: AsyncSession,
+) -> None:
+    """Test that delete_attack_service marks PAUSED attack as ABANDONED."""
+    from app.models.attack import AttackState
+    from tests.factories.hash_list_factory import HashListFactory
+    from tests.utils.hash_type_utils import get_or_create_hash_type
+
+    # Set factory sessions
+    AttackFactory.__async_session__ = db_session
+    CampaignFactory.__async_session__ = db_session
+    ProjectFactory.__async_session__ = db_session
+    HashListFactory.__async_session__ = db_session
+
+    project = await ProjectFactory.create_async()
+    hash_type = await get_or_create_hash_type(db_session, 0, "MD5")
+    hash_list = await HashListFactory.create_async(
+        project_id=project.id, hash_type_id=hash_type.id
+    )
+    campaign = await CampaignFactory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await AttackFactory.create_async(
+        campaign_id=campaign.id,
+        state=AttackState.PAUSED,
+    )
+
+    # Delete paused attack (should abort instead of delete)
+    result = await delete_attack_service(attack.id, db_session)
+
+    assert result["deleted"] is True
+    assert result["id"] == attack.id
+
+    # Verify attack is marked as ABANDONED (not actually deleted)
+    attack_result = await db_session.execute(
+        select(Attack).where(Attack.id == attack.id)
+    )
+    updated_attack = attack_result.scalar_one()
+    assert updated_attack.state == AttackState.ABANDONED
+
+
+@pytest.mark.asyncio
+@patch("app.core.services.attack_service._broadcast_campaign_update")
+async def test_delete_attack_service_rejects_completed_attack_abort(
+    mock_broadcast: AsyncMock,
+    db_session: AsyncSession,
+) -> None:
+    """Test that delete_attack_service rejects aborting a COMPLETED attack."""
+    from app.core.state_machines import InvalidStateTransitionError
+    from app.models.attack import AttackState
+    from tests.factories.hash_list_factory import HashListFactory
+    from tests.utils.hash_type_utils import get_or_create_hash_type
+
+    # Set factory sessions
+    AttackFactory.__async_session__ = db_session
+    CampaignFactory.__async_session__ = db_session
+    ProjectFactory.__async_session__ = db_session
+    HashListFactory.__async_session__ = db_session
+
+    project = await ProjectFactory.create_async()
+    hash_type = await get_or_create_hash_type(db_session, 0, "MD5")
+    hash_list = await HashListFactory.create_async(
+        project_id=project.id, hash_type_id=hash_type.id
+    )
+    campaign = await CampaignFactory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await AttackFactory.create_async(
+        campaign_id=campaign.id,
+        state=AttackState.COMPLETED,
+    )
+
+    # Attempt to delete a completed attack - should raise InvalidStateTransitionError
+    with pytest.raises(InvalidStateTransitionError) as exc_info:
+        await delete_attack_service(attack.id, db_session)
+
+    assert exc_info.value.from_state == AttackState.COMPLETED
+    assert exc_info.value.action == "abort"

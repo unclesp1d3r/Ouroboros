@@ -1,5 +1,7 @@
 """Ouroboros FastAPI Application."""
 
+import asyncio
+import contextlib
 import logging
 import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
@@ -55,12 +57,20 @@ for name in logging.root.manager.loggerDict:
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
     """FastAPI lifespan events."""
+    from app.core.tasks.resource_tasks import run_periodic_cleanup
+
     # Initialize database session manager with consolidated settings
     sessionmanager.init(settings)
 
+    # Start periodic cleanup task
+    cleanup_task = asyncio.create_task(run_periodic_cleanup())
+
     yield
 
-    # Cleanup on shutdown
+    # Shutdown cleanup
+    cleanup_task.cancel()
+    with contextlib.suppress(asyncio.CancelledError):
+        await cleanup_task
     await sessionmanager.close()
 
 

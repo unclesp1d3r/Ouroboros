@@ -49,6 +49,7 @@ from app.core.services.campaign_service import (
     stop_campaign_service,
     update_campaign_service,
 )
+from app.core.state_machines import InvalidStateTransitionError
 from app.db.session import get_db
 from app.models.project import Project
 from app.models.user import User
@@ -236,6 +237,11 @@ async def start_campaign(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except PermissionError as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e)) from e
+    except InvalidStateTransitionError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Cannot start an {e.from_state.value} campaign.",
+        ) from e
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
@@ -259,6 +265,11 @@ async def stop_campaign(
         return await stop_campaign_service(campaign_id, db)
     except CampaignNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except InvalidStateTransitionError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Cannot stop an {e.from_state.value} campaign.",
+        ) from e
 
 
 @router.get(

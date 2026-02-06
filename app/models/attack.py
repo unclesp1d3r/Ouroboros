@@ -21,6 +21,7 @@ class AttackMode(str, Enum):
 class AttackState(str, Enum):
     PENDING = "pending"
     RUNNING = "running"
+    PAUSED = "paused"
     COMPLETED = "completed"
     FAILED = "failed"
     ABANDONED = "abandoned"
