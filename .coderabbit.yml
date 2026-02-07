@@ -160,9 +160,6 @@ reviews:
             - "Draft"
             - "[Draft]"
             - "work in progress"
-        labels:
-            - "auto-reviewed"
-            - "security-review-needed"
         drafts: false
         base_branches:
             - "main"
