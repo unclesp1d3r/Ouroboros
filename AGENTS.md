@@ -140,6 +140,7 @@ async def process_resource(resource_id: int) -> Resource:
 
 - **RFC9457 Compliance**: All Control API endpoints must return errors in `application/problem+json` format
 - **Required Fields**: `type`, `title`, `status`, `detail`, `instance`, and relevant extensions
+- **Exception Architecture**: Services raise domain exceptions (e.g., `InvalidStateTransitionError`), Web API converts to `HTTPException`, Control API uses `ControlRFC9457Middleware` for RFC9457 conversion
 
 ### Frontend Development (SvelteKit)
 
@@ -149,6 +150,7 @@ async def process_resource(resource_id: int) -> Resource:
 - **State Management**: Use SvelteKit stores and `$app/state` (not deprecated `$app/stores`)
 - **Package Management**: Run `pnpm`/`npm` commands from `frontend/` directory
 - **Idiomatic Svelte**: Follow Svelte 5 conventions and best practices
+- **TypeScript global augmentation**: `declare global { var ... }` requires `var` - add `// eslint-disable-next-line no-var` comment
 
 ### Database Development
 
