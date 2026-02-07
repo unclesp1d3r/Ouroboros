@@ -132,12 +132,12 @@ class CampaignStateMachine:
     system-driven transitions (automatic completion).
 
     Valid Transitions:
-        - DRAFT → ACTIVE (start), ARCHIVED (archive)
-        - ACTIVE → PAUSED (pause), DRAFT (stop), ARCHIVED (archive), COMPLETED (system)
-        - PAUSED → ACTIVE (resume), ARCHIVED (archive)
-        - COMPLETED → ARCHIVED (archive)
-        - ARCHIVED → DRAFT (unarchive)
-        - ERROR → DRAFT (reset)
+        - DRAFT -> ACTIVE (start), ARCHIVED (archive)
+        - ACTIVE -> PAUSED (pause), DRAFT (stop), ARCHIVED (archive), COMPLETED (system)
+        - PAUSED -> ACTIVE (resume), ARCHIVED (archive)
+        - COMPLETED -> ARCHIVED (archive)
+        - ARCHIVED -> DRAFT (unarchive)
+        - ERROR -> DRAFT (reset)
     """
 
     # Mapping of each state to its valid target states
@@ -259,12 +259,12 @@ class AttackStateMachine:
     and system-driven transitions (completion, failure).
 
     Valid Transitions:
-        - PENDING → RUNNING (start), ABANDONED (abandon)
-        - RUNNING → PAUSED (pause), COMPLETED (system), FAILED (system), ABANDONED (abort)
-        - PAUSED → RUNNING (resume), ABANDONED (abort)
-        - COMPLETED → (terminal state, no outgoing transitions)
-        - FAILED → PENDING (retry)
-        - ABANDONED → PENDING (reactivate)
+        - PENDING -> RUNNING (start), ABANDONED (abandon)
+        - RUNNING -> PAUSED (pause), COMPLETED (system), FAILED (system), ABANDONED (abort)
+        - PAUSED -> RUNNING (resume), ABANDONED (abort)
+        - COMPLETED -> (terminal state, no outgoing transitions)
+        - FAILED -> PENDING (retry)
+        - ABANDONED -> PENDING (reactivate)
     """
 
     # Mapping of each state to its valid target states
@@ -382,5 +382,10 @@ class AttackStateMachine:
 
         Returns:
             True if the state is terminal, False otherwise.
+
+        Raises:
+            ValueError: If the state is not a known AttackState.
         """
-        return len(cls.TRANSITIONS.get(state, [])) == 0
+        if state not in cls.TRANSITIONS:
+            raise ValueError(f"Unknown attack state: {state}")
+        return len(cls.TRANSITIONS[state]) == 0

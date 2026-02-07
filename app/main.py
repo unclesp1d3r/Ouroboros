@@ -1,11 +1,10 @@
 """Ouroboros FastAPI Application."""
 
 import asyncio
-import contextlib
 import logging
 import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
 from cashews import cache
 from cashews.contrib.fastapi import (
@@ -69,7 +68,7 @@ async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
 
     # Shutdown cleanup
     cleanup_task.cancel()
-    with contextlib.suppress(asyncio.CancelledError):
+    with suppress(asyncio.CancelledError):
         await cleanup_task
     await sessionmanager.close()
 

@@ -722,7 +722,7 @@ class TestStateMachineIntegration:
 
         # Unarchive campaign
         assert CampaignStateMachine.can_transition(state, CampaignState.DRAFT)
-        state = CampaignState.DRAFT
+        # Final state transition validated, lifecycle complete
 
     def test_attack_full_lifecycle(self) -> None:
         """Test an attack going through its full lifecycle."""
@@ -761,13 +761,11 @@ class TestStateMachineIntegration:
 
         # Attack completes
         assert AttackStateMachine.can_transition(state, AttackState.COMPLETED)
-        state = AttackState.COMPLETED
+        # Final state transition validated, lifecycle complete
 
     def test_attack_failure_retry_cycle(self) -> None:
         """Test an attack failing and being retried."""
-        state = AttackState.PENDING
-
-        # Start attack
+        # Start with running attack (skip pending for brevity)
         state = AttackState.RUNNING
 
         # Attack fails

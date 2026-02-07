@@ -37,10 +37,11 @@ router = APIRouter(prefix="/resources", tags=["Control - Resources"])
             "content": {
                 "application/problem+json": {
                     "example": {
-                        "type": "about:blank",
+                        "type": "invalid-resource-state",
                         "title": "Invalid Resource State",
                         "status": 400,
                         "detail": "Cannot cancel resource that is already uploaded. Use DELETE to remove uploaded resources.",
+                        "instance": "/api/v1/control/resources/123e4567-e89b-12d3-a456-426614174000/cancel",
                     }
                 }
             },
@@ -50,10 +51,11 @@ router = APIRouter(prefix="/resources", tags=["Control - Resources"])
             "content": {
                 "application/problem+json": {
                     "example": {
-                        "type": "about:blank",
+                        "type": "project-access-denied",
                         "title": "Project Access Denied",
                         "status": 403,
                         "detail": "User does not have access to project 123",
+                        "instance": "/api/v1/control/resources/123e4567-e89b-12d3-a456-426614174000/cancel",
                     }
                 }
             },
@@ -63,10 +65,11 @@ router = APIRouter(prefix="/resources", tags=["Control - Resources"])
             "content": {
                 "application/problem+json": {
                     "example": {
-                        "type": "about:blank",
+                        "type": "resource-not-found",
                         "title": "Resource Not Found",
                         "status": 404,
                         "detail": "Resource 123e4567-e89b-12d3-a456-426614174000 not found",
+                        "instance": "/api/v1/control/resources/123e4567-e89b-12d3-a456-426614174000/cancel",
                     }
                 }
             },
@@ -91,7 +94,18 @@ async def cancel_pending_resource_upload(
     3. Delete any associated object from MinIO storage
     4. Delete the resource record from the database
 
-    Returns 204 No Content on success.
+    Args:
+        resource_id: UUID of the resource to cancel.
+        db: Database session (injected).
+        current_user: Authenticated user from API key (injected).
+
+    Returns:
+        Response: 204 No Content on success.
+
+    Raises:
+        ResourceNotFoundError: If resource doesn't exist.
+        ProjectAccessDeniedError: If user lacks project access.
+        InvalidResourceStateError: If resource is already uploaded.
     """
     await cancel_pending_resource(resource_id, db, current_user)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

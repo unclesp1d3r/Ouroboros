@@ -88,11 +88,12 @@ async def cleanup_stale_pending_resources(db: AsyncSession) -> dict[str, int]:
 
     try:
         # Query for stale pending resources with row-level locking
+        # Use skip_locked to prevent race conditions with concurrent cleanup workers
         result = await db.execute(
             select(AttackResourceFile)
             .where(AttackResourceFile.is_uploaded == False)  # noqa: E712
             .where(AttackResourceFile.created_at < cutoff_time)
-            .with_for_update()
+            .with_for_update(skip_locked=True)
         )
         stale_resources = list(result.scalars().all())
 

@@ -196,10 +196,12 @@ class Settings(BaseSettings):
     # Resource Cleanup Job
     RESOURCE_CLEANUP_INTERVAL_HOURS: int = Field(
         default=1,
+        ge=1,
         description="Interval in hours for periodic resource cleanup job",
     )
     RESOURCE_CLEANUP_AGE_HOURS: int = Field(
         default=24,
+        ge=1,
         description="Age in hours after which pending resources are cleaned up",
     )
 

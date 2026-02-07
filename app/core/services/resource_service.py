@@ -1690,7 +1690,9 @@ async def cleanup_stale_resource(
 
         # Check if object exists in MinIO and delete if so
         try:
-            storage_service.client.stat_object(bucket, resource_id)
+            await asyncio.to_thread(
+                storage_service.client.stat_object, bucket, resource_id
+            )
             # Object exists, delete it
             await asyncio.to_thread(
                 storage_service.client.remove_object, bucket, resource_id
@@ -1767,7 +1769,13 @@ async def cancel_pending_resource(
         raise ResourceNotFoundError(detail=f"Resource {resource_id} not found")
 
     # Check project access
-    if resource.project_id:
+    # For unrestricted resources (project_id=None), require superuser access
+    if resource.project_id is None:
+        if not current_user.is_superuser:
+            raise ProjectAccessDeniedError(
+                detail="Only superusers can cancel unrestricted resources"
+            )
+    else:
         accessible_projects = [
             assoc.project_id for assoc in (current_user.project_associations or [])
         ]
@@ -1792,10 +1800,10 @@ async def cancel_pending_resource(
 
         raise InternalServerError(detail="Failed to clean up resource")
 
-    # Log the manual cancellation
+    # Log the manual cancellation (use user_id instead of email for PII compliance)
     logger.bind(
         resource_id=str(resource_id),
-        user_email=current_user.email,
+        user_id=current_user.id,
         project_id=resource.project_id,
         action="manual_cancel",
     ).info("Resource upload cancelled by user")

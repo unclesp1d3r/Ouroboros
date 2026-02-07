@@ -240,7 +240,7 @@ async def start_campaign(
     except InvalidStateTransitionError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Cannot start an {e.from_state.value} campaign.",
+            detail=f"Cannot start campaign from state '{e.from_state.value}'.",
         ) from e
     except ValueError as e:
         raise HTTPException(
@@ -268,7 +268,7 @@ async def stop_campaign(
     except InvalidStateTransitionError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Cannot stop an {e.from_state.value} campaign.",
+            detail=f"Cannot stop campaign from state '{e.from_state.value}'.",
         ) from e
 
 
