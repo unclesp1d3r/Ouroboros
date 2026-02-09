@@ -321,6 +321,47 @@ class TestCampaignStateMachine:
         assert CampaignState.ARCHIVED in valid
         assert len(valid) == 1
 
+    # Get valid actions tests
+    def test_get_valid_actions_draft(self) -> None:
+        """Test getting valid actions from DRAFT."""
+        valid = CampaignStateMachine.get_valid_actions(CampaignState.DRAFT)
+        assert "start" in valid
+        assert "archive" in valid
+        assert len(valid) == 2
+
+    def test_get_valid_actions_active(self) -> None:
+        """Test getting valid actions from ACTIVE."""
+        valid = CampaignStateMachine.get_valid_actions(CampaignState.ACTIVE)
+        assert "stop" in valid
+        assert "pause" in valid
+        assert "archive" in valid
+        assert len(valid) == 3
+
+    def test_get_valid_actions_paused(self) -> None:
+        """Test getting valid actions from PAUSED."""
+        valid = CampaignStateMachine.get_valid_actions(CampaignState.PAUSED)
+        assert "resume" in valid
+        assert "archive" in valid
+        assert len(valid) == 2
+
+    def test_get_valid_actions_completed(self) -> None:
+        """Test getting valid actions from COMPLETED."""
+        valid = CampaignStateMachine.get_valid_actions(CampaignState.COMPLETED)
+        assert "archive" in valid
+        assert len(valid) == 1
+
+    def test_get_valid_actions_archived(self) -> None:
+        """Test getting valid actions from ARCHIVED."""
+        valid = CampaignStateMachine.get_valid_actions(CampaignState.ARCHIVED)
+        assert "unarchive" in valid
+        assert len(valid) == 1
+
+    def test_get_valid_actions_error(self) -> None:
+        """Test getting valid actions from ERROR."""
+        valid = CampaignStateMachine.get_valid_actions(CampaignState.ERROR)
+        assert "reset" in valid
+        assert len(valid) == 1
+
 
 class TestAttackStateMachine:
     """Tests for AttackStateMachine."""
@@ -633,6 +674,45 @@ class TestAttackStateMachine:
         """Test getting valid transitions from COMPLETED (terminal)."""
         valid = AttackStateMachine.get_valid_transitions(AttackState.COMPLETED)
         assert len(valid) == 0
+
+    # Get valid actions tests
+    def test_get_valid_actions_pending(self) -> None:
+        """Test getting valid actions from PENDING."""
+        valid = AttackStateMachine.get_valid_actions(AttackState.PENDING)
+        assert "start" in valid
+        assert "abandon" in valid
+        assert len(valid) == 2
+
+    def test_get_valid_actions_running(self) -> None:
+        """Test getting valid actions from RUNNING."""
+        valid = AttackStateMachine.get_valid_actions(AttackState.RUNNING)
+        assert "pause" in valid
+        assert "abort" in valid
+        assert len(valid) == 2
+
+    def test_get_valid_actions_paused(self) -> None:
+        """Test getting valid actions from PAUSED."""
+        valid = AttackStateMachine.get_valid_actions(AttackState.PAUSED)
+        assert "resume" in valid
+        assert "abort" in valid
+        assert len(valid) == 2
+
+    def test_get_valid_actions_completed(self) -> None:
+        """Test getting valid actions from COMPLETED (terminal)."""
+        valid = AttackStateMachine.get_valid_actions(AttackState.COMPLETED)
+        assert len(valid) == 0
+
+    def test_get_valid_actions_failed(self) -> None:
+        """Test getting valid actions from FAILED."""
+        valid = AttackStateMachine.get_valid_actions(AttackState.FAILED)
+        assert "retry" in valid
+        assert len(valid) == 1
+
+    def test_get_valid_actions_abandoned(self) -> None:
+        """Test getting valid actions from ABANDONED."""
+        valid = AttackStateMachine.get_valid_actions(AttackState.ABANDONED)
+        assert "reactivate" in valid
+        assert len(valid) == 1
 
 
 class TestInvalidStateTransitionProblem:
