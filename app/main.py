@@ -285,9 +285,5 @@ async def invalid_agent_token_handler(
     return JSONResponse(status_code=401, content={"detail": str(exc)})
 
 
-# Register v1 error handler for all /api/v1/client/* and /api/v1/agent/* endpoints (contract compliance)
-# The handler passes any non-Agent API endpoints to the default handler
-app.add_exception_handler(HTTPException, v1_http_exception_handler)
-
 # Setup custom OpenAPI documentation
 setup_openapi_customization(app)

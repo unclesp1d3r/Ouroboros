@@ -68,9 +68,8 @@ async def cleanup_stale_pending_resources(db: AsyncSession) -> dict[str, int]:
     Clean up stale pending resources that haven't been uploaded within the configured age threshold.
 
     Queries for resources where is_uploaded=False and created_at < (now - age threshold).
-    Uses row-level locking (FOR UPDATE) to prevent concurrent cleanup conflicts.
-    For each stale resource, checks MinIO object existence, deletes if present,
-    then deletes the database record.
+    Uses skip_locked to prevent concurrent cleanup conflicts without blocking.
+    Commits after each resource to minimize lock duration during I/O operations.
 
     Args:
         db: Database session from sessionmanager.session()
@@ -87,43 +86,60 @@ async def cleanup_stale_pending_resources(db: AsyncSession) -> dict[str, int]:
     errors = 0
 
     try:
-        # Query for stale pending resources with row-level locking
-        # Use skip_locked to prevent race conditions with concurrent cleanup workers
+        # Query for stale pending resource IDs only (no FOR UPDATE lock on query)
+        # Each resource will be processed individually with its own lock
         result = await db.execute(
-            select(AttackResourceFile)
+            select(AttackResourceFile.id)
             .where(AttackResourceFile.is_uploaded == False)  # noqa: E712
             .where(AttackResourceFile.created_at < cutoff_time)
-            .with_for_update(skip_locked=True)
         )
-        stale_resources = list(result.scalars().all())
+        stale_resource_ids = [row[0] for row in result.fetchall()]
 
-        if not stale_resources:
+        if not stale_resource_ids:
             logger.debug("No stale pending resources found for cleanup")
             return {"deleted": 0, "errors": 0}
 
         logger.bind(
-            stale_count=len(stale_resources),
+            stale_count=len(stale_resource_ids),
             age_threshold_hours=age_hours,
         ).info("Found stale pending resources for cleanup")
 
-        # Process each stale resource
-        for resource in stale_resources:
+        # Process each stale resource individually to minimize lock duration
+        for resource_id in stale_resource_ids:
             try:
+                # Lock and fetch the resource for this specific deletion
+                result = await db.execute(
+                    select(AttackResourceFile)
+                    .where(AttackResourceFile.id == resource_id)
+                    .with_for_update(skip_locked=True)
+                )
+                resource = result.scalar_one_or_none()
+
+                if resource is None:
+                    # Resource was already deleted or locked by another worker
+                    continue
+
+                # Skip if resource was uploaded while we were processing
+                if resource.is_uploaded:
+                    continue
+
                 success = await cleanup_stale_resource(resource, db)
                 if success:
                     deleted += 1
+                    # Commit after each successful deletion to release lock quickly
+                    await db.commit()
                 else:
                     errors += 1
+                    await db.rollback()
+
             except Exception as e:  # noqa: BLE001 - Defensive catch-all for background cleanup
                 logger.bind(
-                    resource_id=str(resource.id),
+                    resource_id=str(resource_id),
                     error=str(e),
                 ).error("Exception during stale resource cleanup")
                 errors += 1
+                await db.rollback()
                 # Continue processing other resources
-
-        # Commit all deletions
-        await db.commit()
 
     except Exception as e:
         logger.bind(error=str(e)).error("Failed to query stale pending resources")
