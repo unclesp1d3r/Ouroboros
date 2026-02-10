@@ -798,11 +798,11 @@ class TestStateMachineIntegration:
 
         # Archive campaign
         assert CampaignStateMachine.can_transition(state, CampaignState.ARCHIVED)
-        state = CampaignState.ARCHIVED
 
-        # Unarchive campaign
-        assert CampaignStateMachine.can_transition(state, CampaignState.DRAFT)
-        # Final state transition validated, lifecycle complete
+        # Unarchive campaign (from archived state)
+        assert CampaignStateMachine.can_transition(
+            CampaignState.ARCHIVED, CampaignState.DRAFT
+        )
 
     def test_attack_full_lifecycle(self) -> None:
         """Test an attack going through its full lifecycle."""
