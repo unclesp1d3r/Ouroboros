@@ -1661,3 +1661,165 @@ async def delete_upload_service(
 
     await db.commit()
     logger.info(f"Successfully deleted upload {upload_id} and all associated resources")
+
+
+async def cleanup_stale_resource(
+    resource: AttackResourceFile, db: AsyncSession
+) -> bool:
+    """
+    Clean up a single stale pending resource.
+
+    Deletes the resource from MinIO storage (if exists) and the database.
+    Uses structured logging for observability.
+
+    Args:
+        resource: The AttackResourceFile to clean up
+        db: Database session (should already have the resource locked)
+
+    Returns:
+        True if cleanup was successful, False if an error occurred
+    """
+    from datetime import UTC, datetime
+
+    resource_id = str(resource.id)
+    age_hours = (datetime.now(UTC) - resource.created_at).total_seconds() / 3600
+
+    try:
+        storage_service = get_storage_service()
+        bucket = settings.MINIO_BUCKET
+
+        # Check if object exists in MinIO and delete if so
+        try:
+            await asyncio.to_thread(
+                storage_service.client.stat_object, bucket, resource_id
+            )
+            # Object exists, delete it
+            await asyncio.to_thread(
+                storage_service.client.remove_object, bucket, resource_id
+            )
+            logger.bind(
+                resource_id=resource_id,
+                age_hours=round(age_hours, 2),
+                project_id=resource.project_id,
+                storage_deleted=True,
+            ).info("Deleted stale resource from MinIO storage")
+        except S3Error as e:
+            if "NoSuchKey" in str(e) or "not found" in str(e).lower():
+                # Object doesn't exist, that's fine
+                logger.bind(
+                    resource_id=resource_id,
+                    age_hours=round(age_hours, 2),
+                    project_id=resource.project_id,
+                    storage_deleted=False,
+                ).debug(
+                    "Stale resource not found in MinIO (already deleted or never uploaded)"
+                )
+            else:
+                raise
+
+        # Delete database record
+        await db.delete(resource)
+        logger.bind(
+            resource_id=resource_id,
+            age_hours=round(age_hours, 2),
+            project_id=resource.project_id,
+            outcome="deleted",
+        ).info("Cleaned up stale pending resource")
+
+        return True
+
+    except asyncio.CancelledError:
+        # Re-raise to allow graceful task cancellation
+        raise
+    except (S3Error, SQLAlchemyError, OSError, ConnectionError) as e:
+        # Catch specific storage/database/network errors, not programming bugs
+        logger.bind(
+            resource_id=resource_id,
+            age_hours=round(age_hours, 2),
+            project_id=resource.project_id,
+            error=str(e),
+            error_type=type(e).__name__,
+        ).error("Failed to clean up stale pending resource")
+        await db.rollback()
+        return False
+
+
+async def cancel_pending_resource(
+    resource_id: UUID, db: AsyncSession, current_user: User
+) -> None:
+    """
+    Cancel a pending resource upload.
+
+    Validates user access, checks resource state, and performs cleanup.
+    Raises appropriate RFC9457 exceptions for error cases.
+
+    Args:
+        resource_id: The UUID of the resource to cancel
+        db: Database session
+        current_user: The authenticated user making the request
+
+    Raises:
+        ResourceNotFoundError: If resource doesn't exist
+        ProjectAccessDeniedError: If user doesn't have access to the resource's project
+        InvalidResourceStateError: If resource is already uploaded
+    """
+    # Get the resource with row lock to prevent race conditions
+    from sqlalchemy import select
+
+    from app.core.control_exceptions import (
+        InvalidResourceStateError,
+        ProjectAccessDeniedError,
+        ResourceNotFoundError,
+    )
+
+    result = await db.execute(
+        select(AttackResourceFile)
+        .where(AttackResourceFile.id == resource_id)
+        .with_for_update()
+    )
+    resource = result.scalar_one_or_none()
+    if not resource:
+        raise ResourceNotFoundError(detail=f"Resource {resource_id} not found")
+
+    # Check project access
+    # For unrestricted resources (project_id=None), require superuser access
+    if resource.project_id is None:
+        if not current_user.is_superuser:
+            raise ProjectAccessDeniedError(
+                detail="Only superusers can cancel unrestricted resources"
+            )
+    else:
+        accessible_projects = [
+            assoc.project_id for assoc in (current_user.project_associations or [])
+        ]
+        if (
+            resource.project_id not in accessible_projects
+            and not current_user.is_superuser
+        ):
+            raise ProjectAccessDeniedError(
+                detail=f"User does not have access to project {resource.project_id}"
+            )
+
+    # Check resource state
+    if resource.is_uploaded:
+        raise InvalidResourceStateError(
+            detail="Cannot cancel resource that is already uploaded. Use DELETE to remove uploaded resources."
+        )
+
+    # Perform cleanup
+    success = await cleanup_stale_resource(resource, db)
+    if not success:
+        from app.core.control_exceptions import InternalServerError
+
+        raise InternalServerError(detail="Failed to clean up resource")
+
+    # Commit the deletion
+    await db.commit()
+
+    # Log the manual cancellation (use user_id instead of email for PII compliance)
+    logger.bind(
+        resource_id=str(resource_id),
+        user_id=current_user.id,
+        project_id=resource.project_id,
+        action="manual_cancel",
+    ).info("Resource upload cancelled by user")

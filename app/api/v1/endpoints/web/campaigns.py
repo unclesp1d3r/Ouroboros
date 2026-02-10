@@ -49,6 +49,7 @@ from app.core.services.campaign_service import (
     stop_campaign_service,
     update_campaign_service,
 )
+from app.core.state_machines import CampaignStateMachine, InvalidStateTransitionError
 from app.db.session import get_db
 from app.models.project import Project
 from app.models.user import User
@@ -236,6 +237,18 @@ async def start_campaign(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except PermissionError as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e)) from e
+    except InvalidStateTransitionError as e:
+        from app.models.campaign import CampaignState
+
+        if isinstance(e.from_state, CampaignState):
+            valid_actions = CampaignStateMachine.get_valid_actions(e.from_state)
+            detail = f"Cannot start campaign from state '{e.from_state.value}'. Valid actions: {valid_actions}"
+        else:
+            detail = f"Cannot start campaign from state '{e.from_state.value}'."
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=detail,
+        ) from e
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
@@ -259,6 +272,18 @@ async def stop_campaign(
         return await stop_campaign_service(campaign_id, db)
     except CampaignNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except InvalidStateTransitionError as e:
+        from app.models.campaign import CampaignState
+
+        if isinstance(e.from_state, CampaignState):
+            valid_actions = CampaignStateMachine.get_valid_actions(e.from_state)
+            detail = f"Cannot stop campaign from state '{e.from_state.value}'. Valid actions: {valid_actions}"
+        else:
+            detail = f"Cannot stop campaign from state '{e.from_state.value}'."
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=detail,
+        ) from e
 
 
 @router.get(
@@ -402,6 +427,18 @@ async def archive_campaign(
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     except CampaignNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except InvalidStateTransitionError as e:
+        from app.models.campaign import CampaignState
+
+        if isinstance(e.from_state, CampaignState):
+            valid_actions = CampaignStateMachine.get_valid_actions(e.from_state)
+            detail = f"Cannot archive campaign from state '{e.from_state.value}'. Valid actions: {valid_actions}"
+        else:
+            detail = f"Cannot archive campaign from state '{e.from_state.value}'."
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=detail,
+        ) from e
 
 
 @router.post(

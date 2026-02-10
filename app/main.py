@@ -1,9 +1,10 @@
 """Ouroboros FastAPI Application."""
 
+import asyncio
 import logging
 import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
 from cashews import cache
 from cashews.contrib.fastapi import (
@@ -55,12 +56,20 @@ for name in logging.root.manager.loggerDict:
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
     """FastAPI lifespan events."""
+    from app.core.tasks.resource_tasks import run_periodic_cleanup
+
     # Initialize database session manager with consolidated settings
     sessionmanager.init(settings)
 
+    # Start periodic cleanup task
+    cleanup_task = asyncio.create_task(run_periodic_cleanup())
+
     yield
 
-    # Cleanup on shutdown
+    # Shutdown cleanup
+    cleanup_task.cancel()
+    with suppress(asyncio.CancelledError):
+        await cleanup_task
     await sessionmanager.close()
 
 
@@ -275,10 +284,6 @@ async def invalid_agent_token_handler(
 ) -> JSONResponse:
     return JSONResponse(status_code=401, content={"detail": str(exc)})
 
-
-# Register v1 error handler for all /api/v1/client/* and /api/v1/agent/* endpoints (contract compliance)
-# The handler passes any non-Agent API endpoints to the default handler
-app.add_exception_handler(HTTPException, v1_http_exception_handler)
 
 # Setup custom OpenAPI documentation
 setup_openapi_customization(app)

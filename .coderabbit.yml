@@ -61,35 +61,11 @@ reviews:
     poem: true
     enable_prompt_for_ai_agents: true
     path_filters:
-        # Python bytecode cache
-        - "**/__pycache__/**"
-        - "**/*.pyc"
-        - "**/*.pyo"
-        # Build artifacts
-        - "frontend/build/**"
-        - "frontend/test-results/**"
-        - "frontend/test-artifacts/**"
-        # Generated files
-        - "contracts/current_api_openapi.json"
-        - "alembic/versions/*.py"
-        - "coverage.xml"
-        # Logs and debug files
-        - "logs/**"
-        - "**/*.log"
-        - "firebase-debug.log"
-        # IDE and editor files
-        - "**/*.code-workspace"
-        - "**/.vscode/**"
-        - "**/.idea/**"
-        # Lock files (review dependency changes instead)
-        - "**/*lock.json"
-        - "**/*lock.yaml"
-        - "**/*lock.yml"
-        - "uv.lock"
-        - "bun.lock"
-        # OS files
-        - "**/.DS_Store"
-        - "**/Thumbs.db"
+        # Exclude auto-generated files that shouldn't be reviewed
+        - "!contracts/current_api_openapi.json"
+        - "!alembic/versions/*.py"
+        # Note: CodeRabbit respects .gitignore and has sensible defaults
+        # for lock files, build artifacts, and cache directories
     path_instructions:
         - path: app/api/v1/endpoints/agent/**
           instructions: >
@@ -160,9 +136,6 @@ reviews:
             - "Draft"
             - "[Draft]"
             - "work in progress"
-        labels:
-            - "auto-reviewed"
-            - "security-review-needed"
         drafts: false
         base_branches:
             - "main"
@@ -442,7 +415,7 @@ issue_enrichment:
     auto_enrich:
         enabled: true
     planning:
-        enabled: true
+        enabled: false
         auto_planning:
             enabled: false
             labels: []

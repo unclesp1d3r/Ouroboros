@@ -193,6 +193,18 @@ class Settings(BaseSettings):
         description="Timeout in seconds for background verification of resource uploads. If the file is not uploaded within this time, the resource is deleted. Tests should override this to a low value.",
     )
 
+    # Resource Cleanup Job
+    RESOURCE_CLEANUP_INTERVAL_HOURS: int = Field(
+        default=1,
+        ge=1,
+        description="Interval in hours for periodic resource cleanup job",
+    )
+    RESOURCE_CLEANUP_AGE_HOURS: int = Field(
+        default=24,
+        ge=1,
+        description="Age in hours after which pending resources are cleaned up",
+    )
+
     # MinIO S3-Compatible Storage
     MINIO_ENDPOINT: str = Field(
         default="minio:9000",

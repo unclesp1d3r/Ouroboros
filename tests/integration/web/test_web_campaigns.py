@@ -125,11 +125,11 @@ async def test_start_stop_campaign_archived(
     resp = await async_client.post(f"/api/v1/web/campaigns/{campaign.id}/start")
     assert resp.status_code == HTTPStatus.BAD_REQUEST
     data = resp.json()
-    assert "Cannot start an archived campaign." in data["detail"]
+    assert "Cannot start campaign from state 'archived'" in data["detail"]
     resp = await async_client.post(f"/api/v1/web/campaigns/{campaign.id}/stop")
     assert resp.status_code == HTTPStatus.BAD_REQUEST
     data = resp.json()
-    assert "Cannot stop an archived campaign." in data["detail"]
+    assert "Cannot stop campaign from state 'archived'" in data["detail"]
 
 
 @pytest.mark.asyncio

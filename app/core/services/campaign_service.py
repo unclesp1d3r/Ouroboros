@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.services.attack_complexity_service import calculate_attack_complexity
+from app.core.state_machines import CampaignStateMachine
 from app.models.agent import Agent, AgentState
 from app.models.attack import Attack, AttackState
 from app.models.campaign import Campaign, CampaignState
@@ -68,10 +69,6 @@ async def list_campaigns_service(
 
     Returns:
         tuple[list[CampaignRead], int]: A tuple containing the list of campaigns and the total number of campaigns
-
-    Raises:
-        CampaignNotFoundError: if campaign does not exist
-        HTTPException: if campaign is archived
     """
     stmt = select(Campaign).where(Campaign.state != CampaignState.ARCHIVED)
     stmt = stmt.where(
@@ -451,7 +448,7 @@ async def start_campaign_service(campaign_id: int, db: AsyncSession) -> Campaign
         CampaignRead: The updated campaign
     Raises:
         CampaignNotFoundError: if campaign does not exist
-        HTTPException: if campaign is archived
+        InvalidStateTransitionError: if transition is not valid
     """
     result = await db.execute(select(Campaign).where(Campaign.id == campaign_id))
     campaign = result.scalar_one_or_none()
@@ -460,10 +457,10 @@ async def start_campaign_service(campaign_id: int, db: AsyncSession) -> Campaign
     if campaign.state == CampaignState.ACTIVE:
         logger.info(f"Campaign {campaign_id} is already active.")
         return CampaignRead.model_validate(campaign, from_attributes=True)
-    if campaign.state == CampaignState.ARCHIVED:
-        raise HTTPException(
-            status_code=400, detail="Cannot start an archived campaign."
-        )
+
+    # Validate state transition using state machine (raises InvalidStateTransitionError if invalid)
+    CampaignStateMachine.validate_action(campaign.state, "start")
+
     campaign.state = CampaignState.ACTIVE
     await db.commit()
     await db.refresh(campaign)
@@ -487,7 +484,7 @@ async def stop_campaign_service(campaign_id: int, db: AsyncSession) -> CampaignR
         CampaignRead: The updated campaign
     Raises:
         CampaignNotFoundError: if campaign does not exist
-        HTTPException: if campaign is archived
+        InvalidStateTransitionError: if transition is not valid
     """
     result = await db.execute(select(Campaign).where(Campaign.id == campaign_id))
     campaign = result.scalar_one_or_none()
@@ -496,8 +493,10 @@ async def stop_campaign_service(campaign_id: int, db: AsyncSession) -> CampaignR
     if campaign.state == CampaignState.DRAFT:
         logger.info(f"Campaign {campaign_id} is already stopped (draft state).")
         return CampaignRead.model_validate(campaign, from_attributes=True)
-    if campaign.state == CampaignState.ARCHIVED:
-        raise HTTPException(status_code=400, detail="Cannot stop an archived campaign.")
+
+    # Validate state transition using state machine (raises InvalidStateTransitionError if invalid)
+    CampaignStateMachine.validate_action(campaign.state, "stop")
+
     campaign.state = CampaignState.DRAFT
     await db.commit()
     await db.refresh(campaign)
@@ -580,7 +579,7 @@ async def archive_campaign_service(campaign_id: int, db: AsyncSession) -> Campai
         CampaignRead: The updated campaign
     Raises:
         CampaignNotFoundError: if campaign does not exist
-        HTTPException: if campaign is archived
+        InvalidStateTransitionError: if transition is not valid
     """
     result = await db.execute(select(Campaign).where(Campaign.id == campaign_id))
     campaign = result.scalar_one_or_none()
@@ -588,6 +587,10 @@ async def archive_campaign_service(campaign_id: int, db: AsyncSession) -> Campai
         raise CampaignNotFoundError(f"Campaign {campaign_id} not found")
     if campaign.state == CampaignState.ARCHIVED:
         return CampaignRead.model_validate(campaign, from_attributes=True)
+
+    # Validate state transition using state machine (raises InvalidStateTransitionError if invalid)
+    CampaignStateMachine.validate_action(campaign.state, "archive")
+
     campaign.state = CampaignState.ARCHIVED
     await db.commit()
     await db.refresh(campaign)

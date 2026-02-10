@@ -9,6 +9,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.exceptions import InvalidAgentTokenError
 from app.core.services.attack_complexity_service import AttackEstimationService
+from app.core.state_machines import AttackStateMachine
 from app.models.agent import Agent
 from app.models.attack import Attack, AttackMode, AttackState
 from app.models.attack_resource_file import AttackResourceFile, AttackResourceType
@@ -1082,9 +1083,10 @@ async def delete_attack_service(
                 == AttackResourceType.EPHEMERAL_RULE_LIST
             ):
                 await db.delete(rule_resource)
-        except (ValueError, TypeError, AttributeError) as exc:
-            logger.warning(
-                f"Failed to delete ephemeral rule resource for attack {attack_id}: {exc}"
+        except ValueError:
+            # Invalid UUID string format - not a resource reference, skip cleanup
+            logger.debug(
+                f"left_rule is not a valid UUID for attack {attack_id}, skipping ephemeral cleanup"
             )
 
     # Store campaign_id for SSE trigger
@@ -1100,6 +1102,8 @@ async def delete_attack_service(
 
         return {"id": attack_id, "deleted": True}
     # If the attack has started, mark as abandoned and stop tasks
+    # Validate state transition using state machine (raises InvalidStateTransitionError if invalid)
+    AttackStateMachine.validate_action(attack.state, "abort")
     attack.state = AttackState.ABANDONED
     # Stop all tasks for this attack
     if hasattr(attack, "tasks") and attack.tasks:

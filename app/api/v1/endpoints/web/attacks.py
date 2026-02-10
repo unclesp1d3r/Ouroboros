@@ -43,8 +43,9 @@ from app.core.services.attack_service import (
     get_campaign_attack_table_fragment_service,
     update_attack_service,
 )
+from app.core.state_machines import AttackStateMachine, InvalidStateTransitionError
 from app.db.session import get_db
-from app.models.attack import Attack
+from app.models.attack import Attack, AttackState
 from app.models.campaign import Campaign
 from app.models.user import User
 from app.schemas.attack import (
@@ -516,6 +517,16 @@ async def delete_attack(
         result = await delete_attack_service(attack_id, db)
     except AttackNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except InvalidStateTransitionError as e:
+        if isinstance(e.from_state, AttackState):
+            valid_actions = AttackStateMachine.get_valid_actions(e.from_state)
+            detail = f"Cannot abort attack from state '{e.from_state.value}'. Valid actions: {valid_actions}"
+        else:
+            detail = f"Cannot abort attack from state '{e.from_state.value}'."
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=detail,
+        ) from e
     return result
 
 
