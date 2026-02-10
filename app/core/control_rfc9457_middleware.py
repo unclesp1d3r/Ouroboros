@@ -2,7 +2,9 @@
 RFC9457 middleware for Control API routes only.
 
 This middleware intercepts exceptions on Control API routes (/api/v1/control/*)
-and converts them to RFC9457-compliant problem details responses.
+and converts them to RFC9457-compliant problem details responses. Supports
+extension fields for InvalidStateTransitionProblem errors (current_state,
+attempted_state, action, entity_type, valid_transitions).
 """
 
 from collections.abc import Awaitable, Callable
@@ -11,17 +13,6 @@ from typing import Any
 from fastapi import HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
-
-# Status code to title mapping for RFC9457 Problem Details
-_STATUS_TITLES = {
-    400: "Bad Request",
-    401: "Unauthorized",
-    403: "Forbidden",
-    404: "Not Found",
-    409: "Conflict",
-    422: "Unprocessable Entity",
-    500: "Internal Server Error",
-}
 
 from app.core.control_exceptions import (
     AgentNotFoundError,
@@ -34,6 +25,7 @@ from app.core.control_exceptions import (
     InvalidAttackConfigError,
     InvalidHashFormatError,
     InvalidResourceFormatError,
+    InvalidResourceStateError,
     InvalidStateTransitionProblem,
     ProjectAccessDeniedError,
     ProjectNotFoundError,
@@ -42,6 +34,17 @@ from app.core.control_exceptions import (
     UserConflictError,
     UserNotFoundError,
 )
+
+# Status code to title mapping for RFC9457 Problem Details
+_STATUS_TITLES = {
+    400: "Bad Request",
+    401: "Unauthorized",
+    403: "Forbidden",
+    404: "Not Found",
+    409: "Conflict",
+    422: "Unprocessable Entity",
+    500: "Internal Server Error",
+}
 
 
 class ControlRFC9457Middleware(BaseHTTPMiddleware):
@@ -66,18 +69,13 @@ class ControlRFC9457Middleware(BaseHTTPMiddleware):
                 "status": exc.status_code,
                 "detail": exc.detail,
                 "instance": str(request.url.path),
+                # Extension fields - always present on InvalidStateTransitionProblem
+                "current_state": exc.current_state,
+                "attempted_state": exc.attempted_state,
+                "action": exc.action,
+                "entity_type": exc.entity_type,
+                "valid_transitions": exc.valid_transitions,
             }
-            # Add extension fields
-            if hasattr(exc, "current_state"):
-                content["current_state"] = exc.current_state
-            if hasattr(exc, "attempted_state"):
-                content["attempted_state"] = exc.attempted_state
-            if hasattr(exc, "action"):
-                content["action"] = exc.action
-            if hasattr(exc, "entity_type"):
-                content["entity_type"] = exc.entity_type
-            if hasattr(exc, "valid_transitions"):
-                content["valid_transitions"] = exc.valid_transitions
             return JSONResponse(
                 status_code=exc.status_code,
                 content=content,
@@ -97,6 +95,7 @@ class ControlRFC9457Middleware(BaseHTTPMiddleware):
             InvalidAttackConfigError,
             InvalidHashFormatError,
             InvalidResourceFormatError,
+            InvalidResourceStateError,
             InsufficientPermissionsError,
             InternalServerError,
             ProjectAccessDeniedError,

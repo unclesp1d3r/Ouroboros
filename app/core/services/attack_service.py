@@ -1083,9 +1083,10 @@ async def delete_attack_service(
                 == AttackResourceType.EPHEMERAL_RULE_LIST
             ):
                 await db.delete(rule_resource)
-        except (ValueError, TypeError, AttributeError) as exc:
-            logger.warning(
-                f"Failed to delete ephemeral rule resource for attack {attack_id}: {exc}"
+        except ValueError:
+            # Invalid UUID string format - not a resource reference, skip cleanup
+            logger.debug(
+                f"left_rule is not a valid UUID for attack {attack_id}, skipping ephemeral cleanup"
             )
 
     # Store campaign_id for SSE trigger

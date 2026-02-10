@@ -69,10 +69,6 @@ async def list_campaigns_service(
 
     Returns:
         tuple[list[CampaignRead], int]: A tuple containing the list of campaigns and the total number of campaigns
-
-    Raises:
-        CampaignNotFoundError: if campaign does not exist
-        HTTPException: if campaign is archived
     """
     stmt = select(Campaign).where(Campaign.state != CampaignState.ARCHIVED)
     stmt = stmt.where(

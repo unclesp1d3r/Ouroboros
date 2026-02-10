@@ -250,6 +250,22 @@ class CampaignStateMachine:
         """
         return cls.TRANSITIONS.get(from_state, [])
 
+    @classmethod
+    def get_valid_actions(cls, from_state: CampaignState) -> list[str]:
+        """Get all valid actions from a given state.
+
+        Args:
+            from_state: The current state.
+
+        Returns:
+            List of valid action names.
+        """
+        return [
+            action
+            for action, state_map in cls.ACTIONS.items()
+            if from_state in state_map
+        ]
+
 
 class AttackStateMachine:
     """State machine for Attack state transitions.
@@ -336,7 +352,7 @@ class AttackStateMachine:
 
         Args:
             current_state: The current attack state.
-            action: The user action to validate (start, retry, abandon, reactivate).
+            action: The user action to validate (start, pause, resume, retry, abandon, abort, reactivate).
 
         Returns:
             The target state for the action.
@@ -372,6 +388,22 @@ class AttackStateMachine:
             List of valid target states.
         """
         return cls.TRANSITIONS.get(from_state, [])
+
+    @classmethod
+    def get_valid_actions(cls, from_state: AttackState) -> list[str]:
+        """Get all valid actions from a given state.
+
+        Args:
+            from_state: The current state.
+
+        Returns:
+            List of valid action names.
+        """
+        return [
+            action
+            for action, state_map in cls.ACTIONS.items()
+            if from_state in state_map
+        ]
 
     @classmethod
     def is_terminal_state(cls, state: AttackState) -> bool:

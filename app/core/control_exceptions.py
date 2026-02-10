@@ -106,7 +106,11 @@ class InternalServerError(ServerProblem):
 
 
 class InvalidResourceStateError(BadRequestProblem):
-    """Invalid resource state error."""
+    """Invalid resource state error.
+
+    Raised when an operation is attempted on a resource in an incompatible state,
+    such as cancelling an already-uploaded resource. Returns HTTP 400 Bad Request.
+    """
 
     title = "Invalid Resource State"
 

@@ -1728,12 +1728,16 @@ async def cleanup_stale_resource(
 
         return True
 
+    except asyncio.CancelledError:
+        # Re-raise to allow graceful task cancellation
+        raise
     except Exception as e:  # noqa: BLE001 - Defensive catch-all for background cleanup
         logger.bind(
             resource_id=resource_id,
             age_hours=round(age_hours, 2),
             project_id=resource.project_id,
             error=str(e),
+            error_type=type(e).__name__,
         ).error("Failed to clean up stale pending resource")
         return False
 
@@ -1799,6 +1803,9 @@ async def cancel_pending_resource(
         from app.core.control_exceptions import InternalServerError
 
         raise InternalServerError(detail="Failed to clean up resource")
+
+    # Commit the deletion
+    await db.commit()
 
     # Log the manual cancellation (use user_id instead of email for PII compliance)
     logger.bind(
