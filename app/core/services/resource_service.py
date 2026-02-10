@@ -1739,6 +1739,7 @@ async def cleanup_stale_resource(
             error=str(e),
             error_type=type(e).__name__,
         ).error("Failed to clean up stale pending resource")
+        await db.rollback()
         return False
 
 

@@ -427,6 +427,12 @@ async def archive_campaign(
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     except CampaignNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except InvalidStateTransitionError as e:
+        valid_actions = CampaignStateMachine.get_valid_actions(e.from_state)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Cannot archive campaign from state '{e.from_state.value}'. Valid actions: {valid_actions}",
+        ) from e
 
 
 @router.post(
