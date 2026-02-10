@@ -12,6 +12,7 @@ from typing import Any
 
 from fastapi import HTTPException, Request, Response
 from fastapi.responses import JSONResponse
+from loguru import logger
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.core.control_exceptions import (
@@ -147,4 +148,7 @@ class ControlRFC9457Middleware(BaseHTTPMiddleware):
 
         except Exception:
             # Let other exceptions bubble up to be handled by existing handlers
+            logger.debug(
+                "Unhandled exception in Control API middleware, propagating to default handlers"
+            )
             raise

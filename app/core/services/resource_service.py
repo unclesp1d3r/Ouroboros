@@ -1731,7 +1731,8 @@ async def cleanup_stale_resource(
     except asyncio.CancelledError:
         # Re-raise to allow graceful task cancellation
         raise
-    except Exception as e:  # noqa: BLE001 - Defensive catch-all for background cleanup
+    except (S3Error, SQLAlchemyError, OSError, ConnectionError) as e:
+        # Catch specific storage/database/network errors, not programming bugs
         logger.bind(
             resource_id=resource_id,
             age_hours=round(age_hours, 2),
@@ -1762,14 +1763,21 @@ async def cancel_pending_resource(
         ProjectAccessDeniedError: If user doesn't have access to the resource's project
         InvalidResourceStateError: If resource is already uploaded
     """
+    # Get the resource with row lock to prevent race conditions
+    from sqlalchemy import select
+
     from app.core.control_exceptions import (
         InvalidResourceStateError,
         ProjectAccessDeniedError,
         ResourceNotFoundError,
     )
 
-    # Get the resource
-    resource = await db.get(AttackResourceFile, resource_id)
+    result = await db.execute(
+        select(AttackResourceFile)
+        .where(AttackResourceFile.id == resource_id)
+        .with_for_update()
+    )
+    resource = result.scalar_one_or_none()
     if not resource:
         raise ResourceNotFoundError(detail=f"Resource {resource_id} not found")
 

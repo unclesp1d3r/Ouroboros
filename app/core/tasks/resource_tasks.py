@@ -19,8 +19,13 @@ async def verify_upload_and_cleanup(
     """
     Background task to verify if the file was uploaded to MinIO. If not, delete the resource from DB.
     TODO: Upgrade to Celery when Redis is available.
+
+    Note: This function is intentionally conservative - it only cleans up if it can confirm
+    the file exists in MinIO. On any error, it returns without cleanup to avoid deleting
+    resources that might still be uploading.
     """
     await asyncio.sleep(timeout_seconds)
+
     # Re-check DB in case resource was verified
     async with db as session:
         result = await session.execute(
@@ -28,19 +33,26 @@ async def verify_upload_and_cleanup(
         )
         resource_obj = result.scalar_one_or_none()
         if not resource_obj:
-            return  # Already deleted or verified
+            logger.debug(
+                f"Resource {resource_id} already deleted or verified. Skipping cleanup."
+            )
+            return
         if getattr(resource_obj, "is_uploaded", False):
             logger.info(
                 f"Resource {resource_id} already marked as uploaded. Skipping cleanup."
             )
             return
+
     storage_service = get_storage_service()
     bucket = settings.MINIO_BUCKET
     try:
         exists = await storage_service.bucket_exists(bucket)
         if not exists:
-            logger.error(f"Bucket {bucket} does not exist")
-            return  # Bucket gone, nothing to do
+            logger.error(
+                f"Bucket {bucket} does not exist. Cannot verify upload for {resource_id}."
+            )
+            return
+
         # Try to get object
         try:
             obj = storage_service.client.stat_object(bucket, str(resource_id))
@@ -48,19 +60,30 @@ async def verify_upload_and_cleanup(
                 logger.info(
                     f"File {resource_id} exists in MinIO, appears to be uploaded successfully. Skipping cleanup."
                 )
-                return  # File exists, do nothing
+                return
         except (S3Error, OSError) as e:
-            logger.error(f"Error checking file existence in MinIO: {e}")
-            return  # File not found, nothing to do
-        # Delete resource from DB
+            # On any storage error, return without cleanup - the file might still be uploading
+            logger.bind(
+                resource_id=resource_id,
+                error=str(e),
+                error_type=type(e).__name__,
+            ).debug("Error checking file existence in MinIO, skipping cleanup")
+            return
+
+        # Delete resource from DB (only reached if stat_object returned None, which shouldn't happen)
         async with db as session:
             await session.execute(
                 delete(AttackResourceFile).where(AttackResourceFile.id == resource_id)
             )
             await session.commit()
             logger.info(f"Resource {resource_id} not found in MinIO, deleted from DB")
-    except (SQLAlchemyError, OSError) as e:
-        logger.error(f"Background upload verification failed: {e}")
+
+    except (SQLAlchemyError, OSError, S3Error) as e:
+        logger.bind(
+            resource_id=resource_id,
+            error=str(e),
+            error_type=type(e).__name__,
+        ).error("Background upload verification failed")
 
 
 async def cleanup_stale_pending_resources(db: AsyncSession) -> dict[str, int]:
@@ -132,10 +155,12 @@ async def cleanup_stale_pending_resources(db: AsyncSession) -> dict[str, int]:
                     errors += 1
                     await db.rollback()
 
-            except Exception as e:  # noqa: BLE001 - Defensive catch-all for background cleanup
+            except (S3Error, SQLAlchemyError, OSError, ConnectionError) as e:
+                # Catch specific storage/database/network errors, not programming bugs
                 logger.bind(
                     resource_id=str(resource_id),
                     error=str(e),
+                    error_type=type(e).__name__,
                 ).error("Exception during stale resource cleanup")
                 errors += 1
                 await db.rollback()
@@ -186,6 +211,10 @@ async def run_periodic_cleanup() -> None:
         except asyncio.CancelledError:
             logger.info("Periodic resource cleanup task cancelled")
             raise  # Re-raise to allow proper task cancellation
-        except Exception as e:  # noqa: BLE001 - Defensive catch-all for background task
-            logger.bind(error=str(e)).error("Periodic resource cleanup failed")
+        except (S3Error, SQLAlchemyError, OSError, ConnectionError) as e:
+            # Catch specific storage/database/network errors, not programming bugs
+            logger.bind(
+                error=str(e),
+                error_type=type(e).__name__,
+            ).error("Periodic resource cleanup failed")
             # Continue running, don't crash the task
