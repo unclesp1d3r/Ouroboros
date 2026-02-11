@@ -1,20 +1,27 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-# FastAPI Backend Development Dockerfile
+# Ouroboros FastAPI Backend Development Dockerfile
+# Includes dev dependencies and uses entrypoint for DB wait/migrations
+
 FROM python:3.13-slim AS base
 
 # Set working directory
 WORKDIR /app
 
 # Install system dependencies including build tools for dev dependencies
-RUN apt-get update && apt-get install -y \
+# - postgresql-client: pg_isready for database readiness checks
+# - curl: health checks
+# - git, gcc, g++, make: build tools for dev dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     git \
     gcc \
     g++ \
     make \
-    && rm -rf /var/lib/apt/lists/*
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Install uv package manager
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
@@ -28,15 +35,33 @@ COPY pyproject.toml uv.lock ./
 # Install dependencies (including dev dependencies)
 RUN uv sync --frozen
 
+# Make uv Python accessible (uv installs to /root/.local/share/uv/python/)
+RUN chmod a+rx /root /root/.local /root/.local/share /root/.local/share/uv \
+    && chmod -R a+rX /root/.local/share/uv/python
+
+# Copy entrypoint and utility scripts
+COPY docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY docker/scripts/health-check.sh /usr/local/bin/health-check.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/health-check.sh
+
 # Create logs directory
 RUN mkdir -p logs
+
+# Set environment variables for development
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PATH="/app/.venv/bin:$PATH" \
+    CONTAINER_ROLE=web-dev
 
 # Expose port
 EXPOSE 8000
 
-# Health check using unauthenticated endpoint
+# Health check using health check script
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:8000/api-info || exit 1
+    CMD /usr/local/bin/health-check.sh
 
-# Run the application with hot reload
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"] 
+# Use entrypoint script for initialization (DB wait, migrations)
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Default command (can be overridden)
+CMD []
