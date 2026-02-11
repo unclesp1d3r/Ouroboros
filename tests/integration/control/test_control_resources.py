@@ -755,3 +755,173 @@ async def test_confirm_upload_unauthorized_project(
         f"/api/v1/control/resources/{resource.id}/confirm-upload", headers=headers
     )
     assert resp.status_code == HTTPStatus.FORBIDDEN
+
+
+# =============================================================================
+# Cancel Pending Resource Tests (T6: Resource Cleanup Job)
+# =============================================================================
+
+
+@pytest.mark.asyncio
+async def test_cancel_pending_resource_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test cancelling a pending resource upload."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create pending resource
+    resource = await create_resource(
+        db_session, project_id=project.id, is_uploaded=False, file_name="pending.txt"
+    )
+
+    # Cancel the pending resource
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.delete(
+        f"/api/v1/control/resources/{resource.id}/cancel", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NO_CONTENT
+
+    # Verify it's gone
+    resp = await async_client.get(
+        f"/api/v1/control/resources/{resource.id}", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NOT_FOUND
+
+
+@pytest.mark.asyncio
+async def test_cancel_resource_not_found(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test cancelling a non-existent resource returns 404."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Try to cancel non-existent resource
+    headers = {"Authorization": f"Bearer {api_key}"}
+    fake_id = uuid4()
+    resp = await async_client.delete(
+        f"/api/v1/control/resources/{fake_id}/cancel", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NOT_FOUND
+
+
+@pytest.mark.asyncio
+async def test_cancel_already_uploaded_resource(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test cancelling an already uploaded resource returns 400."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create uploaded resource
+    resource = await create_resource(
+        db_session, project_id=project.id, is_uploaded=True, file_name="uploaded.txt"
+    )
+
+    # Try to cancel uploaded resource
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.delete(
+        f"/api/v1/control/resources/{resource.id}/cancel", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    data = resp.json()
+    assert "already uploaded" in data["detail"].lower()
+
+
+@pytest.mark.asyncio
+async def test_cancel_resource_unauthorized_project(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test cancelling resource from unauthorized project returns 403."""
+    async_client, user, api_key = api_key_client
+
+    # Create two projects
+    project1 = await project_factory.create_async()
+    project2 = await project_factory.create_async()
+
+    # Associate user only with project1
+    assoc = ProjectUserAssociation(
+        project_id=project1.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create pending resource in project2
+    resource = await create_resource(
+        db_session, project_id=project2.id, is_uploaded=False
+    )
+
+    # Try to cancel resource
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.delete(
+        f"/api/v1/control/resources/{resource.id}/cancel", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.FORBIDDEN
+
+
+@pytest.mark.asyncio
+async def test_cancel_resource_idempotent(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test that cancelling same resource twice is safe (second call returns 404)."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create pending resource
+    resource = await create_resource(
+        db_session, project_id=project.id, is_uploaded=False
+    )
+    resource_id = resource.id
+
+    # First cancel succeeds
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.delete(
+        f"/api/v1/control/resources/{resource_id}/cancel", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NO_CONTENT
+
+    # Second cancel returns 404 (resource already deleted)
+    resp = await async_client.delete(
+        f"/api/v1/control/resources/{resource_id}/cancel", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NOT_FOUND
