@@ -9,6 +9,7 @@ Error responses must follow RFC9457 format.
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -26,6 +27,7 @@ from app.core.services.hash_list_service import (
     create_hash_list_service,
     delete_hash_list_service,
     get_hash_list_service,
+    list_hash_list_items_service,
     list_hash_lists_service,
     update_hash_list_service,
 )
@@ -33,8 +35,27 @@ from app.db.session import get_db
 from app.models.campaign import Campaign
 from app.models.hash_list import HashList
 from app.models.user import User
+from app.schemas.hash_item import HashItemOut
 from app.schemas.hash_list import HashListCreate, HashListOut
 from app.schemas.shared import OffsetPaginatedResponse
+
+# =============================================================================
+# Response Schemas
+# =============================================================================
+
+
+class HashListExportResponse(BaseModel):
+    """Hash list export response with content."""
+
+    hash_list_id: Annotated[int, Field(description="Hash list ID")]
+    hash_list_name: Annotated[str, Field(description="Hash list name")]
+    format: Annotated[str, Field(description="Export format")]
+    total_items: Annotated[int, Field(description="Total hash items exported")]
+    cracked_count: Annotated[int, Field(description="Number of cracked hashes")]
+    content: Annotated[str, Field(description="Exported content")]
+
+    model_config = ConfigDict(extra="forbid")
+
 
 router = APIRouter(prefix="/hash-lists", tags=["Control - Hash Lists"])
 
@@ -284,3 +305,282 @@ async def delete_hash_list(
         if "InvalidResourceStateError" in type(e).__name__:
             raise
         raise InternalServerError(detail=f"Failed to delete hash list: {e!s}") from e
+
+
+# =============================================================================
+# Hash Item Endpoints
+# =============================================================================
+
+
+@router.get(
+    "/{hash_list_id}/items",
+    summary="List hash items",
+    description="List hash items in a hash list with offset-based pagination and filtering.",
+)
+async def list_hash_items(
+    hash_list_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+    limit: Annotated[
+        int, Query(ge=1, le=100, description="Number of items to return")
+    ] = 20,
+    offset: Annotated[int, Query(ge=0, description="Number of items to skip")] = 0,
+    search: Annotated[
+        str | None,
+        Query(description="Search by hash value or plain text"),
+    ] = None,
+    status: Annotated[
+        str | None,
+        Query(description="Filter by status: 'cracked' or 'uncracked'"),
+    ] = None,
+) -> OffsetPaginatedResponse[HashItemOut]:
+    """
+    List hash items in a hash list with pagination and filtering.
+
+    The user must have access to the project containing the hash list.
+    """
+    try:
+        # Validate access first
+        await _validate_hash_list_access(hash_list_id, current_user, db)
+
+        items, total = await list_hash_list_items_service(
+            hash_list_id=hash_list_id,
+            db=db,
+            skip=offset,
+            limit=limit,
+            search=search,
+            status_filter=status,
+        )
+
+        return OffsetPaginatedResponse(
+            items=items,
+            total=total,
+            limit=limit,
+            offset=offset,
+        )
+    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except HashListNotFoundError as exc:
+        raise HashListNotFoundProblem(
+            detail=f"Hash list with ID {hash_list_id} not found"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to list hash items: {e!s}") from e
+
+
+# =============================================================================
+# Export Endpoints
+# =============================================================================
+
+
+@router.get(
+    "/{hash_list_id}/export/plaintext",
+    summary="Export cracked passwords as plaintext",
+    description="Export cracked passwords from a hash list as plain text, one per line.",
+)
+async def export_hash_list_plaintext(
+    hash_list_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> HashListExportResponse:
+    """
+    Export cracked passwords as plaintext.
+
+    Returns only cracked passwords, one per line.
+    The user must have access to the project containing the hash list.
+    """
+    from app.models.hash_item import HashItem
+    from app.models.hash_list import hash_list_items
+
+    try:
+        hash_list = await _validate_hash_list_access(hash_list_id, current_user, db)
+
+        # Get all cracked hash items
+        stmt = (
+            select(HashItem)
+            .join(hash_list_items)
+            .where(hash_list_items.c.hash_list_id == hash_list_id)
+            .where(HashItem.plain_text.is_not(None))
+        )
+        result = await db.execute(stmt)
+        cracked_items = result.scalars().all()
+
+        # Get total count for statistics
+        total_stmt = (
+            select(HashItem)
+            .join(hash_list_items)
+            .where(hash_list_items.c.hash_list_id == hash_list_id)
+        )
+        total_result = await db.execute(total_stmt)
+        total_items = len(list(total_result.scalars().all()))
+
+        # Build plaintext content
+        lines = [item.plain_text for item in cracked_items if item.plain_text]
+        content = "\n".join(lines)
+
+        return HashListExportResponse(
+            hash_list_id=hash_list_id,
+            hash_list_name=hash_list.name,
+            format="plaintext",
+            total_items=total_items,
+            cracked_count=len(cracked_items),
+            content=content,
+        )
+    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except HashListNotFoundError as exc:
+        raise HashListNotFoundProblem(
+            detail=f"Hash list with ID {hash_list_id} not found"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to export hash list: {e!s}") from e
+
+
+@router.get(
+    "/{hash_list_id}/export/potfile",
+    summary="Export in potfile format",
+    description="Export cracked hashes in hashcat potfile format (hash:plaintext).",
+)
+async def export_hash_list_potfile(
+    hash_list_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> HashListExportResponse:
+    """
+    Export cracked hashes in potfile format.
+
+    Returns hash:plaintext pairs, one per line.
+    The user must have access to the project containing the hash list.
+    """
+    from app.models.hash_item import HashItem
+    from app.models.hash_list import hash_list_items
+
+    try:
+        hash_list = await _validate_hash_list_access(hash_list_id, current_user, db)
+
+        # Get all cracked hash items
+        stmt = (
+            select(HashItem)
+            .join(hash_list_items)
+            .where(hash_list_items.c.hash_list_id == hash_list_id)
+            .where(HashItem.plain_text.is_not(None))
+        )
+        result = await db.execute(stmt)
+        cracked_items = result.scalars().all()
+
+        # Get total count for statistics
+        total_stmt = (
+            select(HashItem)
+            .join(hash_list_items)
+            .where(hash_list_items.c.hash_list_id == hash_list_id)
+        )
+        total_result = await db.execute(total_stmt)
+        total_items = len(list(total_result.scalars().all()))
+
+        # Build potfile content (hash:plaintext format)
+        lines = []
+        for item in cracked_items:
+            if item.plain_text:
+                if item.salt:
+                    lines.append(f"{item.hash}:{item.salt}:{item.plain_text}")
+                else:
+                    lines.append(f"{item.hash}:{item.plain_text}")
+        content = "\n".join(lines)
+
+        return HashListExportResponse(
+            hash_list_id=hash_list_id,
+            hash_list_name=hash_list.name,
+            format="potfile",
+            total_items=total_items,
+            cracked_count=len(cracked_items),
+            content=content,
+        )
+    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except HashListNotFoundError as exc:
+        raise HashListNotFoundProblem(
+            detail=f"Hash list with ID {hash_list_id} not found"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to export hash list: {e!s}") from e
+
+
+@router.get(
+    "/{hash_list_id}/export/csv",
+    summary="Export as CSV",
+    description="Export hash list data as CSV with hash, salt, plaintext, and status columns.",
+)
+async def export_hash_list_csv(
+    hash_list_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+    include_uncracked: Annotated[
+        bool, Query(description="Include uncracked hashes in export")
+    ] = True,
+) -> HashListExportResponse:
+    """
+    Export hash list data as CSV.
+
+    Returns CSV with columns: id, hash, salt, plaintext, status.
+    The user must have access to the project containing the hash list.
+    """
+    import csv
+    import io
+
+    from app.models.hash_item import HashItem
+    from app.models.hash_list import hash_list_items
+
+    try:
+        hash_list = await _validate_hash_list_access(hash_list_id, current_user, db)
+
+        # Build query
+        stmt = (
+            select(HashItem)
+            .join(hash_list_items)
+            .where(hash_list_items.c.hash_list_id == hash_list_id)
+        )
+
+        if not include_uncracked:
+            stmt = stmt.where(HashItem.plain_text.is_not(None))
+
+        result = await db.execute(stmt)
+        items = result.scalars().all()
+
+        # Count cracked
+        cracked_count = sum(1 for item in items if item.plain_text)
+
+        # Build CSV content
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["id", "hash", "salt", "plaintext", "status"])
+
+        for item in items:
+            status = "cracked" if item.plain_text else "uncracked"
+            writer.writerow(
+                [
+                    item.id,
+                    item.hash,
+                    item.salt or "",
+                    item.plain_text or "",
+                    status,
+                ]
+            )
+
+        content = output.getvalue()
+
+        return HashListExportResponse(
+            hash_list_id=hash_list_id,
+            hash_list_name=hash_list.name,
+            format="csv",
+            total_items=len(items),
+            cracked_count=cracked_count,
+            content=content,
+        )
+    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except HashListNotFoundError as exc:
+        raise HashListNotFoundProblem(
+            detail=f"Hash list with ID {hash_list_id} not found"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to export hash list: {e!s}") from e
