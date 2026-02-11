@@ -48,13 +48,16 @@ run_migrations() {
 # Main execution
 main() {
     # Skip database checks if explicitly disabled (useful for non-db containers)
+    # Note: Skipping DB wait also skips migrations since they require DB connectivity
     if [ "${SKIP_DB_WAIT:-false}" != "true" ]; then
         wait_for_postgres
-    fi
 
-    # Run migrations unless explicitly disabled
-    if [ "${SKIP_MIGRATIONS:-false}" != "true" ]; then
-        run_migrations
+        # Run migrations only for web roles to prevent concurrent Alembic lock contention
+        # Workers and schedulers should not attempt migrations
+        if [ "${SKIP_MIGRATIONS:-false}" != "true" ] && \
+           { [ "${CONTAINER_ROLE:-web}" = "web" ] || [ "${CONTAINER_ROLE:-web}" = "web-dev" ]; }; then
+            run_migrations
+        fi
     fi
 
     # Route to appropriate service based on CONTAINER_ROLE

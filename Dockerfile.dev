@@ -4,7 +4,7 @@
 # Ouroboros FastAPI Backend Development Dockerfile
 # Includes dev dependencies and uses entrypoint for DB wait/migrations
 
-FROM python:3.13-slim AS base
+FROM python:3.14-slim AS base
 
 # Set working directory
 WORKDIR /app
@@ -29,23 +29,27 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 # Development stage
 FROM base AS development
 
+# Create non-root user for security (matches production for parity)
+RUN groupadd --gid 1000 appgroup \
+    && useradd --uid 1000 --gid appgroup --shell /bin/bash --create-home appuser
+
 # Copy dependency files
 COPY pyproject.toml uv.lock ./
 
 # Install dependencies (including dev dependencies)
+# With Python 3.14-slim base, uv uses system Python directly
 RUN uv sync --frozen
 
-# Make uv Python accessible (uv installs to /root/.local/share/uv/python/)
-RUN chmod a+rx /root /root/.local /root/.local/share /root/.local/share/uv \
-    && chmod -R a+rX /root/.local/share/uv/python
-
 # Copy entrypoint and utility scripts
-COPY docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY docker/scripts/health-check.sh /usr/local/bin/health-check.sh
+COPY --chown=appuser:appgroup docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chown=appuser:appgroup docker/scripts/health-check.sh /usr/local/bin/health-check.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/health-check.sh
 
-# Create logs directory
-RUN mkdir -p logs
+# Create logs directory with proper permissions
+RUN mkdir -p logs && chown -R appuser:appgroup /app
+
+# Switch to non-root user
+USER appuser
 
 # Set environment variables for development
 ENV PYTHONUNBUFFERED=1 \

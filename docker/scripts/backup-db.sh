@@ -5,6 +5,9 @@
 set -e
 set -o pipefail
 
+# Restrict backup file permissions (prevent world-readable dumps)
+umask 077
+
 # Configuration with defaults
 POSTGRES_HOST="${POSTGRES_SERVER:-postgres}"
 POSTGRES_PORT="${POSTGRES_PORT:-5432}"

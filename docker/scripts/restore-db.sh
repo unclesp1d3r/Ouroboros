@@ -84,7 +84,7 @@ if gunzip -c "$BACKUP_FILE" | PGPASSWORD="${POSTGRES_PASSWORD}" psql \
     -p "$POSTGRES_PORT" \
     -U "$POSTGRES_USER" \
     -d "$POSTGRES_DB" \
-    --quiet; then
+    --set=ON_ERROR_STOP=on; then
 
     echo "Restore completed successfully"
 else

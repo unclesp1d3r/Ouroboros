@@ -5,7 +5,7 @@
 set -e
 
 # Configuration with defaults
-HEALTH_ENDPOINT="${HEALTH_ENDPOINT:-http://localhost:8000/api-info}"
+HEALTH_ENDPOINT="${HEALTH_ENDPOINT:-http://localhost:8000/health}"
 TIMEOUT="${HEALTH_TIMEOUT:-10}"
 
 # Check for curl availability

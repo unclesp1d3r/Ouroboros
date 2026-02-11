@@ -7,7 +7,7 @@
 # =============================================================================
 # Stage 1: Builder - Install dependencies
 # =============================================================================
-FROM python:3.13-slim AS builder
+FROM python:3.14-slim AS builder
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ RUN uv sync --frozen --no-dev
 # =============================================================================
 # Stage 2: Runtime - Minimal production image
 # =============================================================================
-FROM python:3.13-slim AS runtime
+FROM python:3.14-slim AS runtime
 
 # Labels for container metadata
 LABEL org.opencontainers.image.title="Ouroboros Backend"
@@ -53,16 +53,8 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 RUN groupadd --gid 1000 appgroup \
     && useradd --uid 1000 --gid appgroup --shell /bin/bash --create-home appuser
 
-# Copy uv-managed Python installation (required for venv symlinks to work)
-# Must be at same path as builder stage since venv has absolute symlinks
-COPY --from=builder /root/.local/share/uv/python /root/.local/share/uv/python
-
-# Make uv Python accessible to non-root user
-# The venv symlinks point to /root/.local/share/uv/python/...
-RUN chmod a+rx /root /root/.local /root/.local/share /root/.local/share/uv \
-    && chmod -R a+rX /root/.local/share/uv/python
-
 # Copy virtual environment from builder stage
+# With Python 3.14-slim base, uv uses system Python directly (no uv-managed Python needed)
 COPY --chown=appuser:appgroup --from=builder /app/.venv /app/.venv
 
 # Copy dependency files
