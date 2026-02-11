@@ -29,9 +29,11 @@ from app.core.control_exceptions import (
 )
 from app.core.deps import get_current_control_user
 from app.core.services.attack_service import (
+    AttackNotFoundError,
     create_attack_service,
     delete_attack_service,
     estimate_attack_keyspace_and_complexity,
+    export_attack_template_service,
     get_attack_performance_summary_service,
     get_attack_service,
     pause_attack_service,
@@ -54,7 +56,7 @@ from app.schemas.attack import (
     AttackUpdate,
     EstimateAttackRequest,
 )
-from app.schemas.shared import OffsetPaginatedResponse
+from app.schemas.shared import AttackTemplate, OffsetPaginatedResponse
 
 router = APIRouter(prefix="/attacks", tags=["Control - Attacks"])
 
@@ -724,3 +726,44 @@ async def get_attack_metrics(
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to get attack metrics: {e!s}") from e
+
+
+# =============================================================================
+# Template Export Endpoint
+# =============================================================================
+
+
+@router.post(
+    "/{attack_id}/export",
+    summary="Export attack template",
+    description="Export an attack as a JSON template for backup or sharing.",
+)
+async def export_attack_template(
+    attack_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> AttackTemplate:
+    """
+    Export an attack as a template.
+
+    Returns the attack configuration as a portable JSON template.
+    Can be used to recreate the attack in another campaign or share configurations.
+    The user must have access to the campaign's project.
+    """
+    try:
+        await _get_attack_with_access_check(attack_id, current_user, db)
+        return await export_attack_template_service(attack_id, db)
+    except (
+        AttackNotFoundProblem,
+        ProjectAccessDeniedError,
+        CampaignNotFoundProblem,
+    ):
+        raise
+    except AttackNotFoundError as exc:
+        raise AttackNotFoundProblem(
+            detail=f"Attack with ID {attack_id} not found"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(
+            detail=f"Failed to export attack template: {e!s}"
+        ) from e

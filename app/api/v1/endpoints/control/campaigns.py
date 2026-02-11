@@ -40,6 +40,7 @@ from app.core.services.campaign_service import (
     archive_campaign_service,
     create_campaign_service,
     delete_campaign_service,
+    export_campaign_template_service,
     get_campaign_metrics_service,
     get_campaign_progress_service,
     get_campaign_service,
@@ -67,7 +68,7 @@ from app.schemas.campaign import (
     CampaignRead,
     CampaignUpdate,
 )
-from app.schemas.shared import OffsetPaginatedResponse
+from app.schemas.shared import CampaignTemplate, OffsetPaginatedResponse
 
 router = APIRouter(prefix="/campaigns", tags=["Control - Campaigns"])
 
@@ -869,3 +870,41 @@ async def reorder_attacks(
         raise AttackNotFoundProblem(detail=str(exc)) from exc
     except Exception as e:
         raise InternalServerError(detail=f"Failed to reorder attacks: {e!s}") from e
+
+
+# =============================================================================
+# Template Export/Import Endpoints
+# =============================================================================
+
+
+@router.post(
+    "/{campaign_id}/export",
+    summary="Export campaign template",
+    description="Export a campaign and all its attacks as a JSON template for backup or sharing.",
+)
+async def export_campaign_template(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignTemplate:
+    """
+    Export a campaign as a template.
+
+    Returns the campaign configuration with all attacks as a portable JSON template.
+    Can be used to recreate the campaign in another project or share configurations.
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await export_campaign_template_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(
+            detail=f"Failed to export campaign template: {e!s}"
+        ) from e
