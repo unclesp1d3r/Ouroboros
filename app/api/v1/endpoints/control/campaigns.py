@@ -24,14 +24,26 @@ from app.core.control_exceptions import (
     InvalidResourceStateError,
     ProjectAccessDeniedError,
 )
+from app.core.control_exceptions import (
+    InvalidStateTransitionError as InvalidStateTransitionProblem,
+)
 from app.core.deps import get_current_control_user
 from app.core.services.campaign_service import (
     CampaignNotFoundError,
+    archive_campaign_service,
     create_campaign_service,
     delete_campaign_service,
     get_campaign_service,
     list_campaigns_service,
+    pause_campaign_service,
+    resume_campaign_service,
+    start_campaign_service,
+    stop_campaign_service,
+    unarchive_campaign_service,
     update_campaign_service,
+)
+from app.core.state_machines import (
+    InvalidStateTransitionError as StateMachineTransitionError,
 )
 from app.db.session import get_db
 from app.models.agent import AgentState
@@ -479,3 +491,214 @@ async def validate_campaign(
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to validate campaign: {e!s}") from e
+
+
+# =============================================================================
+# Lifecycle Actions
+# =============================================================================
+
+
+@router.post(
+    "/{campaign_id}/start",
+    summary="Start campaign",
+    description="Start a campaign. Campaign must be in draft state.",
+)
+async def start_campaign(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignRead:
+    """
+    Start a campaign.
+
+    The campaign must be in draft state. Starting will transition it to active state.
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await start_campaign_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except StateMachineTransitionError as exc:
+        raise InvalidStateTransitionProblem(
+            detail=f"Cannot start campaign: {exc.message}"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to start campaign: {e!s}") from e
+
+
+@router.post(
+    "/{campaign_id}/stop",
+    summary="Stop campaign",
+    description="Stop a running campaign. Campaign returns to draft state and can be restarted.",
+)
+async def stop_campaign(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignRead:
+    """
+    Stop a running campaign.
+
+    The campaign must be in active state. Stopping will transition it to draft state.
+    Running tasks will be allowed to complete gracefully.
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await stop_campaign_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except StateMachineTransitionError as exc:
+        raise InvalidStateTransitionProblem(
+            detail=f"Cannot stop campaign: {exc.message}"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to stop campaign: {e!s}") from e
+
+
+@router.post(
+    "/{campaign_id}/pause",
+    summary="Pause campaign",
+    description="Pause a running campaign. Campaign can be resumed later.",
+)
+async def pause_campaign(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignRead:
+    """
+    Pause a running campaign.
+
+    The campaign must be in active state. Pausing will transition it to paused state.
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await pause_campaign_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except StateMachineTransitionError as exc:
+        raise InvalidStateTransitionProblem(
+            detail=f"Cannot pause campaign: {exc.message}"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to pause campaign: {e!s}") from e
+
+
+@router.post(
+    "/{campaign_id}/resume",
+    summary="Resume campaign",
+    description="Resume a paused campaign.",
+)
+async def resume_campaign(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignRead:
+    """
+    Resume a paused campaign.
+
+    The campaign must be in paused state. Resuming will transition it to active state.
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await resume_campaign_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except StateMachineTransitionError as exc:
+        raise InvalidStateTransitionProblem(
+            detail=f"Cannot resume campaign: {exc.message}"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to resume campaign: {e!s}") from e
+
+
+@router.post(
+    "/{campaign_id}/archive",
+    summary="Archive campaign",
+    description="Archive a campaign. Archived campaigns are hidden from default views.",
+)
+async def archive_campaign(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignRead:
+    """
+    Archive a campaign.
+
+    Campaigns can be archived from draft, active, paused, or completed states.
+    Archived campaigns can be unarchived later.
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await archive_campaign_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except StateMachineTransitionError as exc:
+        raise InvalidStateTransitionProblem(
+            detail=f"Cannot archive campaign: {exc.message}"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to archive campaign: {e!s}") from e
+
+
+@router.post(
+    "/{campaign_id}/unarchive",
+    summary="Unarchive campaign",
+    description="Unarchive a campaign. Campaign returns to draft state.",
+)
+async def unarchive_campaign(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignRead:
+    """
+    Unarchive a campaign.
+
+    The campaign must be in archived state. Unarchiving will transition it to draft state.
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await unarchive_campaign_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except StateMachineTransitionError as exc:
+        raise InvalidStateTransitionProblem(
+            detail=f"Cannot unarchive campaign: {exc.message}"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to unarchive campaign: {e!s}") from e

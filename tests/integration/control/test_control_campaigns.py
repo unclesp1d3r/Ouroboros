@@ -1001,3 +1001,522 @@ async def test_validate_campaign_not_found(
         "/api/v1/control/campaigns/99999/validate", headers=headers
     )
     assert resp.status_code == HTTPStatus.NOT_FOUND
+
+
+# =============================================================================
+# Campaign Lifecycle Tests (T8: Campaign Lifecycle Actions)
+# =============================================================================
+
+
+@pytest.mark.asyncio
+async def test_start_campaign_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test starting a campaign (draft -> active)."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in draft state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Draft Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="draft",
+    )
+
+    # Start the campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/start", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+    data = resp.json()
+    assert data["state"] == "active"
+
+
+@pytest.mark.asyncio
+async def test_start_campaign_invalid_state(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test starting an already active campaign returns 409."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in active state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Active Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="active",
+    )
+
+    # Try to start (should be idempotent, returns 200 with same state)
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/start", headers=headers
+    )
+    # The service is idempotent - returns OK if already in target state
+    assert resp.status_code == HTTPStatus.OK
+    data = resp.json()
+    assert data["state"] == "active"
+
+
+@pytest.mark.asyncio
+async def test_stop_campaign_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test stopping a campaign (active -> draft)."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in active state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Active Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="active",
+    )
+
+    # Stop the campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/stop", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+    data = resp.json()
+    assert data["state"] == "draft"
+
+
+@pytest.mark.asyncio
+async def test_stop_campaign_invalid_state(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test stopping a draft campaign returns 409."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in draft state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Draft Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="draft",
+    )
+
+    # Try to stop a draft campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/stop", headers=headers
+    )
+    # Idempotent - already in draft state
+    assert resp.status_code == HTTPStatus.OK
+
+
+@pytest.mark.asyncio
+async def test_pause_campaign_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test pausing a campaign (active -> paused)."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in active state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Active Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="active",
+    )
+
+    # Pause the campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/pause", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+    data = resp.json()
+    assert data["state"] == "paused"
+
+
+@pytest.mark.asyncio
+async def test_pause_campaign_invalid_state(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test pausing a draft campaign returns 409."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in draft state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Draft Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="draft",
+    )
+
+    # Try to pause a draft campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/pause", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.CONFLICT
+
+
+@pytest.mark.asyncio
+async def test_resume_campaign_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test resuming a campaign (paused -> active)."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in paused state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Paused Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="paused",
+    )
+
+    # Resume the campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/resume", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+    data = resp.json()
+    assert data["state"] == "active"
+
+
+@pytest.mark.asyncio
+async def test_resume_campaign_invalid_state(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test resuming a draft campaign returns 409."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in draft state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Draft Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="draft",
+    )
+
+    # Try to resume a draft campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/resume", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.CONFLICT
+
+
+@pytest.mark.asyncio
+async def test_archive_campaign_from_draft(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test archiving a campaign from draft state."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in draft state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Draft Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="draft",
+    )
+
+    # Archive the campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/archive", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+    data = resp.json()
+    assert data["state"] == "archived"
+
+
+@pytest.mark.asyncio
+async def test_archive_campaign_from_active(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test archiving a campaign from active state."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in active state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Active Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="active",
+    )
+
+    # Archive the campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/archive", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+    data = resp.json()
+    assert data["state"] == "archived"
+
+
+@pytest.mark.asyncio
+async def test_unarchive_campaign_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test unarchiving a campaign (archived -> draft)."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in archived state
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Archived Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="archived",
+    )
+
+    # Unarchive the campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/unarchive", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+    data = resp.json()
+    assert data["state"] == "draft"
+
+
+@pytest.mark.asyncio
+async def test_unarchive_campaign_invalid_state(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test unarchiving an active campaign returns 409."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in active state (cannot be unarchived)
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Active Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state="active",
+    )
+
+    # Try to unarchive an active campaign (only archived can be unarchived)
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/unarchive", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.CONFLICT
+
+
+@pytest.mark.asyncio
+async def test_lifecycle_action_not_found(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test lifecycle action on non-existent campaign returns 404."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Try lifecycle action on non-existent campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        "/api/v1/control/campaigns/99999/start", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NOT_FOUND
+
+
+@pytest.mark.asyncio
+async def test_lifecycle_action_unauthorized_project(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test lifecycle action on campaign from unauthorized project returns 403."""
+    async_client, user, api_key = api_key_client
+
+    # Create two projects
+    project1 = await project_factory.create_async()
+    project2 = await project_factory.create_async()
+
+    # Associate user only with project1
+    assoc = ProjectUserAssociation(
+        project_id=project1.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in project2
+    hash_list = await hash_list_factory.create_async(project_id=project2.id)
+    campaign = await campaign_factory.create_async(
+        name="Inaccessible",
+        project_id=project2.id,
+        hash_list_id=hash_list.id,
+        state="draft",
+    )
+
+    # Try to start campaign in unauthorized project
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/start", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.FORBIDDEN

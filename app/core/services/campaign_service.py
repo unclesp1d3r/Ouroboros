@@ -601,6 +601,113 @@ async def archive_campaign_service(campaign_id: int, db: AsyncSession) -> Campai
     return CampaignRead.model_validate(campaign, from_attributes=True)
 
 
+async def pause_campaign_service(campaign_id: int, db: AsyncSession) -> CampaignRead:
+    """
+    Pause a campaign by setting its state to PAUSED.
+
+    Args:
+        campaign_id: The campaign to pause
+        db: AsyncSession
+    Returns:
+        CampaignRead: The updated campaign
+    Raises:
+        CampaignNotFoundError: if campaign does not exist
+        InvalidStateTransitionError: if transition is not valid
+    """
+    result = await db.execute(select(Campaign).where(Campaign.id == campaign_id))
+    campaign = result.scalar_one_or_none()
+    if not campaign:
+        raise CampaignNotFoundError(f"Campaign {campaign_id} not found")
+    if campaign.state == CampaignState.PAUSED:
+        logger.info(f"Campaign {campaign_id} is already paused.")
+        return CampaignRead.model_validate(campaign, from_attributes=True)
+
+    # Validate state transition using state machine (raises InvalidStateTransitionError if invalid)
+    CampaignStateMachine.validate_action(campaign.state, "pause")
+
+    campaign.state = CampaignState.PAUSED
+    await db.commit()
+    await db.refresh(campaign)
+    logger.info(f"Campaign {campaign_id} paused.")
+
+    # SSE_TRIGGER: Campaign paused
+    await _broadcast_campaign_update(campaign.id, campaign.project_id)
+
+    return CampaignRead.model_validate(campaign, from_attributes=True)
+
+
+async def resume_campaign_service(campaign_id: int, db: AsyncSession) -> CampaignRead:
+    """
+    Resume a paused campaign by setting its state to ACTIVE.
+
+    Args:
+        campaign_id: The campaign to resume
+        db: AsyncSession
+    Returns:
+        CampaignRead: The updated campaign
+    Raises:
+        CampaignNotFoundError: if campaign does not exist
+        InvalidStateTransitionError: if transition is not valid
+    """
+    result = await db.execute(select(Campaign).where(Campaign.id == campaign_id))
+    campaign = result.scalar_one_or_none()
+    if not campaign:
+        raise CampaignNotFoundError(f"Campaign {campaign_id} not found")
+    if campaign.state == CampaignState.ACTIVE:
+        logger.info(f"Campaign {campaign_id} is already active.")
+        return CampaignRead.model_validate(campaign, from_attributes=True)
+
+    # Validate state transition using state machine (raises InvalidStateTransitionError if invalid)
+    CampaignStateMachine.validate_action(campaign.state, "resume")
+
+    campaign.state = CampaignState.ACTIVE
+    await db.commit()
+    await db.refresh(campaign)
+    logger.info(f"Campaign {campaign_id} resumed.")
+
+    # SSE_TRIGGER: Campaign resumed
+    await _broadcast_campaign_update(campaign.id, campaign.project_id)
+
+    return CampaignRead.model_validate(campaign, from_attributes=True)
+
+
+async def unarchive_campaign_service(
+    campaign_id: int, db: AsyncSession
+) -> CampaignRead:
+    """
+    Unarchive a campaign by setting its state to DRAFT.
+
+    Args:
+        campaign_id: The campaign to unarchive
+        db: AsyncSession
+    Returns:
+        CampaignRead: The updated campaign
+    Raises:
+        CampaignNotFoundError: if campaign does not exist
+        InvalidStateTransitionError: if transition is not valid
+    """
+    result = await db.execute(select(Campaign).where(Campaign.id == campaign_id))
+    campaign = result.scalar_one_or_none()
+    if not campaign:
+        raise CampaignNotFoundError(f"Campaign {campaign_id} not found")
+    if campaign.state == CampaignState.DRAFT:
+        logger.info(f"Campaign {campaign_id} is already in draft state.")
+        return CampaignRead.model_validate(campaign, from_attributes=True)
+
+    # Validate state transition using state machine (raises InvalidStateTransitionError if invalid)
+    CampaignStateMachine.validate_action(campaign.state, "unarchive")
+
+    campaign.state = CampaignState.DRAFT
+    await db.commit()
+    await db.refresh(campaign)
+    logger.info(f"Campaign {campaign_id} unarchived (set to draft).")
+
+    # SSE_TRIGGER: Campaign unarchived
+    await _broadcast_campaign_update(campaign.id, campaign.project_id)
+
+    return CampaignRead.model_validate(campaign, from_attributes=True)
+
+
 async def add_attack_to_campaign_service(
     campaign_id: int, data: AttackCreate, db: AsyncSession
 ) -> AttackOut:
