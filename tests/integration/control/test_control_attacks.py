@@ -13,6 +13,7 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.attack import AttackState
 from app.models.attack_resource_file import AttackResourceFile, AttackResourceType
 from app.models.project import ProjectUserAssociation, ProjectUserRole
 from app.models.user import User
@@ -639,3 +640,344 @@ async def test_estimate_keyspace_mask_attack(
     assert "keyspace" in data
     assert "complexity_score" in data
     assert data["keyspace"] > 0
+
+
+# =============================================================================
+# Lifecycle Tests
+# =============================================================================
+
+
+@pytest.mark.asyncio
+async def test_start_attack_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    campaign_factory: CampaignFactory,
+    attack_factory: AttackFactory,
+    hash_list_factory: HashListFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test starting an attack successfully."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list, campaign and attack
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await attack_factory.create_async(campaign_id=campaign.id)
+
+    # Start attack
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/attacks/{attack.id}/start", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert data["id"] == attack.id
+    assert data["state"] == "running"
+
+
+@pytest.mark.asyncio
+async def test_start_attack_invalid_state(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    campaign_factory: CampaignFactory,
+    attack_factory: AttackFactory,
+    hash_list_factory: HashListFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test starting an attack that is already running fails."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list, campaign and completed attack
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await attack_factory.create_async(
+        campaign_id=campaign.id, state=AttackState.COMPLETED
+    )
+
+    # Try to start completed attack
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/attacks/{attack.id}/start", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.CONFLICT
+
+
+@pytest.mark.asyncio
+async def test_pause_attack_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    campaign_factory: CampaignFactory,
+    attack_factory: AttackFactory,
+    hash_list_factory: HashListFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test pausing a running attack successfully."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list, campaign and running attack
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await attack_factory.create_async(
+        campaign_id=campaign.id, state=AttackState.RUNNING
+    )
+
+    # Pause attack
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/attacks/{attack.id}/pause", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert data["id"] == attack.id
+    assert data["state"] == "paused"
+
+
+@pytest.mark.asyncio
+async def test_stop_attack_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    campaign_factory: CampaignFactory,
+    attack_factory: AttackFactory,
+    hash_list_factory: HashListFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test stopping a running attack successfully."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list, campaign and running attack
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await attack_factory.create_async(
+        campaign_id=campaign.id, state=AttackState.RUNNING
+    )
+
+    # Stop attack
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/attacks/{attack.id}/stop", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert data["id"] == attack.id
+    assert data["state"] == "abandoned"
+
+
+@pytest.mark.asyncio
+async def test_resume_attack_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    campaign_factory: CampaignFactory,
+    attack_factory: AttackFactory,
+    hash_list_factory: HashListFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test resuming a paused attack successfully."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list, campaign and paused attack
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await attack_factory.create_async(
+        campaign_id=campaign.id, state=AttackState.PAUSED
+    )
+
+    # Resume attack
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/attacks/{attack.id}/resume", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert data["id"] == attack.id
+    assert data["state"] == "running"
+
+
+@pytest.mark.asyncio
+async def test_get_attack_metrics_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    campaign_factory: CampaignFactory,
+    attack_factory: AttackFactory,
+    hash_list_factory: HashListFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test getting attack metrics successfully."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list, campaign and attack
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await attack_factory.create_async(campaign_id=campaign.id)
+
+    # Get metrics
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.get(
+        f"/api/v1/control/attacks/{attack.id}/metrics", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert "hashes_per_sec" in data
+    assert "total_hashes" in data
+    assert "agent_count" in data
+
+
+# =============================================================================
+# Reorder Tests
+# =============================================================================
+
+
+@pytest.mark.asyncio
+async def test_reorder_attacks_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    campaign_factory: CampaignFactory,
+    attack_factory: AttackFactory,
+    hash_list_factory: HashListFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test reordering attacks successfully."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list, campaign and multiple attacks
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack1 = await attack_factory.create_async(campaign_id=campaign.id, position=0)
+    attack2 = await attack_factory.create_async(campaign_id=campaign.id, position=1)
+    attack3 = await attack_factory.create_async(campaign_id=campaign.id, position=2)
+
+    # Reorder attacks (reverse order)
+    headers = {"Authorization": f"Bearer {api_key}"}
+    payload = {
+        "attack_order": [
+            {"attack_id": attack3.id, "priority": 0},
+            {"attack_id": attack2.id, "priority": 1},
+            {"attack_id": attack1.id, "priority": 2},
+        ]
+    }
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/attacks/reorder",
+        headers=headers,
+        json=payload,
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert len(data) == 3
+
+
+@pytest.mark.asyncio
+async def test_reorder_attacks_invalid_attack(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    campaign_factory: CampaignFactory,
+    attack_factory: AttackFactory,
+    hash_list_factory: HashListFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test reordering with invalid attack ID fails."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list, campaign and attack
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        project_id=project.id, hash_list_id=hash_list.id
+    )
+    attack = await attack_factory.create_async(campaign_id=campaign.id)
+
+    # Try to reorder with non-existent attack
+    headers = {"Authorization": f"Bearer {api_key}"}
+    payload = {
+        "attack_order": [
+            {"attack_id": attack.id, "priority": 0},
+            {"attack_id": 99999, "priority": 1},  # Non-existent
+        ]
+    }
+    resp = await async_client.post(
+        f"/api/v1/control/campaigns/{campaign.id}/attacks/reorder",
+        headers=headers,
+        json=payload,
+    )
+    assert resp.status_code == HTTPStatus.NOT_FOUND

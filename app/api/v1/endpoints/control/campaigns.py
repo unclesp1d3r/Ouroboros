@@ -14,6 +14,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.control_exceptions import (
+    AttackNotFoundError as AttackNotFoundProblem,
+)
+from app.core.control_exceptions import (
     CampaignNotFoundError as CampaignNotFoundProblem,
 )
 from app.core.control_exceptions import (
@@ -28,6 +31,10 @@ from app.core.control_exceptions import (
     InvalidStateTransitionError as InvalidStateTransitionProblem,
 )
 from app.core.deps import get_current_control_user
+from app.core.services.attack_service import (
+    AttackNotFoundError,
+    reorder_attacks_service,
+)
 from app.core.services.campaign_service import (
     CampaignNotFoundError,
     archive_campaign_service,
@@ -50,10 +57,38 @@ from app.models.agent import AgentState
 from app.models.campaign import Campaign, CampaignState
 from app.models.hash_list import HashList
 from app.models.user import User
+from app.schemas.attack import AttackOut
 from app.schemas.campaign import CampaignCreate, CampaignRead, CampaignUpdate
 from app.schemas.shared import OffsetPaginatedResponse
 
 router = APIRouter(prefix="/campaigns", tags=["Control - Campaigns"])
+
+
+# =============================================================================
+# Reorder Request Schema
+# =============================================================================
+
+
+class AttackOrderItem(BaseModel):
+    """Single attack order item."""
+
+    attack_id: Annotated[int, Field(description="Attack ID")]
+    priority: Annotated[
+        int, Field(description="Priority/position (lower is higher priority)")
+    ]
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ReorderAttacksRequest(BaseModel):
+    """Request to reorder attacks within a campaign."""
+
+    attack_order: Annotated[
+        list[AttackOrderItem],
+        Field(description="List of attack IDs with their new priorities"),
+    ]
+
+    model_config = ConfigDict(extra="forbid")
 
 
 def _get_accessible_projects(user: User) -> list[int]:
@@ -702,3 +737,49 @@ async def unarchive_campaign(
         ) from exc
     except Exception as e:
         raise InternalServerError(detail=f"Failed to unarchive campaign: {e!s}") from e
+
+
+# =============================================================================
+# Attack Reordering Endpoint
+# =============================================================================
+
+
+@router.post(
+    "/{campaign_id}/attacks/reorder",
+    summary="Reorder attacks",
+    description="Reorder attacks within a campaign by setting their priorities.",
+)
+async def reorder_attacks(
+    campaign_id: int,
+    data: ReorderAttacksRequest,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> list[AttackOut]:
+    """
+    Reorder attacks within a campaign.
+
+    Updates the priority/position of attacks within a campaign.
+    Lower priority numbers are executed first.
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+
+        # Convert request to list of dicts for the service
+        attack_order = [
+            {"attack_id": item.attack_id, "priority": item.priority}
+            for item in data.attack_order
+        ]
+
+        return await reorder_attacks_service(campaign_id, attack_order, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except AttackNotFoundError as exc:
+        raise AttackNotFoundProblem(detail=str(exc)) from exc
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to reorder attacks: {e!s}") from e

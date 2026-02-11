@@ -24,15 +24,24 @@ from app.core.control_exceptions import (
     InvalidResourceStateError,
     ProjectAccessDeniedError,
 )
+from app.core.control_exceptions import (
+    InvalidStateTransitionError as InvalidStateTransitionProblem,
+)
 from app.core.deps import get_current_control_user
 from app.core.services.attack_service import (
     create_attack_service,
     delete_attack_service,
     estimate_attack_keyspace_and_complexity,
+    get_attack_performance_summary_service,
     get_attack_service,
+    pause_attack_service,
+    resume_attack_service,
+    start_attack_service,
+    stop_attack_service,
     update_attack_service,
 )
 from app.core.services.campaign_service import CampaignNotFoundError
+from app.core.state_machines import InvalidStateTransitionError
 from app.db.session import get_db
 from app.models.attack import Attack, AttackState
 from app.models.attack_resource_file import AttackResourceFile
@@ -41,6 +50,7 @@ from app.models.user import User
 from app.schemas.attack import (
     AttackCreate,
     AttackOut,
+    AttackPerformanceSummary,
     AttackUpdate,
     EstimateAttackRequest,
 )
@@ -551,3 +561,166 @@ async def estimate_keyspace(
         )
     except Exception as e:
         raise InternalServerError(detail=f"Failed to estimate keyspace: {e!s}") from e
+
+
+# =============================================================================
+# Lifecycle Endpoints
+# =============================================================================
+
+
+@router.post(
+    "/{attack_id}/start",
+    summary="Start attack",
+    description="Start an attack, transitioning it from PENDING to RUNNING.",
+)
+async def start_attack(
+    attack_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> AttackOut:
+    """
+    Start an attack.
+
+    The attack must be in PENDING state.
+    The user must have access to the campaign's project.
+    """
+    try:
+        await _get_attack_with_access_check(attack_id, current_user, db)
+        return await start_attack_service(attack_id, db)
+    except (
+        AttackNotFoundProblem,
+        ProjectAccessDeniedError,
+        CampaignNotFoundProblem,
+    ):
+        raise
+    except InvalidStateTransitionError as e:
+        raise InvalidStateTransitionProblem(detail=str(e)) from e
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to start attack: {e!s}") from e
+
+
+@router.post(
+    "/{attack_id}/stop",
+    summary="Stop attack",
+    description="Stop an attack, transitioning it to ABANDONED state.",
+)
+async def stop_attack(
+    attack_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> AttackOut:
+    """
+    Stop an attack.
+
+    The attack must be in RUNNING or PAUSED state.
+    The user must have access to the campaign's project.
+    """
+    try:
+        await _get_attack_with_access_check(attack_id, current_user, db)
+        return await stop_attack_service(attack_id, db)
+    except (
+        AttackNotFoundProblem,
+        ProjectAccessDeniedError,
+        CampaignNotFoundProblem,
+    ):
+        raise
+    except InvalidStateTransitionError as e:
+        raise InvalidStateTransitionProblem(detail=str(e)) from e
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to stop attack: {e!s}") from e
+
+
+@router.post(
+    "/{attack_id}/pause",
+    summary="Pause attack",
+    description="Pause a running attack.",
+)
+async def pause_attack(
+    attack_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> AttackOut:
+    """
+    Pause an attack.
+
+    The attack must be in RUNNING state.
+    The user must have access to the campaign's project.
+    """
+    try:
+        await _get_attack_with_access_check(attack_id, current_user, db)
+        return await pause_attack_service(attack_id, db)
+    except (
+        AttackNotFoundProblem,
+        ProjectAccessDeniedError,
+        CampaignNotFoundProblem,
+    ):
+        raise
+    except InvalidStateTransitionError as e:
+        raise InvalidStateTransitionProblem(detail=str(e)) from e
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to pause attack: {e!s}") from e
+
+
+@router.post(
+    "/{attack_id}/resume",
+    summary="Resume attack",
+    description="Resume a paused attack.",
+)
+async def resume_attack(
+    attack_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> AttackOut:
+    """
+    Resume an attack.
+
+    The attack must be in PAUSED state.
+    The user must have access to the campaign's project.
+    """
+    try:
+        await _get_attack_with_access_check(attack_id, current_user, db)
+        return await resume_attack_service(attack_id, db)
+    except (
+        AttackNotFoundProblem,
+        ProjectAccessDeniedError,
+        CampaignNotFoundProblem,
+    ):
+        raise
+    except InvalidStateTransitionError as e:
+        raise InvalidStateTransitionProblem(detail=str(e)) from e
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to resume attack: {e!s}") from e
+
+
+# =============================================================================
+# Metrics Endpoint
+# =============================================================================
+
+
+@router.get(
+    "/{attack_id}/metrics",
+    summary="Get attack metrics",
+    description="Get performance metrics for an attack.",
+)
+async def get_attack_metrics(
+    attack_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> AttackPerformanceSummary:
+    """
+    Get attack performance metrics.
+
+    Returns hash rate, progress, ETA, crack count, and task information.
+    The user must have access to the campaign's project.
+    """
+    try:
+        await _get_attack_with_access_check(attack_id, current_user, db)
+        return await get_attack_performance_summary_service(attack_id, db)
+    except (
+        AttackNotFoundProblem,
+        ProjectAccessDeniedError,
+        CampaignNotFoundProblem,
+    ):
+        raise
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to get attack metrics: {e!s}") from e

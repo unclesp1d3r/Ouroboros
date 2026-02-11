@@ -207,6 +207,218 @@ async def duplicate_attack_service(attack_id: int, db: AsyncSession) -> AttackOu
     return AttackOut.model_validate(clone, from_attributes=True)
 
 
+# =============================================================================
+# Attack Lifecycle Services
+# =============================================================================
+
+
+async def start_attack_service(attack_id: int, db: AsyncSession) -> AttackOut:
+    """Start an attack by setting its state to RUNNING.
+
+    Args:
+        attack_id: The attack ID to start.
+        db: AsyncSession for database operations.
+
+    Returns:
+        AttackOut: The updated attack.
+
+    Raises:
+        AttackNotFoundError: If attack not found.
+        InvalidStateTransitionError: If transition is not valid.
+    """
+    result = await db.execute(select(Attack).where(Attack.id == attack_id))
+    attack = result.scalar_one_or_none()
+    if not attack:
+        raise AttackNotFoundError(f"Attack {attack_id} not found")
+
+    # Check if already running (idempotent)
+    if attack.state == AttackState.RUNNING:
+        logger.info(f"Attack {attack_id} is already running.")
+        return AttackOut.model_validate(attack, from_attributes=True)
+
+    # Validate state transition
+    AttackStateMachine.validate_action(attack.state, "start")
+
+    attack.state = AttackState.RUNNING
+    await db.commit()
+    await db.refresh(attack)
+
+    await _broadcast_campaign_update(attack.campaign_id, None)
+    logger.info(f"Attack {attack_id} started")
+    return AttackOut.model_validate(attack, from_attributes=True)
+
+
+async def stop_attack_service(attack_id: int, db: AsyncSession) -> AttackOut:
+    """Stop an attack by setting its state to ABANDONED.
+
+    Args:
+        attack_id: The attack ID to stop.
+        db: AsyncSession for database operations.
+
+    Returns:
+        AttackOut: The updated attack.
+
+    Raises:
+        AttackNotFoundError: If attack not found.
+        InvalidStateTransitionError: If transition is not valid.
+    """
+    result = await db.execute(select(Attack).where(Attack.id == attack_id))
+    attack = result.scalar_one_or_none()
+    if not attack:
+        raise AttackNotFoundError(f"Attack {attack_id} not found")
+
+    # Check if already stopped/abandoned (idempotent)
+    if attack.state == AttackState.ABANDONED:
+        logger.info(f"Attack {attack_id} is already stopped.")
+        return AttackOut.model_validate(attack, from_attributes=True)
+
+    # Validate state transition - use abort for running/paused attacks
+    AttackStateMachine.validate_action(attack.state, "abort")
+
+    attack.state = AttackState.ABANDONED
+    await db.commit()
+    await db.refresh(attack)
+
+    await _broadcast_campaign_update(attack.campaign_id, None)
+    logger.info(f"Attack {attack_id} stopped")
+    return AttackOut.model_validate(attack, from_attributes=True)
+
+
+async def pause_attack_service(attack_id: int, db: AsyncSession) -> AttackOut:
+    """Pause an attack by setting its state to PAUSED.
+
+    Args:
+        attack_id: The attack ID to pause.
+        db: AsyncSession for database operations.
+
+    Returns:
+        AttackOut: The updated attack.
+
+    Raises:
+        AttackNotFoundError: If attack not found.
+        InvalidStateTransitionError: If transition is not valid.
+    """
+    result = await db.execute(select(Attack).where(Attack.id == attack_id))
+    attack = result.scalar_one_or_none()
+    if not attack:
+        raise AttackNotFoundError(f"Attack {attack_id} not found")
+
+    # Check if already paused (idempotent)
+    if attack.state == AttackState.PAUSED:
+        logger.info(f"Attack {attack_id} is already paused.")
+        return AttackOut.model_validate(attack, from_attributes=True)
+
+    # Validate state transition
+    AttackStateMachine.validate_action(attack.state, "pause")
+
+    attack.state = AttackState.PAUSED
+    await db.commit()
+    await db.refresh(attack)
+
+    await _broadcast_campaign_update(attack.campaign_id, None)
+    logger.info(f"Attack {attack_id} paused")
+    return AttackOut.model_validate(attack, from_attributes=True)
+
+
+async def resume_attack_service(attack_id: int, db: AsyncSession) -> AttackOut:
+    """Resume an attack by setting its state to RUNNING.
+
+    Args:
+        attack_id: The attack ID to resume.
+        db: AsyncSession for database operations.
+
+    Returns:
+        AttackOut: The updated attack.
+
+    Raises:
+        AttackNotFoundError: If attack not found.
+        InvalidStateTransitionError: If transition is not valid.
+    """
+    result = await db.execute(select(Attack).where(Attack.id == attack_id))
+    attack = result.scalar_one_or_none()
+    if not attack:
+        raise AttackNotFoundError(f"Attack {attack_id} not found")
+
+    # Check if already running (idempotent)
+    if attack.state == AttackState.RUNNING:
+        logger.info(f"Attack {attack_id} is already running.")
+        return AttackOut.model_validate(attack, from_attributes=True)
+
+    # Validate state transition
+    AttackStateMachine.validate_action(attack.state, "resume")
+
+    attack.state = AttackState.RUNNING
+    await db.commit()
+    await db.refresh(attack)
+
+    await _broadcast_campaign_update(attack.campaign_id, None)
+    logger.info(f"Attack {attack_id} resumed")
+    return AttackOut.model_validate(attack, from_attributes=True)
+
+
+async def reorder_attacks_service(
+    campaign_id: int,
+    attack_order: list[dict[str, int]],
+    db: AsyncSession,
+) -> list[AttackOut]:
+    """Reorder attacks within a campaign.
+
+    Args:
+        campaign_id: The campaign ID containing the attacks.
+        attack_order: List of dicts with attack_id and priority.
+        db: AsyncSession for database operations.
+
+    Returns:
+        list[AttackOut]: The updated attacks.
+
+    Raises:
+        AttackNotFoundError: If any attack not found or doesn't belong to campaign.
+    """
+    from app.models.campaign import Campaign
+
+    # Verify campaign exists
+    campaign_result = await db.execute(
+        select(Campaign).where(Campaign.id == campaign_id)
+    )
+    campaign = campaign_result.scalar_one_or_none()
+    if not campaign:
+        from app.core.services.campaign_service import CampaignNotFoundError
+
+        raise CampaignNotFoundError(f"Campaign {campaign_id} not found")
+
+    # Fetch all attacks in the campaign
+    attacks_result = await db.execute(
+        select(Attack).where(Attack.campaign_id == campaign_id)
+    )
+    attacks = {a.id: a for a in attacks_result.scalars().all()}
+
+    # Update positions based on priority
+    updated_attacks = []
+    for item in attack_order:
+        attack_id = item.get("attack_id")
+        priority = item.get("priority", 0)
+
+        if attack_id is None or attack_id not in attacks:
+            raise AttackNotFoundError(
+                f"Attack {attack_id} not found in campaign {campaign_id}"
+            )
+
+        attack = attacks[attack_id]
+        attack.position = priority
+        updated_attacks.append(attack)
+
+    await db.commit()
+
+    # Refresh all updated attacks
+    for attack in updated_attacks:
+        await db.refresh(attack)
+
+    await _broadcast_campaign_update(campaign_id, campaign.project_id)
+    logger.info(f"Reordered {len(updated_attacks)} attacks in campaign {campaign_id}")
+
+    return [AttackOut.model_validate(a, from_attributes=True) for a in updated_attacks]
+
+
 async def bulk_delete_attacks_service(
     attack_ids: list[int], db: AsyncSession
 ) -> dict[str, list[int]]:
@@ -1142,5 +1354,10 @@ __all__ = [
     "get_attack_service",
     "get_campaign_attack_table_fragment_service",
     "move_attack_service",
+    "pause_attack_service",
+    "reorder_attacks_service",
+    "resume_attack_service",
+    "start_attack_service",
+    "stop_attack_service",
     "update_attack_service",
 ]
