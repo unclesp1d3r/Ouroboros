@@ -40,6 +40,8 @@ from app.core.services.campaign_service import (
     archive_campaign_service,
     create_campaign_service,
     delete_campaign_service,
+    get_campaign_metrics_service,
+    get_campaign_progress_service,
     get_campaign_service,
     list_campaigns_service,
     pause_campaign_service,
@@ -58,7 +60,13 @@ from app.models.campaign import Campaign, CampaignState
 from app.models.hash_list import HashList
 from app.models.user import User
 from app.schemas.attack import AttackOut
-from app.schemas.campaign import CampaignCreate, CampaignRead, CampaignUpdate
+from app.schemas.campaign import (
+    CampaignCreate,
+    CampaignMetrics,
+    CampaignProgress,
+    CampaignRead,
+    CampaignUpdate,
+)
 from app.schemas.shared import OffsetPaginatedResponse
 
 router = APIRouter(prefix="/campaigns", tags=["Control - Campaigns"])
@@ -737,6 +745,84 @@ async def unarchive_campaign(
         ) from exc
     except Exception as e:
         raise InternalServerError(detail=f"Failed to unarchive campaign: {e!s}") from e
+
+
+# =============================================================================
+# Progress and Metrics Endpoints
+# =============================================================================
+
+
+@router.get(
+    "/{campaign_id}/progress",
+    summary="Get campaign progress",
+    description="Get progress information for a campaign including active agents and task counts.",
+)
+async def get_campaign_progress(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignProgress:
+    """
+    Get campaign progress information.
+
+    Returns progress data including:
+    - Number of active agents working on the campaign
+    - Total number of tasks
+
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await get_campaign_progress_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(
+            detail=f"Failed to get campaign progress: {e!s}"
+        ) from e
+
+
+@router.get(
+    "/{campaign_id}/metrics",
+    summary="Get campaign metrics",
+    description="Get performance metrics for a campaign including hash statistics.",
+)
+async def get_campaign_metrics(
+    campaign_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> CampaignMetrics:
+    """
+    Get campaign metrics.
+
+    Returns metrics including:
+    - Total number of hashes
+    - Number of cracked hashes
+    - Number of uncracked hashes
+    - Percentage of cracked hashes
+    - Overall progress percentage
+
+    The user must have access to the project containing the campaign.
+    """
+    try:
+        # Validate access first
+        await _validate_campaign_access(campaign_id, current_user, db)
+        return await get_campaign_metrics_service(campaign_id, db)
+    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except CampaignNotFoundError as exc:
+        raise CampaignNotFoundProblem(
+            detail=f"Campaign with ID {campaign_id} not found"
+        ) from exc
+    except Exception as e:
+        raise InternalServerError(
+            detail=f"Failed to get campaign metrics: {e!s}"
+        ) from e
 
 
 # =============================================================================

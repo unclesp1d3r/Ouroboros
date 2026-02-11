@@ -1520,3 +1520,222 @@ async def test_lifecycle_action_unauthorized_project(
         f"/api/v1/control/campaigns/{campaign.id}/start", headers=headers
     )
     assert resp.status_code == HTTPStatus.FORBIDDEN
+
+
+# =============================================================================
+# Campaign Progress and Metrics Tests (T11: Campaign Status & Metrics)
+# =============================================================================
+
+
+@pytest.mark.asyncio
+async def test_get_campaign_progress_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test getting campaign progress."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list and campaign
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Test Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+    )
+
+    # Get campaign progress
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.get(
+        f"/api/v1/control/campaigns/{campaign.id}/progress", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert "active_agents" in data
+    assert "total_tasks" in data
+    assert data["active_agents"] >= 0
+    assert data["total_tasks"] >= 0
+
+
+@pytest.mark.asyncio
+async def test_get_campaign_progress_not_found(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test getting progress for non-existent campaign returns 404."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Try to get progress for non-existent campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.get(
+        "/api/v1/control/campaigns/99999/progress", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NOT_FOUND
+
+
+@pytest.mark.asyncio
+async def test_get_campaign_progress_unauthorized_project(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test getting progress for campaign in unauthorized project returns 403."""
+    async_client, user, api_key = api_key_client
+
+    # Create two projects
+    project1 = await project_factory.create_async()
+    project2 = await project_factory.create_async()
+
+    # Associate user only with project1
+    assoc = ProjectUserAssociation(
+        project_id=project1.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in project2
+    hash_list = await hash_list_factory.create_async(project_id=project2.id)
+    campaign = await campaign_factory.create_async(
+        name="Inaccessible",
+        project_id=project2.id,
+        hash_list_id=hash_list.id,
+    )
+
+    # Try to get progress
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.get(
+        f"/api/v1/control/campaigns/{campaign.id}/progress", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.FORBIDDEN
+
+
+@pytest.mark.asyncio
+async def test_get_campaign_metrics_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test getting campaign metrics."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create hash list and campaign
+    hash_list = await hash_list_factory.create_async(project_id=project.id)
+    campaign = await campaign_factory.create_async(
+        name="Test Campaign",
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+    )
+
+    # Get campaign metrics
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.get(
+        f"/api/v1/control/campaigns/{campaign.id}/metrics", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert "total_hashes" in data
+    assert "cracked_hashes" in data
+    assert "uncracked_hashes" in data
+    assert "percent_cracked" in data
+    assert "progress_percent" in data
+    assert data["total_hashes"] >= 0
+    assert data["cracked_hashes"] >= 0
+    assert data["uncracked_hashes"] >= 0
+    assert 0 <= data["percent_cracked"] <= 100
+    assert 0 <= data["progress_percent"] <= 100
+
+
+@pytest.mark.asyncio
+async def test_get_campaign_metrics_not_found(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test getting metrics for non-existent campaign returns 404."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Try to get metrics for non-existent campaign
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.get(
+        "/api/v1/control/campaigns/99999/metrics", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NOT_FOUND
+
+
+@pytest.mark.asyncio
+async def test_get_campaign_metrics_unauthorized_project(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test getting metrics for campaign in unauthorized project returns 403."""
+    async_client, user, api_key = api_key_client
+
+    # Create two projects
+    project1 = await project_factory.create_async()
+    project2 = await project_factory.create_async()
+
+    # Associate user only with project1
+    assoc = ProjectUserAssociation(
+        project_id=project1.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create campaign in project2
+    hash_list = await hash_list_factory.create_async(project_id=project2.id)
+    campaign = await campaign_factory.create_async(
+        name="Inaccessible",
+        project_id=project2.id,
+        hash_list_id=hash_list.id,
+    )
+
+    # Try to get metrics
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.get(
+        f"/api/v1/control/campaigns/{campaign.id}/metrics", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.FORBIDDEN
