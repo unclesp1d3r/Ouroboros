@@ -79,6 +79,11 @@ echo ""
 echo "Starting database restore..."
 
 # Restore from compressed backup
+# NOTE: This restore is additive - it pipes SQL directly into the existing database.
+# If the backup was created with pg_dump --clean, existing objects will be dropped first.
+# If not, new data will be added to existing tables (may cause conflicts).
+# For a clean restore, either use a backup created with --clean or manually
+# drop/recreate the database before restoring.
 if gunzip -c "$BACKUP_FILE" | PGPASSWORD="${POSTGRES_PASSWORD}" psql \
     -h "$POSTGRES_HOST" \
     -p "$POSTGRES_PORT" \

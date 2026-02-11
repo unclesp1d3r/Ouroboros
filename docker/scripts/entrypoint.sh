@@ -1,11 +1,10 @@
 #!/bin/bash
-set -e
-set -o pipefail
+set -euo pipefail
 
 # Ouroboros Container Entrypoint Script
 # Handles database initialization, migrations, and service routing
 
-# Configuration with defaults
+# Configuration with defaults (using :- to handle unset variables with set -u)
 POSTGRES_HOST="${POSTGRES_SERVER:-postgres}"
 POSTGRES_PORT="${POSTGRES_PORT:-5432}"
 POSTGRES_USER="${POSTGRES_USER:-ouroboros}"

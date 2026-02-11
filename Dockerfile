@@ -39,10 +39,11 @@ WORKDIR /app
 
 # Install runtime dependencies only
 # - curl: health checks
-# - postgresql-client: pg_isready, pg_dump, psql for migrations and backups
+# - postgresql-client-17: pg_isready, pg_dump, psql for migrations and backups
+#   (pinned to major version; client 17 is backward compatible with PostgreSQL 16 server)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    postgresql-client \
+    postgresql-client-17 \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 

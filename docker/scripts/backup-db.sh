@@ -56,7 +56,7 @@ fi
 # Clean up old backups if retention is configured
 if [ "$RETENTION_DAYS" -gt 0 ]; then
     echo "Cleaning up backups older than ${RETENTION_DAYS} days..."
-    find "$BACKUP_DIR" -name "${POSTGRES_DB}_*.sql.gz" -mtime +"$RETENTION_DAYS" -delete
+    find "$BACKUP_DIR" -maxdepth 1 -type f -name "${POSTGRES_DB}_*.sql.gz" -mtime +"$RETENTION_DAYS" -delete
     echo "Cleanup complete"
 fi
 

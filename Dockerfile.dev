@@ -10,7 +10,8 @@ FROM python:3.14-slim AS base
 WORKDIR /app
 
 # Install system dependencies including build tools for dev dependencies
-# - postgresql-client: pg_isready for database readiness checks
+# - postgresql-client-17: pg_isready for database readiness checks
+#   (pinned to major version; client 17 is backward compatible with PostgreSQL 16 server)
 # - curl: health checks
 # - git, gcc, g++, make: build tools for dev dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -19,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     make \
-    postgresql-client \
+    postgresql-client-17 \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
