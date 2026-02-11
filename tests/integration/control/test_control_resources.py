@@ -7,10 +7,12 @@ Error responses must follow RFC9457 format.
 """
 
 from http import HTTPStatus
+from unittest.mock import MagicMock, patch
 from uuid import uuid4
 
 import pytest
 from httpx import AsyncClient
+from minio.error import S3Error
 from sqlalchemy.ext.asyncio import AsyncSession
 from testcontainers.minio import MinioContainer  # type: ignore[import-untyped]
 
@@ -784,12 +786,28 @@ async def test_cancel_pending_resource_happy_path(
         db_session, project_id=project.id, is_uploaded=False, file_name="pending.txt"
     )
 
-    # Cancel the pending resource
-    headers = {"Authorization": f"Bearer {api_key}"}
-    resp = await async_client.delete(
-        f"/api/v1/control/resources/{resource.id}/cancel", headers=headers
-    )
-    assert resp.status_code == HTTPStatus.NO_CONTENT
+    # Mock storage service to avoid MinIO calls
+    with patch(
+        "app.core.services.resource_service.get_storage_service"
+    ) as mock_storage:
+        mock_service = MagicMock()
+        mock_storage.return_value = mock_service
+        # Simulate object not found in MinIO (common case for pending resources)
+        mock_service.client.stat_object.side_effect = S3Error(
+            code="NoSuchKey",
+            message="Object not found",
+            resource="test",
+            request_id="test",
+            host_id="test",
+            response=None,
+        )
+
+        # Cancel the pending resource
+        headers = {"Authorization": f"Bearer {api_key}"}
+        resp = await async_client.delete(
+            f"/api/v1/control/resources/{resource.id}/cancel", headers=headers
+        )
+        assert resp.status_code == HTTPStatus.NO_CONTENT
 
     # Verify it's gone
     resp = await async_client.get(
@@ -913,14 +931,29 @@ async def test_cancel_resource_idempotent(
     )
     resource_id = resource.id
 
-    # First cancel succeeds
-    headers = {"Authorization": f"Bearer {api_key}"}
-    resp = await async_client.delete(
-        f"/api/v1/control/resources/{resource_id}/cancel", headers=headers
-    )
-    assert resp.status_code == HTTPStatus.NO_CONTENT
+    # Mock storage service to avoid MinIO calls
+    with patch(
+        "app.core.services.resource_service.get_storage_service"
+    ) as mock_storage:
+        mock_service = MagicMock()
+        mock_storage.return_value = mock_service
+        mock_service.client.stat_object.side_effect = S3Error(
+            code="NoSuchKey",
+            message="Object not found",
+            resource="test",
+            request_id="test",
+            host_id="test",
+            response=None,
+        )
 
-    # Second cancel returns 404 (resource already deleted)
+        # First cancel succeeds
+        headers = {"Authorization": f"Bearer {api_key}"}
+        resp = await async_client.delete(
+            f"/api/v1/control/resources/{resource_id}/cancel", headers=headers
+        )
+        assert resp.status_code == HTTPStatus.NO_CONTENT
+
+    # Second cancel returns 404 (resource already deleted) - no mock needed for 404
     resp = await async_client.delete(
         f"/api/v1/control/resources/{resource_id}/cancel", headers=headers
     )
