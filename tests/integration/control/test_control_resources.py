@@ -12,6 +12,7 @@ from uuid import uuid4
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
+from testcontainers.minio import MinioContainer  # type: ignore[import-untyped]
 
 from app.models.attack_resource_file import AttackResourceFile, AttackResourceType
 from app.models.project import ProjectUserAssociation, ProjectUserRole
@@ -561,3 +562,196 @@ async def test_pending_resources_visible(
     ]
     assert len(pending_items) >= 1
     assert pending_items[0]["is_uploaded"] is False
+
+
+@pytest.mark.asyncio
+async def test_initiate_upload_happy_path(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+    minio_container: MinioContainer,
+) -> None:
+    """Test initiating an upload returns resource ID and presigned URL."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Initiate upload
+    headers = {"Authorization": f"Bearer {api_key}"}
+    payload = {
+        "file_name": "rockyou.txt",
+        "resource_type": "word_list",
+        "project_id": project.id,
+    }
+    resp = await async_client.post(
+        "/api/v1/control/resources/initiate-upload", headers=headers, json=payload
+    )
+    assert resp.status_code == HTTPStatus.CREATED
+
+    data = resp.json()
+    assert "resource_id" in data
+    assert "upload_url" in data
+    assert "expires_in_seconds" in data
+    assert data["expires_in_seconds"] == 3600
+
+
+@pytest.mark.asyncio
+async def test_initiate_upload_with_optional_fields(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+    minio_container: MinioContainer,
+) -> None:
+    """Test initiating upload with optional metadata fields."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Initiate upload with optional fields
+    headers = {"Authorization": f"Bearer {api_key}"}
+    payload = {
+        "file_name": "custom-rules.rule",
+        "resource_type": "rule_list",
+        "project_id": project.id,
+        "file_label": "My Custom Rules",
+        "tags": ["custom", "ruleset"],
+        "line_format": "rule",
+        "line_encoding": "ascii",
+    }
+    resp = await async_client.post(
+        "/api/v1/control/resources/initiate-upload", headers=headers, json=payload
+    )
+    assert resp.status_code == HTTPStatus.CREATED
+
+    data = resp.json()
+    assert "resource_id" in data
+    assert "upload_url" in data
+
+
+@pytest.mark.asyncio
+async def test_initiate_upload_unauthorized_project(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test initiating upload to unauthorized project returns 403."""
+    async_client, _user, api_key = api_key_client
+
+    # Create project but don't associate user
+    project = await project_factory.create_async()
+
+    # Try to initiate upload
+    headers = {"Authorization": f"Bearer {api_key}"}
+    payload = {
+        "file_name": "test.txt",
+        "resource_type": "word_list",
+        "project_id": project.id,
+    }
+    resp = await async_client.post(
+        "/api/v1/control/resources/initiate-upload", headers=headers, json=payload
+    )
+    assert resp.status_code == HTTPStatus.FORBIDDEN
+
+
+@pytest.mark.asyncio
+async def test_initiate_upload_no_project(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+    minio_container: MinioContainer,
+) -> None:
+    """Test initiating upload without project_id creates global resource."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user (user needs some access)
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Initiate upload without project_id
+    headers = {"Authorization": f"Bearer {api_key}"}
+    payload = {
+        "file_name": "global-wordlist.txt",
+        "resource_type": "word_list",
+    }
+    resp = await async_client.post(
+        "/api/v1/control/resources/initiate-upload", headers=headers, json=payload
+    )
+    assert resp.status_code == HTTPStatus.CREATED
+
+    data = resp.json()
+    assert "resource_id" in data
+
+
+@pytest.mark.asyncio
+async def test_confirm_upload_not_found(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test confirming upload for non-existent resource returns 404."""
+    async_client, user, api_key = api_key_client
+
+    # Create project and associate user
+    project = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Try to confirm non-existent resource
+    headers = {"Authorization": f"Bearer {api_key}"}
+    fake_id = uuid4()
+    resp = await async_client.post(
+        f"/api/v1/control/resources/{fake_id}/confirm-upload", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.NOT_FOUND
+
+
+@pytest.mark.asyncio
+async def test_confirm_upload_unauthorized_project(
+    api_key_client: tuple[AsyncClient, User, str],
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Test confirming upload for resource in unauthorized project returns 403."""
+    async_client, user, api_key = api_key_client
+
+    # Create two projects
+    project1 = await project_factory.create_async()
+    project2 = await project_factory.create_async()
+
+    # Associate user only with project1
+    assoc = ProjectUserAssociation(
+        project_id=project1.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    # Create pending resource in project2
+    resource = await create_resource(
+        db_session, project_id=project2.id, is_uploaded=False
+    )
+
+    # Try to confirm upload
+    headers = {"Authorization": f"Bearer {api_key}"}
+    resp = await async_client.post(
+        f"/api/v1/control/resources/{resource.id}/confirm-upload", headers=headers
+    )
+    assert resp.status_code == HTTPStatus.FORBIDDEN

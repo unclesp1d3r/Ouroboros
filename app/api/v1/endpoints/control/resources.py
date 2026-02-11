@@ -11,6 +11,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -27,9 +28,11 @@ from app.core.control_exceptions import (
 from app.core.deps import get_current_control_user
 from app.core.services.resource_service import (
     cancel_pending_resource,
+    create_resource_and_presign_service,
     delete_resource_service,
     get_resource_or_404,
     update_resource_metadata_service,
+    verify_resource_upload_service,
 )
 from app.core.services.storage_service import get_storage_service
 from app.db.session import get_db
@@ -75,6 +78,49 @@ class ResourceOut(ResourceBase):
     """Resource output schema for Control API."""
 
     usage_count: int = 0
+
+
+class InitiateUploadRequest(BaseModel):
+    """Request to initiate a resource upload."""
+
+    file_name: Annotated[str, Field(min_length=1, description="Original file name")]
+    resource_type: Annotated[AttackResourceType, Field(description="Type of resource")]
+    project_id: Annotated[
+        int | None, Field(None, description="Project ID to associate with resource")
+    ]
+    file_label: Annotated[
+        str | None,
+        Field(None, max_length=50, description="Optional label for the resource"),
+    ]
+    tags: Annotated[
+        list[str] | None, Field(None, description="Optional tags for the resource")
+    ]
+    line_format: Annotated[
+        str | None, Field(None, description="Line format (e.g., freeform, mask, rule)")
+    ]
+    line_encoding: Annotated[
+        str | None, Field(None, description="Line encoding (e.g., utf-8, ascii)")
+    ]
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class InitiateUploadResponse(BaseModel):
+    """Response from initiating a resource upload."""
+
+    resource_id: Annotated[
+        UUID, Field(description="UUID of the created pending resource")
+    ]
+    upload_url: Annotated[
+        str, Field(description="Presigned URL for direct upload to storage")
+    ]
+    expires_in_seconds: Annotated[
+        int, Field(description="Seconds until the presigned URL expires")
+    ]
+
+
+class ConfirmUploadResponse(ResourceBase):
+    """Response after confirming a resource upload."""
 
 
 @router.get(
@@ -202,6 +248,125 @@ async def list_resources(
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to list resources: {e!s}") from e
+
+
+@router.post(
+    "/initiate-upload",
+    status_code=201,
+    summary="Initiate resource upload",
+    description="Create a pending resource and get a presigned URL for direct upload to storage.",
+)
+async def initiate_upload(
+    data: InitiateUploadRequest,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> InitiateUploadResponse:
+    """
+    Initiate a resource upload.
+
+    Creates a pending resource record and returns a presigned URL for direct upload
+    to MinIO storage. The presigned URL is valid for 1 hour.
+
+    After uploading to the presigned URL, call POST /resources/{id}/confirm-upload
+    to finalize the resource.
+    """
+    try:
+        # Validate project access if project_id is specified
+        if data.project_id is not None:
+            accessible = _get_accessible_projects(current_user)
+            if data.project_id not in accessible and not current_user.is_superuser:
+                raise ProjectAccessDeniedError(
+                    detail=f"User does not have access to project {data.project_id}"
+                )
+
+        resource, presigned_url = await create_resource_and_presign_service(
+            db=db,
+            file_name=data.file_name,
+            resource_type=data.resource_type,
+            project_id=data.project_id,
+            file_label=data.file_label,
+            tags=data.tags,
+            line_format=data.line_format,
+            line_encoding=data.line_encoding,
+            source="control-api",
+        )
+
+        return InitiateUploadResponse(
+            resource_id=resource.id,
+            upload_url=presigned_url,
+            expires_in_seconds=3600,  # 1 hour
+        )
+    except ProjectAccessDeniedError:
+        raise
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to initiate upload: {e!s}") from e
+
+
+@router.post(
+    "/{resource_id}/confirm-upload",
+    summary="Confirm resource upload",
+    description="Verify the upload is complete and finalize the resource record.",
+)
+async def confirm_upload(
+    resource_id: UUID,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_control_user)],
+) -> ConfirmUploadResponse:
+    """
+    Confirm a resource upload.
+
+    Verifies that the file exists in storage, computes file statistics
+    (size, line count, checksum), and marks the resource as uploaded.
+
+    Returns the finalized resource metadata.
+    """
+    try:
+        # Get resource first to validate access
+        resource = await get_resource_or_404(resource_id, db)
+        await _validate_resource_access(resource, current_user)
+
+        # Verify and finalize the upload
+        updated = await verify_resource_upload_service(resource_id, db)
+
+        return ConfirmUploadResponse(
+            id=updated.id,
+            file_name=updated.file_name,
+            file_label=updated.file_label,
+            resource_type=updated.resource_type,
+            line_count=updated.line_count,
+            byte_size=updated.byte_size,
+            checksum=updated.checksum,
+            updated_at=updated.updated_at,
+            line_format=updated.line_format,
+            line_encoding=updated.line_encoding,
+            used_for_modes=[
+                m.value if hasattr(m, "value") else str(m)
+                for m in updated.used_for_modes
+            ]
+            if updated.used_for_modes
+            else [],
+            source=updated.source,
+            project_id=updated.project_id,
+            unrestricted=(updated.project_id is None),
+            is_uploaded=updated.is_uploaded,
+            tags=updated.tags,
+        )
+    except (ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError):
+        raise
+    except HTTPException as e:
+        if e.status_code == status.HTTP_404_NOT_FOUND:
+            raise ResourceNotFoundProblem(
+                detail=f"Resource with ID {resource_id} not found"
+            ) from e
+        if e.status_code == status.HTTP_409_CONFLICT:
+            raise InvalidResourceStateError(
+                detail="Resource has already been confirmed"
+            ) from e
+        if e.status_code == status.HTTP_400_BAD_REQUEST:
+            raise InvalidResourceStateError(detail=e.detail) from e
+        raise InternalServerError(detail=f"Failed to confirm upload: {e.detail}") from e
+    except Exception as e:
+        raise InternalServerError(detail=f"Failed to confirm upload: {e!s}") from e
 
 
 @router.get(
