@@ -265,16 +265,25 @@ async def estimate_attack_keyspace_and_complexity(
     Estimate keyspace and complexity score for an unsaved attack config.
     Accepts an EstimateAttackRequest model.
     Returns an EstimateAttackResponse model.
+
+    Raises:
+        ValueError: If required fields are missing (e.g., attack_mode).
     """
-    # Use AttackCreate for attack fields, fill missing with defaults
-    attack = AttackCreate.model_validate(attack_data.model_dump(exclude_none=True))
+    # Validate required field for estimation
+    if attack_data.attack_mode is None:
+        raise ValueError("attack_mode is required for keyspace estimation")
+
+    # Use EstimateAttackRequest directly - AttackEstimationService uses getattr
+    # so it works with any object that has the required attributes.
+    # We don't need to validate against AttackCreate since estimation doesn't
+    # require hash_list fields.
     resources = AttackResourceEstimationContext(
         wordlist_size=attack_data.wordlist_size
         if attack_data.wordlist_size is not None
         else 10000,
         rule_count=attack_data.rule_count if attack_data.rule_count is not None else 1,
     )
-    keyspace = AttackEstimationService.estimate_keyspace(attack, resources)
+    keyspace = AttackEstimationService.estimate_keyspace(attack_data, resources)
     complexity = AttackEstimationService.calculate_complexity_from_keyspace(keyspace)
     return EstimateAttackResponse(keyspace=keyspace, complexity_score=complexity)
 

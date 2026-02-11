@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app.api.v1.endpoints.control.attacks import router as attacks_router
 from app.api.v1.endpoints.control.campaigns import router as campaigns_router
 from app.api.v1.endpoints.control.hash_guess import router as hash_guess_router
 from app.api.v1.endpoints.control.hash_lists import router as hash_lists_router
@@ -14,6 +15,7 @@ router = APIRouter(prefix="/control", tags=["Control"])
 # that inherit from fastapi_problem.error base classes. These are automatically
 # handled by the fastapi-problem library when raised in endpoints.
 
+router.include_router(attacks_router)
 router.include_router(campaigns_router)
 router.include_router(hash_guess_router)
 router.include_router(hash_lists_router)
