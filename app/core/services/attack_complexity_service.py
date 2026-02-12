@@ -44,7 +44,11 @@
 import re
 from typing import Any
 
-from app.schemas.attack import AttackCreate, AttackResourceEstimationContext
+from app.schemas.attack import (
+    AttackCreate,
+    AttackResourceEstimationContext,
+    EstimateAttackRequest,
+)
 
 MASK_MAX_LENGTH = 255
 
@@ -81,7 +85,8 @@ class AttackEstimationService:
 
     @staticmethod
     def estimate_keyspace(
-        attack: AttackCreate, resources: AttackResourceEstimationContext
+        attack: AttackCreate | EstimateAttackRequest,
+        resources: AttackResourceEstimationContext,
     ) -> int:
         """
         Estimate the total keyspace for an attack configuration.
