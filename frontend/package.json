@@ -63,7 +63,7 @@
         "prettier-plugin-tailwindcss": "0.7.2",
         "rollup-plugin-visualizer": "6.0.5",
         "runed": "0.37.1",
-        "svelte": "5.48.0",
+        "svelte": "5.51.5",
         "svelte-check": "4.3.5",
         "svelte-sonner": "1.0.7",
         "svelte-toolbelt": "0.10.6",
