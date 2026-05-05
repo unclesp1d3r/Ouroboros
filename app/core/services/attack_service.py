@@ -575,7 +575,7 @@ def attack_to_template(attack: Attack) -> AttackTemplate:
     masks = [attack.mask] if getattr(attack, "mask", None) else None
     if masks:
         filtered_masks = [m for m in masks if isinstance(m, str) and m is not None]
-        masks_out = filtered_masks if filtered_masks else None
+        masks_out = filtered_masks or None
     else:
         masks_out = None
 

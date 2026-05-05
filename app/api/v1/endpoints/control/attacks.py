@@ -7,6 +7,7 @@ Error responses must follow RFC9457 format.
 """
 
 from typing import Annotated
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, Response, status
 from pydantic import BaseModel, ConfigDict, Field
@@ -46,7 +47,7 @@ from app.core.services.campaign_service import CampaignNotFoundError
 from app.core.state_machines import InvalidStateTransitionError
 from app.db.session import get_db
 from app.models.attack import Attack, AttackState
-from app.models.attack_resource_file import AttackResourceFile
+from app.models.attack_resource_file import AttackResourceFile, AttackResourceType
 from app.models.campaign import Campaign
 from app.models.user import User
 from app.schemas.attack import (
@@ -121,6 +122,61 @@ async def _validate_campaign_access(
 
     await _validate_project_access(user, campaign.project_id)
     return campaign
+
+
+async def _get_authorized_attack_resource(
+    resource_id: UUID,
+    campaign_project_id: int,
+    allowed_types: set[AttackResourceType],
+    field_name: str,
+    db: AsyncSession,
+) -> AttackResourceFile | None:
+    """Return a resource only when it is usable by the campaign project."""
+    resource = await db.get(AttackResourceFile, resource_id)
+    if resource is None:
+        return None
+    if resource.project_id is not None and resource.project_id != campaign_project_id:
+        raise ProjectAccessDeniedError(
+            detail=f"{field_name} resource is not accessible for this campaign"
+        )
+    if resource.resource_type not in allowed_types:
+        raise InvalidResourceStateError(
+            detail=f"{field_name} resource type is not valid for this attack"
+        )
+    return resource
+
+
+async def _validate_attack_resource_access(
+    data: AttackCreate,
+    campaign_project_id: int,
+    db: AsyncSession,
+) -> None:
+    """Validate persisted resource references before creating an attack."""
+    resource_checks = (
+        (
+            data.word_list_id,
+            {AttackResourceType.WORD_LIST, AttackResourceType.EPHEMERAL_WORD_LIST},
+            "word_list_id",
+        ),
+        (
+            data.rule_list_id,
+            {AttackResourceType.RULE_LIST, AttackResourceType.EPHEMERAL_RULE_LIST},
+            "rule_list_id",
+        ),
+        (
+            data.mask_list_id,
+            {AttackResourceType.MASK_LIST, AttackResourceType.EPHEMERAL_MASK_LIST},
+            "mask_list_id",
+        ),
+    )
+    for resource_id, allowed_types, field_name in resource_checks:
+        if resource_id is None:
+            continue
+        resource = await _get_authorized_attack_resource(
+            resource_id, campaign_project_id, allowed_types, field_name, db
+        )
+        if resource is None:
+            raise InvalidResourceStateError(detail=f"{field_name} resource not found")
 
 
 # =============================================================================
@@ -264,11 +320,12 @@ async def create_attack(
         if data.campaign_id is None:
             raise CampaignNotFoundProblem(detail="campaign_id is required")
 
-        await _validate_campaign_access(data.campaign_id, current_user, db)
+        campaign = await _validate_campaign_access(data.campaign_id, current_user, db)
+        await _validate_attack_resource_access(data, campaign.project_id, db)
 
         # Create the attack using existing service
         return await create_attack_service(data, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(detail=str(exc)) from exc
@@ -296,7 +353,7 @@ async def get_attack(
         await _get_attack_with_access_check(attack_id, current_user, db)
         attack = await get_attack_service(attack_id, db)
         return AttackOut.model_validate(attack, from_attributes=True)
-    except (AttackNotFoundProblem, ProjectAccessDeniedError, CampaignNotFoundProblem):
+    except AttackNotFoundProblem, ProjectAccessDeniedError, CampaignNotFoundProblem:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to get attack: {e!s}") from e
@@ -411,117 +468,97 @@ async def validate_attack_config(
         warnings: list[str] = []
         resource_availability: list[ResourceAvailability] = []
 
+        campaign_project_id: int | None = None
+
         # Validate campaign access
         if data.campaign_id is None:
             errors.append("campaign_id is required")
         else:
             try:
-                await _validate_campaign_access(data.campaign_id, current_user, db)
+                campaign = await _validate_campaign_access(
+                    data.campaign_id, current_user, db
+                )
+                campaign_project_id = campaign.project_id
             except CampaignNotFoundProblem:
                 errors.append(f"Campaign {data.campaign_id} not found")
             except ProjectAccessDeniedError:
                 errors.append(f"No access to campaign {data.campaign_id}")
 
-        # Check wordlist if specified
-        if data.word_list_id is not None:
-            result = await db.execute(
-                select(AttackResourceFile).where(
-                    AttackResourceFile.id == data.word_list_id
+        resource_checks = (
+            (
+                data.word_list_id,
+                {
+                    AttackResourceType.WORD_LIST,
+                    AttackResourceType.EPHEMERAL_WORD_LIST,
+                },
+                "word_list_id",
+                "Wordlist",
+            ),
+            (
+                data.rule_list_id,
+                {
+                    AttackResourceType.RULE_LIST,
+                    AttackResourceType.EPHEMERAL_RULE_LIST,
+                },
+                "rule_list_id",
+                "Rule list",
+            ),
+            (
+                data.mask_list_id,
+                {
+                    AttackResourceType.MASK_LIST,
+                    AttackResourceType.EPHEMERAL_MASK_LIST,
+                },
+                "mask_list_id",
+                "Mask list",
+            ),
+        )
+        for resource_id, allowed_types, field_name, display_name in resource_checks:
+            if resource_id is None or campaign_project_id is None:
+                continue
+            try:
+                resource = await _get_authorized_attack_resource(
+                    resource_id,
+                    campaign_project_id,
+                    allowed_types,
+                    field_name,
+                    db,
                 )
-            )
-            resource = result.scalar_one_or_none()
-            if resource is None:
+            except ProjectAccessDeniedError, InvalidResourceStateError:
                 resource_availability.append(
                     ResourceAvailability(
-                        resource_id=str(data.word_list_id),
-                        status="not_found",
+                        resource_id=str(resource_id),
+                        status="unavailable",
                         name=None,
                     )
                 )
-                errors.append(f"Wordlist {data.word_list_id} not found")
-            elif not resource.is_uploaded:
-                resource_availability.append(
-                    ResourceAvailability(
-                        resource_id=str(data.word_list_id),
-                        status="unavailable",
-                        name=resource.file_name,
-                    )
-                )
-                warnings.append(f"Wordlist '{resource.file_name}' is not yet uploaded")
-            else:
-                resource_availability.append(
-                    ResourceAvailability(
-                        resource_id=str(data.word_list_id),
-                        status="available",
-                        name=resource.file_name,
-                    )
-                )
+                errors.append(f"{display_name} {resource_id} is not available")
+                continue
 
-        # Check rule list if specified
-        if data.rule_list_id is not None:
-            result = await db.execute(
-                select(AttackResourceFile).where(
-                    AttackResourceFile.id == data.rule_list_id
-                )
-            )
-            resource = result.scalar_one_or_none()
             if resource is None:
                 resource_availability.append(
                     ResourceAvailability(
-                        resource_id=str(data.rule_list_id),
+                        resource_id=str(resource_id),
                         status="not_found",
                         name=None,
                     )
                 )
-                errors.append(f"Rule list {data.rule_list_id} not found")
+                errors.append(f"{display_name} {resource_id} not found")
             elif not resource.is_uploaded:
                 resource_availability.append(
                     ResourceAvailability(
-                        resource_id=str(data.rule_list_id),
+                        resource_id=str(resource_id),
                         status="unavailable",
                         name=resource.file_name,
                     )
                 )
-                warnings.append(f"Rule list '{resource.file_name}' is not yet uploaded")
+                warnings.append(
+                    f"{display_name} '{resource.file_name}' is not yet uploaded"
+                )
             else:
                 resource_availability.append(
                     ResourceAvailability(
-                        resource_id=str(data.rule_list_id),
-                        status="available",
-                        name=resource.file_name,
-                    )
-                )
-
-        # Check mask list if specified
-        if data.mask_list_id is not None:
-            result = await db.execute(
-                select(AttackResourceFile).where(
-                    AttackResourceFile.id == data.mask_list_id
-                )
-            )
-            resource = result.scalar_one_or_none()
-            if resource is None:
-                resource_availability.append(
-                    ResourceAvailability(
-                        resource_id=str(data.mask_list_id),
-                        status="not_found",
-                        name=None,
-                    )
-                )
-                errors.append(f"Mask list {data.mask_list_id} not found")
-            elif not resource.is_uploaded:
-                resource_availability.append(
-                    ResourceAvailability(
-                        resource_id=str(data.mask_list_id),
-                        status="unavailable",
-                        name=resource.file_name,
-                    )
-                )
-                warnings.append(f"Mask list '{resource.file_name}' is not yet uploaded")
-            else:
-                resource_availability.append(
-                    ResourceAvailability(
-                        resource_id=str(data.mask_list_id),
+                        resource_id=str(resource_id),
                         status="available",
                         name=resource.file_name,
                     )

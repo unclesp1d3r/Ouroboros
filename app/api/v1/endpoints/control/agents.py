@@ -123,13 +123,19 @@ async def list_agents(
         page = (offset // limit) + 1 if limit > 0 else 1
         page_size = limit
 
-        # Get all agents (we'll filter by project access in memory)
-        agents, total = await list_agents_service(db, search, state, page, page_size)
-
-        # Filter to only agents in accessible projects
-        # Note: This is a simplified approach; for large datasets,
-        # the service should accept project_ids filter
-        agents_out = [AgentOut.model_validate(a, from_attributes=True) for a in agents]
+        agents, total = await list_agents_service(
+            db,
+            search,
+            state,
+            page,
+            page_size,
+            project_ids=accessible_projects,
+        )
+        agents_out = []
+        for agent in agents:
+            agent_out = AgentOut.model_validate(agent, from_attributes=True)
+            agent_out.projects = [project.id for project in agent.projects]
+            agents_out.append(agent_out)
 
         return OffsetPaginatedResponse(
             items=agents_out,
@@ -157,6 +163,14 @@ async def get_agent(
     Get an agent by ID.
 
     The user must have access to a project containing the agent.
+
+    Returns:
+        AgentOut: The agent with full details.
+
+    Raises:
+        AgentNotFoundProblem: If the agent is not found.
+        ProjectAccessDeniedError: If the user does not have access to the agent's project.
+        InternalServerError: If an unexpected error occurs while retrieving the agent.
     """
     try:
         await _validate_agent_access(agent_id, current_user, db)
@@ -164,7 +178,7 @@ async def get_agent(
         if not agent:
             raise AgentNotFoundProblem(detail=f"Agent with ID {agent_id} not found")
         return AgentOut.model_validate(agent, from_attributes=True)
-    except (AgentNotFoundProblem, ProjectAccessDeniedError):
+    except AgentNotFoundProblem, ProjectAccessDeniedError:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to get agent: {e!s}") from e
@@ -189,7 +203,7 @@ async def toggle_agent(
         await _validate_agent_access(agent_id, current_user, db)
         agent = await toggle_agent_enabled_service(agent_id, current_user, db)
         return AgentOut.model_validate(agent, from_attributes=True)
-    except (AgentNotFoundProblem, ProjectAccessDeniedError):
+    except AgentNotFoundProblem, ProjectAccessDeniedError:
         raise
     except PermissionError as exc:
         raise ProjectAccessDeniedError(detail=str(exc)) from exc
@@ -221,7 +235,7 @@ async def update_agent_config(
         await _validate_agent_access(agent_id, current_user, db)
         agent = await update_agent_config_service(agent_id, config, db)
         return AgentOut.model_validate(agent, from_attributes=True)
-    except (AgentNotFoundProblem, ProjectAccessDeniedError):
+    except AgentNotFoundProblem, ProjectAccessDeniedError:
         raise
     except AgentNotFoundError as exc:
         raise AgentNotFoundProblem(
@@ -255,7 +269,7 @@ async def get_agent_benchmarks(
         # Convert int keys to str for OpenAPI compatibility
         str_benchmarks = {str(k): v for k, v in benchmarks_by_hash_type.items()}
         return AgentBenchmarkSummaryOut(benchmarks_by_hash_type=str_benchmarks)
-    except (AgentNotFoundProblem, ProjectAccessDeniedError):
+    except AgentNotFoundProblem, ProjectAccessDeniedError:
         raise
     except AgentNotFoundError as exc:
         raise AgentNotFoundProblem(
@@ -286,7 +300,7 @@ async def get_agent_capabilities(
     try:
         await _validate_agent_access(agent_id, current_user, db)
         return await get_agent_capabilities_service(agent_id, db)
-    except (AgentNotFoundProblem, ProjectAccessDeniedError):
+    except AgentNotFoundProblem, ProjectAccessDeniedError:
         raise
     except AgentNotFoundError as exc:
         raise AgentNotFoundProblem(
@@ -324,7 +338,7 @@ async def get_agent_errors(
             AgentErrorOut.model_validate(e, from_attributes=True) for e in errors
         ]
         return AgentErrorLogOut(errors=errors_out)
-    except (AgentNotFoundProblem, ProjectAccessDeniedError):
+    except AgentNotFoundProblem, ProjectAccessDeniedError:
         raise
     except AgentNotFoundError as exc:
         raise AgentNotFoundProblem(
@@ -358,7 +372,7 @@ async def test_presigned_url(
             valid=result.get("valid", False),
             message=result.get("message", "Unknown result"),
         )
-    except (AgentNotFoundProblem, ProjectAccessDeniedError):
+    except AgentNotFoundProblem, ProjectAccessDeniedError:
         raise
     except AgentNotFoundError as exc:
         raise AgentNotFoundProblem(

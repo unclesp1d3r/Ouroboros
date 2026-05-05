@@ -282,9 +282,7 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
                     operation["tags"] = ["Control API"]
                 # Add security requirements based on API type
                 if "/api/v1/client/" in path or "/api/v1/agent/" in path:
-                    if path not in [
-                        "/api/v1/client/authenticate",
-                    ]:  # Exclude auth endpoints
+                    if path != "/api/v1/client/authenticate":  # Exclude auth endpoints
                         operation["security"] = [{"AgentBearer": []}]
                 elif "/api/v1/web/" in path:
                     if not any(

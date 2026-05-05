@@ -33,6 +33,7 @@ from app.models.crack_result import CrackResult
 from app.models.hash_list import HashList
 from app.models.hash_type import HashType
 from app.models.hashcat_benchmark import HashcatBenchmark
+from app.models.project import project_agents
 from app.models.task import Task, TaskStatus
 from app.models.user import User
 from app.schemas.agent import (
@@ -366,7 +367,7 @@ async def submit_task_result_service(
         details["cracked_hashes"] = data.cracked_hashes
     else:
         details.pop("cracked_hashes", None)
-    task.error_details = details if details else None
+    task.error_details = details or None
     await db.commit()
     await db.refresh(task)
 
@@ -377,8 +378,18 @@ async def list_agents_service(
     state: str | None = None,
     page: int = 1,
     size: int = 20,
+    project_ids: list[int] | None = None,
 ) -> tuple[list[Agent], int]:
     query = select(Agent)
+    if project_ids is not None:
+        if not project_ids:
+            return [], 0
+        agent_ids = (
+            select(project_agents.c.agent_id)
+            .where(project_agents.c.project_id.in_(project_ids))
+            .distinct()
+        )
+        query = query.where(Agent.id.in_(agent_ids))
     if search:
         query = query.filter(Agent.host_name.ilike(f"%{search}%"))
     if state:
@@ -1058,7 +1069,7 @@ def _load_hash_mode_metadata() -> HashModeMetadata:
         with path.open("r", encoding="utf-8") as f:
             data = json.load(f)
             return HashModeMetadata.model_validate(data)
-    except (json.JSONDecodeError, OSError):
+    except json.JSONDecodeError, OSError:
         return HashModeMetadata()
 
 

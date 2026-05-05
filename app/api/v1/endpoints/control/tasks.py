@@ -236,7 +236,7 @@ async def get_task(
     try:
         task = await _validate_task_access(task_id, current_user, db)
         return TaskOut.model_validate(task, from_attributes=True)
-    except (TaskNotFoundProblem, ProjectAccessDeniedError):
+    except TaskNotFoundProblem, ProjectAccessDeniedError:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to get task: {e!s}") from e
@@ -278,7 +278,7 @@ async def requeue_task(
         await db.refresh(task)
 
         return TaskOut.model_validate(task, from_attributes=True)
-    except (TaskNotFoundProblem, ProjectAccessDeniedError, InvalidResourceStateError):
+    except TaskNotFoundProblem, ProjectAccessDeniedError, InvalidResourceStateError:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to requeue task: {e!s}") from e
@@ -318,7 +318,7 @@ async def cancel_task(
         await db.refresh(task)
 
         return TaskOut.model_validate(task, from_attributes=True)
-    except (TaskNotFoundProblem, ProjectAccessDeniedError, InvalidResourceStateError):
+    except TaskNotFoundProblem, ProjectAccessDeniedError, InvalidResourceStateError:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to cancel task: {e!s}") from e
@@ -348,7 +348,7 @@ async def get_task_status(
             progress_percent=task.progress_percent,
             agent_id=task.agent_id,
         )
-    except (TaskNotFoundProblem, ProjectAccessDeniedError):
+    except TaskNotFoundProblem, ProjectAccessDeniedError:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to get task status: {e!s}") from e
@@ -388,7 +388,7 @@ async def get_task_performance(
             speed=None,  # Speed would come from real-time status updates
             estimated_completion=None,  # Would need ETA calculation
         )
-    except (TaskNotFoundProblem, ProjectAccessDeniedError):
+    except TaskNotFoundProblem, ProjectAccessDeniedError:
         raise
     except Exception as e:
         raise InternalServerError(
@@ -439,7 +439,7 @@ async def get_task_logs(
         ]
 
         return TaskLogs(task_id=task.id, entries=entries)
-    except (TaskNotFoundProblem, ProjectAccessDeniedError):
+    except TaskNotFoundProblem, ProjectAccessDeniedError:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to get task logs: {e!s}") from e

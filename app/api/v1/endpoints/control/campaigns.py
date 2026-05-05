@@ -290,7 +290,7 @@ async def create_campaign(
             )
 
         return await create_campaign_service(data, db)
-    except (ProjectAccessDeniedError, HashListNotFoundProblem):
+    except ProjectAccessDeniedError, HashListNotFoundProblem:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to create campaign: {e!s}") from e
@@ -315,7 +315,7 @@ async def get_campaign(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await get_campaign_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -346,7 +346,7 @@ async def update_campaign(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await update_campaign_service(campaign_id, data, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -531,7 +531,7 @@ async def validate_campaign(
             errors=errors,
             warnings=warnings,
         )
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except Exception as e:
         raise InternalServerError(detail=f"Failed to validate campaign: {e!s}") from e
@@ -562,7 +562,7 @@ async def start_campaign(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await start_campaign_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -597,7 +597,7 @@ async def stop_campaign(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await stop_campaign_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -631,7 +631,7 @@ async def pause_campaign(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await pause_campaign_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -665,7 +665,7 @@ async def resume_campaign(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await resume_campaign_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -700,7 +700,7 @@ async def archive_campaign(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await archive_campaign_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -734,7 +734,7 @@ async def unarchive_campaign(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await unarchive_campaign_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -776,7 +776,7 @@ async def get_campaign_progress(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await get_campaign_progress_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -814,7 +814,7 @@ async def get_campaign_metrics(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await get_campaign_metrics_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -860,7 +860,7 @@ async def reorder_attacks(
         ]
 
         return await reorder_attacks_service(campaign_id, attack_order, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(
@@ -898,7 +898,7 @@ async def export_campaign_template(
         # Validate access first
         await _validate_campaign_access(campaign_id, current_user, db)
         return await export_campaign_template_service(campaign_id, db)
-    except (CampaignNotFoundProblem, ProjectAccessDeniedError):
+    except CampaignNotFoundProblem, ProjectAccessDeniedError:
         raise
     except CampaignNotFoundError as exc:
         raise CampaignNotFoundProblem(

@@ -2,7 +2,7 @@ from collections.abc import Sequence
 
 from fastapi import HTTPException
 from loguru import logger
-from sqlalchemy import Result, func, select
+from sqlalchemy import Result, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -914,16 +914,22 @@ async def relaunch_campaign_service(
             status_code=400, detail="No failed or modified attacks to relaunch."
         )
 
+    relaunch_attack_ids: list[int] = []
     for attack in to_relaunch:
         attack.state = AttackState.PENDING
-        # Reset all tasks for this attack
-        for task in attack.tasks:
-            task.status = TaskStatus.PENDING
-            task.agent_id = None
-            task.retry_count += 1
-            task.error_message = None
-            task.error_details = None
-            task.progress = 0.0
+        relaunch_attack_ids.append(attack.id)
+    await db.execute(
+        update(Task)
+        .where(Task.attack_id.in_(relaunch_attack_ids))
+        .values(
+            status=TaskStatus.PENDING,
+            agent_id=None,
+            retry_count=Task.retry_count + 1,
+            error_message=None,
+            error_details=None,
+            progress=0.0,
+        )
+    )
     await db.commit()
 
     # SSE_TRIGGER: Campaign relaunched

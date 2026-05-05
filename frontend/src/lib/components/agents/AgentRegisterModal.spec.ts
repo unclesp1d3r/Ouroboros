@@ -1,6 +1,6 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import AgentRegisterModal from './AgentRegisterModal.svelte';
 
 describe('AgentRegisterModal', () => {
@@ -52,7 +52,7 @@ describe('AgentRegisterModal', () => {
         await fireEvent.click(submitButton);
         // Wait for potential async operations in handleSubmit
         await new Promise((resolve) => setTimeout(resolve, 0));
-        expect(open.subscribe((value) => expect(value).toBe(false)));
+        expect(get(open)).toBe(false);
     });
 
     it('closes the modal when Cancel button is clicked', async () => {
@@ -60,7 +60,7 @@ describe('AgentRegisterModal', () => {
         render(AgentRegisterModal, { props: { open, onSubmit: mockOnSubmit } });
         const cancelButton = screen.getByText('Cancel');
         await fireEvent.click(cancelButton);
-        expect(open.subscribe((value) => expect(value).toBe(false)));
+        expect(get(open)).toBe(false);
     });
 
     it('shows loading state and disables buttons during submission', async () => {

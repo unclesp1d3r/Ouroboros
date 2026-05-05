@@ -11,9 +11,10 @@ from uuid import uuid4
 
 import pytest
 from httpx import AsyncClient
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.attack import AttackState
+from app.models.attack import Attack, AttackState
 from app.models.attack_resource_file import AttackResourceFile, AttackResourceType
 from app.models.project import ProjectUserAssociation, ProjectUserRole
 from app.models.user import User
@@ -511,6 +512,118 @@ async def test_validate_attack_valid_config(
     data = resp.json()
     assert data["valid"] is True
     assert len(data["errors"]) == 0
+
+
+@pytest.mark.asyncio
+async def test_create_attack_rejects_cross_project_wordlist(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Attack creation cannot bind a resource from another project."""
+    async_client, user, api_key = api_key_client
+
+    project1 = await project_factory.create_async()
+    project2 = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project1.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    hash_list = await hash_list_factory.create_async(project_id=project1.id)
+    campaign = await campaign_factory.create_async(
+        name="Accessible Campaign",
+        project_id=project1.id,
+        hash_list_id=hash_list.id,
+    )
+    wordlist = await create_wordlist_resource(
+        db_session,
+        project_id=project2.id,
+        file_name="other-project-wordlist.txt",
+    )
+
+    headers = {"Authorization": f"Bearer {api_key}"}
+    payload = {
+        "name": "Cross Project Attack",
+        "campaign_id": campaign.id,
+        "attack_mode": "dictionary",
+        "hash_list_id": hash_list.id,
+        "hash_list_url": "http://test/hash.txt",
+        "hash_list_checksum": "abc123",
+        "word_list_id": str(wordlist.id),
+    }
+
+    resp = await async_client.post(
+        "/api/v1/control/attacks", headers=headers, json=payload
+    )
+    assert resp.status_code == HTTPStatus.FORBIDDEN
+
+    attack_count = await db_session.scalar(
+        select(func.count()).where(Attack.name == "Cross Project Attack")
+    )
+    assert attack_count == 0
+
+
+@pytest.mark.asyncio
+async def test_validate_attack_hides_cross_project_wordlist_metadata(
+    api_key_client: tuple[AsyncClient, User, str],
+    campaign_factory: CampaignFactory,
+    hash_list_factory: HashListFactory,
+    project_factory: ProjectFactory,
+    db_session: AsyncSession,
+) -> None:
+    """Validation does not leak metadata for resources outside the campaign project."""
+    async_client, user, api_key = api_key_client
+
+    project1 = await project_factory.create_async()
+    project2 = await project_factory.create_async()
+    assoc = ProjectUserAssociation(
+        project_id=project1.id, user_id=user.id, role=ProjectUserRole.member
+    )
+    db_session.add(assoc)
+    await db_session.commit()
+
+    hash_list = await hash_list_factory.create_async(project_id=project1.id)
+    campaign = await campaign_factory.create_async(
+        name="Accessible Campaign",
+        project_id=project1.id,
+        hash_list_id=hash_list.id,
+    )
+    wordlist = await create_wordlist_resource(
+        db_session,
+        project_id=project2.id,
+        file_name="secret-wordlist.txt",
+    )
+
+    headers = {"Authorization": f"Bearer {api_key}"}
+    payload = {
+        "name": "Test Attack",
+        "campaign_id": campaign.id,
+        "attack_mode": "dictionary",
+        "hash_list_id": hash_list.id,
+        "hash_list_url": "http://test/hash.txt",
+        "hash_list_checksum": "abc123",
+        "word_list_id": str(wordlist.id),
+    }
+
+    resp = await async_client.post(
+        "/api/v1/control/attacks/validate", headers=headers, json=payload
+    )
+    assert resp.status_code == HTTPStatus.OK
+
+    data = resp.json()
+    assert data["valid"] is False
+    assert "secret-wordlist.txt" not in resp.text
+    assert data["resource_availability"] == [
+        {
+            "resource_id": str(wordlist.id),
+            "status": "unavailable",
+            "name": None,
+        }
+    ]
 
 
 @pytest.mark.asyncio
