@@ -131,3 +131,24 @@ vite.config.ts.timestamp-*
 frontend/test-artifacts/*
 .commitizen/openai_cache.json
 .github/skills/*
+
+**/*.local.*
+
+# Re-include CE example configs (committed for teammates to see available settings)
+!.compound-engineering/*.example.yaml
+
+# AI coding assistants (local state, not shared)
+docs/plans/
+.agent/
+.agents/
+.augment/
+.claude/
+.context/
+.cursor/
+.roo/
+.full-review/
+SECURITY_AUDIT.md
+todos/
+**/tessl__*
+.tessl/tiles/
+.tessl/RULES.md
