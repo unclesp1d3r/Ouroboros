@@ -220,7 +220,7 @@ async def get_hash_list(
         # Validate access first
         await _validate_hash_list_access(hash_list_id, current_user, db)
         return await get_hash_list_service(hash_list_id, db)
-    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+    except HashListNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HashListNotFoundError as exc:
         raise HashListNotFoundProblem(
@@ -251,7 +251,7 @@ async def update_hash_list(
         # Validate access first
         await _validate_hash_list_access(hash_list_id, current_user, db)
         return await update_hash_list_service(hash_list_id, data, db)
-    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+    except HashListNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HashListNotFoundError as exc:
         raise HashListNotFoundProblem(
@@ -295,7 +295,7 @@ async def delete_hash_list(
             )
 
         await delete_hash_list_service(hash_list_id, db)
-    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+    except HashListNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HashListNotFoundError as exc:
         raise HashListNotFoundProblem(
@@ -358,7 +358,7 @@ async def list_hash_items(
             limit=limit,
             offset=offset,
         )
-    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+    except HashListNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HashListNotFoundError as exc:
         raise HashListNotFoundProblem(
@@ -426,7 +426,7 @@ async def export_hash_list_plaintext(
             cracked_count=len(cracked_items),
             content=content,
         )
-    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+    except HashListNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HashListNotFoundError as exc:
         raise HashListNotFoundProblem(
@@ -495,7 +495,7 @@ async def export_hash_list_potfile(
             cracked_count=len(cracked_items),
             content=content,
         )
-    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+    except HashListNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HashListNotFoundError as exc:
         raise HashListNotFoundProblem(
@@ -576,7 +576,7 @@ async def export_hash_list_csv(
             cracked_count=cracked_count,
             content=content,
         )
-    except (HashListNotFoundProblem, ProjectAccessDeniedError):
+    except HashListNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HashListNotFoundError as exc:
         raise HashListNotFoundProblem(

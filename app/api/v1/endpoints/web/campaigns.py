@@ -312,7 +312,7 @@ async def get_active_project_id(request: Request) -> int | None:
     val = request.cookies.get("active_project_id")
     try:
         return int(val) if val else None
-    except (ValueError, TypeError):
+    except ValueError, TypeError:
         return None
 
 

@@ -351,7 +351,7 @@ async def confirm_upload(
             is_uploaded=updated.is_uploaded,
             tags=updated.tags,
         )
-    except (ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError):
+    except ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HTTPException as e:
         if e.status_code == status.HTTP_404_NOT_FOUND:
@@ -435,7 +435,7 @@ async def get_resource(
             tags=resource.tags,
             attacks=attacks,
         )
-    except (ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError):
+    except ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HTTPException as e:
         if e.status_code == status.HTTP_404_NOT_FOUND:
@@ -536,7 +536,7 @@ async def preview_resource(
             preview_error=preview_error,
             max_preview_lines=lines,
         )
-    except (ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError):
+    except ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HTTPException as e:
         if e.status_code == status.HTTP_404_NOT_FOUND:
@@ -617,7 +617,7 @@ async def update_resource(
             tags=updated.tags,
             usage_count=usage_count,
         )
-    except (ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError):
+    except ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError:
         raise
     except HTTPException as e:
         if e.status_code == status.HTTP_404_NOT_FOUND:
@@ -654,7 +654,7 @@ async def delete_resource(
 
         # The service function handles the attack linkage check
         await delete_resource_service(resource_id, db)
-    except (ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError):
+    except ResourceNotFoundError, ResourceNotFoundProblem, ProjectAccessDeniedError:
         raise
     except InvalidResourceStateError:
         raise
