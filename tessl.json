@@ -1,0 +1,24 @@
+{
+    "name": "Ouroboros",
+    "mode": "vendored",
+    "dependencies": {
+        "santosomar/general-secure-coding-agent-skills": {
+            "version": "47d56bbc24dc4560c0afe546edbb34973da79391",
+            "source": "https://github.com/santosomar/general-secure-coding-agent-skills",
+            "include": {
+                "skills": [
+                    "release-notes-writer",
+                    "containerization-assistant",
+                    "change-log-generator"
+                ]
+            }
+        },
+        "mattpocock/skills": {
+            "version": "b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8",
+            "source": "https://github.com/mattpocock/skills"
+        },
+        "cisco/software-security": {
+            "version": "1.2.5"
+        }
+    }
+}
