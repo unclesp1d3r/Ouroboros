@@ -41,7 +41,7 @@ class AttackFactory(SQLAlchemyFactory[Attack]):
         val: str = f"checksum-{cls._checksum_counter}-{cls.__faker__.sha256()}"
         return val[:64]
 
-    description = Use(lambda: fake.unique.sentence())
+    description = Use(fake.unique.sentence)
     state = AttackState.PENDING
     attack_mode = AttackMode.DICTIONARY
     attack_mode_hashcat = 0

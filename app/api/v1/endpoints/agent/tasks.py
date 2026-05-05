@@ -72,7 +72,7 @@ async def update_task_progress_v1(
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     except InvalidAgentTokenError as e:
         raise HTTPException(status_code=401, detail="Not authorized") from e
-    except (TaskNotFoundError, AgentNotAssignedError):
+    except TaskNotFoundError, AgentNotAssignedError:
         raise HTTPException(
             status_code=404, detail={"error": "Record not found"}
         ) from None
@@ -196,7 +196,7 @@ async def get_task_v1(
 ) -> TaskOutV1:
     try:
         return await get_task_by_id_service(id, db, authorization)
-    except (TaskNotFoundError, AgentNotAssignedError):
+    except TaskNotFoundError, AgentNotAssignedError:
         raise HTTPException(
             status_code=404, detail={"error": "Record not found"}
         ) from None
@@ -233,7 +233,7 @@ async def accept_task_v1(
         await accept_task_service(id, db, authorization)
     except InvalidAgentTokenError as e:
         raise HTTPException(status_code=401, detail="Not authorized") from e
-    except (TaskNotFoundError, AgentNotAssignedError):
+    except TaskNotFoundError, AgentNotAssignedError:
         raise HTTPException(
             status_code=404, detail={"error": "Record not found"}
         ) from None
@@ -274,7 +274,7 @@ async def exhaust_task_v1(
         await exhaust_task_service(id, db, authorization)
     except InvalidAgentTokenError as e:
         raise HTTPException(status_code=401, detail="Not authorized") from e
-    except (TaskNotFoundError, AgentNotAssignedError):
+    except TaskNotFoundError, AgentNotAssignedError:
         raise HTTPException(
             status_code=404, detail={"error": "Record not found"}
         ) from None
@@ -322,7 +322,7 @@ async def abandon_task_v1(
         await abandon_task_service(id, db, authorization)
     except InvalidAgentTokenError as e:
         raise HTTPException(status_code=401, detail="Not authorized") from e
-    except (TaskNotFoundError, AgentNotAssignedError):
+    except TaskNotFoundError, AgentNotAssignedError:
         raise HTTPException(
             status_code=404, detail={"error": "Record not found"}
         ) from None
@@ -361,7 +361,7 @@ async def get_task_zaps_v1(
     try:
         zaps = await get_task_zaps_service(id, db, authorization)
         return PlainTextResponse("\n".join(zaps), status_code=status.HTTP_200_OK)
-    except (TaskNotFoundError, AgentNotAssignedError):
+    except TaskNotFoundError, AgentNotAssignedError:
         raise HTTPException(
             status_code=404, detail={"error": "Record not found"}
         ) from None
@@ -404,7 +404,7 @@ async def submit_cracked_hash_v1(
         )
     except InvalidAgentTokenError as e:
         raise HTTPException(status_code=401, detail="Not authorized") from e
-    except (TaskNotFoundError, AgentNotAssignedError):
+    except TaskNotFoundError, AgentNotAssignedError:
         raise HTTPException(
             status_code=404, detail={"error": "Record not found"}
         ) from None

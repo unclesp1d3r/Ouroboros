@@ -36,7 +36,7 @@ class UserFactory(SQLAlchemyFactory[User]):
     is_active = True
     role = UserRole.ANALYST
     is_superuser = False
-    reset_password_token = Use(lambda: fake.unique.uuid4())
+    reset_password_token = Use(fake.unique.uuid4)
 
     # Control API key field - generate realistic key
     @classmethod

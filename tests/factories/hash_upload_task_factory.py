@@ -17,7 +17,7 @@ class HashUploadTaskFactory(SQLAlchemyFactory[HashUploadTask]):
     __check_model__ = False
     __set_relationships__ = False
     __set_association_proxy__ = False
-    user_id = Use(lambda: uuid4())
+    user_id = Use(uuid4)
     filename = "shadow.txt"
     status = HashUploadStatus.PENDING
     started_at = Use(lambda: datetime.now(UTC))

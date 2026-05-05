@@ -23,7 +23,7 @@ class ProjectFactory(SQLAlchemyFactory[Project]):
         return f"project-{cls.__faker__.uuid4()}-{cls._name_counter}"
 
     # name must be unique per test run
-    description = Use(lambda: fake.unique.sentence())
+    description = Use(fake.unique.sentence)
     # No FKs; pure factory.
     # users can be set as a relation in tests
     # created_at, updated_at handled by DB

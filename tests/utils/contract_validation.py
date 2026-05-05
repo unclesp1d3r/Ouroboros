@@ -183,7 +183,7 @@ class ContractValidator:
             methods_to_add = [
                 {"path": path, "method": method.upper()}
                 for method in path_spec
-                if method not in ["parameters"]  # Skip non-method keys
+                if method != "parameters"  # Skip non-method keys
             ]
             endpoints.extend(methods_to_add)
         return endpoints

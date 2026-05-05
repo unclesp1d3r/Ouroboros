@@ -33,7 +33,7 @@ project_agents = Table(
 )
 
 
-class ProjectUserRole(str, enum.Enum):
+class ProjectUserRole(enum.StrEnum):
     member = "member"
     admin = "admin"
 

@@ -108,7 +108,7 @@ def validate_token_expiration(token: str) -> bool:
 
         exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=UTC)
         return datetime.now(UTC) < exp_datetime
-    except (JWTError, ValueError, KeyError):
+    except JWTError, ValueError, KeyError:
         return False
 
 
@@ -124,7 +124,7 @@ def get_token_expiration_time(token: str) -> datetime | None:
         if not exp_timestamp:
             return None
         return datetime.fromtimestamp(exp_timestamp, tz=UTC)
-    except (JWTError, ValueError, KeyError):
+    except JWTError, ValueError, KeyError:
         return None
 
 

@@ -50,13 +50,14 @@ async def test_attack_enum_enforcement(
     campaign = await campaign_factory.create_async(
         project_id=project.id, hash_list_id=hash_list.id
     )
+    campaign_id = campaign.id
     with pytest.raises(sqlalchemy.exc.StatementError):  # noqa: PT012
-        await attack_factory.create_async(campaign_id=campaign.id, state="notastate")
+        await attack_factory.create_async(campaign_id=campaign_id, state="notastate")
         await db_session.commit()
     await db_session.rollback()
     with pytest.raises(sqlalchemy.exc.StatementError):  # noqa: PT012
         await attack_factory.create_async(
-            campaign_id=campaign.id, attack_mode="notamode"
+            campaign_id=campaign_id, attack_mode="notamode"
         )
         await db_session.commit()
     await db_session.rollback()

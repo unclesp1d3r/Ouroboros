@@ -1,12 +1,12 @@
 """Queue monitoring schemas."""
 
-from enum import Enum
+from enum import StrEnum
 from typing import Annotated, Self
 
 from pydantic import BaseModel, Field, model_validator
 
 
-class QueueType(str, Enum):
+class QueueType(StrEnum):
     """Type of queue."""
 
     asyncio = "asyncio"
@@ -15,7 +15,7 @@ class QueueType(str, Enum):
     redis = "redis"
 
 
-class QueueHealth(str, Enum):
+class QueueHealth(StrEnum):
     """Health of a queue."""
 
     healthy = "healthy"
@@ -23,7 +23,7 @@ class QueueHealth(str, Enum):
     unhealthy = "unhealthy"
 
 
-class StatusEnum(str, Enum):
+class StatusEnum(StrEnum):
     """Status of a queue."""
 
     active = "active"

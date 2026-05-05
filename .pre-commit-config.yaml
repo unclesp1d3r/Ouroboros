@@ -6,52 +6,64 @@ repos:
       rev: v6.0.0
       hooks:
           - id: check-added-large-files
-            args: ["--maxkb=1024"]
+            args: [ "--maxkb=1024" ]
           - id: check-ast
           - id: check-case-conflict
           - id: check-merge-conflict
           - id: check-illegal-windows-names
           - id: check-json
+            types: [ json ]
           - id: check-toml
+            types: [ toml ]
           - id: check-yaml
-            args: [--unsafe]
+            types: [ yaml ]
+            args: [ --unsafe ]
           - id: check-xml
+            types: [ xml ]
           - id: mixed-line-ending
-            args: [--fix=auto]
+            types: [ text ]
+            args: [ --fix=auto ]
           - id: check-docstring-first
+            types: [ python ]
           - id: check-vcs-permalinks
 
     # 🧹 Ruff linting + formatting
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.14.14
+      rev: v0.15.12 # v0.15.12
       hooks:
           - id: ruff-check
-            args: [--fix]
+            args: [ --fix ]
+            types: [ python ]
           - id: ruff-format
+            types: [ python ]
 
     - repo: https://github.com/asottile/pyupgrade
       rev: v3.21.2
       hooks:
           - id: pyupgrade
-            args: ["--py314-plus"]
+            args: [ "--py314-plus" ]
+            types: [ python ]
 
     - repo: https://github.com/rhysd/actionlint
-      rev: v1.7.10
+      rev: v1.7.12 # v1.7.12
       hooks:
           - id: actionlint
             files: ".github/workflows/"
+            types: [ yaml ]
 
     - repo: https://github.com/koalaman/shellcheck-precommit
       rev: v0.11.0
       hooks:
           - id: shellcheck
+            types: [ shell ]
 
     # 🐍 uv for Python environment management
     - repo: https://github.com/astral-sh/uv-pre-commit
-      rev: 0.9.26
+      rev: 0.11.8 # 0.11.8
       hooks:
           - id: uv-lock
             files: ^(.*/)?(pyproject\.toml|uv\.lock)$
+            types: [ toml ]
 
     - repo: https://github.com/executablebooks/mdformat
       rev: 1.0.0
@@ -68,4 +80,4 @@ repos:
                 - mdformat-gfm-alerts
                 - mdformat-toc
                 - mdformat-front-matters
-            types: [markdown]
+            types: [ markdown ]

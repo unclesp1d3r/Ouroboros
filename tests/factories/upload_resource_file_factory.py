@@ -16,7 +16,7 @@ class UploadResourceFileFactory(SQLAlchemyFactory[UploadResourceFile]):
     file_name = "test_upload_resource.txt"
     download_url = "https://example.com/upload_resource.txt"
     checksum = "deadbeef" * 8  # 64 chars
-    guid = Use(lambda: uuid4())
+    guid = Use(uuid4)
     line_format = "freeform"
     line_encoding = "utf-8"
     source = "upload"

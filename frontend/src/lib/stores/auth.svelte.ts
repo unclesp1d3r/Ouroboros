@@ -264,7 +264,7 @@ export const authStore = {
             authState.user = null;
             authState.isAuthenticated = false;
             authState.error = null;
-            goto(resolve('/login'));
+            await goto(resolve('/logout'));
         }
     },
 

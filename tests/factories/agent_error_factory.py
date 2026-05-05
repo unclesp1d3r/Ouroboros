@@ -18,7 +18,7 @@ class AgentErrorFactory(SQLAlchemyFactory[AgentError]):
     __set_association_proxy__ = False
 
     id = Ignore()  # Let database auto-generate the ID
-    message = Use(lambda: fake.sentence())
+    message = Use(fake.sentence)
     severity = Severity.minor
     agent_id = None  # Must be set explicitly in tests
     task_id = None  # Must be set in test if needed

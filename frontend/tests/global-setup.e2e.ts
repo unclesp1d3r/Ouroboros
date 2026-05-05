@@ -90,11 +90,11 @@ async function waitForServices(): Promise<void> {
             );
 
             // Check if backend is responding (E2E uses port 8001)
-            const backendResponse = await fetch('http://localhost:8001/health');
+            const backendResponse = await fetch('http://127.0.0.1:8001/health');
 
             // Check if frontend is responding (E2E uses port 3005)
             // Frontend returns 401 for unauthenticated users, which is expected
-            const frontendResponse = await fetch('http://localhost:3005');
+            const frontendResponse = await fetch('http://127.0.0.1:3005');
 
             console.log(
                 `🔍 Service status - Backend: ${backendResponse.status}, Frontend: ${frontendResponse.status}`

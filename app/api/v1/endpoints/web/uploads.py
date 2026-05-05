@@ -144,9 +144,7 @@ async def upload_resource_metadata(
     if text_content is not None:
         # Handle text blob upload
         # Generate a filename for the text blob if not provided
-        text_file_name = (
-            file_name if file_name else f"pasted_hashes_{uuid4().hex[:8]}.txt"
-        )
+        text_file_name = file_name or f"pasted_hashes_{uuid4().hex[:8]}.txt"
 
         resource, _ = await create_upload_resource_and_task_for_text_service(
             db=db,

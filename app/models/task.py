@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
@@ -14,7 +14,7 @@ from app.models.base import Base
 TASK_COMPLETION_PERCENT: float = 100.0
 
 
-class TaskStatus(str, Enum):
+class TaskStatus(StrEnum):
     """Enum for task statuses."""
 
     PENDING = "pending"
@@ -82,7 +82,7 @@ class Task(Base):
                 return value
             try:
                 return int(value)
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 return 0
         return 0
 
