@@ -18,7 +18,7 @@ class AttackResourceFileFactory(SQLAlchemyFactory[AttackResourceFile]):
     file_name = "test_resource.txt"
     download_url = "https://example.com/resource.txt"
     checksum = "deadbeef" * 8  # 64 chars
-    guid = Use(lambda: uuid4())
+    guid = Use(uuid4)
     resource_type = AttackResourceType.WORD_LIST
     line_format = "freeform"
     line_encoding = "utf-8"

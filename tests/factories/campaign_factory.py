@@ -35,7 +35,7 @@ class CampaignFactory(SQLAlchemyFactory[Campaign]):
         cls._name_counter += 1
         return f"campaign-{cls.__faker__.uuid4()}-{cls._name_counter}"
 
-    description = Use(lambda: fake.unique.sentence())
+    description = Use(fake.unique.sentence)
     project_id = None  # Must be set explicitly in tests
 
     @classmethod
