@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Annotated, Any, Self
 from uuid import UUID
 
@@ -341,7 +341,7 @@ class AttackOutV1(BaseModel):
     model_config = ConfigDict(extra="forbid", from_attributes=True)
 
 
-class AttackMoveDirection(str, Enum):
+class AttackMoveDirection(StrEnum):
     UP = "up"
     DOWN = "down"
     TOP = "top"

@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from uuid import UUID
 
 from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String
@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base
 
 
-class AttackMode(str, Enum):
+class AttackMode(StrEnum):
     """Enum for attack modes."""
 
     DICTIONARY = "dictionary"
@@ -18,7 +18,7 @@ class AttackMode(str, Enum):
     HYBRID_MASK = "hybrid_mask"
 
 
-class AttackState(str, Enum):
+class AttackState(StrEnum):
     PENDING = "pending"
     RUNNING = "running"
     PAUSED = "paused"
@@ -27,7 +27,7 @@ class AttackState(str, Enum):
     ABANDONED = "abandoned"
 
 
-class WordlistSource(str, Enum):
+class WordlistSource(StrEnum):
     EXISTING = "existing"
     PREVIOUS_PASSWORDS = "previous_passwords"
 

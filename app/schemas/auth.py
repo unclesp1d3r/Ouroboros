@@ -1,10 +1,10 @@
-from enum import Enum
+from enum import StrEnum
 from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class LoginResultLevel(str, Enum):
+class LoginResultLevel(StrEnum):
     """Enumeration of login result levels."""
 
     SUCCESS = "success"

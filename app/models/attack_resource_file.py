@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import StrEnum
 from uuid import UUID, uuid4
 
 from sqlalchemy import JSON, String
@@ -10,7 +10,7 @@ from app.models.attack import AttackMode
 from app.models.base import Base
 
 
-class AttackResourceType(str, Enum):
+class AttackResourceType(StrEnum):
     MASK_LIST = "mask_list"
     RULE_LIST = "rule_list"
     WORD_LIST = "word_list"

@@ -1,5 +1,5 @@
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
 from sqlalchemy import Enum as SQLAEnum
@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base
 
 
-class CampaignState(str, Enum):
+class CampaignState(StrEnum):
     DRAFT = "draft"
     ACTIVE = "active"
     ARCHIVED = "archived"
