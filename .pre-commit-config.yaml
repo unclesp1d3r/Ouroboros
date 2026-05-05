@@ -6,7 +6,7 @@ repos:
       rev: v6.0.0
       hooks:
           - id: check-added-large-files
-            args: ["--maxkb=1024"]
+            args: [ "--maxkb=1024" ]
           - id: check-ast
           - id: check-case-conflict
           - id: check-merge-conflict
@@ -14,29 +14,29 @@ repos:
           - id: check-json
           - id: check-toml
           - id: check-yaml
-            args: [--unsafe]
+            args: [ --unsafe ]
           - id: check-xml
           - id: mixed-line-ending
-            args: [--fix=auto]
+            args: [ --fix=auto ]
           - id: check-docstring-first
           - id: check-vcs-permalinks
 
     # 🧹 Ruff linting + formatting
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.14.14
+      rev: v0.15.12 # v0.15.12
       hooks:
           - id: ruff-check
-            args: [--fix]
+            args: [ --fix ]
           - id: ruff-format
 
     - repo: https://github.com/asottile/pyupgrade
       rev: v3.21.2
       hooks:
           - id: pyupgrade
-            args: ["--py314-plus"]
+            args: [ "--py314-plus" ]
 
     - repo: https://github.com/rhysd/actionlint
-      rev: v1.7.10
+      rev: v1.7.12 # v1.7.12
       hooks:
           - id: actionlint
             files: ".github/workflows/"
@@ -48,7 +48,7 @@ repos:
 
     # 🐍 uv for Python environment management
     - repo: https://github.com/astral-sh/uv-pre-commit
-      rev: 0.9.26
+      rev: 0.11.8 # 0.11.8
       hooks:
           - id: uv-lock
             files: ^(.*/)?(pyproject\.toml|uv\.lock)$
@@ -68,4 +68,4 @@ repos:
                 - mdformat-gfm-alerts
                 - mdformat-toc
                 - mdformat-front-matters
-            types: [markdown]
+            types: [ markdown ]
