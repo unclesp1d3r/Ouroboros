@@ -1,20 +1,28 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-# FastAPI Backend Development Dockerfile
-FROM python:3.13-slim AS base
+# Ouroboros FastAPI Backend Development Dockerfile
+# Includes dev dependencies and uses entrypoint for DB wait/migrations
+
+FROM python:3.14-slim AS base
 
 # Set working directory
 WORKDIR /app
 
 # Install system dependencies including build tools for dev dependencies
-RUN apt-get update && apt-get install -y \
+# - postgresql-client-17: pg_isready for database readiness checks
+#   (pinned to major version; client 17 is backward compatible with PostgreSQL 16 server)
+# - curl: health checks
+# - git, gcc, g++, make: build tools for dev dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     git \
     gcc \
     g++ \
     make \
-    && rm -rf /var/lib/apt/lists/*
+    postgresql-client-17 \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Install uv package manager
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
@@ -22,21 +30,43 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 # Development stage
 FROM base AS development
 
+# Create non-root user for security (matches production for parity)
+RUN groupadd --gid 1000 appgroup \
+    && useradd --uid 1000 --gid appgroup --shell /bin/bash --create-home appuser
+
 # Copy dependency files
 COPY pyproject.toml uv.lock ./
 
 # Install dependencies (including dev dependencies)
+# With Python 3.14-slim base, uv uses system Python directly
 RUN uv sync --frozen
 
-# Create logs directory
-RUN mkdir -p logs
+# Copy entrypoint and utility scripts
+COPY --chown=appuser:appgroup docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chown=appuser:appgroup docker/scripts/health-check.sh /usr/local/bin/health-check.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/health-check.sh
+
+# Create logs directory with proper permissions
+RUN mkdir -p logs && chown -R appuser:appgroup /app
+
+# Switch to non-root user
+USER appuser
+
+# Set environment variables for development
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PATH="/app/.venv/bin:$PATH" \
+    CONTAINER_ROLE=web-dev
 
 # Expose port
 EXPOSE 8000
 
-# Health check using unauthenticated endpoint
+# Health check using health check script
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:8000/api-info || exit 1
+    CMD /usr/local/bin/health-check.sh
 
-# Run the application with hot reload
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"] 
+# Use entrypoint script for initialization (DB wait, migrations)
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Default command (can be overridden)
+CMD []

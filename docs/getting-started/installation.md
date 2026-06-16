@@ -181,7 +181,52 @@ CACHE_CONNECT_STRING=redis://localhost:6379/1
 uv run alembic upgrade head
 ```
 
-### 4. MinIO Setup
+### 4. Interface Selection
+
+Ouroboros offers two web interface options. Choose the one that best fits your deployment needs:
+
+#### Option A: SvelteKit Frontend (Default)
+
+The SvelteKit frontend provides a modern, high-performance web interface with advanced features:
+
+- **Best for**: Large deployments, dedicated frontend developers, maximum performance
+- **Requirements**: Node.js, separate frontend build process
+- **Deployment**: Two containers (frontend + backend)
+
+```bash
+# Install Node.js dependencies (if using SvelteKit frontend)
+cd frontend
+npm install
+npm run build
+cd ..
+```
+
+#### Option B: NiceGUI Interface (Integrated)
+
+The NiceGUI interface is integrated directly into the FastAPI backend for simplified deployment:
+
+- **Best for**: Smaller deployments, Python-focused teams, simplified maintenance
+- **Requirements**: Python only (included with backend)
+- **Deployment**: Single container (backend only)
+
+```bash
+# Enable NiceGUI interface in .env
+echo "NICEGUI_ENABLED=true" >> .env
+```
+
+**Interface Comparison:**
+
+| Feature                   | SvelteKit Frontend          | NiceGUI Interface   |
+| ------------------------- | --------------------------- | ------------------- |
+| **Performance**           | Highest                     | High                |
+| **Deployment Complexity** | Higher (2 containers)       | Lower (1 container) |
+| **Customization**         | Frontend expertise required | Python-native       |
+| **Resource Usage**        | Higher                      | Lower               |
+| **Development**           | JavaScript/TypeScript       | Python only         |
+
+Both interfaces provide identical functionality including dashboard, campaign management, agent monitoring, and real-time updates.
+
+### 5. MinIO Setup
 
 1. **Install and Start MinIO**
 
@@ -206,7 +251,7 @@ minio server /opt/minio/data --console-address ":9001"
 - Create bucket: `ouroboros-resources`
 - Set appropriate access policies
 
-### 5. Create System Service
+### 6. Create System Service
 
 Create a systemd service for Ouroboros:
 
@@ -236,7 +281,7 @@ sudo systemctl enable ouroboros
 sudo systemctl start ouroboros
 ```
 
-### 6. Setup Reverse Proxy (Recommended)
+### 7. Setup Reverse Proxy (Recommended)
 
 Install and configure Nginx as a reverse proxy:
 

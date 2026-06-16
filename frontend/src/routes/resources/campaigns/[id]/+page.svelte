@@ -18,7 +18,7 @@
     import type { PageData } from './$types';
 
     // Receive SSR data
-    export let data: PageData;
+    export let data: PageData = undefined as unknown as PageData;
 
     // Extract data from SSR
     $: campaign = data.campaign;
@@ -316,11 +316,11 @@
         <!-- Progress and Metrics -->
         <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
             <CampaignProgress
-                campaignId={parseInt(campaignId)}
+                campaignId={parseInt(campaignId ?? '0')}
                 initialProgress={progress}
                 enableAutoRefresh={true} />
             <CampaignMetrics
-                campaignId={parseInt(campaignId)}
+                campaignId={parseInt(campaignId ?? '0')}
                 initialMetrics={metrics}
                 enableAutoRefresh={true} />
         </div>

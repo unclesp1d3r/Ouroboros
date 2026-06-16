@@ -50,7 +50,7 @@
     import AgentDetailsModal from './AgentDetailsModal.svelte';
 
     // Props from SSR
-    export let agents: AgentListData;
+    export let agents: AgentListData = undefined as unknown as AgentListData;
 
     // Admin role stub (replace with real session store)
     const isAdmin = true;

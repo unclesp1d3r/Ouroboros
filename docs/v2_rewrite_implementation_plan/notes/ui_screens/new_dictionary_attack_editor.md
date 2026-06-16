@@ -1,8 +1,8 @@
-## 📚 Page: New Dictionary Attack Dialog
+## Page: New Dictionary Attack Dialog
 
 This Flowbite modal allows users to configure a **Dictionary Attack**, selecting a wordlist, defining optional length constraints, and adding simple rule-like modifiers.
 
-### 💡 Summary
+### TIP: Summary
 
 - Form built using Flowbite modal structure
 - HTMX-compatible submit to `/api/v1/web/attacks/`
@@ -12,7 +12,7 @@ This Flowbite modal allows users to configure a **Dictionary Attack**, selecting
 
 ---
 
-### 🧱 Modal Header
+### Modal Header
 
 ```html
 <h3 class="text-xl font-bold text-gray-900 dark:text-white">
@@ -26,7 +26,7 @@ This Flowbite modal allows users to configure a **Dictionary Attack**, selecting
 
 ---
 
-### 🔢 Length Range
+### Length Range
 
 ```html
 <div class="grid grid-cols-2 gap-4 mb-4">
@@ -47,7 +47,7 @@ This Flowbite modal allows users to configure a **Dictionary Attack**, selecting
 
 ---
 
-### 📂 Dictionary Selection (Dropdown)
+### Dictionary Selection (Dropdown)
 
 The selected value here is `capitals-dictionary.txt`, containing 198 words. Use Flowbite `select` component populated via backend.
 
@@ -69,7 +69,7 @@ This field maps to a selected `AttackResourceFile` with `resource_type = "word_l
 
 ---
 
-### 🎯 Pattern Field (Optional)
+### Pattern Field (Optional)
 
 May be used to add a pattern-based constraint, shown with a help icon.
 
@@ -89,7 +89,7 @@ For now this field can be ignored in backend unless defined later in the spec.
 
 ---
 
-### 🛠️ Modifiers
+### Modifiers
 
 Rule presets added by user interaction. These should toggle behind-the-scenes rule files applied to the dictionary.
 
@@ -126,15 +126,14 @@ Change chars order:
 - Duplicate (adds the rule `d`)
 - Reverse (adds the rule `r`)
 
-Substitute chars:
-_This copies rules from several predefined lists collected from hashcat._
+Substitute chars: _This copies rules from several predefined lists collected from hashcat._
 
 - Substitute Leetspeak (adds the rules from `rules/unix-ninja-leetspeak.rule`)
 - Substitute with Combinator (adds the rules from `rules/combinator.rule`)
 
 ---
 
-### 📊 Passwords & Complexity
+### Passwords & Complexity
 
 ```html
 <div class="mt-4 text-sm text-gray-900 dark:text-white">
@@ -168,7 +167,7 @@ Use `POST /api/v1/web/attacks/estimate` to compute updated password count + comp
 
 ---
 
-### ✅ Footer Buttons
+### [x] Footer Buttons
 
 ```html
 <div class="flex justify-end space-x-2 mt-6">
@@ -183,7 +182,7 @@ Use `POST /api/v1/web/attacks/estimate` to compute updated password count + comp
 
 ---
 
-### 📦 Backend Submission Notes
+### Backend Submission Notes
 
 ```jsonc
 {

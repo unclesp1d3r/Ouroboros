@@ -1,8 +1,17 @@
 import { browser } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { env as publicEnv } from '$env/dynamic/public';
-import * as staticEnv from '$env/static/private';
-import * as staticPublicEnv from '$env/static/public';
+
+// Type for static env with optional API_BASE_URL
+type StaticPrivateEnv = Record<string, string | undefined>;
+type StaticPublicEnv = Record<string, string | undefined>;
+
+// Import static env with type assertion for optional env vars
+// These may not exist at build time (e.g., in CI)
+import * as staticEnvRaw from '$env/static/private';
+import * as staticPublicEnvRaw from '$env/static/public';
+const staticEnv = staticEnvRaw as StaticPrivateEnv;
+const staticPublicEnv = staticPublicEnvRaw as StaticPublicEnv;
 
 /**
  * Configuration schema for type safety

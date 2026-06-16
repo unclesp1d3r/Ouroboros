@@ -482,7 +482,7 @@ async def test_submit_cracked_hash_triggers_toast_notification(
         toast_message = call_args[0][0]  # First positional argument
         project_id = call_args[0][1]  # Second positional argument
 
-        assert "🎉 Hash cracked by Test Agent:" in toast_message
+        assert "Hash cracked by Test Agent:" in toast_message
         assert "abc123" in toast_message
         assert "password1" in toast_message
         assert project_id == project.id

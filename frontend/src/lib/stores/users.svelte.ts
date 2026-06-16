@@ -6,6 +6,7 @@ import {
     UserListRequest,
 } from '$lib/schemas/users';
 import { browser } from '$app/environment';
+import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 // Store state interfaces
 interface UserState {
@@ -151,7 +152,7 @@ export const usersStore = {
         this.clearError();
 
         try {
-            const params = new URLSearchParams({
+            const params = new SvelteURLSearchParams({
                 page: page.toString(),
                 page_size: pageSize.toString(),
             });

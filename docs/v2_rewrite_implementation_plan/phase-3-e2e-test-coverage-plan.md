@@ -40,9 +40,9 @@ This document defines the comprehensive e2e test coverage required for Ouroboros
 
 ### Three-Tier Architecture Integration
 
-- **Layer 1**: Backend tests (Python + testcontainers) - ✅ Complete
-- **Layer 2**: Frontend mocked tests (Playwright + mocked APIs) - ✅ Complete
-- **Layer 3**: Full E2E tests (Playwright + real Docker backend) - 🔄 Infrastructure complete, authentication pending
+- **Layer 1**: Backend tests (Python + testcontainers) - [x] Complete
+- **Layer 2**: Frontend mocked tests (Playwright + mocked APIs) - [x] Complete
+- **Layer 3**: Full E2E tests (Playwright + real Docker backend) - Infrastructure complete, authentication pending
 
 ### Test Environment Requirements
 
@@ -813,77 +813,77 @@ Based on examination of the frontend source code in `/src`, the following UI ele
 
 01. **`agent-list-mock-fallback.e2e.test.ts`** - Agent Management
 
-    - ✅ Maps to: **AGT-001** (Agent list & monitoring), **AGT-003** (Agent details modal)
+    - [x] Maps to: **AGT-001** (Agent list & monitoring), **AGT-003** (Agent details modal)
     - Coverage: Agent list rendering, details modal tabs, settings form validation
 
 02. **`attacks-list.test.ts`** - Attack List Management
 
-    - ✅ Maps to: **ATT-003** (Attack management), **ATT-002** partial (Attack configuration display)
+    - [x] Maps to: **ATT-003** (Attack management), **ATT-002** partial (Attack configuration display)
     - Coverage: Attack list display, filtering, search, action menus, delete confirmation
 
 03. **`attacks_modals.test.ts`** - Attack Creation/Editing
 
-    - ✅ Maps to: **ATT-001** (Attack creation wizard), **ATT-002** (Attack editor modal)
+    - [x] Maps to: **ATT-001** (Attack creation wizard), **ATT-002** (Attack editor modal)
     - Coverage: Attack wizard navigation, form validation, creation flow, edit flow
 
 04. **`auth.test.ts`** - Authentication UI (Mock Only)
 
-    - ✅ Maps to: **ASM-001** partial (Login form UI only)
+    - [x] Maps to: **ASM-001** partial (Login form UI only)
     - Coverage: Login form display, validation errors, form field interactions (NO real auth flow)
 
 05. **`campaign-detail.test.ts`** + **`campaigns-detail.test.ts`** - Campaign Details
 
-    - ✅ Maps to: **CAM-003** (Campaign details & management)
+    - [x] Maps to: **CAM-003** (Campaign details & management)
     - Coverage: Campaign information display, attacks table, action buttons (duplicate files detected)
 
 06. **`campaign-progress-metrics.test.ts`** - Campaign Monitoring
 
-    - ✅ Maps to: **CAM-003** (Campaign progress tracking), **DRM-002** partial (Real-time updates)
+    - [x] Maps to: **CAM-003** (Campaign progress tracking), **DRM-002** partial (Real-time updates)
     - Coverage: Progress components, metrics display, auto-refresh functionality
 
 07. **`campaigns-list.e2e.test.ts`** - Campaign List Management
 
-    - ✅ Maps to: **CAM-002** (Campaign list & navigation), **CAM-004** partial (Campaign operations)
+    - [x] Maps to: **CAM-002** (Campaign list & navigation), **CAM-004** partial (Campaign operations)
     - Coverage: Campaign list display, accordion structure, action menus, empty states
 
 08. **`dashboard.e2e.test.ts`** - Dashboard Overview
 
-    - ✅ Maps to: **DRM-001** (Dashboard data loading)
+    - [x] Maps to: **DRM-001** (Dashboard data loading)
     - Coverage: Dashboard metrics cards, campaign overview, SSR data integration
 
 09. **`layout.e2e.test.ts`** - Basic Layout
 
-    - ✅ Maps to: **UIX-001** partial (Layout & navigation)
+    - [x] Maps to: **UIX-001** partial (Layout & navigation)
     - Coverage: Sidebar rendering only (minimal test)
 
 10. **`project-info.test.ts`** - Project Information Component
 
-    - ✅ Maps to: **USR-002** partial (Project information display)
+    - [x] Maps to: **USR-002** partial (Project information display)
     - Coverage: Project information display within projects page context
 
 11. **`projects-list.test.ts`** - Project Management
 
-    - ✅ Maps to: **USR-002** (Project management)
+    - [x] Maps to: **USR-002** (Project management)
     - Coverage: Project list, search, pagination, action menus, SSR integration
 
 12. **`resource-detail-fragments.test.ts`** - Resource Details
 
-    - ✅ Maps to: **RES-003** (Resource management), **RES-002** partial (Resource preview)
+    - [x] Maps to: **RES-003** (Resource management), **RES-002** partial (Resource preview)
     - Coverage: Resource detail tabs, preview, content editing, navigation
 
 13. **`resources-list.test.ts`** - Resource List Management
 
-    - ✅ Maps to: **RES-001** (Resource list & navigation), **RES-002** partial (Resource display)
+    - [x] Maps to: **RES-001** (Resource list & navigation), **RES-002** partial (Resource display)
     - Coverage: Resource list, filtering by type, search, pagination, empty states
 
-14. **`settings.test.ts`** - User Settings ❌ **EMPTY PLACEHOLDER**
+14. **`settings.test.ts`** - User Settings [FAIL] **EMPTY PLACEHOLDER**
 
-    - 🔄 Should map to: **USR-003** (Profile & settings)
+    - Should map to: **USR-003** (Profile & settings)
     - Coverage: None (empty file)
 
-15. **`users.test.ts`** - User Management ❌ **EMPTY PLACEHOLDER**
+15. **`users.test.ts`** - User Management [FAIL] **EMPTY PLACEHOLDER**
 
-    - 🔄 Should map to: **USR-001** (User management)
+    - Should map to: **USR-001** (User management)
     - Coverage: None (empty file)
 
 ### Missing Test Coverage (In Plan But Not Implemented)

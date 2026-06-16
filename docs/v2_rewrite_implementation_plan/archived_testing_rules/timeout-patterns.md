@@ -11,7 +11,7 @@ This rule documents universal timeout configuration and helper patterns for E2E 
 Configure universal timeouts in `playwright.config.ts` to handle animated UI components consistently:
 
 ```typescript
-// ✅ CORRECT - Universal timeout configuration for animated UIs
+// [x] CORRECT - Universal timeout configuration for animated UIs
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
@@ -137,13 +137,13 @@ export function createTestHelpers(page: Page) {
 ### Navigation Timing Issues
 
 ```typescript
-// ❌ PROBLEM - Flaky tests due to navigation timing
+// [FAIL] PROBLEM - Flaky tests due to navigation timing
 test('search functionality', async ({ page }) => {
     await searchInput.press('Enter');
     await expect(page).toHaveURL(/.*search=test.*/); // May fail due to timing
 });
 
-// ✅ SOLUTION - Wait for navigation completion
+// [x] SOLUTION - Wait for navigation completion
 test('search functionality', async ({ page }) => {
     const helpers = createTestHelpers(page);
 
@@ -156,14 +156,14 @@ test('search functionality', async ({ page }) => {
 ### Modal Interaction Timing
 
 ```typescript
-// ❌ PROBLEM - Modal not fully rendered when test proceeds
+// [FAIL] PROBLEM - Modal not fully rendered when test proceeds
 test('modal tabs are accessible', async ({ page }) => {
     await detailsBtn.click();
     await expect(page.getByRole('dialog')).toBeVisible(); // May fail
     await expect(page.getByRole('tab', { name: 'General' })).toBeVisible(); // May fail
 });
 
-// ✅ SOLUTION - Use helper functions with proper waits
+// [x] SOLUTION - Use helper functions with proper waits
 test('modal tabs are accessible', async ({ page }) => {
     const helpers = createTestHelpers(page);
 
@@ -180,13 +180,13 @@ test('modal tabs are accessible', async ({ page }) => {
 ### Form Submission States
 
 ```typescript
-// ❌ PROBLEM - Form state changes happen too fast to test reliably
+// [FAIL] PROBLEM - Form state changes happen too fast to test reliably
 test('form shows loading state', async ({ page }) => {
     await submitButton.click();
     await expect(submitButton).toBeDisabled(); // Might miss the state change
 });
 
-// ✅ SOLUTION - Use form submission helper
+// [x] SOLUTION - Use form submission helper
 test('form shows loading state', async ({ page }) => {
     const helpers = createTestHelpers(page);
 

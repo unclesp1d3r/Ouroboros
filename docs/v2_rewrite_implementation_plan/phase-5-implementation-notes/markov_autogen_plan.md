@@ -54,7 +54,7 @@ These models dramatically improve cracking performance for long or unknown-struc
   - `global_default.hcstat2`
   - Language-specific variants (`hcstat2_en`, `hcstat2_de`, etc.)
 
-### 🧪 Per-Project Evolution
+### Per-Project Evolution
 
 - Every project has a local `project.hcstat2` file
 

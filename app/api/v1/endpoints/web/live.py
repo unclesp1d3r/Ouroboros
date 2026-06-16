@@ -1,17 +1,17 @@
 """
-🧭 JSON API Refactor - Ouroboros Web UI
+JSON API Refactor - Ouroboros Web UI
 
 Follow these rules for all endpoints in this file:
 1. Must return Pydantic models as JSON (no TemplateResponse or render()).
 2. Must use FastAPI parameter types: Query, Path, Body, Depends, etc.
-3. Must not parse inputs manually — let FastAPI validate and raise 422s.
+3. Must not parse inputs manually -- let FastAPI validate and raise 422s.
 4. Must use dependency-injected context for auth/user/project state.
-5. Must not include database logic — delegate to a service layer (e.g. campaign_service).
+5. Must not include database logic -- delegate to a service layer (e.g. campaign_service).
 6. Must not contain HTMX, Jinja, or fragment-rendering logic.
 7. Must annotate live-update triggers with: # SSE_TRIGGER: <event description>
 8. Must update test files to expect JSON (not HTML) and preserve test coverage.
 
-📘 See canonical task list and instructions in:
+See canonical task list and instructions in:
 docs/v2_rewrite_implementation_plan/phase-2-api-implementation-part-2.md
 
 Live Event Feeds (Server-Sent Events)

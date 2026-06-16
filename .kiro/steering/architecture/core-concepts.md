@@ -1,6 +1,8 @@
 ---
+inclusion: always
+---
 
-## inclusion: always
+# Ouroboros Core Concepts
 
 # Ouroboros Core Concepts
 
@@ -85,8 +87,7 @@ Agents must declare their version or use version-specific routes. Future version
 
 Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundaries or cross-link entities.
 
-3. **API Interfaces**
-   a. **Agent API** (`/api/v1/client/*`)
+3. **API Interfaces** a. **Agent API** (`/api/v1/client/*`)
 
    - MUST follow OpenAPI 3.0.1 specification in `contracts/v1_api_swagger.json`
    - Used by distributed Ouroboros agents
@@ -101,8 +102,7 @@ Join tables such as `AgentsProjects` are used to enforce multi-tenancy boundarie
      - `/api/v1/client/tasks/*`: Task management
      - `/api/v1/client/crackers/*`: Cracker binary updates
 
-   **Router File Structure:**
-   Each `/api/v1/client/<resource>` endpoint must be implemented in its own router file under `app/api/v1/endpoints/agent/<resource>.py`, except for root-level, non-resource endpoints, which are grouped in `general.py`.
+   **Router File Structure:** Each `/api/v1/client/<resource>` endpoint must be implemented in its own router file under `app/api/v1/endpoints/agent/<resource>.py`, except for root-level, non-resource endpoints, which are grouped in `general.py`.
 
    | Endpoint Path                  | Router File                              |
    | ------------------------------ | ---------------------------------------- |
@@ -516,7 +516,7 @@ Ouroboros uses Cashews as the primary caching library f-compatible TTL caching a
 - In-memory caching (`mem://`) is used by default in development.
 - Production deployments may optionally switch to Redis by configuring `redis://...` during `cache.setup()`.
 
-#### 🔒 Usage Constraints
+#### Usage Constraints
 
 - Do **not** use other cache mechanisms (e.g., `functools.lru_cache`, FastAPI internal cache) for any persistent/shared value.
 - TTLs should be short (≤ 60s) unless a strong reason exists.
@@ -525,7 +525,7 @@ Ouroboros uses Cashews as the primary caching library f-compatible TTL caching a
 - Tagging and `.invalidate()` should be used for cache busting when data dependencies change.
 - Prefer decorator usage when possible.
 
-#### 🧠 Examples
+#### Examples
 
 - Cashews caching code examples are now in @core-concepts-appendix.mdc
 

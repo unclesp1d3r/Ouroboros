@@ -2,7 +2,7 @@
 
 - [ ] 1. Set up Agent API v2 foundation and routing structure
 
-  - [ ] 1.1 Create v2 API router infrastructure
+  - [x] 1.1 Create v2 API router infrastructure
 
     - Create `app/api/v2/router.py` to organize v2 endpoints
     - Create `app/api/v2/endpoints/agents.py` for agent-specific endpoints

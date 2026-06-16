@@ -1,4 +1,4 @@
-# 🎯 Ouroboros Phase 2 Endpoint Hygiene Sweep
+# Ouroboros Phase 2 Endpoint Hygiene Sweep
 
 Skirmish must complete this sweep after all `/api/v1/web/*` endpoints have been implemented and tested.
 
@@ -6,28 +6,28 @@ This pass is required to clean up minor violations of project-specific coding st
 
 ---
 
-## 🔍 Common Skipped Rules to Fix
+## Common Skipped Rules to Fix
 
-### ❌ Skipped: Proper SvelteKit Integration
+### [FAIL] Skipped: Proper SvelteKit Integration
 
 - [x] Replace all legacy server-rendered endpoints with SvelteKit JSON API endpoints and Svelte components
 - [x] SvelteKit endpoints **must return a valid JSON API response**, not a server-rendered template
 - [x] The response fields are unpacked automatically and available as top-level variables in the Svelte component
 
-> 📘 See: `sveltekit-guidelines.mdc` — SvelteKit endpoints must always use JSON API.
+> See: `sveltekit-guidelines.mdc` — SvelteKit endpoints must always use JSON API.
 
 ---
 
-### ❌ Skipped: Endpoint Purity
+### [FAIL] Skipped: Endpoint Purity
 
 - [ ] Ensure **no database access** occurs in endpoint functions (move all DB access to services or `crud.py`)
 - [ ] Use `Depends(get_db)` only inside service-layer helpers, not in the route body
 
-> 📘 See: `service-patterns.mdc` — all persistence logic must be kept outside endpoints.
+> See: `service-patterns.mdc` — all persistence logic must be kept outside endpoints.
 
 ---
 
-### ❌ Skipped: FastAPI Idiomatic Parameter Usage
+### [FAIL] Skipped: FastAPI Idiomatic Parameter Usage
 
 - [ ] Remove all usage of `request: Request` for parameter parsing or user/project extraction
 - [ ] Forms should never be parsed from the request body or the form data, each field should be a proper `Annotated[Form, ...]` parameter
@@ -38,13 +38,13 @@ user: Annotated[User, Depends(current_user)]
 project: Annotated[Project, Depends(get_current_project)]
 ```
 
-> 📘 See: `fastapi-guidelines.mdc` — context should always use DI, never request-manual parsing.
+> See: `fastapi-guidelines.mdc` — context should always use DI, never request-manual parsing.
 
 ---
 
 ### 🧼 Style Cleanups
 
-#### 🔧 `getattr` vs direct access
+#### `getattr` vs direct access
 
 - [ ] Replace `getattr(foo, "bar")` with `foo.bar` unless:
 
@@ -52,28 +52,28 @@ project: Annotated[Project, Depends(get_current_project)]
   - There's a fallback value
   - Object may be missing the attribute and is guarded
 
-#### 🔧 Typing + Models
+#### Typing + Models
 
 - [ ] Eliminate `dict[str, object]` returns
 - [ ] Ensure all route input/output is typed with Pydantic v2 models
 
-#### 🔧 Imports
+#### Imports
 
 - [ ] Alphabetize imports within groups (`stdlib`, `third-party`, `local`)
 - [ ] Remove any unused imports that snuck back in
 
-> 📘 See: `python-style.mdc` — use direct access over reflection, and structure imports consistently.
+> See: `python-style.mdc` — use direct access over reflection, and structure imports consistently.
 
 ---
 
-## 🧪 Final Checks
+## Final Checks
 
 - [ ] Run full `just ci-check` again
 - [ ] Launch `just dev` and download the `openapi.json` file to verify the generated schema is correct
 
 ---
 
-## ✅ Completion Criteria
+## [x] Completion Criteria
 
 All existing `/api/v1/web/*` endpoints must conform to:
 

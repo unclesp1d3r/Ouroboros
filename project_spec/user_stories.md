@@ -14,7 +14,7 @@
 
 ---
 
-## 🎭 User Personas
+## User Personas
 
 ### Red Team Operator (Primary User)
 
@@ -46,7 +46,7 @@
 
 ---
 
-## 🔐 Authentication & Access Control
+## Authentication & Access Control
 
 ### Story: AC-001 - User Login and Session Management
 
@@ -88,7 +88,7 @@
 
 ---
 
-## 📊 Dashboard & Monitoring
+## Dashboard & Monitoring
 
 ### Story: DM-001 - Real-Time System Overview
 
@@ -130,7 +130,7 @@
 
 ---
 
-## 🎯 Campaign Management
+## Campaign Management
 
 ### Story: CM-001 - Campaign Creation Wizard
 
@@ -212,7 +212,7 @@
 
 ---
 
-## 🤖 Agent Management
+## Agent Management
 
 ### Story: AM-001 - Agent Fleet Overview
 
@@ -294,7 +294,7 @@
 
 ---
 
-## 📁 Resource Management
+## Resource Management
 
 ### Story: RM-001 - Resource Library Management
 
@@ -356,7 +356,7 @@
 
 ---
 
-## 🔍 Results and Analysis
+## Results and Analysis
 
 ### Story: RA-001 - Crack Result Notification and Viewing
 
@@ -440,7 +440,7 @@
 
 ---
 
-## 🔧 Advanced Features
+## Advanced Features
 
 ### Story: AF-001 - DAG-Based Attack Execution
 
@@ -524,7 +524,7 @@
 
 ---
 
-## 🔄 Integration and Migration
+## Integration and Migration
 
 ### Story: IM-001 - Agent Compatibility Maintenance
 
@@ -566,7 +566,7 @@
 
 ---
 
-## 📊 Story Mapping and Prioritization
+## Story Mapping and Prioritization
 
 ### Epic Priority Matrix
 
@@ -610,7 +610,7 @@
 
 ---
 
-## 📝 Story Writing Guidelines
+## Story Writing Guidelines
 
 ### Definition of Ready
 
@@ -632,7 +632,7 @@
 
 ---
 
-## 🔄 Story Lifecycle
+## Story Lifecycle
 
 ```mermaid
 graph LR

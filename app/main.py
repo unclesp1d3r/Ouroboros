@@ -1,11 +1,11 @@
 """Ouroboros FastAPI Application."""
 
+import asyncio
 import logging
 import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
-import uvicorn
 from cashews import cache
 from cashews.contrib.fastapi import (
     CacheDeleteMiddleware,
@@ -26,7 +26,6 @@ from app.core.control_rfc9457_middleware import ControlRFC9457Middleware
 from app.core.exceptions import InvalidAgentTokenError
 from app.core.logging import logger
 from app.core.openapi_customization import setup_openapi_customization
-from app.db.config import DatabaseSettings
 from app.db.session import sessionmanager
 
 
@@ -57,16 +56,20 @@ for name in logging.root.manager.loggerDict:
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
     """FastAPI lifespan events."""
-    # Initialize database session manager
-    db_settings = DatabaseSettings(
-        url=settings.sqlalchemy_database_uri,
-        echo=False,  # Set to True for SQL debugging
-    )
-    sessionmanager.init(db_settings)
+    from app.core.tasks.resource_tasks import run_periodic_cleanup
+
+    # Initialize database session manager with consolidated settings
+    sessionmanager.init(settings)
+
+    # Start periodic cleanup task
+    cleanup_task = asyncio.create_task(run_periodic_cleanup())
 
     yield
 
-    # Cleanup on shutdown
+    # Shutdown cleanup
+    cleanup_task.cancel()
+    with suppress(asyncio.CancelledError):
+        await cleanup_task
     await sessionmanager.close()
 
 
@@ -249,8 +252,12 @@ async def set_cookie_from_state_middleware(
     return response
 
 
-# v1 API router registration
+# API router registration
 app.include_router(api_v1_router, prefix="/api/v1")
+
+# TODO: Enable v2 API when implementation is complete
+# from app.api.v2.router import api_router as api_v2_router
+# app.include_router(api_v2_router, prefix="/api/v2")
 
 
 @app.get("/api-info")
@@ -278,19 +285,5 @@ async def invalid_agent_token_handler(
     return JSONResponse(status_code=401, content={"detail": str(exc)})
 
 
-# Register v1 error handler for all /api/v1/client/* and /api/v1/agent/* endpoints (contract compliance)
-# The handler passes any non-Agent API endpoints to the default handler
-app.add_exception_handler(HTTPException, v1_http_exception_handler)
-
 # Setup custom OpenAPI documentation
 setup_openapi_customization(app)
-
-
-def run_server() -> None:
-    """Run the FastAPI server with development configuration."""
-    uvicorn.run(
-        "app.main:app",
-        host="0.0.0.0",  # noqa: S104
-        port=8000,
-        reload=True,
-    )

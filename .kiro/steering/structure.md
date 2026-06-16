@@ -20,13 +20,18 @@ Ouroboros/
 
 ## Backend Structure (`app/`)
 
-```
+```text
 app/
 ├── __init__.py
 ├── main.py                # FastAPI application entry point
 ├── api/                   # API route definitions
 │   ├── routes/           # Shared route utilities
-│   ├── v1/               # API version 1 endpoints
+│   ├── v1/               # API version 1
+│   │   └── endpoints/    # API endpoints organized by interface
+│   │       ├── agent/    # Agent API (/api/v1/client/*)
+│   │       ├── web/      # Web UI API (/api/v1/web/*)
+│   │       ├── control/  # Control API (/api/v1/control/*)
+│   │       └── *.py      # Shared infrastructure APIs
 │   └── v2/               # API version 2 endpoints
 ├── core/                  # Core application logic
 │   ├── auth.py           # Authentication logic

@@ -8,7 +8,7 @@
     import { toast } from 'svelte-sonner';
 
     export let open: Writable<boolean> = writable(false);
-    export let onSubmit: (values: { agentName?: string }) => Promise<void>;
+    export let onSubmit: (values: { agentName?: string }) => Promise<void> = async () => {};
 
     let agentName = '';
     let isLoading = false;

@@ -23,7 +23,7 @@ async def list_projects_service(
     search: str | None = None,
     page: int = 1,
     page_size: int = 20,
-    user: "User | None" = None,
+    user: User | None = None,
 ) -> tuple[list[ProjectRead], int]:
     """
     List projects with optional user-based filtering (page-based pagination for Web API).
@@ -49,7 +49,7 @@ async def list_projects_service_offset(
     search: str | None = None,
     skip: int = 0,
     limit: int = 20,
-    user: "User | None" = None,
+    user: User | None = None,
 ) -> tuple[list[ProjectRead], int]:
     """
     List projects with optional user-based filtering (offset-based pagination for Control API).
@@ -74,7 +74,7 @@ async def _list_projects_core(
     search: str | None = None,
     offset: int = 0,
     limit: int = 20,
-    user: "User | None" = None,
+    user: User | None = None,
 ) -> tuple[list[ProjectRead], int]:
     """
     Core implementation for listing projects with offset-based pagination.
@@ -301,7 +301,7 @@ async def delete_project_service(project_id: int, db: AsyncSession) -> None:
 
 async def list_project_users_service(
     project_id: int, db: AsyncSession, offset: int = 0, limit: int = 20
-) -> tuple[list["UserRead"], int]:
+) -> tuple[list[UserRead], int]:
     """
     List users associated with a specific project.
 

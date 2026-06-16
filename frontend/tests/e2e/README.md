@@ -2,30 +2,22 @@
 
 ## Overview
 
-This directory contains full-stack End-to-End (E2E) tests for
-Ouroboros. These tests run against a real Docker backend stack and
-validate complete user workflows from frontend to database.
+This directory contains full-stack End-to-End (E2E) tests for Ouroboros. These tests run against a real Docker backend stack and validate complete user workflows from frontend to database.
 
 ## Architecture
 
 ### Three-Tier Testing Structure
 
-1. **Layer 1 (Backend)**: Python unit/integration tests with
-   testcontainers - `just test-backend`
-2. **Layer 2 (Frontend Mocked)**: Vitest + Playwright with API mocks -
-   `just test-frontend`
-3. **Layer 3 (Full E2E)**: Playwright E2E against real Docker backend -
-   `just test-e2e`
+1. **Layer 1 (Backend)**: Python unit/integration tests with testcontainers - `just test-backend`
+2. **Layer 2 (Frontend Mocked)**: Vitest + Playwright with API mocks - `just test-frontend`
+3. **Layer 3 (Full E2E)**: Playwright E2E against real Docker backend - `just test-e2e`
 
 ### E2E Infrastructure
 
-- **Docker Stack**: PostgreSQL, MinIO, Redis, FastAPI backend, SvelteKit
-  frontend
-- **Data Seeding**: Predictable test data created via
-  `scripts/seed_e2e_data.py`
+- **Docker Stack**: PostgreSQL, MinIO, Redis, FastAPI backend, SvelteKit frontend
+- **Data Seeding**: Predictable test data created via `scripts/seed_e2e_data.py`
 - **Global Setup/Teardown**: Automatic Docker lifecycle management
-- **Isolated Environment**: Tests run against separate E2E database and
-  storage
+- **Isolated Environment**: Tests run against separate E2E database and storage
 
 ## Running E2E Tests
 
@@ -68,8 +60,7 @@ just docker-e2e-down
 ### Seeded Projects
 
 - **E2E Test Project Alpha**: Primary test project with campaigns
-- **E2E Test Project Beta**: Secondary project for multi-project
-  scenarios
+- **E2E Test Project Beta**: Secondary project for multi-project scenarios
 
 ### Seeded Campaigns
 
@@ -238,17 +229,14 @@ The E2E tests are integrated into the CI pipeline:
 
 ## Performance Considerations
 
-- **Serial Execution**: Tests run one at a time to avoid database
-  conflicts
+- **Serial Execution**: Tests run one at a time to avoid database conflicts
 - **Docker Overhead**: E2E tests are slower than unit/integration tests
-- **Resource Usage**: Requires sufficient Docker resources (4GB+ RAM
-  recommended)
+- **Resource Usage**: Requires sufficient Docker resources (4GB+ RAM recommended)
 - **Cleanup**: Automatic cleanup prevents resource leaks between runs
 
 ## Future Enhancements
 
 - **Parallel Execution**: Database isolation for parallel test execution
 - **Visual Regression**: Screenshot comparison for UI consistency
-- **Performance Testing**: Load testing integration with E2E
-  infrastructure
+- **Performance Testing**: Load testing integration with E2E infrastructure
 - **Cross-Browser**: Extended browser coverage for compatibility testing

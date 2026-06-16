@@ -1,12 +1,11 @@
 # Project Context Management
 
-## 🧠 Task: Project Context Management Endpoints
+## Task: Project Context Management Endpoints
 
 **ID:**
 
 - `auth.get_context`
-- `auth.set_context`
-  **Context:** Web UI (Authenticated User Session)
+- `auth.set_context` **Context:** Web UI (Authenticated User Session)
 
 ---
 
@@ -25,7 +24,7 @@ The active project determines:
 
 ---
 
-### 📥 `GET /api/v1/web/auth/context`
+### `GET /api/v1/web/auth/context`
 
 **`task_id:auth.get_context`**
 
@@ -59,7 +58,7 @@ Returns the current user's active project context and all projects they have acc
 
 ---
 
-### 📤 `POST /api/v1/web/auth/context`
+### `POST /api/v1/web/auth/context`
 
 **`task_id:auth.set_context`**
 
@@ -77,7 +76,7 @@ Must validate that the user has access to the specified project. Updates server-
 
 ---
 
-### 🎨 UI Integration
+### UI Integration
 
 - Display the current project in the sidebar or account menu
 - Allow switching via dropdown or modal
@@ -86,7 +85,7 @@ Must validate that the user has access to the specified project. Updates server-
 
 ---
 
-### 🔒 Security & Behavior Notes
+### Security & Behavior Notes
 
 - Only allow users to switch to projects they are assigned to
 - Do not cache or persist project selection across users/devices without revalidation

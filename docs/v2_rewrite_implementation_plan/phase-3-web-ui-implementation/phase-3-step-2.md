@@ -22,7 +22,7 @@
 
 ---
 
-**🎯 Foundation Verification Step** - This step verifies existing implementations work with authentication and completes core user management features that were identified as incomplete.
+\*\* Foundation Verification Step\*\* - This step verifies existing implementations work with authentication and completes core user management features that were identified as incomplete.
 
 ## Overview
 
@@ -100,7 +100,7 @@ Verify the functionality through direct observation of the application and the o
   - [x] Verify campaign pagination and search functionality (`CAM-002b`)
     - **Components**: Use Shadcn-Svelte Table with built-in pagination
     - **Search**: Real-time filtering with search input component
-    - **Status**: ✅ Verified working - search filters campaigns by name and summary, pagination works with URL parameters, localStorage persistence for filters
+    - **Status**: [x] Verified working - search filters campaigns by name and summary, pagination works with URL parameters, localStorage persistence for filters
   - [x] Verify campaign filtering by status (draft, active, archived, paused, completed, error) (`CAM-002c`)
     - **Filter UI**: Popover with a checkbox for each status. Only selected statuses are shown in the table. Filtering is done in the within the SvelteKit store.
     - **Visual Feedback**: Active filters clearly highlighted
@@ -125,7 +125,7 @@ Verify the functionality through direct observation of the application and the o
     - **Metrics**: Real-time ETA, completion percentage, active agent count
   - [ ] Verify real-time campaign status updates (`CAM-003e`)
     - **Live Updates**: Status changes via SSE, progress bar animations
-    - **State Indicators**: Visual badges with appropriate icons (⚡ running, ✅ completed)
+    - **State Indicators**: Visual badges with appropriate icons (⚡ running, [x] completed)
   - [ ] Verify campaign attack summary display (`CAM-003g`)
     - **Summary Format**: "⚡ 3 attacks / 1 running / ETA 3h" with state-coded icons
     - **Action Menu**: Gear icon per row with context menu (Edit, Duplicate, Move, Remove)
@@ -183,7 +183,7 @@ Verify the functionality through direct observation of the application and the o
 - [ ] **VERIFY-007**: Agent list and details functionality
   - [ ] Verify agent list page loads with real-time status (`AGT-001a`)
     - **Table Layout**: Agent Name+OS, Status, Temperature, Utilization, Current Rate, Average Rate, Current Job columns
-    - **Status Indicators**: Color-coded badges (🟢 Online, 🟡 Idle, 🔴 Offline)
+    - **Status Indicators**: Color-coded badges ([GREEN] Online, [YELLOW] Idle, [RED] Offline)
     - **Real-time Updates**: Live data from DeviceStatus, TaskStatus, HashcatGuess via SSE
     - **Design Reference**: [Agent Notes](../notes/agent_notes.md)
   - [ ] Verify agent filtering by status (online, offline, error) (`AGT-001b`)
@@ -204,7 +204,7 @@ Verify the functionality through direct observation of the application and the o
 
 ### Complete Empty Placeholder Files
 
-**🔧 Technical Context**: These test files are completely empty and need full implementation. Settings involves self-service profile management (name, email, password), while users involves admin-controlled role assignment and project membership. All forms must use idiomatic Shadcn-Svelte components.
+\*\* Technical Context\*\*: These test files are completely empty and need full implementation. Settings involves self-service profile management (name, email, password), while users involves admin-controlled role assignment and project membership. All forms must use idiomatic Shadcn-Svelte components.
 
 - [ ] **USER-001**: Implement `frontend/e2e/settings.test.ts` (currently empty)
 
@@ -334,7 +334,7 @@ The items below represent task items that were either implemented or verified in
 
 ### Testing Guidelines & Requirements
 
-**🧪 Critical Testing Context:**
+\*\* Critical Testing Context:\*\*
 
 - **Test Structure**: All user-facing functionality must have both E2E tests (mocked and full E2E). Strictly follow existing test structure and naming conventions as described in the [full testing architecture](../side_quests/full_testing_architecture.md) document.
 - **Test Execution**:

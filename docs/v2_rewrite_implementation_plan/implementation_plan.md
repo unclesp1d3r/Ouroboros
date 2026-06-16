@@ -29,22 +29,22 @@ This document outlines the phased implementation plan for rebuilding Ouroboros w
 
 ### Phase 1: Core Infrastructure (Completed)
 
-- [x] 👤 User Model
-- [x] 📁 Project Model
-- [x] 🧠 OperatingSystem Model
-- [x] 🤖 Agent Model
-- [x] ⚠️ AgentError Model
-- [x] 💥 Attack Model
+- [x] User Model
+- [x] Project Model
+- [x] OperatingSystem Model
+- [x] Agent Model
+- [x] [WARN] AgentError Model
+- [x] Attack Model
 - [x] 🧾 Task Model
 
 👉 [Read Phase 1: Core Infrastructure Setup](phase-1-core-infrastructure.md)
 
 ### Phase 2: API Implementation (In Progress)
 
-- [x] 🔐 Agent API (High Priority)
+- [x] Agent API (High Priority)
   - [x] Agent Authentication & Session Management
   - [x] Attack Distribution
-- [x] 🧠 Web UI API
+- [x] Web UI API
   - [x] Campaign Management
   - [x] Attack Management
   - [x] Agent Management
@@ -54,7 +54,7 @@ This document outlines the phased implementation plan for rebuilding Ouroboros w
   - [x] Authentication & Profile
   - [x] UX Utility
   - [x] Live Event Feeds (SSE)
-- [ ] ⌨️ Control API - In Progress
+- [ ] Control API - In Progress
 
 Phase 2 was completed with comprehensive Web UI, including:
 
@@ -105,4 +105,3 @@ Phase 2b was fully completed and tested, allowing file-backed resources to be su
 - [Core Algorithm Implementation Guide](core_algorithm_implementation_guide.md)
 - Phase 4 was moved up to phase 2b to allow for the resource management to be completed before the web UI is fully implemented. There's currently a TODO to reshuffle the phases to reflect this, but just move to 5 after 3 is completed.
 - As items in the various phases are completed, they are rolled up and added to this overview document.
-  dded to this overview document.

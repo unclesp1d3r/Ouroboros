@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.api.v1.endpoints.control.campaigns import router as campaigns_router
 from app.api.v1.endpoints.control.hash_guess import router as hash_guess_router
 from app.api.v1.endpoints.control.projects import router as projects_router
+from app.api.v1.endpoints.control.resources import router as resources_router
 from app.api.v1.endpoints.control.system import router as system_router
 from app.api.v1.endpoints.control.users import router as users_router
 
@@ -15,5 +16,6 @@ router = APIRouter(prefix="/control", tags=["Control"])
 router.include_router(campaigns_router)
 router.include_router(hash_guess_router)
 router.include_router(projects_router)
+router.include_router(resources_router)
 router.include_router(system_router)
 router.include_router(users_router)

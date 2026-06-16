@@ -70,7 +70,7 @@ export const QueueStatus = z.object({
 export type QueueStatus = z.infer<typeof QueueStatus>;
 
 export const QueueStatusResponse = z.object({
-    queues: z.record(QueueStatus),
+    queues: z.record(z.string(), QueueStatus),
     total_pending: z.number(),
     total_processing: z.number(),
     recent_activity: RecentActivityStats,

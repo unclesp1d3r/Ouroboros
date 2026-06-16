@@ -100,9 +100,9 @@ reliability = success_count / (success_count + fail_count + timeout_count)
 - Optional UI badge:
 
 ```text
-🟢 Stable (97%)
-🟡 Intermittent (82%)
-🔴 Flaky (42%)
+[GREEN] Stable (97%)
+[YELLOW] Intermittent (82%)
+[RED] Flaky (42%)
 ```
 
 ---

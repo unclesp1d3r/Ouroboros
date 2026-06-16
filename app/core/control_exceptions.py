@@ -103,3 +103,70 @@ class InternalServerError(ServerProblem):
     """Internal server error."""
 
     title = "Internal Server Error"
+
+
+class InvalidResourceStateError(BadRequestProblem):
+    """Invalid resource state error.
+
+    Raised when an operation is attempted on a resource in an incompatible state,
+    such as cancelling an already-uploaded resource. Returns HTTP 400 Bad Request.
+    """
+
+    title = "Invalid Resource State"
+
+
+class InvalidStateTransitionProblem(ConflictProblem):
+    """Invalid state transition error with RFC9457 Problem Details.
+
+    Provides detailed error information including current state, attempted state,
+    and valid transitions for machine-readable error handling.
+
+    Uses HTTP 409 Conflict since this represents a conflict between the current
+    resource state and the requested action.
+    """
+
+    title = "Invalid State Transition"
+
+    # Instance attributes for type checking
+    current_state: str
+    attempted_state: str
+    entity_type: str
+    action: str | None
+    valid_transitions: list[str] | None
+
+    def __init__(
+        self,
+        from_state: str,
+        to_state: str,
+        action: str | None = None,
+        entity_type: str = "entity",
+        valid_transitions: list[str] | None = None,
+    ) -> None:
+        """Initialize the InvalidStateTransitionProblem.
+
+        Args:
+            from_state: The current state value.
+            to_state: The attempted target state value.
+            action: Optional user action that triggered the transition attempt.
+            entity_type: Type of entity (e.g., "campaign", "attack").
+            valid_transitions: Optional list of valid target states from current state.
+        """
+        if action:
+            detail = (
+                f"Cannot perform action '{action}' on {entity_type}: "
+                f"transition from '{from_state}' to '{to_state}' is not allowed."
+            )
+        else:
+            detail = f"Invalid {entity_type} state transition from '{from_state}' to '{to_state}'."
+
+        if valid_transitions:
+            detail += f" Valid transitions from '{from_state}': {valid_transitions}."
+
+        super().__init__(detail=detail)
+
+        # Set instance attributes for extension fields
+        self.current_state = from_state
+        self.attempted_state = to_state
+        self.entity_type = entity_type
+        self.action = action
+        self.valid_transitions = valid_transitions

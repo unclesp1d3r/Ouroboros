@@ -1,6 +1,9 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: \[frontend/\*\*/*.ts, docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*.md\]
+inclusion: fileMatch
+fileMatchPattern:
+  - frontend/**/*.ts
+  - docs/v2_rewrite_implementation_plan/phase-3-web-ui-implementation/*.md
+---
 
 # SSR Patterns and Load Function Best Practices
 
@@ -485,7 +488,7 @@ test('campaigns page loads with SSR data', async ({ page }) => {
 ### Loading Data in Components
 
 ```svelte
-<!-- ❌ WRONG - Don't load data in components -->
+<!-- [FAIL] WRONG - Don't load data in components -->
 <script>
     import { onMount } from 'svelte';
 
@@ -501,7 +504,7 @@ test('campaigns page loads with SSR data', async ({ page }) => {
 ### Mixing SSR and Client Data
 
 ```svelte
-<!-- ❌ WRONG - Don't mix SSR data with store calls -->
+<!-- [FAIL] WRONG - Don't mix SSR data with store calls -->
 <script>
     export let data;
     import { getCampaigns } from '$lib/stores/campaigns.svelte';
@@ -514,7 +517,7 @@ test('campaigns page loads with SSR data', async ({ page }) => {
 ### Ignoring Schema Validation
 
 ```typescript
-// ❌ WRONG - Don't skip schema validation in load functions
+// [FAIL] WRONG - Don't skip schema validation in load functions
 export const load: PageServerLoad = async ({ cookies }) => {
     const response = await serverApi.get('/api/campaigns/');
     return { campaigns: response.data }; // No validation!

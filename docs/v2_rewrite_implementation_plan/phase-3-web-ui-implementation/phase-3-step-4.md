@@ -1,6 +1,6 @@
 # Phase 3 Step 4: Agent Management & Cross-Component Integration
 
-**🎯 Integration Step** - This step completes agent management functionality and implements comprehensive cross-component integration workflows.
+\*\* Integration Step\*\* - This step completes agent management functionality and implements comprehensive cross-component integration workflows.
 
 ---
 
@@ -47,7 +47,7 @@ With advanced features implemented, this step focuses on completing agent manage
 
 ### Agent Registration Enhancement
 
-**🔧 Technical Context**: Agent registration modal requires label (custom_label) and project toggles. After creation, displays agent token once for copy/paste. Token format: `csa_<agent_id>_<random_string>`. Modal must use idiomatic Shadcn-Svelte dialog and form components.
+\*\* Technical Context\*\*: Agent registration modal requires label (custom_label) and project toggles. After creation, displays agent token once for copy/paste. Token format: `csa_<agent_id>_<random_string>`. Modal must use idiomatic Shadcn-Svelte dialog and form components.
 
 - [ ] **AGENT-REG-001**: Complete agent registration workflow
   - [ ] New agent registration form (modal interface with label and project toggles) (`AGT-002a`)
@@ -74,7 +74,7 @@ With advanced features implemented, this step focuses on completing agent manage
 
 ### Complete Agent Details Modal Implementation
 
-**🔧 Technical Context**: Agent details modal has 5 tabs (Settings, Hardware, Performance, Log, Capabilities). Display name uses `agent.custom_label or agent.host_name` fallback pattern. Hardware devices from `--backend-info` stored as list and comma-separated integers. Modal must use idiomatic Shadcn-Svelte tabs, forms, and data display components.
+\*\* Technical Context\*\*: Agent details modal has 5 tabs (Settings, Hardware, Performance, Log, Capabilities). Display name uses `agent.custom_label or agent.host_name` fallback pattern. Hardware devices from `--backend-info` stored as list and comma-separated integers. Modal must use idiomatic Shadcn-Svelte tabs, forms, and data display components.
 
 - [ ] **AGENT-DETAIL-001**: Agent Settings Tab
 
@@ -224,7 +224,7 @@ With advanced features implemented, this step focuses on completing agent manage
 
 ### Testing Guidelines & Requirements
 
-**🧪 Critical Testing Context:**
+\*\* Critical Testing Context:\*\*
 
 - **Test Structure**: All user-facing functionality must have both E2E tests (mocked and full E2E). Strictly follow existing test structure and naming conventions as described in the [full testing architecture](../side_quests/full_testing_architecture.md) document.
 - **Test Execution**:

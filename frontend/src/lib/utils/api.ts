@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 
 /**
  * Centralized API client for client-side fetch calls
@@ -14,6 +15,24 @@ export class ApiError extends Error {
     ) {
         super(message);
         this.name = 'ApiError';
+    }
+}
+
+/**
+ * Extract error details from an API response.
+ * Tries to parse JSON response body for detail/message fields.
+ * Falls back to HTTP status if parsing fails.
+ */
+export async function extractApiError(
+    response: Response,
+    fallbackMessage: string
+): Promise<string> {
+    try {
+        const errorBody = await response.json();
+        return errorBody.detail || errorBody.message || `${fallbackMessage}: ${response.status}`;
+    } catch {
+        // Response wasn't JSON, use fallback
+        return `${fallbackMessage}: ${response.status}`;
     }
 }
 
@@ -39,7 +58,7 @@ export async function apiFetch(url: string, options: RequestInit = {}): Promise<
 
     // Handle authentication errors by redirecting to login
     if (response.status === 401) {
-        goto('/login');
+        goto(resolve('/login'));
         throw new ApiError('Authentication required', 401);
     }
 
@@ -53,7 +72,8 @@ export async function apiGet<T = unknown>(url: string): Promise<T> {
     const response = await apiFetch(url);
 
     if (!response.ok) {
-        throw new ApiError(`HTTP ${response.status}`, response.status);
+        const errorMessage = await extractApiError(response, 'Request failed');
+        throw new ApiError(errorMessage, response.status);
     }
 
     return response.json();
@@ -69,7 +89,8 @@ export async function apiPost<T = unknown>(url: string, data?: unknown): Promise
     });
 
     if (!response.ok) {
-        throw new ApiError(`HTTP ${response.status}`, response.status);
+        const errorMessage = await extractApiError(response, 'Request failed');
+        throw new ApiError(errorMessage, response.status);
     }
 
     return response.json();
@@ -85,7 +106,8 @@ export async function apiPut<T = unknown>(url: string, data?: unknown): Promise<
     });
 
     if (!response.ok) {
-        throw new ApiError(`HTTP ${response.status}`, response.status);
+        const errorMessage = await extractApiError(response, 'Request failed');
+        throw new ApiError(errorMessage, response.status);
     }
 
     return response.json();

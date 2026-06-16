@@ -2,7 +2,7 @@
 
 Ouroboros is a distributed password cracking management system with FastAPI backend, SvelteKit frontend, and Go-based agents. This guide provides essential patterns for immediate productivity.
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ### Three-API Design
 
@@ -17,7 +17,7 @@ Ouroboros is a distributed password cracking management system with FastAPI back
 - **Storage**: MinIO S3-compatible for attack resources
 - **Task Queue**: Celery for background processing
 
-## 🚀 Essential Commands
+## Essential Commands
 
 ```bash
 # Development workflow (use 'just' for all tasks)
@@ -32,7 +32,7 @@ pnpm dev              # Development server
 pnpm check            # Type checking and linting
 ```
 
-## 🎯 Critical Development Patterns
+## Critical Development Patterns
 
 ### Python Standards
 
@@ -104,8 +104,8 @@ export const campaignsStore = {
 };
 
 // Never export $derived directly - causes build errors
-// ❌ export const campaigns = $derived(state.campaigns);
-// ✅ Use getter methods in store objects
+// [FAIL] export const campaigns = $derived(state.campaigns);
+// [x] Use getter methods in store objects
 ```
 
 ### Database & Testing
@@ -125,14 +125,14 @@ user_id, project_id, api_key = await create_user_with_api_key_and_project_access
 stmt = select(Campaign).filter(Campaign.project_id == project.id)
 ```
 
-## 🔒 Security & Multi-tenancy
+## Security & Multi-tenancy
 
 - **Project isolation**: All data access must filter by `project_id`
 - **Agent auth**: Bearer tokens with format `csa_<agent_id>_<random>`
 - **Control auth**: API keys with format `cst_<user_id>_<random>`
 - **Web auth**: JWT + session cookies with CSRF protection
 
-## 📁 Key File Locations
+## Key File Locations
 
 ```
 app/core/deps.py              # Authentication dependencies
@@ -143,7 +143,7 @@ tests/factories/              # Test data factories
 contracts/                    # PROTECTED API specifications
 ```
 
-## ⚠️ Protected Areas
+## [WARN] Protected Areas
 
 **NEVER modify without explicit permission:**
 
@@ -151,19 +151,19 @@ contracts/                    # PROTECTED API specifications
 - `alembic/` - Database migrations
 - `.cursor/` and `.github/` - Development tooling
 
-## 🧪 Test Architecture
+## Test Architecture
 
 - **Layer 1**: Backend unit/integration (`just test-backend`)
 - **Layer 2**: Frontend with mocked APIs (`just test-frontend`)
 - **Layer 3**: Full-stack E2E with Docker (`just test-e2e`)
 
-## 🔧 Package Management
+## Package Management
 
 - **Python**: Use `uv add PACKAGE` (never edit pyproject.toml manually)
 - **Frontend**: Use `pnpm` from `frontend/` directory
 - **Dependencies**: Use `uv` exclusively, never pip
 
-## 🎨 Component Libraries
+## Component Libraries
 
 - **Primary**: Shadcn-Svelte components in `frontend/src/lib/components/ui/`
 - **Styling**: Tailwind CSS utility-first approach

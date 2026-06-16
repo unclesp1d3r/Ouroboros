@@ -209,20 +209,20 @@ For smaller resources (under configured limits), Ouroboros v2 provides inline ed
 #### Rule Validation
 
 ```text
-Line 3: "+rfoo" ❌
+Line 3: "+rfoo" [FAIL]
 Error: Unknown rule operator 'f'
 
-Line 7: "?u?d?l?l" ❌
+Line 7: "?u?d?l?l" [FAIL]
 Error: Duplicate character class at position 3
 ```
 
 #### Mask Validation
 
 ```text
-Line 2: "?d?d?d?d" ✅
+Line 2: "?d?d?d?d" [x]
 Valid: 4-digit numeric mask
 
-Line 5: "?x?d?d" ❌
+Line 5: "?x?d?d" [FAIL]
 Error: Invalid character class '?x'
 ```
 

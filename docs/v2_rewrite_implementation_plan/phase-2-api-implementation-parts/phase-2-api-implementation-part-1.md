@@ -1,8 +1,8 @@
-# 🔐 Agent API (High Priority)
+# Agent API (High Priority)
 
 The agent API is used by the agent to register, heartbeat, and report results. It is also used by the distributed Ouroboros agents to obtain task assignments and submit results.
 
-## 🔐 Agent Authentication & Session Management
+## Agent Authentication & Session Management
 
 - [x] Registration endpoint (`POST /api/v2/client/agents/register`)
 
@@ -25,7 +25,7 @@ The agent API is used by the agent to register, heartbeat, and report results. I
   - Fails if state not in enum
   - Heartbeats update `last_seen_at`, `last_ipaddress`
 
-## 🔄 Attack Distribution
+## Attack Distribution
 
 - [x] Attack Configuration Endpoint
 

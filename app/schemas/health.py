@@ -17,6 +17,9 @@ class MinioHealthDetailed(MinioHealth):
         None, description="Total number of objects across all buckets"
     )
     storage_usage: int | None = Field(None, description="Total storage usage in bytes")
+    metrics_error: str | None = Field(
+        None, description="Error message if detailed metrics fetch failed"
+    )
 
 
 class RedisHealth(BaseModel):
@@ -40,6 +43,9 @@ class RedisHealthDetailed(RedisHealth):
     evicted_keys: int | None = Field(None, description="Number of evicted keys")
     expired_keys: int | None = Field(None, description="Number of expired keys")
     max_memory: int | None = Field(None, description="Maximum memory limit in bytes")
+    metrics_error: str | None = Field(
+        None, description="Error message if detailed metrics fetch failed"
+    )
 
 
 class PostgresHealth(BaseModel):
@@ -61,6 +67,9 @@ class PostgresHealthDetailed(PostgresHealth):
         None, description="Number of long-running queries (>30s)"
     )
     database_size: int | None = Field(None, description="Database size in bytes")
+    metrics_error: str | None = Field(
+        None, description="Error message if detailed metrics fetch failed"
+    )
 
 
 class AgentHealthSummary(BaseModel):

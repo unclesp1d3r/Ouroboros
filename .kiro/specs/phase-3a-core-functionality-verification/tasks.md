@@ -128,7 +128,7 @@ This implementation plan focuses on completing the core functionality verificati
 - [ ] 4.3 Create Agent Status Sheet with comprehensive monitoring
 
   - Implement slide-out sheet triggered by Active Agents card click
-  - Create agent cards with status badges (🟢 Online, 🟡 Idle, 🔴 Offline)
+  - Create agent cards with status badges ([GREEN] Online, [YELLOW] Idle, [RED] Offline)
   - Display last seen timestamps, current task assignments, and guess rates
   - Implement sparklines showing 8-hour performance trends using SVG-based charts
   - Create admin-only expand functionality for detailed agent management

@@ -234,71 +234,35 @@ Download cracker binary by ID.
 
 ### Agent Schemas
 
-::: app.schemas.agent.AdvancedAgentConfiguration
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AdvancedAgentConfiguration options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentBenchmark
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentBenchmark options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentErrorV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentErrorV1 options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentResponseV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentResponseV1 options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentUpdateV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentUpdateV1 options: show_root_heading: true show_source: false
 
-::: app.schemas.agent.AgentHeartbeatRequest
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.agent.AgentHeartbeatRequest options: show_root_heading: true show_source: false
 
 ### Task Schemas
 
-::: app.schemas.task.HashcatResult
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.task.HashcatResult options: show_root_heading: true show_source: false
 
-::: app.schemas.task.TaskOutV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.task.TaskOutV1 options: show_root_heading: true show_source: false
 
-::: app.schemas.task.TaskProgressUpdate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.task.TaskProgressUpdate options: show_root_heading: true show_source: false
 
-::: app.schemas.task.TaskStatusUpdate
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.task.TaskStatusUpdate options: show_root_heading: true show_source: false
 
 ### Attack Schemas
 
-::: app.schemas.attack.AttackOutV1
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.attack.AttackOutV1 options: show_root_heading: true show_source: false
 
 ### Error Schemas
 
-::: app.schemas.error.ErrorObject
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.error.ErrorObject options: show_root_heading: true show_source: false
 
 ## Error Handling
 
@@ -627,9 +591,9 @@ This API maintains strict backward compatibility with the legacy Ruby-on-Rails O
 
 ### Version Compatibility Matrix
 
-| Agent Version | API Version | Compatibility         |
-| ------------- | ----------- | --------------------- |
-| 1.0.x - 1.2.x | v1.0        | ✅ Full               |
-| 1.3.x - 1.5.x | v1.1        | ✅ Full               |
-| 2.0.x+        | v1.3        | ✅ Full               |
-| Future        | v2.0        | 🔄 Migration Required |
+| Agent Version | API Version | Compatibility      |
+| ------------- | ----------- | ------------------ |
+| 1.0.x - 1.2.x | v1.0        | [x] Full           |
+| 1.3.x - 1.5.x | v1.1        | [x] Full           |
+| 2.0.x+        | v1.3        | [x] Full           |
+| Future        | v2.0        | Migration Required |

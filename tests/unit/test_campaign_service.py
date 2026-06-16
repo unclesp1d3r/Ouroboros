@@ -693,3 +693,150 @@ async def test_relaunch_campaign_service_success(db_session: AsyncSession) -> No
 
     assert result.campaign.id == campaign.id
     assert isinstance(result.attacks, list)
+
+
+# --- State machine integration tests ---
+
+
+@pytest.mark.asyncio
+@patch("app.core.services.campaign_service._broadcast_campaign_update")
+async def test_start_campaign_service_rejects_archived_state(
+    mock_broadcast: AsyncMock,
+    db_session: AsyncSession,
+) -> None:
+    """Test that start_campaign_service rejects transition from ARCHIVED state."""
+    from app.core.state_machines import InvalidStateTransitionError
+    from tests.factories.hash_list_factory import HashListFactory
+    from tests.utils.hash_type_utils import get_or_create_hash_type
+
+    # Set factory sessions
+    CampaignFactory.__async_session__ = db_session
+    ProjectFactory.__async_session__ = db_session
+    HashListFactory.__async_session__ = db_session
+
+    project = await ProjectFactory.create_async()
+    hash_type = await get_or_create_hash_type(db_session, 0, "MD5")
+    hash_list = await HashListFactory.create_async(
+        project_id=project.id, hash_type_id=hash_type.id
+    )
+
+    campaign = await CampaignFactory.create_async(
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state=CampaignState.ARCHIVED,
+    )
+
+    # Attempt to start an archived campaign - should raise InvalidStateTransitionError
+    with pytest.raises(InvalidStateTransitionError) as exc_info:
+        await start_campaign_service(campaign.id, db_session)
+
+    assert exc_info.value.from_state == CampaignState.ARCHIVED
+    assert exc_info.value.action == "start"
+
+
+@pytest.mark.asyncio
+@patch("app.core.services.campaign_service._broadcast_campaign_update")
+async def test_stop_campaign_service_rejects_archived_state(
+    mock_broadcast: AsyncMock,
+    db_session: AsyncSession,
+) -> None:
+    """Test that stop_campaign_service rejects transition from ARCHIVED state."""
+    from app.core.state_machines import InvalidStateTransitionError
+    from tests.factories.hash_list_factory import HashListFactory
+    from tests.utils.hash_type_utils import get_or_create_hash_type
+
+    # Set factory sessions
+    CampaignFactory.__async_session__ = db_session
+    ProjectFactory.__async_session__ = db_session
+    HashListFactory.__async_session__ = db_session
+
+    project = await ProjectFactory.create_async()
+    hash_type = await get_or_create_hash_type(db_session, 0, "MD5")
+    hash_list = await HashListFactory.create_async(
+        project_id=project.id, hash_type_id=hash_type.id
+    )
+
+    campaign = await CampaignFactory.create_async(
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state=CampaignState.ARCHIVED,
+    )
+
+    # Attempt to stop an archived campaign - should raise InvalidStateTransitionError
+    with pytest.raises(InvalidStateTransitionError) as exc_info:
+        await stop_campaign_service(campaign.id, db_session)
+
+    assert exc_info.value.from_state == CampaignState.ARCHIVED
+    assert exc_info.value.action == "stop"
+
+
+@pytest.mark.asyncio
+@patch("app.core.services.campaign_service._broadcast_campaign_update")
+async def test_stop_campaign_service_rejects_completed_state(
+    mock_broadcast: AsyncMock,
+    db_session: AsyncSession,
+) -> None:
+    """Test that stop_campaign_service rejects transition from COMPLETED state."""
+    from app.core.state_machines import InvalidStateTransitionError
+    from tests.factories.hash_list_factory import HashListFactory
+    from tests.utils.hash_type_utils import get_or_create_hash_type
+
+    # Set factory sessions
+    CampaignFactory.__async_session__ = db_session
+    ProjectFactory.__async_session__ = db_session
+    HashListFactory.__async_session__ = db_session
+
+    project = await ProjectFactory.create_async()
+    hash_type = await get_or_create_hash_type(db_session, 0, "MD5")
+    hash_list = await HashListFactory.create_async(
+        project_id=project.id, hash_type_id=hash_type.id
+    )
+
+    campaign = await CampaignFactory.create_async(
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state=CampaignState.COMPLETED,
+    )
+
+    # Attempt to stop a completed campaign - should raise InvalidStateTransitionError
+    with pytest.raises(InvalidStateTransitionError) as exc_info:
+        await stop_campaign_service(campaign.id, db_session)
+
+    assert exc_info.value.from_state == CampaignState.COMPLETED
+    assert exc_info.value.action == "stop"
+
+
+@pytest.mark.asyncio
+@patch("app.core.services.campaign_service._broadcast_campaign_update")
+async def test_archive_campaign_service_rejects_error_state(
+    mock_broadcast: AsyncMock,
+    db_session: AsyncSession,
+) -> None:
+    """Test that archive_campaign_service rejects transition from ERROR state."""
+    from app.core.state_machines import InvalidStateTransitionError
+    from tests.factories.hash_list_factory import HashListFactory
+    from tests.utils.hash_type_utils import get_or_create_hash_type
+
+    # Set factory sessions
+    CampaignFactory.__async_session__ = db_session
+    ProjectFactory.__async_session__ = db_session
+    HashListFactory.__async_session__ = db_session
+
+    project = await ProjectFactory.create_async()
+    hash_type = await get_or_create_hash_type(db_session, 0, "MD5")
+    hash_list = await HashListFactory.create_async(
+        project_id=project.id, hash_type_id=hash_type.id
+    )
+
+    campaign = await CampaignFactory.create_async(
+        project_id=project.id,
+        hash_list_id=hash_list.id,
+        state=CampaignState.ERROR,
+    )
+
+    # Attempt to archive an ERROR campaign - should raise InvalidStateTransitionError
+    with pytest.raises(InvalidStateTransitionError) as exc_info:
+        await archive_campaign_service(campaign.id, db_session)
+
+    assert exc_info.value.from_state == CampaignState.ERROR
+    assert exc_info.value.action == "archive"

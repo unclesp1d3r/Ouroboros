@@ -56,6 +56,7 @@ services:
     ports:
       - "8001:8000" # Different port to avoid conflicts
     environment:
+      - CONTAINER_ROLE=web-dev
       - DATABASE_URL=postgresql+psycopg://postgres:postgres@postgres:5432/ouroboros_e2e
       - ENVIRONMENT=development
       - POSTGRES_SERVER=postgres

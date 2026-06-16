@@ -1,6 +1,7 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: [app/core/services/\*\*/\*.py]
+inclusion: fileMatch
+fileMatchPattern: app/core/services/**/*.py
+---
 
 # Service Layer Architecture Patterns for Ouroboros
 

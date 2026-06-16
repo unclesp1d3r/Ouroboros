@@ -1,6 +1,6 @@
 ---
-
-## inclusion: manual
+inclusion: manual
+---
 
 # SSE (Server-Sent Events) Implementation Patterns
 
@@ -13,7 +13,7 @@ This rule documents patterns for implementing Server-Sent Events in Ouroboros fo
 ### Correct Media Type Configuration
 
 ```python
-# ✅ CORRECT - Use proper SSE media type
+# [x] CORRECT - Use proper SSE media type
 @router.get("/live/campaigns")
 async def get_campaign_events():
     return StreamingResponse(
@@ -22,7 +22,7 @@ async def get_campaign_events():
     )
 
 
-# ❌ WRONG - Using text/plain breaks SSE
+# [FAIL] WRONG - Using text/plain breaks SSE
 @router.get("/live/campaigns")
 async def get_campaign_events():
     return StreamingResponse(
@@ -34,7 +34,7 @@ async def get_campaign_events():
 ### SSE Event Format
 
 ```python
-# ✅ CORRECT - Proper SSE event format
+# [x] CORRECT - Proper SSE event format
 async def get_campaign_events():
     try:
         async for event in event_listener.get_events():
@@ -47,7 +47,7 @@ async def get_campaign_events():
 ### Authentication with SSE
 
 ```python
-# ✅ CORRECT - SSE endpoints must handle authentication
+# [x] CORRECT - SSE endpoints must handle authentication
 @router.get("/live/campaigns")
 async def get_campaign_events(current_user: User = Depends(get_current_user)):
     return StreamingResponse(
@@ -61,7 +61,7 @@ async def get_campaign_events(current_user: User = Depends(get_current_user)):
 ### SSE Service Pattern
 
 ```typescript
-// ✅ CORRECT - Robust SSE service with connection tracking
+// [x] CORRECT - Robust SSE service with connection tracking
 export class SSEService {
     private connections = new Map<string, EventSource>();
     private connectionStatus = $state({
@@ -113,7 +113,7 @@ export class SSEService {
 ### Component Integration
 
 ```svelte
-<!-- ✅ CORRECT - SSE integration in dashboard components -->
+<!-- [x] CORRECT - SSE integration in dashboard components -->
 <script lang="ts">
     import { sseService } from '$lib/services/sse';
     import { onMount } from 'svelte';
@@ -151,23 +151,19 @@ export class SSEService {
 
 ### Media Type Mismatch
 
-**Problem**: SSE connections fail immediately after establishment
-**Solution**: Ensure backend uses `media_type="text/event-stream"`
+**Problem**: SSE connections fail immediately after establishment **Solution**: Ensure backend uses `media_type="text/event-stream"`
 
 ### Authentication Failures
 
-**Problem**: SSE connections receive 401 errors
-**Solution**: Use `withCredentials: true` in EventSource constructor
+**Problem**: SSE connections receive 401 errors **Solution**: Use `withCredentials: true` in EventSource constructor
 
 ### Connection Status Tracking
 
-**Problem**: Frontend shows "disconnected" despite working connections
-**Solution**: Only treat `EventSource.CLOSED` state as actual disconnection
+**Problem**: Frontend shows "disconnected" despite working connections **Solution**: Only treat `EventSource.CLOSED` state as actual disconnection
 
 ### Keep-Alive Handling
 
-**Problem**: Connections timeout after 30 seconds
-**Solution**: Backend should send periodic ping messages, frontend should filter them
+**Problem**: Connections timeout after 30 seconds **Solution**: Backend should send periodic ping messages, frontend should filter them
 
 ## Testing SSE Implementation
 
@@ -203,7 +199,7 @@ test('SSE service connects and receives events', async () => {
 ### Vite Proxy Configuration
 
 ```typescript
-// ✅ CORRECT - Vite proxy for SSE endpoints
+// [x] CORRECT - Vite proxy for SSE endpoints
 export default defineConfig({
     server: {
         proxy: {
@@ -232,7 +228,7 @@ export default defineConfig({
 ### Connection Management
 
 ```typescript
-// ✅ CORRECT - Proper connection cleanup
+// [x] CORRECT - Proper connection cleanup
 export class SSEService {
     disconnect(endpoint: string): void {
         const connection = this.connections.get(endpoint);
@@ -254,7 +250,7 @@ export class SSEService {
 ### Reconnection Strategy
 
 ```typescript
-// ✅ CORRECT - Exponential backoff for reconnection
+// [x] CORRECT - Exponential backoff for reconnection
 private scheduleReconnect(endpoint: string, onMessage: Function): void {
     const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
 

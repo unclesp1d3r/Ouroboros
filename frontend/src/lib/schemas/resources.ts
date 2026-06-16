@@ -104,7 +104,7 @@ export const AttackResourceFileOut = z.object({
     line_count: z.number().int().describe('Number of lines in the resource file'),
     byte_size: z.number().int().describe('Size of the resource file in bytes'),
     content: z
-        .union([z.record(z.array(z.string())), z.null()])
+        .union([z.record(z.string(), z.array(z.string())), z.null()])
         .nullish()
         .describe('Resource content'),
     is_uploaded: z.boolean().default(false).describe('Whether the resource has been uploaded'),
@@ -266,7 +266,7 @@ export type ResourceUploadMeta = z.infer<typeof ResourceUploadMeta>;
 export const ResourceUploadResponse = z.object({
     upload_url: z.string().describe('Presigned upload URL'),
     resource_id: z.string().uuid().describe('Resource ID'),
-    fields: z.record(z.string()).describe('Additional form fields for upload'),
+    fields: z.record(z.string(), z.string()).describe('Additional form fields for upload'),
 });
 export type ResourceUploadResponse = z.infer<typeof ResourceUploadResponse>;
 

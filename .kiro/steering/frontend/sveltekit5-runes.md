@@ -21,10 +21,10 @@ This rule provides comprehensive guidelines for implementing SvelteKit 5 runes c
 - **NEVER export `$derived` values directly** from modules:
 
 ```typescript
-// ❌ WRONG - This breaks SvelteKit 5
+// [FAIL] WRONG - This breaks SvelteKit 5
 export const campaigns = $derived(campaignState.campaigns);
 
-// ✅ CORRECT - Use functions that return derived values
+// [x] CORRECT - Use functions that return derived values
 const campaigns = $derived(campaignState.campaigns);
 export function getCampaigns() {
     return campaigns;
@@ -57,17 +57,17 @@ export const campaignsStore = {
 ### State Management
 
 ```typescript
-// ✅ CORRECT - Object wrapper for boolean reactivity
+// [x] CORRECT - Object wrapper for boolean reactivity
 const loadingState = $state({ value: false });
 
-// ✅ CORRECT - Direct primitive state
+// [x] CORRECT - Direct primitive state
 const campaigns = $state<Campaign[]>([]);
 ```
 
 ### Derived Values
 
 ```typescript
-// ✅ CORRECT - Module-level derived values
+// [x] CORRECT - Module-level derived values
 const filteredCampaigns = $derived(
     campaigns.filter(c => c.status === 'active')
 );
@@ -76,7 +76,7 @@ const filteredCampaigns = $derived(
 ### Effects for SSR Hydration
 
 ```typescript
-// ✅ CORRECT - Use $effect for reactive SSR data updates
+// [x] CORRECT - Use $effect for reactive SSR data updates
 $effect(() => {
     if (data.campaigns) {
         campaignState.campaigns = data.campaigns;
@@ -90,7 +90,7 @@ $effect(() => {
 
 ```svelte
 <script lang="ts">
-    // ✅ CORRECT - Use $props() for component props
+    // [x] CORRECT - Use $props() for component props
     let { campaign, onUpdate }: {
         campaign: Campaign;
         onUpdate?: (campaign: Campaign) => void
@@ -104,7 +104,7 @@ $effect(() => {
 <script lang="ts">
     import { campaignsStore } from '$lib/stores/campaigns.svelte';
 
-    // ✅ CORRECT - Access store state directly
+    // [x] CORRECT - Access store state directly
     let campaigns = $derived(campaignsStore.campaigns);
     let loading = $derived(campaignsStore.loading);
 </script>
@@ -115,7 +115,7 @@ $effect(() => {
 ### Page Data Usage
 
 ```svelte
-<!-- ✅ CORRECT - Use SSR data directly in pages -->
+<!-- [x] CORRECT - Use SSR data directly in pages -->
 <script lang="ts">
     export let data: PageData;
 
@@ -141,7 +141,7 @@ $effect(() => {
 ### Mock Store Setup
 
 ```typescript
-// ✅ CORRECT - Mock the .svelte.ts file path
+// [x] CORRECT - Mock the .svelte.ts file path
 vi.mock('$lib/stores/campaigns.svelte', () => ({
     campaignsStore: {
         getCampaigns: vi.fn(),
@@ -162,12 +162,12 @@ vi.mock('$lib/stores/campaigns.svelte', () => ({
 ### From Svelte 4 Stores
 
 ```typescript
-// ❌ OLD - Svelte 4 pattern
+// [FAIL] OLD - Svelte 4 pattern
 import { writable, derived } from 'svelte/store';
 export const campaigns = writable([]);
 export const loading = derived(campaigns, $campaigns => $campaigns.length === 0);
 
-// ✅ NEW - SvelteKit 5 runes pattern
+// [x] NEW - SvelteKit 5 runes pattern
 const campaignState = $state({ campaigns: [], loading: false });
 const campaigns = $derived(campaignState.campaigns);
 const loading = $derived(campaignState.loading);
@@ -182,12 +182,12 @@ export const campaignsStore = {
 ### Component Migration
 
 ```svelte
-<!-- ❌ OLD - Reactive statements -->
+<!-- [FAIL] OLD - Reactive statements -->
 <script>
     $: filteredCampaigns = campaigns.filter(c => c.active);
 </script>
 
-<!-- ✅ NEW - Derived runes -->
+<!-- [x] NEW - Derived runes -->
 <script>
     let filteredCampaigns = $derived(campaigns.filter(c => c.active));
 </script>

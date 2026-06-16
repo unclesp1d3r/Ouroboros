@@ -135,6 +135,8 @@ describe('UserProfile', () => {
         render(UserProfile, { props: { user: mockUser } });
 
         // Check that dates are displayed (exact format may vary by locale)
-        expect(screen.getByText(/2023/)).toBeInTheDocument();
+        // Both created_at and updated_at contain 2023, so we expect multiple elements
+        const dateElements = screen.getAllByText(/2023/);
+        expect(dateElements.length).toBeGreaterThanOrEqual(1);
     });
 });

@@ -31,7 +31,7 @@
     // 1. Collect all unique timestamps
     const allTimestamps = Array.from(
         new Set(series.flatMap((d) => d.data.map((p) => p.timestamp)))
-    ).sort();
+    ).toSorted();
 
     // 2. Build wide-format data: [{ timestamp, [device1]: speed, [device2]: speed, ... }]
     const wideData = allTimestamps.map((timestamp) => {

@@ -265,7 +265,7 @@ just ci-check  # Only when PR-ready
 
 ## Protected Areas
 
-⚠️ **These areas require explicit permission before modification:**
+[WARN] **These areas require explicit permission before modification:**
 
 - **`contracts/`** — API specifications (Agent API v1 is **IMMUTABLE**)
 - **`alembic/`** — Database migrations (use Alembic CLI only)
@@ -340,11 +340,11 @@ just ci-check  # Only when PR-ready
 
 ### PR Requirements
 
-- ✅ Conventional Commit title
-- ✅ WARP.md compliance checklist completed
-- ✅ Test tier selected and passing locally
-- ✅ No PROTECTED areas modified without justification
-- ✅ PR scope under ~400 lines when feasible
+- [x] Conventional Commit title
+- [x] WARP.md compliance checklist completed
+- [x] Test tier selected and passing locally
+- [x] No PROTECTED areas modified without justification
+- [x] PR scope under ~400 lines when feasible
 
 ## Code of Conduct
 

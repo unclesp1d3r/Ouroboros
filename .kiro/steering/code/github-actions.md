@@ -1,6 +1,7 @@
 ---
-
-## inclusion: fileMatch fileMatchPattern: [.github/workflows/\*.yml]
+inclusion: fileMatch
+fileMatchPattern: .github/workflows/*.yml
+---
 
 # GitHub Actions Best Practices and Coding Standards
 
@@ -18,18 +19,7 @@ This guide provides comprehensive guidelines for developing efficient, reliable,
 
 - **Example Directory Structure:**
 
-  .github/
-  └── workflows/
-  ├── main.yml
-  ├── deploy.yml
-  └── release.yml
-  actions/
-  ├── my-custom-action/
-  │ ├── action.yml
-  │ └── index.js
-  scripts/
-  ├── cleanup.sh
-  └── build.py
+  .github/ └── workflows/ ├── main.yml ├── deploy.yml └── release.yml actions/ ├── my-custom-action/ │ ├── action.yml │ └── index.js scripts/ ├── cleanup.sh └── build.py
 
 ### 1.2 File Naming Conventions
 

@@ -139,7 +139,7 @@ This feature represents Phase 3 Step 2 of the Ouroboros web UI implementation, f
 #### Acceptance Criteria
 
 1. WHEN agent lists are displayed THEN they SHALL show Agent Name+OS, Status, Temperature, Utilization, Current Rate, Average Rate, Current Job columns
-2. WHEN agent status is indicated THEN it SHALL use color-coded badges (🟢 Online, 🟡 Idle, 🔴 Offline)
+2. WHEN agent status is indicated THEN it SHALL use color-coded badges ([GREEN] Online, [YELLOW] Idle, [RED] Offline)
 3. WHEN agent performance is shown THEN it SHALL include donut charts for utilization and sparklines for 8-hour trend data
 4. WHEN agent details are accessed THEN they SHALL display in slide-out sheets with scrollable card layouts
 5. WHEN agent hardware is managed THEN it SHALL provide device toggle interfaces and temperature monitoring

@@ -172,7 +172,7 @@ On import:
 - Ephemeral files may be inlined in the template (e.g., a `wordlist_inline` or `masks: []` field)
   - `masks` is an array of strings, with each in hashcat mask `hcmask` format (`abcdef,0123,ABC,789,?3?3?3?1?1?1?1?2?2?4?4?4?4`) to allow custom character sets
   - `words` is an array of strings, with each a dictionary word, containing a single word or phrase that will be converted to a newline-separated list of words
-- 📌 _Note: Standard Attack Resource Files are not embedded in save/load templates. Campaigns reference existing resources by ID. Resource metadata and crackable hash import/export are handled through the Resource API, not the template layer._
+- _Note: Standard Attack Resource Files are not embedded in save/load templates. Campaigns reference existing resources by ID. Resource metadata and crackable hash import/export are handled through the Resource API, not the template layer._
 
 ```json
 {
@@ -216,7 +216,7 @@ On import:
 
 ## Current Implementation Status
 
-**Overall Status: 🔄 IN PROGRESS** (2 of 3 parts completed)
+**Overall Status: IN PROGRESS** (2 of 3 parts completed)
 
 Phase 2 has made significant progress with Parts 1 and 2 completed, delivering core API functionality for Ouroboros:
 
@@ -267,4 +267,3 @@ Complete REST interface for SvelteKit frontend with campaign management, attack 
 ### Next Steps
 
 The Web UI API foundation is ready to support **Phase 3: Frontend Implementation**, while the Control API (Part 3) remains to be implemented for CLI/TUI support in the future.
-o be implemented for CLI/TUI support in the future.

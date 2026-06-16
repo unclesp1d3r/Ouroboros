@@ -7,7 +7,7 @@
     import { campaignsStore } from '$lib/stores/campaigns.svelte';
     import type { CampaignProgress } from '$lib/types/campaign';
 
-    export let campaignId: number;
+    export let campaignId: number | undefined = undefined;
     export let initialProgress: CampaignProgress | null = null;
     export let refreshInterval: number = 5000; // 5 seconds default
     export let enableAutoRefresh: boolean = false; // Allow disabling auto-refresh
@@ -21,18 +21,23 @@
     }
 
     // Reactive values from store
-    $: progress = campaignsStore.getCampaignProgress(campaignId) || initialProgress;
-    $: loading = campaignsStore.isCampaignLoading(campaignId);
-    $: error = campaignsStore.getCampaignError(campaignId);
+    $: progress =
+        campaignId != null
+            ? campaignsStore.getCampaignProgress(campaignId) || initialProgress
+            : initialProgress;
+    $: loading = campaignId != null ? campaignsStore.isCampaignLoading(campaignId) : false;
+    $: error = campaignId != null ? campaignsStore.getCampaignError(campaignId) : null;
 
     function startPolling() {
-        if (!enableAutoRefresh) return;
+        if (!enableAutoRefresh || campaignId == null) return;
 
         if (intervalId) {
             clearInterval(intervalId);
         }
         intervalId = setInterval(() => {
-            campaignsStore.updateCampaignData(campaignId);
+            if (campaignId != null) {
+                campaignsStore.updateCampaignData(campaignId);
+            }
         }, refreshInterval);
     }
 

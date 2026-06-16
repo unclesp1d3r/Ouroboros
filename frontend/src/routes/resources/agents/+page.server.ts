@@ -10,7 +10,7 @@ const AgentSchema = z.object({
     custom_label: z.string().nullable(),
     state: z.enum(['pending', 'active', 'stopped', 'error', 'offline']),
     enabled: z.boolean(),
-    advanced_configuration: z.record(z.any()).nullable(),
+    advanced_configuration: z.record(z.string(), z.any()).nullable(),
     devices: z.array(z.string()).nullable(),
     agent_type: z.enum(['physical', 'virtual', 'container']).nullable(),
     operating_system: z.enum(['linux', 'windows', 'macos']),

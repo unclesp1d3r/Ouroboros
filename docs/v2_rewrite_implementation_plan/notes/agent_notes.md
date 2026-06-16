@@ -1,8 +1,8 @@
 # Ouroboros Agent Monitoring & Configuration
 
-## 🧠 Ouroboros — Agent Monitoring & Configuration Context
+## Ouroboros — Agent Monitoring & Configuration Context
 
-### 🔍 General Goals
+### General Goals
 
 - Agent monitoring and configuration will be significantly expanded in a future phase (likely Phase 5).
 - Current users report confusion around whether agents are truly running or idle.
@@ -10,7 +10,7 @@
 
 ---
 
-### 📋 Agent List View (Overview Table)
+### Agent List View (Overview Table)
 
 Display all agents in a table with the following columns:
 
@@ -44,7 +44,7 @@ Admins only. Tabs:
 
 ---
 
-#### ⚙️ Settings
+#### Settings
 
 - **Agent Label**:
   - Editable field. Sets `custom_label`.
@@ -69,7 +69,7 @@ Admins only. Tabs:
 
 ---
 
-#### 🖥️ Hardware
+#### Hardware
 
 - **Computational Units** (aka Backend Devices):
   - Pulled from `--backend-info` on agent check-in.
@@ -80,10 +80,7 @@ Admins only. Tabs:
   - UI:
     - Each device has an enable/disable toggle (Flowbite toggle).
     - If task is active:
-      - Prompt with:
-        1\. Restart task immediately
-        2\. Apply change to next task
-        3\. Cancel change
+      - Prompt with: 1. Restart task immediately 2. Apply change to next task 3. Cancel change
 - **Hardware Acceleration Settings**:
   - Temperature abort (`--hwmon-temp-abort`): Not yet implemented, suggest default to 90°C or capture as a note.
   - `opencl_devices` toggle: defines allowed OpenCL device types.
@@ -134,7 +131,7 @@ All the above are part of `AdvancedAgentConfiguration` in `contracts/v1_api_swag
 
 ---
 
-#### 🧠 Capabilities
+#### Capabilities
 
 - Shows benchmark results (latest only).
 - Used to determine which hash types the agent can handle.

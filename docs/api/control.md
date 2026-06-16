@@ -83,8 +83,7 @@ curl -H "Authorization: Bearer cst_123_abc..." \
 
 Create a new campaign.
 
-**Request Body:** `CampaignCreateRequest`
-**Response:** `CampaignResponse`
+**Request Body:** `CampaignCreateRequest` **Response:** `CampaignResponse`
 
 **Example:**
 
@@ -114,8 +113,7 @@ Update campaign configuration.
 
 - `id: int` - Campaign ID
 
-**Request Body:** `CampaignUpdateRequest`
-**Response:** `CampaignResponse`
+**Request Body:** `CampaignUpdateRequest` **Response:** `CampaignResponse`
 
 #### `DELETE /api/v1/control/campaigns/{id}`
 
@@ -191,8 +189,7 @@ Export campaign configuration to JSON.
 
 Analyze hash input and guess hash types.
 
-**Request Body:** `HashGuessRequest`
-**Response:** `HashGuessResponse`
+**Request Body:** `HashGuessRequest` **Response:** `HashGuessResponse`
 
 **Example:**
 
@@ -208,8 +205,7 @@ curl -X POST \
 
 Validate hash format and compatibility.
 
-**Request Body:** `HashValidationRequest`
-**Response:** `HashValidationResponse`
+**Request Body:** `HashValidationRequest` **Response:** `HashValidationResponse`
 
 ### Batch Operations
 
@@ -217,15 +213,13 @@ Validate hash format and compatibility.
 
 Start multiple campaigns simultaneously.
 
-**Request Body:** `BulkCampaignStartRequest`
-**Response:** `BulkOperationResponse`
+**Request Body:** `BulkCampaignStartRequest` **Response:** `BulkOperationResponse`
 
 #### `POST /api/v1/control/campaigns/bulk_stop`
 
 Stop multiple campaigns simultaneously.
 
-**Request Body:** `BulkCampaignStopRequest`
-**Response:** `BulkOperationResponse`
+**Request Body:** `BulkCampaignStopRequest` **Response:** `BulkOperationResponse`
 
 #### `GET /api/v1/control/campaigns/bulk_status`
 
@@ -261,10 +255,7 @@ Get agent fleet summary and status.
 
 ### Shared Schemas
 
-::: app.schemas.shared.PaginatedResponse
-options:
-show_root_heading: true
-show_source: false
+::: app.schemas.shared.PaginatedResponse options: show_root_heading: true show_source: false
 
 ## Usage Examples
 

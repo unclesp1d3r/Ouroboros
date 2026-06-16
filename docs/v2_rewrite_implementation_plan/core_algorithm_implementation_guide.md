@@ -7,35 +7,35 @@ This guide documents key algorithms from the legacy Ouroboros system that must b
 <!-- mdformat-toc start --slug=gitlab --no-anchors --maxlevel=4 --minlevel=2 -->
 
 - [1. Agent Benchmark Compatibility](#1-agent-benchmark-compatibility)
-  - [✅ Functionality](#-functionality)
-  - [💡 What Are Hashcat Benchmarks?](#-what-are-hashcat-benchmarks)
-  - [💡 Implementation](#-implementation)
-  - [🔧 Method Signature](#-method-signature)
+  - [[x] Functionality](#x-functionality)
+  - [TIP: What Are Hashcat Benchmarks?](#tip-what-are-hashcat-benchmarks)
+  - [TIP: Implementation](#tip-implementation)
+  - [Method Signature](#method-signature)
 - [2. State Machines (Campaign to Attack to Task)](#2-state-machines-campaign-to-attack-to-task)
-  - [✅ Functionality](#-functionality-1)
-  - [🔧 Method Signatures](#-method-signatures)
+  - [[x] Functionality](#x-functionality-1)
+  - [Method Signatures](#method-signatures)
 - [3. Progress Calculation (Percent-Based)](#3-progress-calculation-percent-based)
-  - [✅ Functionality](#-functionality-2)
-  - [🔧 Method Signatures](#-method-signatures-1)
+  - [[x] Functionality](#x-functionality-2)
+  - [Method Signatures](#method-signatures-1)
 - [3B. Keyspace-Weighted Progress Calculation (Enhanced)](#3b-keyspace-weighted-progress-calculation-enhanced)
-  - [✅ Why Weight by Keyspace?](#-why-weight-by-keyspace)
+  - [[x] Why Weight by Keyspace?](#x-why-weight-by-keyspace)
 - [4. Task Assignment Algorithm](#4-task-assignment-algorithm)
-  - [✅ Functionality](#-functionality-3)
-  - [🔧 Method Signature](#-method-signature-1)
-  - [🔒 Requirements](#-requirements)
+  - [[x] Functionality](#x-functionality-3)
+  - [Method Signature](#method-signature-1)
+  - [Requirements](#requirements)
 - [5. Hash Crack Result Aggregation](#5-hash-crack-result-aggregation)
-  - [✅ Functionality](#-functionality-4)
-  - [🔧 Aggregates](#-aggregates)
+  - [[x] Functionality](#x-functionality-4)
+  - [Aggregates](#aggregates)
 - [6. Edge Cases](#6-edge-cases)
 - [7. Keyspace Estimation (All Attack Types)](#7-keyspace-estimation-all-attack-types)
-  - [✅ Functionality](#-functionality-5)
-  - [💡 What is Keyspace?](#-what-is-keyspace)
-  - [💡 Implementation](#-implementation-1)
-  - [🔧 Method Signature](#-method-signature-2)
-  - [🧪 Validation](#-validation)
-  - [🔒 Requirements](#-requirements-1)
-  - [📎 Related Features](#-related-features)
-- [✅ Implementation Order](#-implementation-order)
+  - [[x] Functionality](#x-functionality-5)
+  - [TIP: What is Keyspace?](#tip-what-is-keyspace)
+  - [TIP: Implementation](#tip-implementation-1)
+  - [Method Signature](#method-signature-2)
+  - [Validation](#validation)
+  - [Requirements](#requirements-1)
+  - [Related Features](#related-features)
+- [[x] Implementation Order](#x-implementation-order)
 
 <!-- mdformat-toc end -->
 
@@ -43,11 +43,11 @@ This guide documents key algorithms from the legacy Ouroboros system that must b
 
 ## 1. Agent Benchmark Compatibility
 
-### ✅ Functionality
+### [x] Functionality
 
 Determine whether an agent is compatible with a given hash type.
 
-### 💡 What Are Hashcat Benchmarks?
+### TIP: What Are Hashcat Benchmarks?
 
 Hashcat benchmarks are performance tests that measure how many hashes per second an agent's hardware can process for each supported hash type. These benchmarks:
 
@@ -58,7 +58,7 @@ Hashcat benchmarks are performance tests that measure how many hashes per second
 
 This allows Ouroboros to distribute work intelligently, avoiding weaker agents for resource-heavy tasks and splitting work proportionally across stronger ones.
 
-### 💡 Implementation
+### TIP: Implementation
 
 Agents store benchmark results in the format:
 
@@ -69,7 +69,7 @@ Agents store benchmark results in the format:
 }
 ```
 
-### 🔧 Method Signature
+### Method Signature
 
 ```python
 def can_handle_hash_type(agent: Agent, hash_type_id: int) -> bool:
@@ -82,7 +82,7 @@ Benchmarks should be stored in a DB field or table, indexed by hash type. Agents
 
 ## 2. State Machines (Campaign to Attack to Task)
 
-### ✅ Functionality
+### [x] Functionality
 
 Each object in the hierarchy calculates its completion based on its children.
 
@@ -90,7 +90,7 @@ Each object in the hierarchy calculates its completion based on its children.
 - `Attack`: complete if all Tasks are complete
 - `Campaign`: complete if all Attacks are complete
 
-### 🔧 Method Signatures
+### Method Signatures
 
 ```python
 def task_is_complete(task: Task) -> bool:
@@ -111,11 +111,11 @@ Each level should also store a calculated progress percentage (see next section)
 
 ## 3. Progress Calculation (Percent-Based)
 
-### ✅ Functionality
+### [x] Functionality
 
 Higher-level progress is calculated as the average of lower-level progress.
 
-### 🔧 Method Signatures
+### Method Signatures
 
 ```python
 def attack_progress(attack: Attack) -> float:
@@ -134,7 +134,7 @@ def campaign_progress(campaign: Campaign) -> float:
 
 ## 3B. Keyspace-Weighted Progress Calculation (Enhanced)
 
-### ✅ Why Weight by Keyspace?
+### [x] Why Weight by Keyspace?
 
 Not all tasks are equal — some take longer than others due to larger keyspaces. If we just average `progress_percent`, a small task at 100% can skew results.
 
@@ -157,11 +157,11 @@ Campaign progress would then be calculated from weighted attack progress, or fur
 
 ## 4. Task Assignment Algorithm
 
-### ✅ Functionality
+### [x] Functionality
 
 Assigns pending tasks to available agents based on hash type compatibility.
 
-### 🔧 Method Signature
+### Method Signature
 
 ```python
 def assign_task_to_agent(agent: Agent) -> Optional[Task]:
@@ -171,7 +171,7 @@ def assign_task_to_agent(agent: Agent) -> Optional[Task]:
     return None
 ```
 
-### 🔒 Requirements
+### Requirements
 
 - Task must be in `pending` state
 - Agent must have benchmark support for the task’s hash type
@@ -181,11 +181,11 @@ def assign_task_to_agent(agent: Agent) -> Optional[Task]:
 
 ## 5. Hash Crack Result Aggregation
 
-### ✅ Functionality
+### [x] Functionality
 
 Track cracked hash counts for UI and export.
 
-### 🔧 Aggregates
+### Aggregates
 
 - `hash_list.hash_items.count()`
 - `hash_list.hash_items.filter(cracked=True).count()`
@@ -204,7 +204,7 @@ Use indexes on `HashItem.cracked` for performance.
 
 ## 7. Keyspace Estimation (All Attack Types)
 
-### ✅ Functionality
+### [x] Functionality
 
 Estimate the total keyspace for a given attack configuration. This enables Ouroboros to:
 
@@ -215,7 +215,7 @@ Estimate the total keyspace for a given attack configuration. This enables Ourob
 
 Keyspace estimation must handle **dictionary**, **mask**, **combinator**, **hybrid**, and **incremental** modes, as well as **rulesets** and **custom charsets**.
 
-### 💡 What is Keyspace?
+### TIP: What is Keyspace?
 
 Keyspace is the total number of password candidates an attack will generate. For any attack, the cracking time can be estimated as:
 
@@ -227,7 +227,7 @@ This works across all hashcat attack modes by adjusting how the keyspace is calc
 
 ---
 
-### 💡 Implementation
+### TIP: Implementation
 
 Each attack mode has its own formula:
 
@@ -281,7 +281,7 @@ This allows you to precompute `attack.keyspace_total` on attack submission and s
 
 ---
 
-### 🔧 Method Signature
+### Method Signature
 
 ```python
 def estimate_keyspace(attack: Attack, resources: AttackResources) -> int: ...
@@ -305,7 +305,7 @@ class AttackResources:
 
 ---
 
-### 🧪 Validation
+### Validation
 
 - Compare results to `--keyspace` output from hashcat for known configurations
 - Unit test edge cases: empty mask, multi-mask with custom charsets, large rule sets
@@ -313,7 +313,7 @@ class AttackResources:
 
 ---
 
-### 🔒 Requirements
+### Requirements
 
 - Must match hashcat’s actual candidate space within ±1%
 - Required for task distribution, UI display, and progress weighting
@@ -321,7 +321,7 @@ class AttackResources:
 
 ---
 
-### 📎 Related Features
+### Related Features
 
 - Weighted progress calculation 【see Section 3B】
 - Agent scheduling based on chunked keyspace
@@ -330,7 +330,7 @@ class AttackResources:
 
 ---
 
-## ✅ Implementation Order
+## [x] Implementation Order
 
 1. [ ] Agent benchmark ingestion & capability check
 2. [ ] Task assignment endpoint & logic
@@ -342,4 +342,3 @@ class AttackResources:
 ---
 
 This guide is intended to serve as a reference and contract for implementing Ouroboros's orchestration logic in a stateless API model using FastAPI and SQLAlchemy.
-rSwarm's orchestration logic in a stateless API model using FastAPI and SQLAlchemy.

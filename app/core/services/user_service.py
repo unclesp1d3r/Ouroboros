@@ -220,8 +220,8 @@ async def get_user_by_id_service(db: AsyncSession, user_id: UUID) -> UserRead:
 async def update_user_service(
     db: AsyncSession,
     user_id: UUID,
-    payload: "UserUpdate",
-) -> "UserRead":
+    payload: UserUpdate,
+) -> UserRead:
     from app.core.auth import hash_password
     from app.models.user import UserRole
     from app.schemas.user import UserRead

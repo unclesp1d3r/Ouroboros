@@ -1,21 +1,63 @@
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
+import bcrypt
 from jose import jwt
 from jose.exceptions import ExpiredSignatureError, JWTError
 from loguru import logger
-from passlib.hash import bcrypt
 
 from app.core.config import settings
 from app.core.security import create_access_token as security_create_access_token
 
+# Bcrypt has a maximum password length of 72 bytes
+BCRYPT_MAX_PASSWORD_LENGTH = 72
+
+
+class PasswordTooLongError(ValueError):
+    """Raised when password exceeds bcrypt's 72-byte limit."""
+
 
 def hash_password(password: str) -> str:
-    return bcrypt.hash(password)
+    """Hash a password using bcrypt.
+
+    Args:
+        password: The password to hash
+
+    Returns:
+        str: The hashed password
+
+    Raises:
+        PasswordTooLongError: If password exceeds 72 bytes when UTF-8 encoded
+    """
+    password_bytes = password.encode("utf-8")
+    if len(password_bytes) > BCRYPT_MAX_PASSWORD_LENGTH:
+        raise PasswordTooLongError(
+            f"Password exceeds maximum length of {BCRYPT_MAX_PASSWORD_LENGTH} bytes when UTF-8 encoded"
+        )
+
+    # Use bcrypt directly
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password_bytes, salt)
+    return hashed.decode("utf-8")
 
 
 def verify_password(password: str, hashed: str) -> bool:
-    return bcrypt.verify(password, hashed)
+    """Verify a password against a hash.
+
+    Args:
+        password: The password to verify
+        hashed: The stored hash to verify against
+
+    Returns:
+        bool: True if password matches, False otherwise
+    """
+    password_bytes = password.encode("utf-8")
+    if len(password_bytes) > BCRYPT_MAX_PASSWORD_LENGTH:
+        # Short-circuit: password too long, can't match
+        return False
+
+    # Use bcrypt directly
+    return bcrypt.checkpw(password_bytes, hashed.encode("utf-8"))
 
 
 def create_access_token(user_id: UUID) -> str:

@@ -2,21 +2,20 @@
 # check=error=true
 
 # SvelteKit Frontend Dockerfile
-FROM node:20-slim
+FROM oven/bun:1 AS base
 
-# Install pnpm globally and curl for health checks
-RUN npm install -g pnpm && \
-    apt-get update && apt-get install -y curl && \
+# Install curl for health checks
+RUN apt-get update && apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json bun.lock bunfig.toml ./
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN bun install --frozen-lockfile
 
 # Copy source code
 COPY . .
@@ -29,7 +28,7 @@ ENV API_BASE_URL=http://localhost:8000
 ENV VITE_API_BASE_URL=http://localhost:8000
 
 # Build the application with increased memory
-RUN pnpm run build
+RUN bun run build
 
 # Expose port
 EXPOSE 5173

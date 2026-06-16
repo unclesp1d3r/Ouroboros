@@ -1,4 +1,4 @@
-### 📦 Task Note: MinIO Testcontainers Support (`task_id:testcontainers.minio_support`)
+### Task Note: MinIO Testcontainers Support (`task_id:testcontainers.minio_support`)
 
 **Task Description:**
 

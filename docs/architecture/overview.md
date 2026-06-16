@@ -8,6 +8,7 @@ Ouroboros is designed as a distributed system that coordinates password cracking
 graph TB
     subgraph "Frontend Layer"
         UI[SvelteKit Web Interface]
+        NICEGUI[NiceGUI Interface]
         TUI[Terminal UI - Planned]
     end
 
@@ -44,6 +45,7 @@ graph TB
     end
 
     UI --> WEB
+    NICEGUI --> WEB
     TUI --> CONTROL
     AGENT1 & AGENT2 & AGENT3 --> AGENT
 
@@ -79,6 +81,23 @@ graph TB
 - Hash list management
 - User and project administration
 - Health monitoring and system status
+
+#### NiceGUI Interface
+
+- Python-native web interface integrated directly into FastAPI backend
+- Eliminates need for separate frontend server deployment
+- Uses same authentication system as existing APIs
+- Provides complete feature parity with SvelteKit frontend
+- Ideal for simplified deployment and Python-focused development teams
+
+**Key Features:**
+
+- Single-container deployment (backend only)
+- Integrated authentication and session management
+- Real-time updates via Server-Sent Events (SSE)
+- Responsive design with accessibility support
+- Python-native development and customization
+- Complete campaign, agent, and resource management
 
 #### Terminal UI (Planned)
 

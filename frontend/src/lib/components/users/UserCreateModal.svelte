@@ -8,8 +8,8 @@
     import { Select, SelectContent, SelectItem, SelectTrigger } from '$lib/components/ui/select';
     import type { UserCreate } from '$lib/types/user';
 
-    export let onClose: () => void;
-    export let onUserCreated: () => void;
+    export let onClose: () => void = () => {};
+    export let onUserCreated: () => void = () => {};
 
     const dispatch = createEventDispatcher();
 

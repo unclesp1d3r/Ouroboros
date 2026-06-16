@@ -98,7 +98,7 @@ def redact_sensitive_data(record: dict[str, Any]) -> dict[str, Any]:
     return record
 
 
-def format_with_redaction(record: "Record") -> str:
+def format_with_redaction(record: Record) -> str:
     """
     Custom format function that redacts sensitive data before formatting.
     """

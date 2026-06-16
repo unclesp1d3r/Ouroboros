@@ -28,7 +28,7 @@ class ProjectRead(BaseModel):
     @field_validator("users", mode="before")
     @classmethod
     def validate_users(
-        cls, v: "list[User]|list[ProjectUserAssociation]|list[str]|list[UUID]"
+        cls, v: list[User] | list[ProjectUserAssociation] | list[str] | list[UUID]
     ) -> list[UUID]:
         """Convert User objects or user associations to UUIDs."""
         if not v:
