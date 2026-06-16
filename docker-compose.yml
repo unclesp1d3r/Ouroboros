@@ -56,6 +56,7 @@ services:
         ports:
             - "8000:8000"
         environment:
+            - CONTAINER_ROLE=web
             - DATABASE_URL=postgresql+psycopg://${POSTGRES_USER:-ouroboros}:${POSTGRES_PASSWORD:-ouroboros}@postgres:5432/${POSTGRES_DB:-ouroboros}
             - POSTGRES_SERVER=postgres
             - POSTGRES_USER=${POSTGRES_USER:-ouroboros}

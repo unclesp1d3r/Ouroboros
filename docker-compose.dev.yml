@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile.dev
       target: development
     environment:
+      - CONTAINER_ROLE=web-dev
+      - IGNORE_MIGRATION_FAILURE=true
       - LOG_LEVEL=DEBUG
       - LOG_TO_FILE=True
       - PYTHONPATH=/app
@@ -14,7 +16,6 @@ services:
     volumes:
       - .:/app
       - /app/.venv
-    command: ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     ports:
       - "8000:8000"
 
